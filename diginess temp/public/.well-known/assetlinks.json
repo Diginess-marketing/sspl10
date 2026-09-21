@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.sspl.cricket",
+      "sha256_cert_fingerprints": [
+        "E5:5E:28:66:27:7F:CC:E8:1A:10:B0:B0:F5:E3:C3:B7:6E:F7:66:49:B6:E4:A8:F6:8C:D3:96:D0:9F:8D:E5:72"
+      ]
+    }
+  }
+]

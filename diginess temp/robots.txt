@@ -1,0 +1,58 @@
+# robots.txt for SSPL T10 Cricket League
+# Generated: 2026-02-14
+# Allows all search engines to crawl the website
+
+# Google specific rules
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+Crawl-delay: 0
+
+# Bing specific rules
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Crawl-delay: 1
+
+# Social Media Crawlers
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+# Other good bots
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Block bad bots and scrapers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+# Default rule for all other bots
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+Disallow: /*.json$
+
+# Sitemap location
+Sitemap: https://ssplt10.co.in/sitemap.xml
+
+# Request rate
+Request-rate: 30/1m

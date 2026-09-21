@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams Section Component</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#c40000',
+                            text: '#ffffff',
+                            surface: '#f3f4f6',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 font-sans text-gray-900">
+
+    <!-- Teams Section Component Start -->
+    <section class="py-16 sm:py-24 bg-gray-50 bg-opacity-50" aria-labelledby="teams-heading">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Section Header -->
+            <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+                <span class="text-brand-primary font-bold tracking-wider uppercase text-sm mb-2 block">The
+                    Contenders</span>
+                <h2 id="teams-heading" class="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-4">
+                    Meet the Teams
+                </h2>
+                <p class="text-lg text-gray-600">
+                    24 elite squads from across the country battling for the ultimate championship trophy.
+                </p>
+            </div>
+
+            <!-- Teams Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+
+                <!-- Team Card 1 -->
+                <a href="#"
+                    class="group relative flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
+                    <!-- Top Gradient Decoration -->
+                    <div class="h-2 w-full bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
+
+                    <div class="p-6 flex flex-col items-center flex-grow">
+                        <!-- Logo Container -->
+                        <div class="w-24 h-24 sm:w-32 sm:h-32 mb-6 relative flex-shrink-0">
+                            <!-- Glow Effect on Hover -->
+                            <div
+                                class="absolute inset-0 bg-yellow-400 opacity-0 group-hover:opacity-20 rounded-full blur-xl transition-opacity duration-300">
+                            </div>
+                            <img src="https://placehold.co/128x128/FFD700/000000?text=SK" alt="Super Kings Team Logo"
+                                class="relative w-full h-full object-contain drop-shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                        </div>
+
+                        <!-- Text Content -->
+                        <div class="text-center">
+                            <h3
+                                class="text-lg sm:text-xl font-bold text-gray-900 mb-1 group-hover:text-yellow-600 transition-colors">
+                                Super Kings
+                            </h3>
+                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                                Chennai
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Team Card 2 -->
+                <a href="#"
+                    class="group relative flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="h-2 w-full bg-gradient-to-r from-blue-500 to-blue-700"></div>
+                    <div class="p-6 flex flex-col items-center flex-grow">
+                        <div class="w-24 h-24 sm:w-32 sm:h-32 mb-6 relative flex-shrink-0">
+                            <div
+                                class="absolute inset-0 bg-blue-500 opacity-0 group-hover:opacity-20 rounded-full blur-xl transition-opacity duration-300">
+                            </div>
+                            <img src="https://placehold.co/128x128/1E40AF/FFFFFF?text=MI" alt="Mumbai Indians Team Logo"
+                                class="relative w-full h-full object-contain drop-shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <div class="text-center">
+                            <h3
+                                class="text-lg sm:text-xl font-bold text-gray-900 mb-1 group-hover:text-blue-700 transition-colors">
+                                Mumbai Indians
+                            </h3>
+                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                                Mumbai
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Team Card 3 -->
+                <a href="#"
+                    class="group relative flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="h-2 w-full bg-gradient-to-r from-purple-600 to-purple-800"></div>
+                    <div class="p-6 flex flex-col items-center flex-grow">
+                        <div class="w-24 h-24 sm:w-32 sm:h-32 mb-6 relative flex-shrink-0">
+                            <div
+                                class="absolute inset-0 bg-purple-600 opacity-0 group-hover:opacity-20 rounded-full blur-xl transition-opacity duration-300">
+                            </div>
+                            <img src="https://placehold.co/128x128/5B21B6/FFFFFF?text=KKR" alt="Knight Riders Team Logo"
+                                class="relative w-full h-full object-contain drop-shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <div class="text-center">
+                            <h3
+                                class="text-lg sm:text-xl font-bold text-gray-900 mb-1 group-hover:text-purple-800 transition-colors">
+                                Knight Riders
+                            </h3>
+                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                                Kolkata
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Team Card 4 -->
+                <a href="#"
+                    class="group relative flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="h-2 w-full bg-gradient-to-r from-red-500 to-red-700"></div>
+                    <div class="p-6 flex flex-col items-center flex-grow">
+                        <div class="w-24 h-24 sm:w-32 sm:h-32 mb-6 relative flex-shrink-0">
+                            <div
+                                class="absolute inset-0 bg-red-500 opacity-0 group-hover:opacity-20 rounded-full blur-xl transition-opacity duration-300">
+                            </div>
+                            <img src="https://placehold.co/128x128/DC2626/FFFFFF?text=RCB"
+                                alt="Royal Challengers Team Logo"
+                                class="relative w-full h-full object-contain drop-shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <div class="text-center">
+                            <h3
+                                class="text-lg sm:text-xl font-bold text-gray-900 mb-1 group-hover:text-red-700 transition-colors">
+                                Royal Challengers
+                            </h3>
+                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                                Bangalore
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Team Card 5 -->
+                <a href="#"
+                    class="group relative flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="h-2 w-full bg-gradient-to-r from-pink-500 to-pink-700"></div>
+                    <div class="p-6 flex flex-col items-center flex-grow">
+                        <div class="w-24 h-24 sm:w-32 sm:h-32 mb-6 relative flex-shrink-0">
+                            <div
+                                class="absolute inset-0 bg-pink-500 opacity-0 group-hover:opacity-20 rounded-full blur-xl transition-opacity duration-300">
+                            </div>
+                            <img src="https://placehold.co/128x128/EC4899/FFFFFF?text=RR" alt="Royals Team Logo"
+                                class="relative w-full h-full object-contain drop-shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <div class="text-center">
+                            <h3
+                                class="text-lg sm:text-xl font-bold text-gray-900 mb-1 group-hover:text-pink-700 transition-colors">
+                                Royals
+                            </h3>
+                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                                Rajasthan
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Team Card 6 -->
+                <a href="#"
+                    class="group relative flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
+                    <div class="h-2 w-full bg-gradient-to-r from-orange-500 to-orange-700"></div>
+                    <div class="p-6 flex flex-col items-center flex-grow">
+                        <div class="w-24 h-24 sm:w-32 sm:h-32 mb-6 relative flex-shrink-0">
+                            <div
+                                class="absolute inset-0 bg-orange-500 opacity-0 group-hover:opacity-20 rounded-full blur-xl transition-opacity duration-300">
+                            </div>
+                            <img src="https://placehold.co/128x128/F97316/FFFFFF?text=SRH" alt="Sunrisers Team Logo"
+                                class="relative w-full h-full object-contain drop-shadow-md transform group-hover:scale-110 transition-transform duration-300">
+                        </div>
+                        <div class="text-center">
+                            <h3
+                                class="text-lg sm:text-xl font-bold text-gray-900 mb-1 group-hover:text-orange-700 transition-colors">
+                                Sunrisers
+                            </h3>
+                            <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                                Hyderabad
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- View All Link (Always visible last card style or separately below) -->
+                <a href="#"
+                    class="group relative flex flex-col justify-center items-center h-full min-h-[250px] bg-gray-50 rounded-2xl border-2 border-dashed border-gray-300 hover:border-brand-primary hover:bg-red-50 hover:bg-opacity-10 transition-all duration-300">
+                    <span
+                        class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center mb-4 group-hover:bg-brand-primary transition-colors duration-300">
+                        <svg class="w-8 h-8 text-gray-500 group-hover:text-white transition-colors" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </span>
+                    <span class="text-lg font-bold text-gray-900 group-hover:text-brand-primary transition-colors">View
+                        All Teams</span>
+                    <span class="text-sm text-gray-500 mt-1">Explore full roster</span>
+                </a>
+
+            </div>
+
+            <!-- Bottom Action (Optional alternative location) -->
+            <div class="mt-12 text-center">
+                <a href="#"
+                    class="inline-flex items-center text-brand-primary font-semibold hover:text-red-800 transition-colors group">
+                    See League Standings
+                    <svg class="ml-2 w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                </a>
+            </div>
+
+        </div>
+    </section>
+    <!-- Teams Section Component End -->
+
+</body>
+
+</html>

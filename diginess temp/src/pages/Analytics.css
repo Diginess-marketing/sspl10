@@ -1,0 +1,6 @@
+/* Analytics Component Styles */
+
+/* Funnel progress bars with dynamic widths set via refs */
+.funnel-progress-bar {
+  width: 0%;
+}

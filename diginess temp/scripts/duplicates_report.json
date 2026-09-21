@@ -1,0 +1,55 @@
+{
+  "totalPlayers": 1174,
+  "totalUnique": 1171,
+  "duplicateCount": 3,
+  "duplicates": [
+    {
+      "mobile": "9492875698",
+      "count": 2,
+      "details": [
+        {
+          "index": 56,
+          "name": "BUNNY",
+          "status": "NOT SELECTED"
+        },
+        {
+          "index": 169,
+          "name": "BUNNY",
+          "status": "NOT SELECTED"
+        }
+      ]
+    },
+    {
+      "mobile": "9951658299",
+      "count": 2,
+      "details": [
+        {
+          "index": 620,
+          "name": "NASTAGUR",
+          "status": "NOT SELECTED"
+        },
+        {
+          "index": 622,
+          "name": "V. JAGADEESH",
+          "status": "NOT SELECTED"
+        }
+      ]
+    },
+    {
+      "mobile": "7305901102",
+      "count": 2,
+      "details": [
+        {
+          "index": 689,
+          "name": "RAGHUL",
+          "status": "NOT SELECTED"
+        },
+        {
+          "index": 779,
+          "name": "RAGHUL E",
+          "status": "NOT SELECTED"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+/* Footer color and typography defaults focused on readability */
+
+.footer-sporty {
+  background: #ffffff !important;
+  color: #0047AB !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.footer-sporty .footer-heading {
+  color: #000080 !important; /* Navy Blue */
+  letter-spacing: 0.1em;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  display: block;
+}
+
+.footer-body,
+.footer-link,
+.footer-contact-text,
+.footer-copyright {
+  color: #001f3f !important; /* Deep Blue */
+  font-weight: 600 !important;
+}
+
+/* Background Watermark */
+.footer-watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: auto;
+  opacity: 0.15; /* Significantly increased visibility as requested */
+  pointer-events: none;
+  z-index: 1;
+}
+
+.footer-link {
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.footer-link:hover,
+.footer-link:focus-visible,
+.footer-contact-text:hover,
+.footer-contact-text:focus-visible {
+  color: #CCFF00 !important;
+}
+
+.footer-contact-icon {
+  color: #000080 !important;
+}
+
+.footer-animate-in {
+  animation: footer-fade-in 0.35s ease-out;
+}
+
+@keyframes footer-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .footer-heading {
+    font-size: 1.1rem;
+  }
+  .footer-watermark {
+    width: 650px;
+  }
+}

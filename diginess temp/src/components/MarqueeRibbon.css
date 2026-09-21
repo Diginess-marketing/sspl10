@@ -1,0 +1,86 @@
+/* Container styles */
+.marquee-ribbon-container {
+  z-index: 1001;
+  position: relative;
+  isolation: isolate;
+}
+
+.marquee-scroll-content {
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-animation: marquee-scroll 30s linear infinite;
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.marquee-ribbon-text {
+  font-size: 9px;
+}
+
+/* Keyframe animation for smooth continuous scrolling */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-66.666%);
+  }
+}
+
+/* Webkit prefix for better browser compatibility */
+@-webkit-keyframes marquee-scroll {
+  0% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+
+  100% {
+    -webkit-transform: translateX(-66.666%);
+    transform: translateX(-66.666%);
+  }
+}
+
+/* Performance optimizations and main marquee-track styles */
+.marquee-track {
+  display: inline-flex;
+  gap: 2rem;
+  align-items: center;
+  animation: marquee-scroll 30s linear infinite;
+  -webkit-animation: marquee-scroll 30s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Pause animation on hover for better UX */
+.marquee-ribbon-container:hover .marquee-track {
+  animation-play-state: paused;
+  -webkit-animation-play-state: paused;
+}
+
+/* Responsive adjustments */
+@media (width <= 768px) {
+  .marquee-track {
+    gap: 1.5rem;
+  }
+
+  .marquee-item {
+    font-size: 0.7rem;
+  }
+
+  .marquee-ribbon-text {
+    font-size: 9px;
+  }
+}

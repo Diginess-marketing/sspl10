@@ -1,0 +1,24 @@
+/* SimpleTest component styles */
+.simple-test-container {
+  padding: 20px;
+  border: 2px solid blue;
+  margin: 20px;
+}
+
+.simple-test-title {
+  color: blue;
+}
+
+.simple-test-error {
+  color: red;
+  margin-top: 10px;
+}
+
+.simple-test-success {
+  margin-top: 10px;
+}
+
+.simple-test-pre {
+  background: #f0f0f0;
+  padding: 10px;
+}

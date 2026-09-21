@@ -1,0 +1,136 @@
+/* Selectors Registration form card — prefix selform-. Colours/type come from styles/brand.css tokens. */
+
+.selform {
+  --selform-error: #c62828;
+  --selform-idle: #cfd6e6;
+  container-type: inline-size;
+  position: relative;
+  padding: clamp(22px, 3.2vw, 40px);
+  background: var(--brand-white);
+  border: 1px solid var(--brand-line);
+  border-radius: 28px;
+  box-shadow: 0 24px 60px rgba(10, 18, 64, 0.1), 0 2px 8px rgba(10, 18, 64, 0.04);
+  color: var(--brand-navy);
+  font-family: var(--brand-font-body);
+}
+
+/* ---- step tracker ---- */
+.selform-progress { display: flex; align-items: center; flex-wrap: wrap; gap: 14px 28px; margin-bottom: 14px; }
+.selform-progress__label { font-family: var(--brand-font-display); font-size: 14px; font-weight: 600; letter-spacing: 0.24em; text-transform: uppercase; color: var(--brand-muted); }
+.selform-dots { display: flex; align-items: center; margin: 0; padding: 0; list-style: none; }
+.selform-dot { display: flex; align-items: center; }
+.selform-dot::after { content: ''; width: 18px; height: 18px; border-radius: 50%; background: var(--selform-idle); transition: background 0.25s, box-shadow 0.25s; }
+.selform-dot + .selform-dot::before { content: ''; width: clamp(36px, 6cqw, 72px); height: 2px; background: var(--selform-idle); transition: background 0.25s; }
+.selform-dot--reached::after { background: var(--brand-lime); box-shadow: inset 0 0 0 1px var(--brand-lime-deep); }
+.selform-dot--reached + .selform-dot--reached::before { background: var(--brand-lime-deep); }
+.selform-dot--current::after { box-shadow: inset 0 0 0 1px var(--brand-lime-deep), 0 0 0 5px rgba(223, 252, 53, 0.4); }
+
+.selform-title { margin: 0; font-family: var(--brand-font-display); font-weight: 700; font-size: clamp(30px, 6.4cqw, 46px); line-height: 1.02; letter-spacing: 0.01em; text-transform: uppercase; color: var(--brand-navy); }
+.selform-subtitle { margin: 8px 0 0; font-size: 16px; line-height: 1.5; color: var(--brand-muted); }
+
+/* ---- body ---- */
+.selform-body { margin-top: clamp(20px, 3cqw, 30px); }
+.selform-step { animation: selform-in 0.35s ease-out; }
+@keyframes selform-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.selform-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.selform-stack { display: flex; flex-direction: column; gap: 22px; }
+@container (min-width: 460px) { .selform-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 24px; } }
+
+.selform-field { min-width: 0; }
+.selform-label { display: block; margin: 0 0 8px; font-family: var(--brand-font-body); font-size: 15px; font-weight: 700; line-height: 1.3; color: var(--brand-navy); }
+
+.selform-control { position: relative; }
+.selform-control__icon { position: absolute; left: 16px; top: 50%; width: 20px; height: 20px; transform: translateY(-50%); color: var(--brand-navy); pointer-events: none; z-index: 1; }
+.selform-control__chevron { position: absolute; right: 16px; top: 50%; width: 18px; height: 18px; transform: translateY(-50%); color: var(--brand-navy); pointer-events: none; z-index: 1; }
+
+.selform .selform-input {
+  display: block;
+  width: 100%;
+  height: 52px;
+  padding: 0 44px 0 48px;
+  background: var(--brand-white);
+  background-image: none;
+  border: 1.5px solid var(--brand-line);
+  border-radius: 14px;
+  font-family: var(--brand-font-body);
+  font-size: 15px;
+  color: var(--brand-navy);
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.selform-control:not(:has(.selform-control__chevron)) .selform-input { padding-right: 16px; }
+.selform .selform-input::placeholder { color: var(--brand-muted); opacity: 0.75; }
+.selform .selform-input:hover { border-color: rgba(31, 87, 214, 0.4); }
+.selform .selform-input:focus,
+.selform .selform-input:focus-visible { outline: none; border-color: var(--brand-blue); box-shadow: 0 0 0 4px rgba(31, 87, 214, 0.14); border-radius: 14px; }
+.selform .selform-input:disabled { background: rgba(238, 245, 255, 0.45); color: var(--brand-muted); cursor: not-allowed; }
+.selform .selform-input:disabled:hover { border-color: var(--brand-line); }
+.selform-control--error .selform-input { border-color: var(--selform-error); }
+.selform-control--error .selform-input:focus { box-shadow: 0 0 0 4px rgba(198, 40, 40, 0.14); border-color: var(--selform-error); }
+/* date: the whole field opens the native picker; our own icon + chevron sit on top */
+.selform input[type='date'].selform-input { position: relative; min-width: 0; }
+.selform input[type='date'].selform-input::-webkit-calendar-picker-indicator { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; opacity: 0; cursor: pointer; }
+
+.selform-error { margin: 6px 0 0; font-size: 13px; font-weight: 600; line-height: 1.3; color: var(--selform-error); }
+
+/* ---- chips (radio / checkbox groups) ---- */
+.selform-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.selform-chip { position: relative; display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 22px; background: var(--brand-white); border: 1.5px solid var(--brand-line); border-radius: var(--brand-radius-pill); font-size: 15px; font-weight: 600; color: var(--brand-navy); cursor: pointer; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; }
+.selform-chip--cap { text-transform: capitalize; }
+.selform-chip:hover { border-color: rgba(31, 87, 214, 0.45); }
+.selform-chip--on { background: var(--brand-sky); border-color: var(--brand-blue); color: var(--brand-blue); box-shadow: 0 0 0 3px rgba(31, 87, 214, 0.1); }
+.selform-chip:has(.selform-chip__input:focus-visible) { outline: 3px solid var(--brand-blue); outline-offset: 2px; }
+.selform-chip__input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+
+/* ---- upload ---- */
+.selform-upload { position: relative; padding: 26px 20px; text-align: center; background: var(--brand-sky); border: 2px dashed rgba(31, 87, 214, 0.35); border-radius: 18px; transition: border-color 0.2s, background 0.2s; }
+.selform-upload:hover { border-color: var(--brand-blue); }
+.selform-upload:has(.selform-upload__input:focus-visible) { outline: 3px solid var(--brand-blue); outline-offset: 2px; }
+.selform-upload--done { background: rgba(223, 252, 53, 0.16); border-color: var(--brand-lime-deep); border-style: solid; }
+.selform-upload--error { border-color: var(--selform-error); }
+.selform-upload__input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 1; }
+.selform-upload__icon { width: 34px; height: 34px; margin: 0 auto 8px; color: var(--brand-blue); }
+.selform-upload__name { margin: 0; font-size: 15px; font-weight: 700; color: var(--brand-navy); word-break: break-word; }
+.selform-upload__hint { margin: 4px 0 0; font-size: 13px; color: var(--brand-muted); }
+
+/* ---- declaration ---- */
+.selform-declare { position: relative; display: flex; align-items: flex-start; gap: 12px; padding: 16px; background: var(--brand-sky); border: 1.5px solid transparent; border-radius: 14px; font-size: 14.5px; font-weight: 500; line-height: 1.5; color: var(--brand-navy); cursor: pointer; }
+.selform-declare--error { border-color: var(--selform-error); }
+.selform-declare__input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.selform-declare__box { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; margin-top: 1px; background: var(--brand-white); border: 2px solid rgba(10, 18, 64, 0.35); border-radius: 7px; color: transparent; transition: background 0.2s, border-color 0.2s, color 0.2s; }
+.selform-declare__box svg { width: 15px; height: 15px; stroke-width: 3; }
+.selform-declare__input:checked + .selform-declare__box { background: var(--brand-blue); border-color: var(--brand-blue); color: var(--brand-white); }
+.selform-declare__input:focus-visible + .selform-declare__box { outline: 3px solid var(--brand-blue); outline-offset: 2px; }
+
+/* ---- footer ---- */
+.selform-footer { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: clamp(24px, 3.6cqw, 34px); padding-top: clamp(18px, 2.6cqw, 24px); border-top: 1px solid var(--brand-line); }
+.selform-back { display: inline-flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 6px; background: none; border: 0; border-radius: 10px; font-family: var(--brand-font-display); font-size: 17px; font-weight: 600; letter-spacing: 0.03em; color: var(--brand-muted); cursor: pointer; transition: color 0.2s; }
+.selform-back:hover:not(:disabled) { color: var(--brand-navy); }
+.selform-back:focus-visible { outline: 3px solid var(--brand-blue); outline-offset: 2px; }
+.selform-back:disabled { cursor: default; opacity: 0.55; }
+.selform-back svg, .selform-next svg { width: 20px; height: 20px; flex: none; }
+.selform-next { height: auto; min-height: 52px; padding: 10px 30px; text-align: center; }
+.selform-next:disabled { opacity: 0.7; cursor: progress; transform: none; }
+.selform-spin { animation: selform-spin 0.9s linear infinite; }
+@keyframes selform-spin { to { transform: rotate(360deg); } }
+
+/* ---- success ---- */
+.selform--success { text-align: center; padding-block: clamp(32px, 5vw, 56px); }
+.selform-success__badge { display: inline-flex; align-items: center; justify-content: center; width: 88px; height: 88px; margin-bottom: 18px; background: linear-gradient(180deg, var(--brand-lime), var(--brand-lime-deep)); border-radius: 50%; color: var(--brand-navy); box-shadow: 0 10px 28px rgba(166, 204, 0, 0.45); }
+.selform-success__badge svg { width: 42px; height: 42px; }
+.selform--success .selform-subtitle { max-width: 46ch; margin-inline: auto; }
+.selform-note { max-width: 520px; margin: 26px auto 0; padding: 16px 18px; text-align: left; background: var(--brand-sky); border-left: 4px solid var(--brand-blue); border-radius: 12px; }
+.selform-note p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--brand-navy); }
+.selform-note .selform-note__label { margin-bottom: 4px; font-family: var(--brand-font-display); font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--brand-blue); }
+
+@media (max-width: 520px) {
+  .selform { border-radius: 22px; }
+  .selform-footer { flex-wrap: wrap; }
+  .selform-next { flex: 1 1 auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .selform-step, .selform-spin { animation: none; }
+  .selform-dot::after, .selform-dot::before, .selform-chip, .selform .selform-input { transition: none; }
+}

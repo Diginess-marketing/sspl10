@@ -1,0 +1,1092 @@
+{
+  "timestamp": "2025-11-04T07:36:34.542Z",
+  "summary": {
+    "totalOversized": 45,
+    "successfullyResized": 144,
+    "errors": 18
+  },
+  "resizedImages": [
+    {
+      "original": "ravi mohan home with bg.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "ravi mohan home with bg.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "ravi mohan home with bg.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "ravi mohan home with bg.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "ravi mohan home with bg.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "ravi mohan home with bg.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "ravi mohan home with bg.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "ravi mohan home with bg.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "ravi mohan home with bg.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "ravi mohan home with bg.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "ravi mohan home with bg.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "ravi mohan home with bg.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\Adv Sheela.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Adv Sheela.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Adv Sheela.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Adv Sheela.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Adv Sheela.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Adv Sheela.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Adv Sheela.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Adv Sheela.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Adv Sheela.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Adv Sheela.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Adv Sheela.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Adv Sheela.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\cp rao.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Dilip Narayanan.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Lt anand.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Nawab.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\Pugazhendi.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan home with bg.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1080"
+    },
+    {
+      "original": "public\\ravi mohan.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan.avif",
+      "category": "general",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan.webp",
+      "category": "general",
+      "format": "webp",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan.jpg",
+      "category": "general",
+      "format": "jpg",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "public\\ravi mohan.png",
+      "category": "general",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "1920x1920"
+    },
+    {
+      "original": "Explore the teams\\Andra Pradesh.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Andra Pradesh.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Andra Pradesh.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Andra Pradesh.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Andra Pradesh.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Andra Pradesh.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Karnataka.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Karnataka.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Karnataka.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Karnataka.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Karnataka.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Karnataka.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Kerala.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Kerala.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Kerala.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Kerala.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Kerala.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Kerala.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Pudhucherry.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Pudhucherry.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Pudhucherry.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Pudhucherry.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Pudhucherry.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Pudhucherry.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Tamil Nadu.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Tamil Nadu.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Tamil Nadu.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Tamil Nadu.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Tamil Nadu.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Tamil Nadu.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Telangana.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Telangana.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "resized",
+      "dimensions": "300x217"
+    },
+    {
+      "original": "Explore the teams\\Telangana.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Telangana.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Telangana.avif",
+      "category": "thumbnail",
+      "format": "avif",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    },
+    {
+      "original": "Explore the teams\\Telangana.png",
+      "category": "thumbnail",
+      "format": "png",
+      "action": "no_resize_needed",
+      "dimensions": "299x217"
+    }
+  ],
+  "errors": [
+    {
+      "file": "Explore the teams\\Andra Pradesh.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Andra Pradesh.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Andra Pradesh.webp'"
+    },
+    {
+      "file": "Explore the teams\\Andra Pradesh.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Andra Pradesh.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Andra Pradesh.webp'"
+    },
+    {
+      "file": "Explore the teams\\Andra Pradesh.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Andra Pradesh.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Andra Pradesh.webp'"
+    },
+    {
+      "file": "Explore the teams\\Karnataka.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Karnataka.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Karnataka.webp'"
+    },
+    {
+      "file": "Explore the teams\\Karnataka.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Karnataka.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Karnataka.webp'"
+    },
+    {
+      "file": "Explore the teams\\Karnataka.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Karnataka.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Karnataka.webp'"
+    },
+    {
+      "file": "Explore the teams\\Kerala.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Kerala.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Kerala.webp'"
+    },
+    {
+      "file": "Explore the teams\\Kerala.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Kerala.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Kerala.webp'"
+    },
+    {
+      "file": "Explore the teams\\Kerala.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Kerala.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Kerala.webp'"
+    },
+    {
+      "file": "Explore the teams\\Pudhucherry.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Pudhucherry.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Pudhucherry.webp'"
+    },
+    {
+      "file": "Explore the teams\\Pudhucherry.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Pudhucherry.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Pudhucherry.webp'"
+    },
+    {
+      "file": "Explore the teams\\Pudhucherry.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Pudhucherry.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Pudhucherry.webp'"
+    },
+    {
+      "file": "Explore the teams\\Tamil Nadu.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Tamil Nadu.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Tamil Nadu.webp'"
+    },
+    {
+      "file": "Explore the teams\\Tamil Nadu.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Tamil Nadu.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Tamil Nadu.webp'"
+    },
+    {
+      "file": "Explore the teams\\Tamil Nadu.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Tamil Nadu.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Tamil Nadu.webp'"
+    },
+    {
+      "file": "Explore the teams\\Telangana.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Telangana.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Telangana.webp'"
+    },
+    {
+      "file": "Explore the teams\\Telangana.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Telangana.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Telangana.webp'"
+    },
+    {
+      "file": "Explore the teams\\Telangana.webp",
+      "error": "EPERM: operation not permitted, rename 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Telangana.webp.temp' -> 'd:\\ssplt10.cloud-prod-sync-20251006\\httpdocs\\Explore the teams\\Telangana.webp'"
+    }
+  ]
+}

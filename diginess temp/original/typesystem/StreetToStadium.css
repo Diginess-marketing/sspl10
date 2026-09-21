@@ -1,0 +1,72 @@
+/* Street to Stadium — section-specific layout only; colour, type, buttons, cards come from styles/brand.css */
+
+/* intro + values: copy left, one compact card of value rows right */
+.sts.brand-section { position: relative; overflow: hidden; }
+.sts.brand-section::before { content: ''; position: absolute; top: 0; bottom: 0; right: -6%; width: 46%; transform: skewX(-14deg); background: linear-gradient(180deg, var(--brand-sky-2), rgba(223, 238, 255, 0)); pointer-events: none; }
+.sts__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(24px, 3.4vw, 40px); align-items: center; }
+.sts__eyebrow { display: flex; align-items: center; gap: 12px; }
+.sts__eyebrow::before { content: ''; flex: none; width: 34px; height: 4px; border-radius: 2px; background: var(--brand-lime-deep); transform: skewX(-24deg); }
+.sts .sts__title { font-style: italic; font-size: clamp(48px, 7vw, 92px); line-height: 0.88; letter-spacing: -0.005em; }
+.sts__line { display: block; }
+.sts__accent { position: relative; display: inline-block; isolation: isolate; }
+.sts__accent::after { content: ''; position: absolute; left: -2%; right: -3%; bottom: 0.02em; height: 0.16em; background: var(--brand-lime); transform: skewX(-22deg); z-index: -1; }
+.sts__lead { margin-top: clamp(14px, 1.6vw, 22px); max-width: 30ch; color: var(--brand-navy); }
+
+.sts__values { margin: 0; padding: 0; list-style: none; background: var(--brand-white); border: 1px solid var(--brand-line); border-radius: 22px; box-shadow: var(--brand-shadow-card); overflow: hidden; }
+.sts__value { display: flex; align-items: center; gap: clamp(14px, 1.8vw, 22px); padding: clamp(16px, 1.8vw, 22px) clamp(18px, 2.2vw, 30px); transition: background 0.2s ease; }
+.sts__value + .sts__value { border-top: 1px solid var(--brand-line); }
+.sts__value:hover { background: var(--brand-sky); }
+.sts__ico { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 58px; height: 58px; border-radius: 50%; color: #fff; background: linear-gradient(180deg, #2f6df0, var(--brand-blue)); box-shadow: 0 6px 14px rgba(31, 87, 214, 0.3); }
+.sts__value-body p { margin: 6px 0 0; font-size: 15px; line-height: 1.5; color: var(--brand-muted); max-width: 52ch; }
+
+@media (min-width: 1000px) {
+  .sts__grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); column-gap: clamp(40px, 6vw, 96px); }
+}
+
+/* journey: five cards on a connecting line; the last one (the destination) is the dark, lime-accented card */
+.sts-journey { border-top: 0; }
+.sts-journey__title { font-style: italic; font-size: clamp(36px, 5vw, 64px); line-height: 0.95; }
+.sts-steps { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin: clamp(28px, 3.6vw, 48px) 0 0; padding: 0; list-style: none; }
+.sts-steps::before { content: ''; position: absolute; z-index: 0; top: 0; bottom: 0; left: 46px; border-left: 2px dashed rgba(31, 87, 214, 0.35); }
+.sts-step { position: relative; z-index: 1; display: flex; align-items: center; gap: 16px; padding: 16px 20px 16px 18px; background: var(--brand-white); border: 1px solid var(--brand-line); border-radius: var(--brand-radius-card); box-shadow: var(--brand-shadow-card); transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.sts-step:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(10, 18, 64, 0.13); }
+.sts-step__num { position: absolute; top: 6px; right: 16px; font-family: var(--brand-font-display); font-style: italic; font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: 0.01em; color: rgba(31, 87, 214, 0.12); pointer-events: none; }
+.sts-step__icon { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; color: #fff; background: linear-gradient(180deg, #2f6df0, var(--brand-blue)); box-shadow: 0 6px 14px rgba(31, 87, 214, 0.3); }
+.sts-step__body { min-width: 0; padding-right: 44px; }
+.sts-step__body p { margin: 6px 0 0; font-size: 14px; line-height: 1.5; color: var(--brand-muted); }
+.sts-step--final { background: var(--brand-navy-deep); border-color: var(--brand-navy-deep); }
+.sts-step--final .brand-h3 { color: #fff; }
+.sts-step--final .sts-step__body p { color: rgba(255, 255, 255, 0.78); }
+.sts-step--final .sts-step__num { color: rgba(255, 255, 255, 0.14); }
+.sts-step--final .sts-step__icon { color: var(--brand-navy-deep); background: linear-gradient(180deg, var(--brand-lime), var(--brand-lime-deep)); box-shadow: 0 6px 16px rgba(166, 204, 0, 0.45); }
+
+@media (min-width: 1100px) {
+  .sts-steps { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(12px, 1.4vw, 20px); }
+  /* horizontal dashed line runs through the icon centres, visible in the gaps between cards */
+  .sts-steps::before { top: 52px; bottom: auto; left: 0; right: 0; border-left: 0; border-top: 2px dashed rgba(31, 87, 214, 0.35); }
+  .sts-step { flex-direction: column; align-items: flex-start; gap: 18px; padding: 24px 20px 26px; }
+  .sts-step__icon { width: 60px; height: 60px; }
+  .sts-step__body { padding-right: 0; }
+  .sts-step__num { top: 10px; right: 14px; font-size: 52px; }
+}
+
+/* spirit + video: generated street-cricket backdrop (tools/build-spirit-assets.mjs); copy on the white haze, video mid, bat + stumps stay visible on the right */
+.sts-spirit { position: relative; overflow: hidden; isolation: isolate; padding: clamp(40px, 5.5vw, 84px) 0; background: var(--brand-white); color: var(--brand-navy); font-family: var(--brand-font-body); border-top: 1px solid var(--brand-line); }
+.sts-spirit__bg, .sts-spirit__bg img { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+.sts-spirit__bg img { display: block; object-fit: cover; object-position: 50% 68%; }
+.sts-spirit::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.78) 100%); }
+.sts-spirit__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(22px, 3vw, 36px); align-items: center; }
+.sts-spirit__title { margin: 0; }
+.sts-spirit__title img { display: block; width: clamp(260px, 34vw, 440px); height: auto; margin-left: -8px; }
+.sts-spirit__lead { margin: clamp(10px, 1.2vw, 16px) 0 0; max-width: 34ch; font-size: clamp(16px, 1.5vw, 19px); font-weight: 500; line-height: 1.5; color: var(--brand-navy); }
+.sts-spirit__cta { margin-top: clamp(18px, 2vw, 26px); }
+.sts-spirit__video { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border: clamp(5px, 0.7vw, 9px) solid var(--brand-white); border-radius: clamp(14px, 1.8vw, 22px); background: #000; box-shadow: 0 26px 56px rgba(10, 18, 64, 0.28); }
+.sts-spirit__video > * { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+@media (min-width: 1000px) {
+  .sts-spirit::before { background: linear-gradient(90deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.55) 38%, rgba(255, 255, 255, 0) 62%); }
+  .sts-spirit__grid { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr) minmax(0, 0.5fr); }
+  .sts-spirit__video { grid-column: 2; }
+}
+
+@media (prefers-reduced-motion: reduce) { .sts-step, .sts__value { transition: none; } .sts-step:hover { transform: none; } }

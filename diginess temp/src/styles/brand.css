@@ -1,0 +1,79 @@
+/*
+ * SSPL T10 brand tokens + shared building blocks.
+ * Every redesigned section uses these variables and `.brand-*` classes, so the site stays consistent.
+ * See docs/BRAND_GUIDE.md for the rules.
+ */
+:root {
+  /* colour */
+  --brand-navy: #0a1240;        /* headings, body text on light, outline buttons */
+  --brand-navy-deep: #021447;   /* solid dark surfaces (play button, footer strip) */
+  --brand-blue: #1f57d6;        /* eyebrows, links, accent words, icons */
+  --brand-sky: #eef5ff;         /* light section tint */
+  --brand-sky-2: #dfeeff;       /* stronger tint / gradients */
+  --brand-lime: #dffc35;        /* primary action + highlights */
+  --brand-lime-deep: #a6cc00;
+  --brand-white: #fff;
+  --brand-muted: rgba(10, 18, 64, 0.68);   /* secondary text */
+  --brand-line: rgba(10, 18, 64, 0.1);     /* dividers, card borders */
+
+  /* type */
+  --brand-font-display: 'IBM Plex Sans Condensed', 'Roboto Condensed', system-ui, sans-serif; /* headings, nav, buttons, labels */
+  --brand-font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* TYPE SYSTEM — the only allowed sizes / tracking / weights. See docs/BRAND_GUIDE.md "Typography". */
+  --brand-fs-h2: clamp(38px, 5vw, 64px);       /* section titles (display, italic) */
+  --brand-fs-h2-sub: clamp(28px, 3vw, 40px);   /* sub-section titles on inner pages (h2 in body copy) */
+  --brand-fs-h3: clamp(17px, 1.5vw, 20px);     /* card / row / question titles */
+  --brand-fs-num: clamp(22px, 2.2vw, 28px);    /* big figures: phone, hours, prize numbers */
+  --brand-fs-numeral: 48px;                    /* decorative ghost numerals (01–05, rank numbers) */
+  --brand-fs-lead: clamp(16px, 1.5vw, 18px);   /* intro line under a title */
+  --brand-fs-body: 15px;                       /* running text, card text, links */
+  --brand-fs-small: 14px;                      /* captions, legal, fine print — never below 14px */
+  --brand-fs-label: 14px;                      /* eyebrows, badges, pills, small caps labels */
+  --brand-fs-label-lg: 16px;                   /* column / category headings */
+  --brand-fs-btn: 15px;                        /* buttons, nav links */
+  --brand-fs-btn-compact: 13px;                /* the ONE exception: header buttons at <=560px so logo + Results + Registration + menu fit at 320px */
+  --brand-ls-display: -0.005em;                /* h2 */
+  --brand-ls-h3: 0.04em;
+  --brand-ls-label: 0.14em;                    /* every uppercase label */
+  --brand-ls-btn: 0.05em;
+  --brand-lh-body: 1.6;
+
+  /* shape + space */
+  --brand-radius-card: 18px;
+  --brand-radius-pill: 999px;
+  --brand-shadow-card: 0 14px 36px rgba(10, 18, 64, 0.08);
+  --brand-container: 1480px;   /* matches the header (1400 content + 40px gutters) */
+  --brand-gutter: clamp(16px, 4vw, 40px);
+  --brand-section-y: clamp(48px, 7vw, 96px);
+}
+
+/* section shell: full-bleed light band with a centred container */
+.brand-section { background: var(--brand-white); color: var(--brand-navy); font-family: var(--brand-font-body); padding: var(--brand-section-y) 0; border-top: 1px solid var(--brand-line); }
+.brand-section--tint { background: linear-gradient(180deg, var(--brand-sky) 0%, var(--brand-white) 100%); }
+.brand-container { width: 100%; max-width: var(--brand-container); margin: 0 auto; padding: 0 var(--brand-gutter); box-sizing: border-box; }
+
+/* type roles (use these classes, or the --brand-fs-* / --brand-ls-* tokens; never ad-hoc px/em) */
+.brand-eyebrow { margin: 0 0 10px; font-family: var(--brand-font-display); font-size: var(--brand-fs-label); font-weight: 700; letter-spacing: var(--brand-ls-label); text-transform: uppercase; color: var(--brand-blue); }
+.brand-label { font-family: var(--brand-font-display); font-size: var(--brand-fs-label); font-weight: 700; letter-spacing: var(--brand-ls-label); text-transform: uppercase; }
+.brand-label--lg { font-size: var(--brand-fs-label-lg); }
+.brand-h2 { margin: 0; font-family: var(--brand-font-display); font-weight: 700; font-style: italic; font-size: var(--brand-fs-h2); line-height: 0.95; letter-spacing: var(--brand-ls-display); text-transform: uppercase; color: var(--brand-navy); }
+.brand-h3 { margin: 0; font-family: var(--brand-font-display); font-weight: 700; font-size: var(--brand-fs-h3); line-height: 1.15; letter-spacing: var(--brand-ls-h3); text-transform: uppercase; color: var(--brand-navy); }
+.brand-accent { font-style: italic; color: var(--brand-blue); }   /* the accent word inside a heading */
+.brand-lead { margin: 14px 0 0; max-width: 62ch; font-family: var(--brand-font-body); font-size: var(--brand-fs-lead); font-weight: 500; line-height: 1.5; color: var(--brand-navy); }
+.brand-body { font-family: var(--brand-font-body); font-size: var(--brand-fs-body); font-weight: 400; line-height: var(--brand-lh-body); color: var(--brand-muted); }
+.brand-small { font-family: var(--brand-font-body); font-size: var(--brand-fs-small); font-weight: 400; line-height: 1.5; color: var(--brand-muted); }
+
+/* buttons */
+.brand-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 48px; padding: 0 28px; border-radius: var(--brand-radius-pill); border: 2px solid var(--brand-navy); font-family: var(--brand-font-display); font-size: var(--brand-fs-btn); font-weight: 700; letter-spacing: var(--brand-ls-btn); text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s; }
+.brand-btn--primary { border-color: transparent; color: var(--brand-navy); background: linear-gradient(180deg, var(--brand-lime), var(--brand-lime-deep)); box-shadow: 0 6px 20px rgba(166, 204, 0, 0.45); }
+.brand-btn--primary:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(166, 204, 0, 0.6); }
+.brand-btn--outline { background: transparent; color: var(--brand-navy); }
+.brand-btn--outline:hover { background: var(--brand-navy); color: #fff; }
+.brand-btn:focus-visible, .brand-link:focus-visible { outline: 3px solid var(--brand-blue); outline-offset: 3px; }
+
+/* cards */
+.brand-card { background: var(--brand-white); border: 1px solid var(--brand-line); border-radius: var(--brand-radius-card); box-shadow: var(--brand-shadow-card); }
+.brand-icon { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: var(--brand-sky-2); color: var(--brand-blue); }
+
+@media (prefers-reduced-motion: reduce) { .brand-btn { transition: none; } }

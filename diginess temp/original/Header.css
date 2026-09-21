@@ -1,0 +1,455 @@
+/* Shared top navigation styles with contrast-safe defaults */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  width: 96%;
+  transform: translateX(-50%);
+  margin-top: 8px;
+  z-index: 99999;
+  --mobile-menu-offset: 103px;
+  transition: 
+    width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s ease;
+  will-change: width, transform, margin-top;
+}
+
+.header.fixedTop {
+  width: 100%;
+  transform: translateX(-50%);
+  margin-top: 0;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.28);
+}
+
+.tpHeader {
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 1rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  max-height: 42px;
+  opacity: 1;
+  overflow: hidden;
+  transition: padding 0.2s ease, border-color 0.2s ease;
+}
+
+.tpRightSide,
+.tpLeftSide,
+.socialIcon {
+  display: flex;
+  align-items: center;
+}
+
+.tpLeftSide {
+  gap: 0.75rem;
+}
+
+.socialIcon {
+  gap: 0.5rem;
+}
+
+.socialIcon img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
+.socialIcon a:hover img {
+  opacity: 1;
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 72px;
+  padding: 0.5rem 1rem;
+  background: #0047AB !important; /* Premium Cobalt Blue */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  transition:
+    min-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    padding 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.header.fixedTop .headerInner {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.headerLogo {
+  flex: 0 0 auto;
+}
+
+.dilLogo {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+  transform: scale(2.2);
+  transform-origin: left center;
+}
+
+.headerNav {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.headerNabBox {
+  width: 100%;
+  max-width: 740px;
+}
+
+.navUlBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navLiItem {
+  position: relative;
+}
+
+.navLiItem a {
+  color: rgba(255, 255, 255, 0.95);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.navLiItem a:hover,
+.navLiItem a.activeMenu {
+  color: #ccff00;
+}
+
+.homeIcon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.subMenubox {
+  position: absolute;
+  top: 1.6rem;
+  left: 0;
+  width: 210px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: all 0.2s ease;
+  z-index: 20;
+}
+
+.navDropdownC:hover .subMenubox {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.submenuArea {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(3, 23, 58, 0.98);
+  box-shadow: 0 18px 30px rgba(2, 6, 23, 0.4);
+}
+
+.navLiItemSub a {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 500;
+  padding: 0.4rem 0.25rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.navLiItemSub a:hover {
+  color: #ccff00;
+}
+
+.rightSideMenu {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.loginRegisterMobile {
+  display: none;
+}
+
+.loginRegisterB {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.loginRegisterB a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.48rem 0.85rem;
+  background: #ccff00;
+  color: #0a1628;
+  border: 1px solid #ccff00;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.loginRegisterB a:hover,
+.loginRegisterB a.activeAction {
+  background: #b9e700;
+  border-color: #b9e700;
+}
+
+.loginRegisterIcon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.organizerLogo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.9);
+  gap: 0.15rem;
+}
+
+.organizerLogo p {
+  margin: 0;
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.organizerLogo img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.searchBars {
+  display: none;
+}
+
+.bars {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: transparent;
+  border: 0;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+
+.bar1,
+.bar2,
+.bar3 {
+  display: block;
+  width: 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: #ffffff;
+}
+
+@media (max-width: 1100px) {
+  .headerInner {
+    min-height: 64px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .rightSideMenu {
+    gap: 0.4rem;
+  }
+
+  .organizerLogo {
+    display: none;
+  }
+
+  .searchBars {
+    display: block;
+  }
+
+  .loginRegisterDesktop {
+    display: none;
+  }
+
+  .headerNav {
+    position: fixed;
+    top: 103px;
+    left: 0;
+    right: 0;
+    max-height: calc(100vh - 103px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: rgba(3, 20, 52, 0.98);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.6rem 1rem 1.5rem;
+    transform: translateY(-16px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+
+  /* Custom scrollbar for mobile menu */
+  .headerNav::-webkit-scrollbar {
+    width: 4px;
+  }
+  .headerNav::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+  }
+
+  /* Stabilize header on scroll for mobile to prevent jitter/shifting */
+  .header.active-scroll,
+  .header.fixedTop {
+    transform: none !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+  }
+
+  .headerNav.activeMenu {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Mobile Header Buttons */
+  .loginRegisterMobile {
+    display: flex !important;
+    align-items: center;
+    gap: 0.4rem;
+    margin-right: 0.2rem;
+  }
+
+  .mobileActionBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 1rem;
+    border-radius: 8px;
+    font-size: 1.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 400px) {
+    .mobileActionBtn {
+        height: 36px;
+        padding: 0 0.8rem;
+        font-size: 1.4rem;
+    }
+    .loginRegisterMobile {
+        gap: 0.3rem;
+    }
+  }
+
+  .mobileRegisterBtn,
+  .mobileResultsBtn {
+    background: #ccff00;
+    color: #031434;
+    border: 1px solid #ccff00;
+  }
+
+  .navUlBox {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+  }
+
+  .navLiItem {
+    width: 100%;
+  }
+
+  .navLiItem > a {
+    width: 100%;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+  }
+
+  .subMenubox {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    width: 100%;
+    margin-top: 0.2rem;
+  }
+
+  .submenuArea {
+    background: rgba(10, 25, 55, 0.45);
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .navLiItemSub a {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    width: 100%;
+    left: 0;
+    transform: none;
+    margin-top: 0;
+  }
+
+  .tpHeader {
+    padding: 0.3rem 0.75rem;
+  }
+
+  .headerInner {
+    padding: 0.45rem 0.75rem;
+  }
+
+  .header.fixedTop .headerInner {
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+  }
+
+  .socialIcon img {
+    width: 14px;
+    height: 14px;
+  }
+
+  .dilLogo {
+    height: 42px;
+    transform: scale(1.9);
+    transform-origin: left center;
+  }
+}

@@ -1,0 +1,12 @@
+PAYMENT VERIFICATION REPORT (Feb 15th 2026 IST)
+Total Registrations: 108
+
+Status Breakdown:
+{
+  "pending": 81,
+  "captured": 27
+}
+
+Pending with Payment ID: 0
+
+--- RAZORPAY CHECK FOR STUCK PAYMENTS ---

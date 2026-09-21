@@ -1,0 +1,753 @@
+[
+  {
+    "buildId": "build-1757407549869",
+    "timestamp": "2025-09-09T08:45:49.869Z",
+    "duration": 61412,
+    "status": "success",
+    "bundleSize": 14771434,
+    "chunkCount": 14,
+    "assetCount": 56,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-DT9DXKil.js     3.33 kB",
+      "🚨 \u001b[31m[vite-plugin-image-optimizer]\u001b[39m - errors during optimization:"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757407963429",
+    "timestamp": "2025-09-09T08:52:43.429Z",
+    "duration": 34275,
+    "status": "failed",
+    "bundleSize": 0,
+    "chunkCount": 3,
+    "assetCount": 0,
+    "warnings": [],
+    "errors": [
+      "🚨 \u001b[31m[vite-plugin-image-optimizer]\u001b[39m - errors during optimization:",
+      "error during build:",
+      "Command failed: vite build\n[plugin vite:resolve] Module \"crypto\" has been externalized for browser compatibility, imported by \"/var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/razorpay/dist/utils/razorpay-utils.js\". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.\n✗ Build failed in 33.18s\n\u001b[2mdist\u001b[22m/\u001b[94mExplore the teams/Andra Pradesh.png\u001b[39m                        \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mExplore the teams/Karnataka.png\u001b[39m                            \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mExplore the teams/Kerala.png\u001b[39m                               \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mExplore the teams/Pudhucherry.png\u001b[39m                          \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mExplore the teams/Tamil Nadu.png\u001b[39m                           \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mExplore the teams/Telangana.png\u001b[39m                            \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mGallery/image_17.png\u001b[39m                                       \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mGallery/image_19.png\u001b[39m                                       \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mGallery/image_21.png\u001b[39m                                       \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mGallery/image_22.png\u001b[39m                                       \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mGallery/image_25.png\u001b[39m                                       \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mGallery/image_27.png\u001b[39m                                       \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mGallery/image_52.png\u001b[39m                                       \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mGallery/image_28.png\u001b[39m                                       \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mapple-touch-icon.png\u001b[39m                                       \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mfavicon-32x32.png\u001b[39m                                          \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mimage_13.png\u001b[39m                                               \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mimage_15.png\u001b[39m                                               \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mimage_29.png\u001b[39m                                               \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mimage_3.png\u001b[39m                                                \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mimage_30.png\u001b[39m                                               \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mimage_8.png\u001b[39m                                                \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mlovable-uploads/ada9fed7-8a22-4ee5-a3db-7a5f855ab03f.png\u001b[39m   \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mssplt10-logo.png\u001b[39m                                           \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mGallery/image_26.png\u001b[39m                                       \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\n\u001b[2mdist\u001b[22m/\u001b[94mravi mohan home with bg.png\u001b[39m                                \u001b[31mCannot find package 'sharp' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite-plugin-image-optimizer/dist/index.js\u001b[39m\nerror during build:\n[vite:terser] terser not found. Since Vite v3, terser has become an optional dependency. You need to install it.\n    at loadTerserPath (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:6962:46)\n    at Object.renderChunk (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:6999:39)\n    at Object.handler (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:34452:13)\n    at file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/rollup/dist/es/shared/node-entry.js:22400:40\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757408140884",
+    "timestamp": "2025-09-09T08:55:40.884Z",
+    "duration": 60580,
+    "status": "success",
+    "bundleSize": 14768928,
+    "chunkCount": 14,
+    "assetCount": 56,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-Dgy2AzC1.js     3.33 kB",
+      "🚨 \u001b[31m[vite-plugin-image-optimizer]\u001b[39m - errors during optimization:"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757408366526",
+    "timestamp": "2025-09-09T08:59:26.526Z",
+    "duration": 69498,
+    "status": "success",
+    "bundleSize": 14768928,
+    "chunkCount": 14,
+    "assetCount": 56,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-Dgy2AzC1.js     3.33 kB",
+      "🚨 \u001b[31m[vite-plugin-image-optimizer]\u001b[39m - errors during optimization:"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757408510590",
+    "timestamp": "2025-09-09T09:01:50.590Z",
+    "duration": 377,
+    "status": "failed",
+    "bundleSize": 0,
+    "chunkCount": 0,
+    "assetCount": 0,
+    "warnings": [],
+    "errors": [
+      "error during build:",
+      "Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite-plugin-image-optimizer' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/node_modules/.vite-temp/vite.config.ts.timestamp-1757408510940-97ffc0d371f36.mjs",
+      "Command failed: vite build\nfailed to load config from /var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/vite.config.ts\nerror during build:\nError [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite-plugin-image-optimizer' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/node_modules/.vite-temp/vite.config.ts.timestamp-1757408510940-97ffc0d371f36.mjs\n    at packageResolve (node:internal/modules/esm/resolve:873:9)\n    at moduleResolve (node:internal/modules/esm/resolve:946:18)\n    at defaultResolve (node:internal/modules/esm/resolve:1188:11)\n    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:708:12)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:657:25)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:640:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:264:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:168:49)\n"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757408599916",
+    "timestamp": "2025-09-09T09:03:19.916Z",
+    "duration": 704,
+    "status": "failed",
+    "bundleSize": 0,
+    "chunkCount": 3,
+    "assetCount": 0,
+    "warnings": [],
+    "errors": [
+      "error during build:",
+      "ReferenceError: ViteImageOptimizer is not defined",
+      "Command failed: vite build\nfailed to load config from /var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/vite.config.ts\nerror during build:\nReferenceError: ViteImageOptimizer is not defined\n    at file:///var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/node_modules/.vite-temp/vite.config.ts.timestamp-1757408600487-26ed7219229f.mjs:49:39\n    at loadConfigFromFile (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36489:64)\n    at async resolveConfig (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36133:22)\n    at async createBuilder (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:34588:19)\n    at async CAC.<anonymous> (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/cli.js:647:19)\n"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757408688164",
+    "timestamp": "2025-09-09T09:04:48.164Z",
+    "duration": 495,
+    "status": "failed",
+    "bundleSize": 0,
+    "chunkCount": 3,
+    "assetCount": 0,
+    "warnings": [],
+    "errors": [
+      "error during build:",
+      "ReferenceError: ViteImageOptimizer is not defined",
+      "Command failed: vite build\nfailed to load config from /var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/vite.config.ts\nerror during build:\nReferenceError: ViteImageOptimizer is not defined\n    at file:///var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/node_modules/.vite-temp/vite.config.ts.timestamp-1757408688530-e3576a0415a43.mjs:49:39\n    at loadConfigFromFile (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36489:64)\n    at async resolveConfig (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:36133:22)\n    at async createBuilder (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:34588:19)\n    at async CAC.<anonymous> (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/cli.js:647:19)\n"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757408739910",
+    "timestamp": "2025-09-09T09:05:39.910Z",
+    "duration": 2084,
+    "status": "failed",
+    "bundleSize": 0,
+    "chunkCount": 3,
+    "assetCount": 0,
+    "warnings": [],
+    "errors": [
+      "error during build:",
+      "Command failed: vite build\n✗ Build failed in 1.60s\nerror during build:\n[vite]: Rollup failed to resolve import \"@/integrations/supabase/client\" from \"/var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/src/utils/sessionManager.ts\".\nThis is most likely unintended because it can break your application at runtime.\nIf you do want to externalize this module explicitly add it to\n`build.rollupOptions.external`\n    at viteLog (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:34340:57)\n    at onRollupLog (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:34374:9)\n    at onLog (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-M_KD0XSK.js:34169:4)\n    at file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/rollup/dist/es/shared/node-entry.js:20911:32\n    at Object.logger [as onLog] (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/rollup/dist/es/shared/node-entry.js:22797:9)\n    at ModuleLoader.handleInvalidResolvedId (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/rollup/dist/es/shared/node-entry.js:21541:26)\n    at file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/rollup/dist/es/shared/node-entry.js:21499:26\n"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757408785908",
+    "timestamp": "2025-09-09T09:06:25.908Z",
+    "duration": 29266,
+    "status": "success",
+    "bundleSize": 14762982,
+    "chunkCount": 0,
+    "assetCount": 50,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-COGrHaFd.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757417197004",
+    "timestamp": "2025-09-09T11:26:37.004Z",
+    "duration": 628,
+    "status": "failed",
+    "bundleSize": 0,
+    "chunkCount": 0,
+    "assetCount": 0,
+    "warnings": [],
+    "errors": [
+      "error during build:",
+      "Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite-plugin-image-optimizer' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/node_modules/.vite-temp/vite.config.ts.timestamp-1757417197605-1850ab1166ae8.mjs",
+      "Command failed: vite build\nfailed to load config from /var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/vite.config.ts\nerror during build:\nError [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite-plugin-image-optimizer' imported from /var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/node_modules/.vite-temp/vite.config.ts.timestamp-1757417197605-1850ab1166ae8.mjs\n    at packageResolve (node:internal/modules/esm/resolve:873:9)\n    at moduleResolve (node:internal/modules/esm/resolve:946:18)\n    at defaultResolve (node:internal/modules/esm/resolve:1188:11)\n    at ModuleLoader.defaultResolve (node:internal/modules/esm/loader:708:12)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:657:25)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:640:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:264:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:168:49)\n"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757417344353",
+    "timestamp": "2025-09-09T11:29:04.353Z",
+    "duration": 4708,
+    "status": "failed",
+    "bundleSize": 0,
+    "chunkCount": 3,
+    "assetCount": 0,
+    "warnings": [],
+    "errors": [
+      "error during build:",
+      "Command failed: vite build\n✗ Build failed in 4.17s\nerror during build:\n[vite]: Rollup failed to resolve import \"@/integrations/supabase/client\" from \"/var/www/vhosts/ssplt10.co.in/httpdocs/httpdocs/src/utils/sessionManager.ts\".\nThis is most likely unintended because it can break your application at runtime.\nIf you do want to externalize this module explicitly add it to\n`build.rollupOptions.external`\n    at viteLog (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:34335:57)\n    at onRollupLog (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:34369:9)\n    at onLog (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/vite/dist/node/chunks/dep-C6pp_iVS.js:34164:4)\n    at file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/rollup/dist/es/shared/node-entry.js:20911:32\n    at Object.logger [as onLog] (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/rollup/dist/es/shared/node-entry.js:22797:9)\n    at ModuleLoader.handleInvalidResolvedId (file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/rollup/dist/es/shared/node-entry.js:21541:26)\n    at file:///var/www/vhosts/ssplt10.co.in/httpdocs/node_modules/rollup/dist/es/shared/node-entry.js:21499:26\n"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757417469068",
+    "timestamp": "2025-09-09T11:31:09.068Z",
+    "duration": 24800,
+    "status": "success",
+    "bundleSize": 14769111,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-Bbz9hFST.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757418041079",
+    "timestamp": "2025-09-09T11:40:41.079Z",
+    "duration": 28068,
+    "status": "success",
+    "bundleSize": 14769111,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-Bbz9hFST.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757418403560",
+    "timestamp": "2025-09-09T11:46:43.560Z",
+    "duration": 25137,
+    "status": "success",
+    "bundleSize": 14769111,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-Bbz9hFST.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757418507783",
+    "timestamp": "2025-09-09T11:48:27.783Z",
+    "duration": 29524,
+    "status": "success",
+    "bundleSize": 14769111,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-Bbz9hFST.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757418696428",
+    "timestamp": "2025-09-09T11:51:36.428Z",
+    "duration": 27720,
+    "status": "success",
+    "bundleSize": 14769111,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-Bbz9hFST.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757419185437",
+    "timestamp": "2025-09-09T11:59:45.437Z",
+    "duration": 32202,
+    "status": "success",
+    "bundleSize": 14770388,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-BRc2JW0n.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757507346865",
+    "timestamp": "2025-09-10T12:29:06.865Z",
+    "duration": 26814,
+    "status": "success",
+    "bundleSize": 14770696,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-Df2ZmMQ4.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757507446151",
+    "timestamp": "2025-09-10T12:30:46.151Z",
+    "duration": 32846,
+    "status": "success",
+    "bundleSize": 14770696,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-Df2ZmMQ4.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757507656879",
+    "timestamp": "2025-09-10T12:34:16.879Z",
+    "duration": 29590,
+    "status": "success",
+    "bundleSize": 14896391,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-hzEfoAi8.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757508277518",
+    "timestamp": "2025-09-10T12:44:37.518Z",
+    "duration": 32198,
+    "status": "success",
+    "bundleSize": 14896391,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-hzEfoAi8.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757512375571",
+    "timestamp": "2025-09-10T13:52:55.571Z",
+    "duration": 27421,
+    "status": "success",
+    "bundleSize": 14896391,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-hzEfoAi8.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757512595471",
+    "timestamp": "2025-09-10T13:56:35.471Z",
+    "duration": 27487,
+    "status": "success",
+    "bundleSize": 14896391,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-hzEfoAi8.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757522869833",
+    "timestamp": "2025-09-10T16:47:49.833Z",
+    "duration": 36679,
+    "status": "success",
+    "bundleSize": 14896391,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-hzEfoAi8.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757523941175",
+    "timestamp": "2025-09-10T17:05:41.175Z",
+    "duration": 23444,
+    "status": "success",
+    "bundleSize": 14896391,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-hzEfoAi8.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757546645321",
+    "timestamp": "2025-09-10T23:24:05.321Z",
+    "duration": 36812,
+    "status": "success",
+    "bundleSize": 14896315,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-WcY59zTO.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757553311283",
+    "timestamp": "2025-09-11T01:15:11.283Z",
+    "duration": 37057,
+    "status": "success",
+    "bundleSize": 14896315,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-WcY59zTO.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757553845902",
+    "timestamp": "2025-09-11T01:24:05.903Z",
+    "duration": 28488,
+    "status": "success",
+    "bundleSize": 14896315,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-WcY59zTO.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757554340750",
+    "timestamp": "2025-09-11T01:32:20.750Z",
+    "duration": 33308,
+    "status": "success",
+    "bundleSize": 14896315,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-WcY59zTO.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757555204887",
+    "timestamp": "2025-09-11T01:46:44.887Z",
+    "duration": 30325,
+    "status": "success",
+    "bundleSize": 14896315,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-WcY59zTO.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757555633132",
+    "timestamp": "2025-09-11T01:53:53.132Z",
+    "duration": 28584,
+    "status": "success",
+    "bundleSize": 14896315,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-WcY59zTO.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757555897180",
+    "timestamp": "2025-09-11T01:58:17.180Z",
+    "duration": 29275,
+    "status": "success",
+    "bundleSize": 14771406,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-4NhGuX5r.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757556147728",
+    "timestamp": "2025-09-11T02:02:27.728Z",
+    "duration": 30302,
+    "status": "success",
+    "bundleSize": 14771437,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-DB60vFs2.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757557565332",
+    "timestamp": "2025-09-11T02:26:05.332Z",
+    "duration": 26501,
+    "status": "success",
+    "bundleSize": 14766379,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-C-MM0r48.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757558076854",
+    "timestamp": "2025-09-11T02:34:36.854Z",
+    "duration": 29796,
+    "status": "success",
+    "bundleSize": 14766374,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-CkTTQvTP.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757558649174",
+    "timestamp": "2025-09-11T02:44:09.174Z",
+    "duration": 26080,
+    "status": "success",
+    "bundleSize": 14766374,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-CkTTQvTP.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757591744118",
+    "timestamp": "2025-09-11T11:55:44.118Z",
+    "duration": 34385,
+    "status": "success",
+    "bundleSize": 14765335,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-P2Ni8sti.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757594769665",
+    "timestamp": "2025-09-11T12:46:09.665Z",
+    "duration": 38763,
+    "status": "success",
+    "bundleSize": 14765446,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-DKLw4IL0.js           3.22 kB │ gzip:   1.18 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757601734003",
+    "timestamp": "2025-09-11T14:42:14.003Z",
+    "duration": 16352,
+    "status": "success",
+    "bundleSize": 14767885,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-DKLw4IL0-BU-4uDo0.js           3.26 kB │ gzip:   1.22 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757604910184",
+    "timestamp": "2025-09-11T15:35:10.184Z",
+    "duration": 18121,
+    "status": "success",
+    "bundleSize": 14771271,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-DKLw4IL0-BU-4uDo0-YgnN5dx8.js           3.29 kB │ gzip:   1.25 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757604928716",
+    "timestamp": "2025-09-11T15:35:28.716Z",
+    "duration": 14018,
+    "status": "success",
+    "bundleSize": 14771271,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-DKLw4IL0-BU-4uDo0-YgnN5dx8.js           3.29 kB │ gzip:   1.25 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757605077794",
+    "timestamp": "2025-09-11T15:37:57.794Z",
+    "duration": 13466,
+    "status": "success",
+    "bundleSize": 14771271,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-DKLw4IL0-BU-4uDo0-YgnN5dx8.js           3.29 kB │ gzip:   1.25 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1757616120661",
+    "timestamp": "2025-09-11T18:42:00.661Z",
+    "duration": 14474,
+    "status": "success",
+    "bundleSize": 14771271,
+    "chunkCount": 0,
+    "assetCount": 52,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-DKLw4IL0-BU-4uDo0-YgnN5dx8.js           3.29 kB │ gzip:   1.25 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1759428035837",
+    "timestamp": "2025-10-02T18:00:35.837Z",
+    "duration": 33567,
+    "status": "success",
+    "bundleSize": 25398102,
+    "chunkCount": 0,
+    "assetCount": 102,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-CNbEG0lA.js               3.52 kB │ gzip:   1.33 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1759428249285",
+    "timestamp": "2025-10-02T18:04:09.285Z",
+    "duration": 32364,
+    "status": "success",
+    "bundleSize": 25398102,
+    "chunkCount": 0,
+    "assetCount": 102,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-CNbEG0lA.js               3.52 kB │ gzip:   1.33 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  {
+    "buildId": "build-1759428552795",
+    "timestamp": "2025-10-02T18:09:12.795Z",
+    "duration": 31973,
+    "status": "success",
+    "bundleSize": 25398102,
+    "chunkCount": 0,
+    "assetCount": 102,
+    "warnings": [],
+    "errors": [
+      "dist/assets/ErrorHandlingTest-CNbEG0lA.js               3.52 kB │ gzip:   1.33 kB"
+    ],
+    "nodeVersion": "v20.19.5",
+    "platform": "linux",
+    "arch": "x64"
+  }
+]

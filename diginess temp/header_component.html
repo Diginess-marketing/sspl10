@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>League Header Component</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#c40000',
+                            background: '#000000',
+                            surface: '#111111',
+                            text: '#ffffff',
+                        }
+                    },
+                    animation: {
+                        'fade-in-down': 'fadeInDown 0.3s ease-out',
+                    },
+                    keyframes: {
+                        fadeInDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- Header Component Start -->
+    <header class="sticky top-0 z-50 w-full bg-brand-background border-b border-gray-800 shadow-lg" role="banner">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" role="navigation" aria-label="Main Navigation">
+            <div class="flex items-center justify-between h-20">
+
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <a href="#" class="flex items-center gap-2 group">
+                        <div
+                            class="w-10 h-10 bg-brand-primary rounded-lg flex items-center justify-center transform group-hover:rotate-3 transition-transform duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-white tracking-tight uppercase">
+                            League<span class="text-brand-primary">Pro</span>
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-1">
+                    <a href="#"
+                        class="px-3 py-2 text-sm font-medium text-white bg-white/10 rounded-md transition-colors"
+                        aria-current="page">Home</a>
+
+                    <!-- Dropdown for Teams -->
+                    <div class="relative group">
+                        <button
+                            class="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white rounded-md transition-colors focus:outline-none"
+                            aria-haspopup="true" aria-expanded="false">
+                            Teams
+                            <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <!-- Dropdown Menu -->
+                        <div
+                            class="absolute left-0 mt-2 w-48 bg-brand-surface border border-gray-800 rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-left -translate-y-2 group-hover:translate-y-0 z-50">
+                            <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white"
+                                    role="menuitem">Men's League</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white"
+                                    role="menuitem">Women's League</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white"
+                                    role="menuitem">Junior Academy</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#"
+                        class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white rounded-md transition-colors">Fixtures</a>
+                    <a href="#"
+                        class="px-3 py-2 text-sm font-medium text-gray-300 hover:text-white rounded-md transition-colors">Standings</a>
+
+                    <!-- Dropdown for More -->
+                    <div class="relative group">
+                        <button
+                            class="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-300 hover:text-white rounded-md transition-colors focus:outline-none">
+                            More
+                            <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div
+                            class="absolute left-0 mt-2 w-48 bg-brand-surface border border-gray-800 rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-left -translate-y-2 group-hover:translate-y-0 z-50">
+                            <div class="py-1" role="menu">
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white"
+                                    role="menuitem">News</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white"
+                                    role="menuitem">Gallery</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white"
+                                    role="menuitem">Rules</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desktop CTAs -->
+                <div class="hidden md:flex items-center gap-4">
+                    <a href="#" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">Login</a>
+                    <a href="#"
+                        class="px-5 py-2.5 text-sm font-bold text-white bg-brand-primary rounded-full hover:bg-red-700 transition-all shadow-[0_4px_14px_0_rgba(196,0,0,0.39)] hover:shadow-[0_6px_20px_rgba(196,0,0,0.23)] hover:-translate-y-0.5 transform">
+                        Register
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button (Checkbox Hack) -->
+                <div class="flex md:hidden">
+                    <label for="mobile-menu-toggle"
+                        class="p-2 text-gray-300 hover:text-white cursor-pointer transition-colors"
+                        aria-label="Toggle mobile menu" role="button">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Mobile Menu State -->
+            <input type="checkbox" id="mobile-menu-toggle" class="hidden peer">
+
+            <!-- Mobile Menu Content -->
+            <div
+                class="hidden peer-checked:block md:hidden border-t border-gray-800 animate-fade-in-down bg-brand-background/95 backdrop-blur-sm absolute left-0 right-0 top-full shadow-2xl">
+                <div class="px-4 pt-2 pb-6 space-y-2">
+                    <a href="#" class="block px-3 py-3 rounded-md text-base font-medium text-white bg-white/10"
+                        aria-current="page">Home</a>
+                    <a href="#"
+                        class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Teams</a>
+                    <a href="#"
+                        class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Fixtures</a>
+                    <a href="#"
+                        class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Standings</a>
+                    <a href="#"
+                        class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">News</a>
+                    <a href="#"
+                        class="block px-3 py-3 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors">Gallery</a>
+
+                    <div class="mt-6 pt-6 border-t border-gray-800 flex flex-col gap-4">
+                        <a href="#"
+                            class="w-full text-center px-4 py-3 text-base font-bold text-gray-300 hover:text-white border border-gray-700 rounded-lg hover:bg-white/5 transition-colors">
+                            Login
+                        </a>
+                        <a href="#"
+                            class="w-full text-center px-4 py-3 text-base font-bold text-white bg-brand-primary rounded-lg hover:bg-red-700 transition-colors shadow-lg">
+                            Register Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- Header Component End -->
+
+    <!-- Placeholder Content to Demonstrate Sticky Header -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <h1 class="text-4xl font-bold mb-6 text-gray-900">Page Content Area</h1>
+        <p class="mb-4 text-gray-600">This demonstrates the sticky header behavior. Scroll down to see it in action.</p>
+        <div class="space-y-6">
+            <div class="h-64 bg-white rounded-lg shadow-md border border-gray-200"></div>
+            <div class="h-64 bg-white rounded-lg shadow-md border border-gray-200"></div>
+            <div class="h-64 bg-white rounded-lg shadow-md border border-gray-200"></div>
+            <div class="h-64 bg-white rounded-lg shadow-md border border-gray-200"></div>
+        </div>
+    </main>
+
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+import { chromium } from 'playwright-core';
+const [,, w, h = '900', out, hide = '1'] = process.argv;
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: +w, height: +h }, deviceScaleFactor: 1 });
+const errs = []; page.on('pageerror', e => errs.push(e.message.slice(0, 120)));
+await page.goto('http://127.0.0.1:5199/', { waitUntil: 'load' });
+await page.waitForSelector('.hero-banner__stage', { timeout: 30000 });
+await page.evaluate(() => document.fonts.ready);
+await page.waitForTimeout(1500);
+if (hide === '1') await page.addStyleTag({ content: '[class*="25D366"], [class*="100001"] { display: none !important; }' });
+await page.screenshot({ path: out });
+const m = await page.evaluate(() => { const s = document.querySelector('.hero-banner__stage').getBoundingClientRect(); return { stageW: Math.round(s.width), stageH: Math.round(s.height), docOverflowX: document.documentElement.scrollWidth > innerWidth }; });
+console.log(out, JSON.stringify(m), errs.length ? errs : '');
+await browser.close();

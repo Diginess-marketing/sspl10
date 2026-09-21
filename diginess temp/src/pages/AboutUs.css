@@ -1,0 +1,64 @@
+/* About Us — section-specific layout only; colour, type, cards come from styles/brand.css */
+
+/* hero: copy left, motto poster right, on the sky tint with the same skewed panel as Street to Stadium */
+.abt-hero.brand-section { position: relative; overflow: hidden; }
+.abt-hero.brand-section::before { content: ''; position: absolute; top: 0; bottom: 0; right: -6%; width: 46%; transform: skewX(-14deg); background: linear-gradient(180deg, var(--brand-sky-2), rgba(223, 238, 255, 0)); pointer-events: none; }
+.abt-hero__grid { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(28px, 4vw, 56px); align-items: center; }
+.abt-hero__kicker { margin: 0 0 clamp(8px, 1.2vw, 14px); }
+.abt-hero__kicker img { display: block; width: clamp(200px, 24vw, 290px); height: auto; margin-left: -8px; }
+.abt-hero .abt-hero__title { line-height: 0.88; }
+.abt-hero__line { display: block; }
+.abt-hero__accent { position: relative; display: inline-block; isolation: isolate; }
+.abt-hero__accent::after { content: ''; position: absolute; left: -2%; right: -3%; bottom: 0.02em; height: 0.16em; background: var(--brand-lime); transform: skewX(-22deg); z-index: -1; }
+.abt-hero__lead { margin-top: clamp(14px, 1.6vw, 22px); max-width: 34ch; }
+.abt-hero__desc { margin-top: clamp(14px, 1.6vw, 20px); max-width: 60ch; }
+.abt-hero__desc :is(p, ul, ol, li, span, div, strong, em, i, b, a) { font-size: inherit; font-style: normal; }
+.abt-hero__desc p { margin: 0 0 12px; }
+.abt-hero__desc > :last-child { margin-bottom: 0; }
+
+.abt-hero__motto { margin: 0; overflow: hidden; border: clamp(5px, 0.7vw, 9px) solid var(--brand-white); border-radius: clamp(14px, 1.8vw, 22px); background: var(--brand-navy-deep); box-shadow: 0 26px 56px rgba(10, 18, 64, 0.28); }
+.abt-hero__motto img { display: block; width: 100%; height: auto; }
+
+@media (min-width: 1000px) {
+  .abt-hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr); column-gap: clamp(40px, 6vw, 96px); }
+}
+
+/* vision & mission: two equal cards on a white band */
+.abt-vm.brand-section { padding: clamp(36px, 5vw, 72px) 0; }
+.abt-vm__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(16px, 2.4vw, 32px); margin: 0; padding: 0; list-style: none; }
+.abt-vm__card { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: clamp(14px, 1.8vw, 22px); row-gap: 10px; align-items: center; align-content: start; padding: clamp(20px, 2.6vw, 34px) clamp(20px, 2.6vw, 34px) calc(clamp(20px, 2.6vw, 34px) + 5px); overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.abt-vm__card::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: linear-gradient(90deg, var(--brand-blue), var(--brand-lime)); }
+.abt-vm__card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(10, 18, 64, 0.13); }
+.abt-vm__ico { display: inline-flex; align-items: center; justify-content: center; width: 58px; height: 58px; border-radius: 50%; color: #fff; background: linear-gradient(180deg, #2f6df0, var(--brand-blue)); box-shadow: 0 6px 14px rgba(31, 87, 214, 0.3); }
+.abt-vm__text { grid-column: 1 / -1; margin: 0; max-width: 56ch; }
+
+@media (min-width: 700px) { .abt-vm__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { .abt-vm__card { transition: none; } .abt-vm__card:hover { transform: none; } }
+
+/* team: heading + intro, then member cards (1 col phone, 2 tablet, 3 desktop); the advisors section reuses the same card */
+.abt-team__head { max-width: 62ch; margin-bottom: clamp(24px, 3.2vw, 44px); }
+.abt-team .abt-team__lead { margin-top: clamp(14px, 1.6vw, 20px); }
+.abt-team__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(16px, 2vw, 28px); margin: 0; padding: 0; list-style: none; }
+.abt-member { display: flex; flex-direction: column; gap: clamp(14px, 1.6vw, 20px); padding: 12px 12px clamp(18px, 2vw, 26px); border-radius: 22px; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.abt-member:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(10, 18, 64, 0.13); }
+.abt-member__photo { position: relative; aspect-ratio: 1 / 1; overflow: hidden; border-radius: 18px; background: var(--brand-sky-2); }
+.abt-member__photo picture { display: block; width: 100%; height: 100%; }
+.abt-member__photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.abt-member__photo::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px var(--brand-line); pointer-events: none; }   /* keeps white-background portraits readable as a photo */
+.abt-member__ph { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; color: var(--brand-blue); }
+.abt-member__body { display: flex; flex-direction: column; gap: 6px; padding: 0 clamp(6px, 1vw, 12px); }
+.abt-member__role { margin: 0; color: var(--brand-blue); }
+.abt-member__sub, .abt-member__bio { margin: 0; }
+.abt-member__sub { color: var(--brand-navy); font-weight: 500; }
+.abt-member__bio { margin-top: 4px; }
+
+@media (min-width: 640px) { .abt-team__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* a lone last card on a 2-column row sits centred instead of stranded left */
+@media (min-width: 640px) and (max-width: 999px) { .abt-team__grid > .abt-member:last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - clamp(8px, 1vw, 14px)); } }
+@media (min-width: 1000px) { .abt-team__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { .abt-member { transition: none; } .abt-member:hover { transform: none; } }
+
+/* advisors: same card, a bit more compact, four across on wide screens (2x2 on tablet, so no stranded card) */
+.abt-member--compact { gap: clamp(12px, 1.3vw, 16px); padding-bottom: clamp(16px, 1.6vw, 22px); }
+.abt-member--compact .abt-member__body { gap: 4px; }
+@media (min-width: 1100px) { .abt-team__grid--advisors { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

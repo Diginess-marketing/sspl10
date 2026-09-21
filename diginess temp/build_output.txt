@@ -1,0 +1,91 @@
+﻿[36mvite v7.3.0 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32mÔ£ô[39m 83 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mindex.html                                                                         [39m[1m[2m   10.64 kB[22m[1m[22m[2m Ôöé gzip:   3.48 kB[22m
+[2mdist/[22m[32massets/cricket-hero-768w-DV7KYuXB-DV7KYuXB-DV7KYuXB-DV7KYuXB.avif                  [39m[1m[2m   13.53 kB[22m[1m[22m
+[2mdist/[22m[32massets/cricket-hero-768w-CVbSqRhe-CVbSqRhe-CVbSqRhe-CVbSqRhe.webp                  [39m[1m[2m   21.60 kB[22m[1m[22m
+[2mdist/[22m[32massets/cricket-hero-1280w-B8AF_qLm-B8AF_qLm-B8AF_qLm-B8AF_qLm.avif                 [39m[1m[2m   22.70 kB[22m[1m[22m
+[2mdist/[22m[32massets/cricket-hero-1280w-hFOHk_w4-hFOHk_w4-hFOHk_w4-hFOHk_w4.webp                 [39m[1m[2m   41.21 kB[22m[1m[22m
+[2mdist/[22m[32massets/cricket-hero-jGYEMmLX-jGYEMmLX-jGYEMmLX-jGYEMmLX.jpg                        [39m[1m[2m  139.99 kB[22m[1m[22m
+[2mdist/[22m[32massets/vendor-react-eniOKMNi-BHf2Q521-BHf2Q521-BHf2Q521.js                         [39m[1m[2m  581.51 kB[22m[1m[22m
+[2mdist/[22m[35massets/index-CyRwxjS7.css                                                          [39m[1m[2m  531.81 kB[22m[1m[22m[2m Ôöé gzip:  60.22 kB[22m
+[2mdist/[22m[36massets/sentry-BBULzmaa-BBULzmaa-BBULzmaa-BBULzmaa.js                               [39m[1m[2m    0.05 kB[22m[1m[22m[2m Ôöé gzip:   0.07 kB[22m
+[2mdist/[22m[36massets/bundleOptimization-BeF0wlcS-BeF0wlcS-BeF0wlcS-BeF0wlcS.js                   [39m[1m[2m    0.05 kB[22m[1m[22m[2m Ôöé gzip:   0.07 kB[22m
+[2mdist/[22m[36massets/PlayerRegistrationForm-DD9Fhkt5-DZGBWw9x-D_ylBnaj-lEj79e_u.js               [39m[1m[2m    0.09 kB[22m[1m[22m[2m Ôöé gzip:   0.10 kB[22m
+[2mdist/[22m[36massets/TeamDetails-DiGkSC7O-CRWIrSJ3-wIF44lwG-rvFK0WLT.js                          [39m[1m[2m    0.21 kB[22m[1m[22m[2m Ôöé gzip:   0.17 kB[22m
+[2mdist/[22m[36massets/separator-VPpj70fc-BT3K8uWw-BvifW1xw-CHz-CbFh.js                            [39m[1m[2m    0.33 kB[22m[1m[22m[2m Ôöé gzip:   0.24 kB[22m
+[2mdist/[22m[36massets/GA4AnalyticsTest-DdXnoDuF-1yIOV8i3-BfjvDA1K-BTwBRJRE.js                     [39m[1m[2m    0.37 kB[22m[1m[22m[2m Ôöé gzip:   0.27 kB[22m
+[2mdist/[22m[36massets/AdminRoute-Bhgrvggo-AEcJdxuL-D0PiLmGa-DjYu4UFH.js                           [39m[1m[2m    0.55 kB[22m[1m[22m[2m Ôöé gzip:   0.40 kB[22m
+[2mdist/[22m[36massets/NotFound-BhWQRbTR-BllghnnI-DNax5KYZ-A1r06-VQ.js                             [39m[1m[2m    0.60 kB[22m[1m[22m[2m Ôöé gzip:   0.34 kB[22m
+[2mdist/[22m[36massets/checkbox-CtLQ52d6-cKolVuSs-Cyq9GqKt-Dpt2gY5r.js                             [39m[1m[2m    0.72 kB[22m[1m[22m[2m Ôöé gzip:   0.41 kB[22m
+[2mdist/[22m[36massets/tabs-D87SLAic-B9lsl0x6-CqWKV8-9-DP-UxXLu.js                                 [39m[1m[2m    1.06 kB[22m[1m[22m[2m Ôöé gzip:   0.44 kB[22m
+[2mdist/[22m[36massets/MarqueeRibbon-D4lqUZuO-CmA7MZdo-B1hQsrO--BioaCOWm.js                        [39m[1m[2m    1.11 kB[22m[1m[22m[2m Ôöé gzip:   0.45 kB[22m
+[2mdist/[22m[36massets/SelectorRegistration-BcUQBUwg-CfYiMb4w-BGaK16eV-Buv0_tAn.js                 [39m[1m[2m    1.16 kB[22m[1m[22m[2m Ôöé gzip:   0.62 kB[22m
+[2mdist/[22m[36massets/news-jeMJ4KCE-C3zdTZ8S-C3zdTZ8S-C3zdTZ8S.js                                 [39m[1m[2m    1.16 kB[22m[1m[22m[2m Ôöé gzip:   0.66 kB[22m
+[2mdist/[22m[36massets/RegistrationSuccess-RFl3385f-PGXQS0HZ-D31RRk7C-3nhsQD0x.js                  [39m[1m[2m    1.17 kB[22m[1m[22m[2m Ôöé gzip:   0.55 kB[22m
+[2mdist/[22m[36massets/TournamentOrganizerRegistrationPage-BGTCMUlz-DBMReHaf-yixlySEE-CvHw3zZs.js  [39m[1m[2m    1.26 kB[22m[1m[22m[2m Ôöé gzip:   0.55 kB[22m
+[2mdist/[22m[36massets/table-BSkQk2gx-Du6kCx9T-BBDwE9-v-cnnqss-G.js                                [39m[1m[2m    1.46 kB[22m[1m[22m[2m Ôöé gzip:   0.50 kB[22m
+[2mdist/[22m[36massets/fixtures-BxHDwE-M-BD6MjG8z-BD6MjG8z-BD6MjG8z.js                             [39m[1m[2m    1.53 kB[22m[1m[22m[2m Ôöé gzip:   0.52 kB[22m
+[2mdist/[22m[36massets/NewsArticle-Ch5629C3-RcTVPybl-Bzs0KVK9-Dj5cOjXH.js                          [39m[1m[2m    1.77 kB[22m[1m[22m[2m Ôöé gzip:   0.77 kB[22m
+[2mdist/[22m[36massets/Register-B5_h5nsF-Bko90lSl-DrQ1aFQ0-eF2HrOuz.js                             [39m[1m[2m    2.05 kB[22m[1m[22m[2m Ôöé gzip:   1.01 kB[22m
+[2mdist/[22m[36massets/adminService-BScrnt5N-Ch8RhBwM-BzZFKzpi-DBCb-T8M.js                         [39m[1m[2m    2.13 kB[22m[1m[22m[2m Ôöé gzip:   0.79 kB[22m
+[2mdist/[22m[36massets/Videos-BqTKxIgx-7SQdT5QC-tbCIUwbF-CMVvGoSB.js                               [39m[1m[2m    2.34 kB[22m[1m[22m[2m Ôöé gzip:   1.04 kB[22m
+[2mdist/[22m[36massets/certificateGenerator-TLW9r4Ic-BqfMwcPQ-BR96TP-s-BR96TP-s.js                 [39m[1m[2m    2.37 kB[22m[1m[22m[2m Ôöé gzip:   1.08 kB[22m
+[2mdist/[22m[36massets/badge-DaynVwUh-BPWE9ECt-DPl-vKVS-MOegswHE.js                                [39m[1m[2m    2.53 kB[22m[1m[22m[2m Ôöé gzip:   1.03 kB[22m
+[2mdist/[22m[36massets/DugoutCodeOfConduct-BkQPHHSz-CIrfbjql-CdoNJRef-pbvwqy2h.js                  [39m[1m[2m    2.70 kB[22m[1m[22m[2m Ôöé gzip:   1.17 kB[22m
+[2mdist/[22m[36massets/Stats-BoCB_kJt-BQlqIyV6-BPBCsr4s-DTAu3_Re.js                                [39m[1m[2m    2.75 kB[22m[1m[22m[2m Ôöé gzip:   1.19 kB[22m
+[2mdist/[22m[36massets/resourceHints-BC5rmqPx-D2ct2bbV-XsYyEgl3-D2ct2bbV.js                        [39m[1m[2m    2.90 kB[22m[1m[22m[2m Ôöé gzip:   1.14 kB[22m
+[2mdist/[22m[36massets/select-BDOekGGe-B2TSWEoK-C0PFT9zF-B6UU_vXw.js                               [39m[1m[2m    2.91 kB[22m[1m[22m[2m Ôöé gzip:   1.05 kB[22m
+[2mdist/[22m[36massets/PointsTable-Di-VfXg7-O2lvEC1b-DhHOKRoU-Dz4QkJRV.js                          [39m[1m[2m    3.00 kB[22m[1m[22m[2m Ôöé gzip:   1.06 kB[22m
+[2mdist/[22m[36massets/OrganizerManagement-Bi5dKSF6-CO3khlkT-Cvf0KHvW-VoeaOf0J.js                  [39m[1m[2m    3.05 kB[22m[1m[22m[2m Ôöé gzip:   1.25 kB[22m
+[2mdist/[22m[36massets/ErrorHandlingTest-D0Lo_jDL-xrjU66Cp-DAgppSNV-BJgRXfFa.js                    [39m[1m[2m    3.16 kB[22m[1m[22m[2m Ôöé gzip:   1.16 kB[22m
+[2mdist/[22m[36massets/CancellationRefundPolicy-1ZF49vv4-Dhw7l8VI-BTII_YjI-BCO06OYo.js             [39m[1m[2m    3.28 kB[22m[1m[22m[2m Ôöé gzip:   1.24 kB[22m
+[2mdist/[22m[36massets/sessionManager-kClI1Wb7-DlIRXp6F-DEeulFho-4EqiMbNV.js                       [39m[1m[2m    3.28 kB[22m[1m[22m[2m Ôöé gzip:   1.21 kB[22m
+[2mdist/[22m[36massets/AnalyticsViewer-BGBXNCBt-CFfHFSb5-BNzg5F3T-DT00G3bo.js                      [39m[1m[2m    3.43 kB[22m[1m[22m[2m Ôöé gzip:   1.14 kB[22m
+[2mdist/[22m[36massets/label-d3NXrhah-COf8-otU-DZ036uUs-BKFiHe8o.js                                [39m[1m[2m    3.45 kB[22m[1m[22m[2m Ôöé gzip:   1.01 kB[22m
+[2mdist/[22m[36massets/AuctionPage-DDkxQsLE-CptMkq8G-DGLqUvN8-BjRGoiAW.js                          [39m[1m[2m    3.47 kB[22m[1m[22m[2m Ôöé gzip:   1.07 kB[22m
+[2mdist/[22m[36massets/MatchCenter-D4rxtC8F-w89GQjPf-Bp835Zhs-CUrr6ODW.js                          [39m[1m[2m    3.57 kB[22m[1m[22m[2m Ôöé gzip:   1.25 kB[22m
+[2mdist/[22m[36massets/AdminDashboard-B2Ne4QFp-TrdnyM33-DPNJDZt5-B4uZIwbS.js                       [39m[1m[2m    3.57 kB[22m[1m[22m[2m Ôöé gzip:   1.27 kB[22m
+[2mdist/[22m[36massets/News-CK5NPeji-Dx_39tEd-Dz85rIL6-BVccK9za.js                                 [39m[1m[2m    3.83 kB[22m[1m[22m[2m Ôöé gzip:   1.70 kB[22m
+[2mdist/[22m[36massets/TrialsHub-DF6Crass-HzU7C_Gl-CTs6exo_-cni9aB9w.js                            [39m[1m[2m    4.14 kB[22m[1m[22m[2m Ôöé gzip:   1.64 kB[22m
+[2mdist/[22m[36massets/PlayerProfile-CEFLFWSk-CoCv6z_H-Bkxsp2wF-YO0k5X8D.js                        [39m[1m[2m    4.46 kB[22m[1m[22m[2m Ôöé gzip:   1.56 kB[22m
+[2mdist/[22m[36massets/RewardsManager-BQzNmWvJ-BNPCU6fO-BkDniweZ-DDeNKL-A.js                       [39m[1m[2m    4.72 kB[22m[1m[22m[2m Ôöé gzip:   1.77 kB[22m
+[2mdist/[22m[36massets/ArticlesAndBlogs-9OpTAKIA-DmwD1mHC-CHxvQ2Mf-CDADGtAT.js                     [39m[1m[2m    5.21 kB[22m[1m[22m[2m Ôöé gzip:   1.87 kB[22m
+[2mdist/[22m[36massets/AuthPage-CO3Rm20w-Cy0zXRhi-CmAytHAa-B_YrY2EJ.js                             [39m[1m[2m    5.35 kB[22m[1m[22m[2m Ôöé gzip:   2.05 kB[22m
+[2mdist/[22m[36massets/AdminLayout-BQWhvDg2-DPUaH4_t-Ceyo03r1-BUvSrCmu.js                          [39m[1m[2m    5.37 kB[22m[1m[22m[2m Ôöé gzip:   1.93 kB[22m
+[2mdist/[22m[36massets/CityTrialsPage-Cg3gA0W5-DHki4iWr-CrL5JK8Y-DqQbdGcy.js                       [39m[1m[2m    5.67 kB[22m[1m[22m[2m Ôöé gzip:   1.95 kB[22m
+[2mdist/[22m[36massets/HowItWorks-CsR2JVxW-CHtf-LHD-B6jzrdk--yOaSE7PC.js                           [39m[1m[2m    5.74 kB[22m[1m[22m[2m Ôöé gzip:   2.04 kB[22m
+[2mdist/[22m[36massets/web-vitals-D8cA-W4R-BSp33p_t-DaQEfCh--BSp33p_t.js                           [39m[1m[2m    5.85 kB[22m[1m[22m[2m Ôöé gzip:   2.38 kB[22m
+[2mdist/[22m[36massets/Matches-CEWUXrU0-lZ_vUmsr-BpYGbsP6-C45_ULDd.js                              [39m[1m[2m    6.23 kB[22m[1m[22m[2m Ôöé gzip:   2.06 kB[22m
+[2mdist/[22m[36massets/AdminCertificateLookup-DtFfvhmg-BAVreWrO-DIgj3iwA-lPEoxgzb.js               [39m[1m[2m    6.26 kB[22m[1m[22m[2m Ôöé gzip:   2.43 kB[22m
+[2mdist/[22m[36massets/FAQPage-BcoKAn3c-t7LPdeh_-C1nON6iw-IFHOztIq.js                              [39m[1m[2m    6.50 kB[22m[1m[22m[2m Ôöé gzip:   2.30 kB[22m
+[2mdist/[22m[36massets/AdminSelectionStatus-yS6HutVU-CA4EB89K-DrLWroZN-5mL8vOql.js                 [39m[1m[2m    6.94 kB[22m[1m[22m[2m Ôöé gzip:   2.46 kB[22m
+[2mdist/[22m[36massets/BlogPost-tVGd-5BV-DsZOm59C-TonlLIDa-ObXkQ8Da.js                             [39m[1m[2m    7.18 kB[22m[1m[22m[2m Ôöé gzip:   2.39 kB[22m
+[2mdist/[22m[36massets/SelectorManagement-DLiM5zSU-Dda6cop0-B05NfBRF-K2nNCtnZ.js                   [39m[1m[2m    7.24 kB[22m[1m[22m[2m Ôöé gzip:   2.09 kB[22m
+[2mdist/[22m[36massets/AboutUs-DtioLW-0-gMfYVZiq-CDtTV-H2-CqCputC5.js                              [39m[1m[2m    8.34 kB[22m[1m[22m[2m Ôöé gzip:   2.80 kB[22m
+[2mdist/[22m[36massets/Teams-DJ4xdu-J-DSapuDuZ-DjyyzBk3-A_6VFhxC.js                                [39m[1m[2m    8.53 kB[22m[1m[22m[2m Ôöé gzip:   2.69 kB[22m
+[2mdist/[22m[36massets/Players-D0pS4-oQ-D6TxS-CY-Cx6ISz2t-DvXDIwtk.js                              [39m[1m[2m    8.78 kB[22m[1m[22m[2m Ôöé gzip:   2.49 kB[22m
+[2mdist/[22m[36massets/SettingsPage-DUdvqrPy-DqmijSiH-DYozRDAv-CNE9wnN6.js                         [39m[1m[2m    9.25 kB[22m[1m[22m[2m Ôöé gzip:   3.27 kB[22m
+[2mdist/[22m[36massets/PrivacyPolicy-DZz9nnfe-CLR1C6bb-kLNxsVSf-CpW6mXJe.js                        [39m[1m[2m    9.81 kB[22m[1m[22m[2m Ôöé gzip:   2.69 kB[22m
+[2mdist/[22m[36massets/PaymentSuccessCelebration-CftOmTro-DiW5HhkU-B6JlcLtT-BSO08trS.js            [39m[1m[2m   10.95 kB[22m[1m[22m[2m Ôöé gzip:   3.30 kB[22m
+[2mdist/[22m[36massets/CommercialGuidelines-C6Bsaadm-0n17epOH-BfLjR_NA-CDAGHvxZ.js                 [39m[1m[2m   12.47 kB[22m[1m[22m[2m Ôöé gzip:   3.47 kB[22m
+[2mdist/[22m[36massets/Gallery-CZClbrvZ-DfLwd_Ir-DWRsRYV_-D_qprbU-.js                              [39m[1m[2m   12.54 kB[22m[1m[22m[2m Ôöé gzip:   3.26 kB[22m
+[2mdist/[22m[36massets/terms-and-conditions-CRH9o0U6-B_3uaPSG-DKTaBTyD-ugvEPwM1.js                 [39m[1m[2m   13.97 kB[22m[1m[22m[2m Ôöé gzip:   4.16 kB[22m
+[2mdist/[22m[36massets/UserManagement-BDxpv4b7-Cf8b5b94-ORss8DGM-D73s_BMO.js                       [39m[1m[2m   14.01 kB[22m[1m[22m[2m Ôöé gzip:   3.88 kB[22m
+[2mdist/[22m[36massets/ProgrammaticCityPage-Cdu0en0B-CxAz0T5s-BkIDlxJg-DKAXH9bn.js                 [39m[1m[2m   14.51 kB[22m[1m[22m[2m Ôöé gzip:   4.86 kB[22m
+[2mdist/[22m[36massets/QRScan-DVpkEO-S-COK4XGJF-CsnJSiWS-BeRWBQO4.js                               [39m[1m[2m   15.04 kB[22m[1m[22m[2m Ôöé gzip:   4.84 kB[22m
+[2mdist/[22m[36massets/CampaignDashboard-euK-OM62-C2L-oHVu-BAIQGg6Q-DiyBxkQf.js                    [39m[1m[2m   15.84 kB[22m[1m[22m[2m Ôöé gzip:   4.03 kB[22m
+[2mdist/[22m[36massets/Analytics-LHpqcjcq-DkAb3oT2-DS4EKkOU-oTwtasds.js                            [39m[1m[2m   19.29 kB[22m[1m[22m[2m Ôöé gzip:   4.35 kB[22m
+[2mdist/[22m[36massets/purify.es-C65SP4u9-BuvzGynK-BVo35MYG-BVo35MYG.js                            [39m[1m[2m   22.35 kB[22m[1m[22m[2m Ôöé gzip:   8.60 kB[22m
+[2mdist/[22m[36massets/GA4Analytics-BbVLHDPz-B8z5gQTe--fzaniLM-BSVaTnJu.js                         [39m[1m[2m   22.55 kB[22m[1m[22m[2m Ôöé gzip:   4.72 kB[22m
+[2mdist/[22m[36massets/AdminTrialsWorkflow-C0bbRI5k-K8U-WWAf-uqdMV3RQ-BS9YItQ7.js                  [39m[1m[2m   47.32 kB[22m[1m[22m[2m Ôöé gzip:  10.79 kB[22m
+[2mdist/[22m[36massets/indiaLocations-BjUlzUbN-BjUlzUbN-BjUlzUbN-BjUlzUbN.js                       [39m[1m[2m   62.16 kB[22m[1m[22m[2m Ôöé gzip:  19.87 kB[22m
+[2mdist/[22m[36massets/playerDataService-BD7AwJTY-lE_s6WBj-6pWumk8l-6pWumk8l.js                    [39m[1m[2m   72.17 kB[22m[1m[22m[2m Ôöé gzip:  12.06 kB[22m
+[2mdist/[22m[36massets/index.es-x89M75TU-CfJ0vRGN-BA_OMOnE-Dh2k47tG.js                             [39m[1m[2m  159.04 kB[22m[1m[22m[2m Ôöé gzip:  53.18 kB[22m
+[2mdist/[22m[36massets/Enquiry-Dyd-aB3D-nu7lXTAc-B4AMGD3e-BgknS3HR.js                              [39m[1m[2m  162.43 kB[22m[1m[22m[2m Ôöé gzip:  47.58 kB[22m
+[2mdist/[22m[36massets/html2canvas.esm-DXEQVQnt-CJZWeQL2-CHHZ8-03-CHHZ8-03.js                      [39m[1m[2m  201.04 kB[22m[1m[22m[2m Ôöé gzip:  47.42 kB[22m
+[2mdist/[22m[36massets/ResultLookup-VXQnlJrJ-BMonocur-D5_3HLUJ-DQ3EnFuI.js                         [39m[1m[2m  816.48 kB[22m[1m[22m[2m Ôöé gzip: 224.90 kB[22m
+[2mdist/[22m[36massets/index-Bx1_lr_D.js                                                           [39m[1m[2m1,572.85 kB[22m[1m[22m[2m Ôöé gzip: 466.11 kB[22m
+[32mÔ£ô built in 13.75s[39m

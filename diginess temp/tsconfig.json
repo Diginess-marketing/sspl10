@@ -1,0 +1,72 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    // Optimized strict mode for faster builds
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    // Relax these for faster builds in development
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": false, // Can be slow
+    "noUncheckedIndexedAccess": false, // Can be slow
+    "exactOptionalPropertyTypes": false, // Can be slow
+
+    // Additional strict checks
+    "noFallthroughCasesInSwitch": true,
+
+    // Optimized type checking for faster builds
+    "skipLibCheck": true,
+    "allowJs": false,
+    "checkJs": false,
+    "maxNodeModuleJsDepth": 0, // Reduce depth for faster checks
+
+    // Module resolution
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": false,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Output
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": true,
+    "removeComments": false,
+    "importHelpers": false,
+    "downlevelIteration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    // Language and environment
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "types": ["vite/client", "react", "react-dom", "node", "@testing-library/jest-dom", "vitest/globals"],
+
+    // Additional options
+    "incremental": true,
+    "tsBuildInfoFile": "node_modules/.cache/tsconfig.tsbuildinfo",
+
+    // Error reporting
+    "pretty": true,
+    "preserveWatchOutput": true
+  }
+}

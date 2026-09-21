@@ -1,0 +1,12 @@
+import { chromium } from 'playwright-core';
+const b = await chromium.launch({ channel: 'chrome' }); const p = await b.newPage({ viewport: { width: 1280, height: 800 } });
+const errs = []; p.on('pageerror', e => errs.push(e.message.slice(0, 100)));
+await p.goto('http://127.0.0.1:5199/', { waitUntil: 'load' }); await p.waitForSelector('#highlights');
+await p.locator('#highlights').scrollIntoViewIfNeeded();
+await p.locator('.hlx__tile--t').click(); await p.waitForTimeout(600);
+const open1 = await p.evaluate(() => !!document.querySelector('.fixed.inset-0 img'));
+await p.keyboard.press('Escape'); await p.waitForTimeout(200); await p.keyboard.press('Escape'); await p.waitForTimeout(300);
+await p.getByRole('button', { name: /View All Highlights/ }).click(); await p.waitForTimeout(600);
+const open2 = await p.evaluate(() => document.querySelectorAll('.fixed.inset-0 img').length);
+console.log('tile opens modal:', open1, '| gallery images:', open2, errs.length ? errs : 'no page errors');
+await b.close();

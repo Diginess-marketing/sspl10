@@ -1,0 +1,136 @@
+/* CricketOrganizerDealsSection.css */
+
+/* App Download Ad Banner Styles */
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-border {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgb(59 130 246 / 50%), 0 0 40px rgb(59 130 246 / 30%);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgb(168 85 247 / 60%), 0 0 60px rgb(168 85 247 / 40%);
+  }
+}
+
+@keyframes coupon-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.app-download-banner {
+  animation: slide-in 0.5s ease-out;
+}
+
+.app-download-banner:hover {
+  animation: pulse-border 2s ease-in-out infinite;
+}
+
+.coupon-reveal-section {
+  animation: coupon-reveal 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reveal-button-hover:active {
+  transform: scale(0.98);
+}
+
+/* Coupon Code Display Styling */
+.coupon-code-display {
+  background: #fcd34d;
+  border: 2px dashed #fbbf24;
+  position: relative;
+  overflow: hidden;
+}
+
+
+
+@keyframes shine {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.copy-button-icon {
+  transition: all 0.3s ease;
+}
+
+.copy-button-icon:hover {
+  transform: scale(1.2);
+}
+
+.limited-time-special {
+  background: #ffd700;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border: 2px solid #eab308;
+}
+
+.zap-icon {
+  filter: drop-shadow(0 0 5px #000);
+}
+
+.special-text {
+  color: #000;
+}
+
+.download-button {
+  color: #006400;
+  border: 2px solid #32cd32;
+}
+
+.download-icon {
+  color: #006400;
+  filter: drop-shadow(0 0 3px rgb(0 0 0 / 30%));
+}
+
+.download-text {
+  color: #006400;
+}
+
+/* Mobile-specific fixes for download button */
+@media (width <=640px) {
+  .download-button {
+    min-height: 48px;
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .download-text {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .download-icon {
+    width: 16px;
+    height: 16px;
+  }
+}

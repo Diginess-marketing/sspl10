@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Clear Player Data Cache</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .success {
+            background: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .info {
+            background: #17a2b8;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔄 Clear Player Data Cache</h1>
+
+        <div class="info">
+            <strong>Cache Status:</strong>
+            <div id="cacheStatus">Checking...</div>
+        </div>
+
+        <div class="success" id="successMessage">
+            ✓ Cache cleared successfully! The page will reload to fetch fresh data.
+        </div>
+
+        <button onclick="clearCache()">Clear Cache & Reload</button>
+        <button onclick="checkCache()">Check Cache</button>
+
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Click "Clear Cache & Reload" to remove cached player data</li>
+            <li>The application will fetch fresh data from the JSON file</li>
+            <li>The three new players will show as SELECTED</li>
+        </ol>
+    </div>
+
+    <script>
+        function checkCache() {
+            const cached = localStorage.getItem('sspl_players_data');
+            const statusDiv = document.getElementById('cacheStatus');
+
+            if (cached) {
+                try {
+                    const data = JSON.parse(cached);
+                    const timestamp = new Date(data.timestamp);
+                    statusDiv.innerHTML = `
+                        <strong>Cached data found:</strong><br>
+                        Players: ${data.data.length}<br>
+                        Cached at: ${timestamp.toLocaleString()}<br>
+                        <small>Cache expires after 30 minutes</small>
+                    `;
+                } catch (e) {
+                    statusDiv.innerHTML = 'Cache exists but is corrupted';
+                }
+            } else {
+                statusDiv.innerHTML = 'No cache found - will load fresh data on next visit';
+            }
+        }
+
+        function clearCache() {
+            localStorage.removeItem('sspl_players_data');
+            document.getElementById('successMessage').style.display = 'block';
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        }
+
+        // Check cache on load
+        checkCache();
+    </script>
+</body>
+
+</html>

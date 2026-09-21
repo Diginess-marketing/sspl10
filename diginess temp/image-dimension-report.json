@@ -1,0 +1,2671 @@
+{
+  "oversized": [
+    {
+      "file": "Explore the teams\\Andra Pradesh.webp",
+      "category": "thumbnail",
+      "width": 396,
+      "height": 287,
+      "format": "webp",
+      "maxWidth": 300,
+      "oversized": true
+    },
+    {
+      "file": "Explore the teams\\Karnataka.webp",
+      "category": "thumbnail",
+      "width": 396,
+      "height": 287,
+      "format": "webp",
+      "maxWidth": 300,
+      "oversized": true
+    },
+    {
+      "file": "Explore the teams\\Kerala.webp",
+      "category": "thumbnail",
+      "width": 396,
+      "height": 287,
+      "format": "webp",
+      "maxWidth": 300,
+      "oversized": true
+    },
+    {
+      "file": "Explore the teams\\Pudhucherry.webp",
+      "category": "thumbnail",
+      "width": 396,
+      "height": 287,
+      "format": "webp",
+      "maxWidth": 300,
+      "oversized": true
+    },
+    {
+      "file": "Explore the teams\\Tamil Nadu.webp",
+      "category": "thumbnail",
+      "width": 396,
+      "height": 287,
+      "format": "webp",
+      "maxWidth": 300,
+      "oversized": true
+    },
+    {
+      "file": "Explore the teams\\Telangana.webp",
+      "category": "thumbnail",
+      "width": 396,
+      "height": 287,
+      "format": "webp",
+      "maxWidth": 300,
+      "oversized": true
+    }
+  ],
+  "compliant": [
+    {
+      "file": "apple-touch-icon.avif",
+      "category": "general",
+      "width": 180,
+      "height": 180,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "apple-touch-icon.png",
+      "category": "general",
+      "width": 180,
+      "height": 180,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "apple-touch-icon.webp",
+      "category": "general",
+      "width": 180,
+      "height": 180,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "favicon-16x16.avif",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "favicon-16x16.png",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "favicon-16x16.webp",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "favicon-32x32.avif",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "favicon-32x32.png",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "favicon-32x32.webp",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_13.avif",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_13.png",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_13.webp",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_15.avif",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_15.png",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_15.webp",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_29.avif",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_29.png",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_29.webp",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_3-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "image_3-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "image_3.avif",
+      "category": "general",
+      "width": 500,
+      "height": 500,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_3.png",
+      "category": "general",
+      "width": 500,
+      "height": 500,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_3.webp",
+      "category": "general",
+      "width": 500,
+      "height": 500,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_30.avif",
+      "category": "general",
+      "width": 416,
+      "height": 824,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_30.png",
+      "category": "general",
+      "width": 416,
+      "height": 824,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_30.webp",
+      "category": "general",
+      "width": 416,
+      "height": 824,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_8.avif",
+      "category": "general",
+      "width": 256,
+      "height": 256,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_8.png",
+      "category": "general",
+      "width": 256,
+      "height": 256,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "image_8.webp",
+      "category": "general",
+      "width": 256,
+      "height": 256,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg-1024w.avif",
+      "category": "general",
+      "width": 1024,
+      "height": 576,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg-1024w.webp",
+      "category": "general",
+      "width": 1024,
+      "height": 576,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg-1280w.avif",
+      "category": "general",
+      "width": 1280,
+      "height": 720,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg-1280w.webp",
+      "category": "general",
+      "width": 1280,
+      "height": 720,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg-1920w.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg-1920w.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 270,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 270,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 432,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 432,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg.jpg",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg.png",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ravi mohan home with bg.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ssplt10-logo-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 438,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "ssplt10-logo-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 438,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "ssplt10-logo-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 700,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "ssplt10-logo-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 700,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "ssplt10-logo.avif",
+      "category": "general",
+      "width": 999,
+      "height": 911,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ssplt10-logo.png",
+      "category": "general",
+      "width": 999,
+      "height": 911,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "ssplt10-logo.webp",
+      "category": "general",
+      "width": 999,
+      "height": 911,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_17.avif",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_17.png",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "png",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_17.webp",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_19.avif",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_19.png",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "png",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_19.webp",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_21.avif",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_21.png",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "png",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_21.webp",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_22.avif",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_22.png",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "png",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_22.webp",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_25.avif",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_25.png",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "png",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_25.webp",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_26.avif",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_26.png",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "png",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_26.webp",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_27.avif",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_27.png",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "png",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_27.webp",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_28.avif",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_28.png",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "png",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_28.webp",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_52.avif",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_52.png",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "png",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "Gallery\\image_52.webp",
+      "category": "gallery",
+      "width": 306,
+      "height": 290,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela-1024w.avif",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela-1024w.webp",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela-1280w.avif",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela-1280w.webp",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela-1920w.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela-1920w.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela.jpg",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela.png",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Adv Sheela.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\apple-touch-icon.avif",
+      "category": "general",
+      "width": 180,
+      "height": 180,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\apple-touch-icon.png",
+      "category": "general",
+      "width": 180,
+      "height": 180,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\apple-touch-icon.webp",
+      "category": "general",
+      "width": 180,
+      "height": 180,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao-1024w.avif",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao-1024w.webp",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao-1280w.avif",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao-1280w.webp",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao-1920w.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao-1920w.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao.jpg",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao.png",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\cp rao.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan-1024w.avif",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan-1024w.webp",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan-1280w.avif",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan-1280w.webp",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan-1920w.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan-1920w.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan.jpg",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan.png",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Dilip Narayanan.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\dynamic format-1024w.avif",
+      "category": "general",
+      "width": 1024,
+      "height": 683,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\dynamic format-1024w.webp",
+      "category": "general",
+      "width": 1024,
+      "height": 683,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\dynamic format-1280w.avif",
+      "category": "general",
+      "width": 1280,
+      "height": 853,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\dynamic format-1280w.webp",
+      "category": "general",
+      "width": 1280,
+      "height": 853,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\dynamic format-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 320,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\dynamic format-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 320,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\dynamic format-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 512,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\dynamic format-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 512,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\dynamic format.avif",
+      "category": "general",
+      "width": 1620,
+      "height": 1080,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\dynamic format.png",
+      "category": "general",
+      "width": 1620,
+      "height": 1080,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\dynamic format.webp",
+      "category": "general",
+      "width": 1620,
+      "height": 1080,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\favicon-16x16.avif",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\favicon-16x16.png",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\favicon-16x16.webp",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\favicon-32x32.avif",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\favicon-32x32.png",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\favicon-32x32.webp",
+      "category": "general",
+      "width": 32,
+      "height": 32,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-192x192-maskable.avif",
+      "category": "general",
+      "width": 192,
+      "height": 192,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-192x192-maskable.png",
+      "category": "general",
+      "width": 192,
+      "height": 192,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-192x192-maskable.webp",
+      "category": "general",
+      "width": 192,
+      "height": 192,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-192x192.avif",
+      "category": "general",
+      "width": 192,
+      "height": 192,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-192x192.png",
+      "category": "general",
+      "width": 192,
+      "height": 192,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-192x192.webp",
+      "category": "general",
+      "width": 192,
+      "height": 192,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-384x384-maskable.avif",
+      "category": "general",
+      "width": 384,
+      "height": 384,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-384x384-maskable.png",
+      "category": "general",
+      "width": 384,
+      "height": 384,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-384x384-maskable.webp",
+      "category": "general",
+      "width": 384,
+      "height": 384,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-384x384.avif",
+      "category": "general",
+      "width": 384,
+      "height": 384,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-384x384.png",
+      "category": "general",
+      "width": 384,
+      "height": 384,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-384x384.webp",
+      "category": "general",
+      "width": 384,
+      "height": 384,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-512x512-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-512x512-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-512x512-maskable-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-512x512-maskable-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-512x512-maskable.avif",
+      "category": "general",
+      "width": 512,
+      "height": 512,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-512x512-maskable.png",
+      "category": "general",
+      "width": 512,
+      "height": 512,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-512x512-maskable.webp",
+      "category": "general",
+      "width": 512,
+      "height": 512,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-512x512.avif",
+      "category": "general",
+      "width": 512,
+      "height": 512,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-512x512.png",
+      "category": "general",
+      "width": 512,
+      "height": 512,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-512x512.webp",
+      "category": "general",
+      "width": 512,
+      "height": 512,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-96x96.avif",
+      "category": "general",
+      "width": 96,
+      "height": 96,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-96x96.png",
+      "category": "general",
+      "width": 96,
+      "height": 96,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\icon-96x96.webp",
+      "category": "general",
+      "width": 96,
+      "height": 96,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_13.avif",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_13.png",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_13.webp",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_15.avif",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_15.png",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_15.webp",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_29.avif",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_29.png",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_29.webp",
+      "category": "general",
+      "width": 416,
+      "height": 400,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_3-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_3-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_3.avif",
+      "category": "general",
+      "width": 500,
+      "height": 500,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_3.png",
+      "category": "general",
+      "width": 500,
+      "height": 500,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_3.webp",
+      "category": "general",
+      "width": 500,
+      "height": 500,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_30.avif",
+      "category": "general",
+      "width": 416,
+      "height": 824,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_30.png",
+      "category": "general",
+      "width": 416,
+      "height": 824,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_30.webp",
+      "category": "general",
+      "width": 416,
+      "height": 824,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_8.avif",
+      "category": "general",
+      "width": 256,
+      "height": 256,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_8.png",
+      "category": "general",
+      "width": 256,
+      "height": 256,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\image_8.webp",
+      "category": "general",
+      "width": 256,
+      "height": 256,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\logo-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 514,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\logo-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 514,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\logo.avif",
+      "category": "general",
+      "width": 561,
+      "height": 601,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\logo.png",
+      "category": "general",
+      "width": 561,
+      "height": 601,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\logo.webp",
+      "category": "general",
+      "width": 561,
+      "height": 601,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand-1024w.avif",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand-1024w.webp",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand-1280w.avif",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand-1280w.webp",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand-1920w.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand-1920w.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand.jpg",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand.png",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Lt anand.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab-1024w.avif",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab-1024w.webp",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab-1280w.avif",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab-1280w.webp",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab-1920w.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab-1920w.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab.jpg",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab.png",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Nawab.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ourMoto-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 320,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ourMoto-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 320,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ourMoto.avif",
+      "category": "general",
+      "width": 700,
+      "height": 467,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ourMoto.jpg",
+      "category": "general",
+      "width": 700,
+      "height": 467,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ourMoto.webp",
+      "category": "general",
+      "width": 700,
+      "height": 467,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi-1024w.avif",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi-1024w.webp",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi-1280w.avif",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi-1280w.webp",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi-1920w.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi-1920w.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi.jpg",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi.png",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\Pugazhendi.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg-1024w.avif",
+      "category": "general",
+      "width": 1024,
+      "height": 576,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg-1024w.webp",
+      "category": "general",
+      "width": 1024,
+      "height": 576,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg-1280w.avif",
+      "category": "general",
+      "width": 1280,
+      "height": 720,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg-1280w.webp",
+      "category": "general",
+      "width": 1280,
+      "height": 720,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg-1920w.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg-1920w.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 270,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 270,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 432,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 432,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg.jpg",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg.png",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan home with bg.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1080,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan-1024w.avif",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan-1024w.webp",
+      "category": "general",
+      "width": 1024,
+      "height": 1024,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan-1280w.avif",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan-1280w.webp",
+      "category": "general",
+      "width": 1280,
+      "height": 1280,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan-1920w.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan-1920w.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 480,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 768,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan.avif",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan.jpg",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan.png",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ravi mohan.webp",
+      "category": "general",
+      "width": 1920,
+      "height": 1920,
+      "format": "jpeg",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ssplt10-logo-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 438,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ssplt10-logo-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 438,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ssplt10-logo-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 700,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ssplt10-logo-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 700,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "public\\ssplt10-logo.avif",
+      "category": "general",
+      "width": 999,
+      "height": 911,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ssplt10-logo.png",
+      "category": "general",
+      "width": 999,
+      "height": 911,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "public\\ssplt10-logo.webp",
+      "category": "general",
+      "width": 999,
+      "height": 911,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Andra Pradesh.avif",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "heif",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Andra Pradesh.png",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "jpeg",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Karnataka.avif",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "heif",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Karnataka.png",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "jpeg",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Kerala.avif",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "heif",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Kerala.png",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "jpeg",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Pudhucherry.avif",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "heif",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Pudhucherry.png",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "jpeg",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Tamil Nadu.avif",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "heif",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Tamil Nadu.png",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "jpeg",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Telangana.avif",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "heif",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "Explore the teams\\Telangana.png",
+      "category": "thumbnail",
+      "width": 299,
+      "height": 217,
+      "format": "jpeg",
+      "maxWidth": 300,
+      "oversized": false
+    },
+    {
+      "file": "lovable-uploads\\ada9fed7-8a22-4ee5-a3db-7a5f855ab03f-480w.avif",
+      "category": "gallery",
+      "width": 480,
+      "height": 438,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "lovable-uploads\\ada9fed7-8a22-4ee5-a3db-7a5f855ab03f-480w.webp",
+      "category": "gallery",
+      "width": 480,
+      "height": 438,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "lovable-uploads\\ada9fed7-8a22-4ee5-a3db-7a5f855ab03f-768w.avif",
+      "category": "gallery",
+      "width": 768,
+      "height": 700,
+      "format": "heif",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "lovable-uploads\\ada9fed7-8a22-4ee5-a3db-7a5f855ab03f-768w.webp",
+      "category": "gallery",
+      "width": 768,
+      "height": 700,
+      "format": "webp",
+      "maxWidth": 800,
+      "oversized": false
+    },
+    {
+      "file": "lovable-uploads\\ada9fed7-8a22-4ee5-a3db-7a5f855ab03f.avif",
+      "category": "general",
+      "width": 999,
+      "height": 911,
+      "format": "heif",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "lovable-uploads\\ada9fed7-8a22-4ee5-a3db-7a5f855ab03f.png",
+      "category": "general",
+      "width": 999,
+      "height": 911,
+      "format": "png",
+      "maxWidth": 1920,
+      "oversized": false
+    },
+    {
+      "file": "lovable-uploads\\ada9fed7-8a22-4ee5-a3db-7a5f855ab03f.webp",
+      "category": "general",
+      "width": 999,
+      "height": 911,
+      "format": "webp",
+      "maxWidth": 1920,
+      "oversized": false
+    }
+  ],
+  "errors": []
+}

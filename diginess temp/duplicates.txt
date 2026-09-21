@@ -1,0 +1,7 @@
+﻿Player 7204139143: 2 entries
+{"index":359,"name":"MITHUN JADAV","status":"NOT SELECTED"}
+{"index":1075,"name":"MITHUN JADAV","status":"SELECTED"}
+
+Player 9524262728: 2 entries
+{"index":850,"name":"ARIVAZHAGAN MURUGESAN","status":"NOT SELECTED"}
+{"index":1076,"name":"ARIVAZHAGAN MURUGESAN","status":"SELECTED"}

@@ -1,0 +1,90 @@
+/* Mega Engagement Giveaway — section-specific layout only; colour/type tokens come from styles/brand.css.
+   Desktop follows the approved reference (title | prize card | how-to-win card | stadium ball); stacks below 1100px. */
+
+.gwy { width: 100%; max-width: var(--brand-container); margin: 0 auto; padding: 0 var(--brand-gutter); box-sizing: border-box; font-family: var(--brand-font-body); color: var(--brand-navy); }
+
+.gwy__card {
+  position: relative; overflow: hidden; isolation: isolate;
+  display: grid; gap: clamp(16px, 2.4vw, 24px); align-items: center; justify-items: center;
+  padding: clamp(22px, 3vw, 36px) clamp(16px, 3vw, 36px) clamp(18px, 2.4vw, 26px);
+  border-radius: clamp(14px, 1.6vw, 22px); background: var(--brand-sky);
+  border: 1px solid var(--brand-line); box-shadow: var(--brand-shadow-card);
+}
+
+/* background art fills the card, ball stays bottom-right */
+.gwy__bg, .gwy__bg img { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+.gwy__bg img { object-fit: cover; object-position: 100% 100%; display: block; }
+
+/* title art */
+.gwy__title { margin: 0; width: 100%; max-width: 320px; }
+.gwy__title img { display: block; width: 100%; height: auto; }
+.gwy__tag { margin: 6px 0 0; font-family: var(--brand-font-display); font-style: italic; font-weight: 700; font-size: clamp(16px, 1.6vw, 22px); letter-spacing: 0.02em; color: var(--brand-blue); text-transform: uppercase; }
+
+/* prize art (carries the text) */
+.gwy__prize { grid-area: prize; width: 100%; max-width: 360px; }
+.gwy__prize img { display: block; width: 100%; height: auto; filter: drop-shadow(0 16px 26px rgba(31, 87, 214, 0.28)); }
+
+/* how-to-win glass card */
+.gwy__how {
+  grid-area: how; width: 100%; box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(16px, 2vw, 28px); align-items: center;
+  padding: clamp(16px, 2vw, 26px) clamp(16px, 2.2vw, 30px); border-radius: 20px;
+  background: rgba(255, 255, 255, 0.86); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.9); box-shadow: 0 14px 36px rgba(10, 18, 64, 0.1);
+}
+.gwy__steps-wrap { min-width: 0; }
+.gwy__how-title { display: block; width: min(100%, 300px); margin-bottom: 10px; }
+.gwy__how-title img { display: block; width: 100%; height: auto; }
+.gwy__steps { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(8px, 1.1vw, 14px); }
+.gwy__step { display: flex; align-items: center; gap: 14px; }
+.gwy__ico { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px; border-radius: 50%; color: #fff; background: linear-gradient(180deg, #2f6df0, var(--brand-blue)); box-shadow: 0 6px 14px rgba(31, 87, 214, 0.32); }
+.gwy__step-txt { display: flex; flex-direction: column; font-size: clamp(13px, 1.1vw, 15px); line-height: 1.3; color: var(--brand-muted); }
+.gwy__step-txt b { font-family: var(--brand-font-display); font-size: clamp(15px, 1.35vw, 18px); font-weight: 700; letter-spacing: 0.03em; text-transform: uppercase; color: var(--brand-navy); }
+
+/* QR block */
+.gwy__qr { display: flex; flex-direction: column; align-items: center; gap: 8px; padding-left: clamp(16px, 2vw, 28px); border-left: 1px solid var(--brand-line); align-self: stretch; justify-content: center; text-decoration: none; color: var(--brand-navy); text-align: center; }
+.gwy__qr-head, .gwy__qr-foot { font-family: var(--brand-font-display); font-weight: 700; text-transform: uppercase; }
+.gwy__qr-head { max-width: 12ch; font-size: 14px; line-height: 1.15; letter-spacing: 0.03em; }
+.gwy__qr-foot { font-size: 14px; letter-spacing: 0.14em; color: var(--brand-blue); }
+.gwy__qr img { display: block; width: clamp(112px, 10vw, 140px); height: auto; padding: 6px; background: #fff; border: 2px solid var(--brand-blue); border-radius: 14px; box-sizing: border-box; transition: transform 0.2s, box-shadow 0.2s; }
+.gwy__qr:hover img { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(31, 87, 214, 0.28); }
+.gwy__qr:focus-visible { outline: 3px solid var(--brand-blue); outline-offset: 4px; border-radius: 14px; }
+
+.gwy__more { grid-area: more; margin: 0; padding: 6px 16px; border-radius: var(--brand-radius-pill); background: rgba(255, 255, 255, 0.82); font-family: var(--brand-font-display); font-size: clamp(11px, 1.1vw, 14px); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; text-align: center; color: var(--brand-navy); }
+
+/* mobile: stacked */
+.gwy__card { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'title' 'tag' 'prize' 'how' 'more'; }
+.gwy__title { grid-area: title; max-width: 270px; }
+.gwy__tag { grid-area: tag; justify-self: center; }
+.gwy__prize { max-width: 290px; }
+
+/* phones: QR drops under the steps */
+@media (max-width: 559px) {
+  .gwy__how { grid-template-columns: minmax(0, 1fr); }
+  .gwy__qr { flex-direction: column; border-left: 0; border-top: 1px solid var(--brand-line); padding: 16px 0 0; }
+  .gwy__how-title { width: min(100%, 260px); }
+}
+
+/* tablet: title + prize side by side, card full width below */
+@media (min-width: 700px) and (max-width: 1099px) {
+  .gwy__card { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: 'title prize' 'tag prize' 'how how' 'more more'; column-gap: 24px; }
+  .gwy__title { justify-self: end; }
+  .gwy__prize { justify-self: start; max-width: 300px; }
+  .gwy__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; }
+}
+
+/* desktop: the reference — 4 columns, last one left clear for the stadium ball */
+@media (min-width: 1100px) {
+  .gwy__card {
+    grid-template-columns: 24fr 25fr 36fr 15fr;
+    grid-template-areas: 'title prize how .' 'tag more more .';
+    grid-template-rows: 1fr auto;
+    column-gap: clamp(16px, 2vw, 32px); row-gap: 8px; min-height: 480px; padding-top: 32px;
+  }
+  .gwy__title { justify-self: start; align-self: end; max-width: 330px; }
+  .gwy__tag { justify-self: start; align-self: center; }
+  .gwy__prize { align-self: center; justify-self: center; max-width: 400px; }
+  .gwy__how { align-self: center; }
+  .gwy__more { justify-self: center; }
+}
+
+@media (prefers-reduced-motion: reduce) { .gwy__qr img { transition: none; } }

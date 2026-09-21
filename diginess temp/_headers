@@ -1,0 +1,64 @@
+# Cache Control Headers for Static Assets
+# This file is for Cloudflare, Netlify, or similar CDN providers
+
+# JavaScript bundles - immutable with long cache
+/assets/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+# CSS files - immutable with long cache
+/assets/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images (AVIF, WebP, PNG, JPG) - long cache with revalidation
+/*.avif
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.webp
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.jpeg
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts - immutable with longest cache
+/fonts/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*.ttf
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/fonts.css
+  Cache-Control: public, max-age=31536000, immutable
+
+# HTML files - no cache, always revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Service Worker - no cache
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Manifest
+/manifest.json
+  Cache-Control: public, max-age=86400, must-revalidate
+
+# Robots and sitemap
+/robots.txt
+  Cache-Control: public, max-age=86400
+
+/sitemap.xml
+  Cache-Control: public, max-age=86400

@@ -1,0 +1,87 @@
+.celebration-background {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, #68d391, #4299e1, #9f7aea);
+  border-radius: 0.5rem;
+  opacity: 1;
+}
+
+.confetti-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  animation-name: bounce;
+  animation-iteration-count: infinite;
+}
+
+/* Position utility classes (quantized to avoid inline styles) */
+.confetti-left-0 { left: 0%; }
+.confetti-left-10 { left: 10%; }
+.confetti-left-20 { left: 20%; }
+.confetti-left-30 { left: 30%; }
+.confetti-left-40 { left: 40%; }
+.confetti-left-50 { left: 50%; }
+.confetti-left-60 { left: 60%; }
+.confetti-left-70 { left: 70%; }
+.confetti-left-80 { left: 80%; }
+.confetti-left-90 { left: 90%; }
+.confetti-left-100 { left: 100%; }
+
+.confetti-top-0 { top: 0%; }
+.confetti-top-10 { top: 10%; }
+.confetti-top-20 { top: 20%; }
+.confetti-top-30 { top: 30%; }
+.confetti-top-40 { top: 40%; }
+.confetti-top-50 { top: 50%; }
+.confetti-top-60 { top: 60%; }
+.confetti-top-70 { top: 70%; }
+.confetti-top-80 { top: 80%; }
+.confetti-top-90 { top: 90%; }
+.confetti-top-100 { top: 100%; }
+
+/* Animation timing utilities */
+.confetti-delay-0 { animation-delay: 0ms; }
+.confetti-delay-500 { animation-delay: 500ms; }
+.confetti-delay-1000 { animation-delay: 1000ms; }
+.confetti-delay-1500 { animation-delay: 1500ms; }
+.confetti-delay-2000 { animation-delay: 2000ms; }
+.confetti-delay-2500 { animation-delay: 2500ms; }
+.confetti-delay-3000 { animation-delay: 3000ms; }
+
+.confetti-duration-2000 { animation-duration: 2000ms; }
+.confetti-duration-2500 { animation-duration: 2500ms; }
+.confetti-duration-3000 { animation-duration: 3000ms; }
+.confetti-duration-3500 { animation-duration: 3500ms; }
+.confetti-duration-4000 { animation-duration: 4000ms; }
+
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}

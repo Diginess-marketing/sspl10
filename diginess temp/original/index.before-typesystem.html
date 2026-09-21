@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Console Suppression - DISABLED FOR DEBUGGING -->
+  <!-- <script src="/disable-console.js"></script> -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SSPL T10 - India's Premier T10 Tennis Ball Cricket League</title>
+  <meta name="description"
+    content="Join SSPL T10 - India's Premier T10 Tennis Ball Cricket League with prize money up to 3 Crores. Register now for trials across India." />
+
+  <!-- SEO Meta Tags -->
+  <meta name="keywords" content="SSPL T10, cricket tournament, tennis ball cricket, T10 league, street cricket" />
+  <meta name="author" content="SSPL T10" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://ssplt10.co.in/" />
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="/blue-logo.png" />
+  <link rel="apple-touch-icon" href="/blue-logo.png" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="SSPL T10 Tennis Ball Cricket League | India's Ultimate T10 Tournament" />
+  <meta property="og:description"
+    content="Join SSPL T10 - India's Premier T10 Tennis Ball Cricket League with prize money up to 3 Crores. Register now for trials across India." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ssplt10.co.in/" />
+  <meta property="og:image" content="https://ssplt10.com/ssplt10-logo.png" />
+  <meta property="og:site_name" content="SSPL T10" />
+  <meta property="og:locale" content="en_IN" />
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@ssplt10" />
+  <meta name="twitter:title" content="SSPL T10 Cricket League | India's Ultimate T10 Cricket Tournament" />
+  <meta name="twitter:description"
+    content="Join SSPL T10 - India's premier T10 cricket league with prize money up to 3 Crores. Register now for trials across India." />
+  <meta name="twitter:image" content="https://ssplt10.com/ssplt10-logo.png" />
+
+  <!-- Security Headers (Note: X-Frame-Options, X-Content-Type-Options, X-XSS-Protection are handled by server config) -->
+
+  <style>
+    html {
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      font-family: 'Outfit', system-ui, sans-serif;
+      line-height: 1.5;
+      -moz-tab-size: 4;
+      -o-tab-size: 4;
+      tab-size: 4
+    }
+
+    body {
+      line-height: inherit;
+      margin: 0
+    }
+
+    #root {
+      background: #0b0b0b;
+      color: #fff;
+      font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+      min-height: 100vh
+    }
+
+    .hero-skeleton {
+      background: linear-gradient(180deg, #1a1a1a, #0b0b0b);
+      min-height: 500px;
+      overflow: hidden;
+      position: relative;
+      width: 100%
+    }
+
+    .hero-skeleton:after {
+      animation: shimmer 2s infinite;
+      background: linear-gradient(90deg, transparent, hsla(0, 0%, 100%, .05), transparent);
+      content: "";
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%)
+      }
+
+      to {
+        transform: translateX(100%)
+      }
+    }
+
+    @media(min-width:640px) {
+      .hero-skeleton {
+        min-height: 650px
+      }
+    }
+
+    .text-center {
+      text-align: center
+    }
+
+    .hidden {
+      display: none
+    }
+  </style>
+
+  <!-- Load remaining fonts asynchronously (non-critical weights) -->
+  <link rel="stylesheet" href="/fonts/fonts.css" media="print" onload="this.media='all'; this.onload=null;">
+  <noscript>
+    <link rel="stylesheet" href="/fonts/fonts.css">
+  </noscript>
+
+  <!-- Resource Hints for Critical Third-Party Domains -->
+  <!-- Preconnect for Google Analytics -->
+  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <!-- Preconnect for Razorpay (payment gateway) -->
+  <link rel="preconnect" href="https://checkout.razorpay.com">
+  <link rel="dns-prefetch" href="https://checkout.razorpay.com">
+  <!-- Google Fonts - Premium Sporty UI Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&family=Roboto+Condensed:wght@700&family=IBM+Plex+Sans+Condensed:ital,wght@0,600;0,700;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- Note: SMTP.js script removed from global load - now loaded dynamically when contact form is needed -->
+  <!-- Note: Razorpay script removed from global load - now loaded dynamically on payment pages only -->
+  <!-- Canonical tag already present; ensure other route pages set their own via react-helmet -->
+
+
+  <script type="module" src="/src/main.tsx"></script>
+
+<body>
+  <!-- FORCE CLEAR SERVICE WORKERS FOR DEV -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) {
+          registration.unregister().then(function(boolean) {
+            if (boolean) {
+              console.log('Unregistered old Service Worker to prevent Dev Server caching.');
+              // Force reload after unregistering to fetch fresh index.html
+              window.location.reload(true);
+            }
+          });
+        }
+      });
+    }
+  </script>
+  <div id="root"></div>
+</body>
+
+</html>

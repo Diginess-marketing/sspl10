@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement Strip Component</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#c40000',
+                            text: '#ffffff',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 p-8 space-y-8 font-sans">
+
+    <!-- Variant 1: Registration Open (Primary Brand Color) -->
+    <h2 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Variant 1: Registration Open</h2>
+
+    <!-- Component Start -->
+    <div class="relative bg-brand-primary text-white overflow-hidden shadow-lg" role="banner" aria-label="Announcement">
+        <!-- Background Pattern -->
+        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-32 h-32 rounded-full bg-white/10 blur-xl"></div>
+        <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-32 h-32 rounded-full bg-black/10 blur-xl"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-8 text-center sm:text-left">
+
+                <div class="flex items-center gap-3 flex-1 justify-center sm:justify-start">
+                    <span
+                        class="flex-shrink-0 animate-pulse bg-white text-brand-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-white/50">
+                        New
+                    </span>
+                    <p class="text-sm sm:text-base font-medium">
+                        Season 2026 Registrations are now live! Early bird discounts end in <strong>48 hours</strong>.
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-4 flex-shrink-0">
+                    <a href="#"
+                        class="inline-flex whitespace-nowrap text-sm font-semibold bg-white text-brand-primary px-4 py-1.5 rounded-full hover:bg-gray-50 transition-colors shadow-sm">
+                        Register Now &rarr;
+                    </a>
+
+                    <!-- Dismiss Button Placeholder -->
+                    <button
+                        class="flex-shrink-0 p-1 text-white/70 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-white/50 rounded"
+                        aria-label="Dismiss announcement">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Component End -->
+
+
+    <!-- Variant 2: Match Day Alert (Dark High Contrast) -->
+    <h2 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Variant 2: Match Day Alert</h2>
+
+    <!-- Component Start -->
+    <div class="relative bg-gray-900 border-b border-gray-800 text-white" role="alert">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div
+                class="flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-3 text-center sm:text-left">
+
+                <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 md:flex-1">
+                    <div
+                        class="flex items-center gap-2 text-red-500 font-bold uppercase tracking-widest text-xs animate-pulse">
+                        <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                        Live Now
+                    </div>
+                    <p class="text-sm text-gray-300">
+                        <span class="font-bold text-white">Super Kings</span> vs <span
+                            class="font-bold text-white">Royal Riders</span> &middot; Final Match
+                    </p>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <a href="#"
+                        class="text-xs sm:text-sm font-medium text-red-500 hover:text-red-400 py-1 transition-colors underline decoration-red-500/30 hover:decoration-red-500 decoration-2 underline-offset-4">
+                        Watch Stream
+                    </a>
+                    <button class="hidden sm:block flex-shrink-0 p-1 text-gray-500 hover:text-white transition-colors"
+                        aria-label="Dismiss">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Component End -->
+
+
+    <!-- Variant 3: Important Update (Warning/Info Style) -->
+    <h2 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-2">Variant 3: Important Update</h2>
+
+    <!-- Component Start -->
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4" role="alert">
+        <div class="max-w-7xl mx-auto flex items-start sm:items-center">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <div class="ml-3 flex-1 md:flex md:justify-between items-center gap-4">
+                <p class="text-sm text-yellow-800">
+                    <span class="font-medium text-yellow-900 block sm:inline">Venue Change:</span>
+                    The Qualifier 1 match has been moved to <span class="font-semibold">City Sports Complex</span> due
+                    to rain.
+                </p>
+                <div class="mt-2 md:mt-0">
+                    <a href="#" class="text-sm font-bold text-yellow-800 hover:text-yellow-900 whitespace-nowrap">
+                        View Details &rarr;
+                    </a>
+                </div>
+            </div>
+            <!-- Dismiss (Optional for this type) -->
+            <button class="ml-auto pl-3 text-yellow-500 hover:text-yellow-800 transition-colors">
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    <!-- Component End -->
+
+</body>
+
+</html>

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+android-pwa/**/build/
+android-pwa/.gradle/
+.gradle/
+*.apk
+*.aab
+scratch/

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Wall Component</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            primary: '#c40000',
+                            text: '#ffffff',
+                            surface: '#111111',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-gray-900 font-sans text-white">
+
+    <!-- Social Wall Section Component Start -->
+    <section class="py-16 bg-gray-900 border-t border-gray-800" aria-labelledby="social-heading">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center mb-12">
+                <span class="text-brand-primary font-bold tracking-wider uppercase text-sm mb-2 block">Fan Zone</span>
+                <h2 id="social-heading" class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                    Trending on Social
+                </h2>
+                <p class="text-gray-400 mt-2">Catch the best moments from the community #ProLeague2026</p>
+            </div>
+
+            <!-- Video Grid (Masonry-ish feel with consistent aspect ratios) -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+                <!-- Video Card 1 -->
+                <div
+                    class="relative group aspect-[9/16] bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-xl hover:shadow-2xl hover:border-brand-primary/50 transition-all duration-300 transform hover:-translate-y-1">
+                    <!-- Video Element -->
+                    <video
+                        class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                        poster="https://placehold.co/400x710/111111/333333?text=Video+Poster" autoplay muted loop
+                        playsinline>
+                        <!-- Using a sample reliable video source, or placeholder if unavailable. 
+                             For production, replace with actual CDN links. -->
+                        <source
+                            src="https://assets.mixkit.co/videos/preview/mixkit-cricket-player-hitting-a-ball-running-43282-small.mp4"
+                            type="video/mp4">
+                    </video>
+
+                    <!-- Overlay Gradient -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90"></div>
+
+                    <!-- Content Overlay -->
+                    <div class="absolute bottom-4 left-4 right-4 animate-fade-in-up">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div
+                                class="w-6 h-6 rounded-full bg-brand-primary flex items-center justify-center text-[10px] font-bold">
+                                @</div>
+                            <span class="text-xs font-bold text-white shadow-sm">cricketer_ravi</span>
+                        </div>
+                        <p class="text-sm font-medium text-white line-clamp-2 leading-tight drop-shadow-md">
+                            What a shot! Massive six over long on! 🏏🔥
+                        </p>
+                        <div class="flex items-center gap-3 mt-3 text-xs text-gray-300">
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                </svg>
+                                1.2k
+                            </span>
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                    <path
+                                        d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+                                </svg>
+                                45
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Card 2 -->
+                <div
+                    class="relative group aspect-[9/16] bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-xl hover:shadow-2xl hover:border-brand-primary/50 transition-all duration-300 transform hover:-translate-y-1">
+                    <video
+                        class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                        poster="https://placehold.co/400x710/111111/333333?text=Training+Session" autoplay muted loop
+                        playsinline>
+                        <source
+                            src="https://assets.mixkit.co/videos/preview/mixkit-young-man-practicing-cricket-batting-43285-small.mp4"
+                            type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div
+                                class="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold">
+                                MI</div>
+                            <span class="text-xs font-bold text-white shadow-sm">mumbai_indians</span>
+                        </div>
+                        <p class="text-sm font-medium text-white line-clamp-2 leading-tight drop-shadow-md">
+                            Training camp day 1. The boys are looking sharp! 💪
+                        </p>
+                        <div class="flex items-center gap-3 mt-3 text-xs text-gray-300">
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                </svg>
+                                856
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Card 3 -->
+                <div
+                    class="relative group aspect-[9/16] bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-xl hover:shadow-2xl hover:border-brand-primary/50 transition-all duration-300 transform hover:-translate-y-1">
+                    <video
+                        class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                        poster="https://placehold.co/400x710/111111/333333?text=Fans" autoplay muted loop playsinline>
+                        <source
+                            src="https://assets.mixkit.co/videos/preview/mixkit-cheering-crowd-in-a-stadium-42795-small.mp4"
+                            type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div
+                                class="w-6 h-6 rounded-full bg-yellow-500 flex items-center justify-center text-[10px] font-bold text-black">
+                                L</div>
+                            <span class="text-xs font-bold text-white shadow-sm">league_official</span>
+                        </div>
+                        <p class="text-sm font-medium text-white line-clamp-2 leading-tight drop-shadow-md">
+                            The atmosphere at the final was electric! ⚡️🏆
+                        </p>
+                        <div class="flex items-center gap-3 mt-3 text-xs text-gray-300">
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                </svg>
+                                4.5k
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Card 4 (Hidden on smaller mobile screens if desired, but kept for grid) -->
+                <div
+                    class="relative group aspect-[9/16] bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-xl hover:shadow-2xl hover:border-brand-primary/50 transition-all duration-300 transform hover:-translate-y-1 hidden sm:block">
+                    <video
+                        class="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                        poster="https://placehold.co/400x710/111111/333333?text=Review" autoplay muted loop playsinline>
+                        <source
+                            src="https://assets.mixkit.co/videos/preview/mixkit-cricket-umpire-signaling-out-43284-small.mp4"
+                            type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/90"></div>
+                    <div class="absolute bottom-4 left-4 right-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <div
+                                class="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-[10px] font-bold">
+                                P</div>
+                            <span class="text-xs font-bold text-white shadow-sm">pro_analyst</span>
+                        </div>
+                        <p class="text-sm font-medium text-white line-clamp-2 leading-tight drop-shadow-md">
+                            Decision review system in action. Out or Not Out? 🧐
+                        </p>
+                        <div class="flex items-center gap-3 mt-3 text-xs text-gray-300">
+                            <span class="flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                </svg>
+                                900
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-8 text-center">
+                <a href="#"
+                    class="inline-flex items-center justify-center px-6 py-3 border border-gray-600 text-sm font-medium rounded-lg text-white hover:bg-white hover:text-gray-900 transition-all">
+                    View All Highlights
+                </a>
+            </div>
+
+        </div>
+    </section>
+    <!-- Social Wall Section Component End -->
+
+</body>
+
+</html>

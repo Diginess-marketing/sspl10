@@ -1,0 +1,1414 @@
+{
+  "summary": {
+    "totalOrig": 138573250,
+    "totalBest": 3741564,
+    "totalSavings": 134831686,
+    "pct": 97.29993775855009
+  },
+  "rows": [
+    {
+      "file": "public/Gallery/Untitled-design13.png",
+      "orig": 26174404,
+      "avif": 378610,
+      "webp": 619466,
+      "best": 378610,
+      "savings": 25795794,
+      "savingsPct": 98.55351052119468
+    },
+    {
+      "file": "public/Gallery/Untitled-design11.png",
+      "orig": 19959849,
+      "avif": 152454,
+      "webp": 294500,
+      "best": 152454,
+      "savings": 19807395,
+      "savingsPct": 99.2361966265376
+    },
+    {
+      "file": "public/Gallery/Untitled-design12.png",
+      "orig": 19723866,
+      "avif": 187992,
+      "webp": 343398,
+      "best": 187992,
+      "savings": 19535874,
+      "savingsPct": 99.04688056590935
+    },
+    {
+      "file": "public/Gallery/Untitled-design10.png",
+      "orig": 15661779,
+      "avif": 92828,
+      "webp": 177918,
+      "best": 92828,
+      "savings": 15568951,
+      "savingsPct": 99.40729594000783
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/ravi mohan home with bg.png",
+      "orig": 7874925,
+      "avif": 108133,
+      "webp": 191224,
+      "best": 108133,
+      "savings": 7766792,
+      "savingsPct": 98.62686946224885
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/ravi mohan home with bg.png",
+      "orig": 7874925,
+      "avif": 108133,
+      "webp": 191224,
+      "best": 108133,
+      "savings": 7766792,
+      "savingsPct": 98.62686946224885
+    },
+    {
+      "file": "public/Gallery/IMG_3773.PNG",
+      "orig": 4128666,
+      "avif": 164024,
+      "webp": 260848,
+      "best": 164024,
+      "savings": 3964642,
+      "savingsPct": 96.02719134945768
+    },
+    {
+      "file": "public/Gallery/IMG_3777.PNG",
+      "orig": 4022508,
+      "avif": 156537,
+      "webp": 249056,
+      "best": 156537,
+      "savings": 3865971,
+      "savingsPct": 96.1084726245417
+    },
+    {
+      "file": "public/Gallery/IMG_3776.PNG",
+      "orig": 3498779,
+      "avif": 96214,
+      "webp": 157266,
+      "best": 96214,
+      "savings": 3402565,
+      "savingsPct": 97.25006923844003
+    },
+    {
+      "file": "public/Gallery/IMG_3775.PNG",
+      "orig": 3144258,
+      "avif": 54721,
+      "webp": 106676,
+      "best": 54721,
+      "savings": 3089537,
+      "savingsPct": 98.25965299285237
+    },
+    {
+      "file": "public/Gallery/IMG_3774.PNG",
+      "orig": 2801725,
+      "avif": 43805,
+      "webp": 82446,
+      "best": 43805,
+      "savings": 2757920,
+      "savingsPct": 98.43649894261571
+    },
+    {
+      "file": "public/Registration-open-1.png",
+      "orig": 1283766,
+      "avif": 42284,
+      "webp": 70200,
+      "best": 42284,
+      "savings": 1241482,
+      "savingsPct": 96.70625332030916
+    },
+    {
+      "file": "public/Our-Sponsors/Lions-International-.png",
+      "orig": 890797,
+      "avif": 41202,
+      "webp": 68850,
+      "best": 41202,
+      "savings": 849595,
+      "savingsPct": 95.37470377650575
+    },
+    {
+      "file": "public/Gallery/IMG_3778.PNG",
+      "orig": 776810,
+      "avif": 135422,
+      "webp": 212348,
+      "best": 135422,
+      "savings": 641388,
+      "savingsPct": 82.56690825298335
+    },
+    {
+      "file": "public/Our-Sponsors/Odi-Vilayadu-Papa.png",
+      "orig": 503101,
+      "avif": 13167,
+      "webp": 41512,
+      "best": 13167,
+      "savings": 489934,
+      "savingsPct": 97.38283167793345
+    },
+    {
+      "file": "image_30.png",
+      "orig": 465299,
+      "avif": 11443,
+      "webp": 19882,
+      "best": 11443,
+      "savings": 453856,
+      "savingsPct": 97.54072112770498
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/image_30.png",
+      "orig": 465299,
+      "avif": 11443,
+      "webp": 19882,
+      "best": 11443,
+      "savings": 453856,
+      "savingsPct": 97.54072112770498
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/image_30.png",
+      "orig": 465299,
+      "avif": 11443,
+      "webp": 19882,
+      "best": 11443,
+      "savings": 453856,
+      "savingsPct": 97.54072112770498
+    },
+    {
+      "file": "public/image_30.png",
+      "orig": 465299,
+      "avif": 11443,
+      "webp": 19882,
+      "best": 11443,
+      "savings": 453856,
+      "savingsPct": 97.54072112770498
+    },
+    {
+      "file": "public/Our-Sponsors/Comentary-Box.png",
+      "orig": 465696,
+      "avif": 17686,
+      "webp": 33598,
+      "best": 17686,
+      "savings": 448010,
+      "savingsPct": 96.2022435236721
+    },
+    {
+      "file": "public/Our-Sponsors/Reflect-Media.png",
+      "orig": 329084,
+      "avif": 7980,
+      "webp": 19906,
+      "best": 7980,
+      "savings": 321104,
+      "savingsPct": 97.57508721177571
+    },
+    {
+      "file": "public/Our-Sponsors/Malai-Murasu.png",
+      "orig": 323841,
+      "avif": 8152,
+      "webp": 18238,
+      "best": 8152,
+      "savings": 315689,
+      "savingsPct": 97.48271528311733
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Explore the teams/Kerala.png",
+      "orig": 267534,
+      "avif": 29132,
+      "webp": 35880,
+      "best": 29132,
+      "savings": 238402,
+      "savingsPct": 89.11091674329245
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Explore the teams/Kerala.png",
+      "orig": 267534,
+      "avif": 29132,
+      "webp": 35880,
+      "best": 29132,
+      "savings": 238402,
+      "savingsPct": 89.11091674329245
+    },
+    {
+      "file": "public/Explore the teams/Kerala.png",
+      "orig": 267534,
+      "avif": 29132,
+      "webp": 35880,
+      "best": 29132,
+      "savings": 238402,
+      "savingsPct": 89.11091674329245
+    },
+    {
+      "file": "image_29.png",
+      "orig": 228665,
+      "avif": 16055,
+      "webp": 22732,
+      "best": 16055,
+      "savings": 212610,
+      "savingsPct": 92.9788117989198
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/image_29.png",
+      "orig": 228665,
+      "avif": 16055,
+      "webp": 22732,
+      "best": 16055,
+      "savings": 212610,
+      "savingsPct": 92.9788117989198
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/image_29.png",
+      "orig": 228665,
+      "avif": 16055,
+      "webp": 22732,
+      "best": 16055,
+      "savings": 212610,
+      "savingsPct": 92.9788117989198
+    },
+    {
+      "file": "public/image_29.png",
+      "orig": 228665,
+      "avif": 16055,
+      "webp": 22732,
+      "best": 16055,
+      "savings": 212610,
+      "savingsPct": 92.9788117989198
+    },
+    {
+      "file": "public/Our-Sponsors/Football-Makka.png",
+      "orig": 223453,
+      "avif": 16352,
+      "webp": 42408,
+      "best": 16352,
+      "savings": 207101,
+      "savingsPct": 92.68213002286835
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Explore the teams/Karnataka.png",
+      "orig": 226998,
+      "avif": 21341,
+      "webp": 27240,
+      "best": 21341,
+      "savings": 205657,
+      "savingsPct": 90.59859558233994
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Explore the teams/Karnataka.png",
+      "orig": 226998,
+      "avif": 21341,
+      "webp": 27240,
+      "best": 21341,
+      "savings": 205657,
+      "savingsPct": 90.59859558233994
+    },
+    {
+      "file": "public/Explore the teams/Karnataka.png",
+      "orig": 226998,
+      "avif": 21341,
+      "webp": 27240,
+      "best": 21341,
+      "savings": 205657,
+      "savingsPct": 90.59859558233994
+    },
+    {
+      "file": "ravi mohan home with bg.jpg",
+      "orig": 268428,
+      "avif": 71436,
+      "webp": 126964,
+      "best": 71436,
+      "savings": 196992,
+      "savingsPct": 73.38727703518262
+    },
+    {
+      "file": "ravi mohan home with bg.png",
+      "orig": 268428,
+      "avif": 71436,
+      "webp": 126964,
+      "best": 71436,
+      "savings": 196992,
+      "savingsPct": 73.38727703518262
+    },
+    {
+      "file": "public/ravi-mohan-home-with-bg.jpg",
+      "orig": 268428,
+      "avif": 71436,
+      "webp": 126964,
+      "best": 71436,
+      "savings": 196992,
+      "savingsPct": 73.38727703518262
+    },
+    {
+      "file": "public/ravi-mohan-home-with-bg.png",
+      "orig": 268428,
+      "avif": 71436,
+      "webp": 126964,
+      "best": 71436,
+      "savings": 196992,
+      "savingsPct": 73.38727703518262
+    },
+    {
+      "file": "image_15.png",
+      "orig": 210352,
+      "avif": 13509,
+      "webp": 19694,
+      "best": 13509,
+      "savings": 196843,
+      "savingsPct": 93.57790750741614
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/image_15.png",
+      "orig": 210352,
+      "avif": 13509,
+      "webp": 19694,
+      "best": 13509,
+      "savings": 196843,
+      "savingsPct": 93.57790750741614
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/image_15.png",
+      "orig": 210352,
+      "avif": 13509,
+      "webp": 19694,
+      "best": 13509,
+      "savings": 196843,
+      "savingsPct": 93.57790750741614
+    },
+    {
+      "file": "public/image_15.png",
+      "orig": 210352,
+      "avif": 13509,
+      "webp": 19694,
+      "best": 13509,
+      "savings": 196843,
+      "savingsPct": 93.57790750741614
+    },
+    {
+      "file": "public/Our-Sponsors/Edge-media.png",
+      "orig": 209098,
+      "avif": 17733,
+      "webp": 45044,
+      "best": 17733,
+      "savings": 191365,
+      "savingsPct": 91.51928760676812
+    },
+    {
+      "file": "ssplt10-logo.png",
+      "orig": 211765,
+      "avif": 23436,
+      "webp": 71490,
+      "best": 23436,
+      "savings": 188329,
+      "savingsPct": 88.93301537081199
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/ssplt10-logo.png",
+      "orig": 211765,
+      "avif": 23436,
+      "webp": 71490,
+      "best": 23436,
+      "savings": 188329,
+      "savingsPct": 88.93301537081199
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/ssplt10-logo.png",
+      "orig": 211765,
+      "avif": 23436,
+      "webp": 71490,
+      "best": 23436,
+      "savings": 188329,
+      "savingsPct": 88.93301537081199
+    },
+    {
+      "file": "lovable-uploads/ada9fed7-8a22-4ee5-a3db-7a5f855ab03f.png",
+      "orig": 211765,
+      "avif": 23436,
+      "webp": 71490,
+      "best": 23436,
+      "savings": 188329,
+      "savingsPct": 88.93301537081199
+    },
+    {
+      "file": "public/ssplt10-logo.png",
+      "orig": 211765,
+      "avif": 23436,
+      "webp": 71490,
+      "best": 23436,
+      "savings": 188329,
+      "savingsPct": 88.93301537081199
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/lovable-uploads/ada9fed7-8a22-4ee5-a3db-7a5f855ab03f.png",
+      "orig": 211765,
+      "avif": 23436,
+      "webp": 71490,
+      "best": 23436,
+      "savings": 188329,
+      "savingsPct": 88.93301537081199
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/lovable-uploads/ada9fed7-8a22-4ee5-a3db-7a5f855ab03f.png",
+      "orig": 211765,
+      "avif": 23436,
+      "webp": 71490,
+      "best": 23436,
+      "savings": 188329,
+      "savingsPct": 88.93301537081199
+    },
+    {
+      "file": "public/lovable-uploads/ada9fed7-8a22-4ee5-a3db-7a5f855ab03f.png",
+      "orig": 211765,
+      "avif": 23436,
+      "webp": 71490,
+      "best": 23436,
+      "savings": 188329,
+      "savingsPct": 88.93301537081199
+    },
+    {
+      "file": "image_13.png",
+      "orig": 198129,
+      "avif": 11574,
+      "webp": 16552,
+      "best": 11574,
+      "savings": 186555,
+      "savingsPct": 94.15835137713307
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/image_13.png",
+      "orig": 198129,
+      "avif": 11574,
+      "webp": 16552,
+      "best": 11574,
+      "savings": 186555,
+      "savingsPct": 94.15835137713307
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/image_13.png",
+      "orig": 198129,
+      "avif": 11574,
+      "webp": 16552,
+      "best": 11574,
+      "savings": 186555,
+      "savingsPct": 94.15835137713307
+    },
+    {
+      "file": "public/image_13.png",
+      "orig": 198129,
+      "avif": 11574,
+      "webp": 16552,
+      "best": 11574,
+      "savings": 186555,
+      "savingsPct": 94.15835137713307
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Explore the teams/Andra Pradesh.png",
+      "orig": 187439,
+      "avif": 10345,
+      "webp": 15868,
+      "best": 10345,
+      "savings": 177094,
+      "savingsPct": 94.48087111006781
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Explore the teams/Andra Pradesh.png",
+      "orig": 187439,
+      "avif": 10345,
+      "webp": 15868,
+      "best": 10345,
+      "savings": 177094,
+      "savingsPct": 94.48087111006781
+    },
+    {
+      "file": "public/Explore the teams/Andra-Pradesh.png",
+      "orig": 187439,
+      "avif": 10345,
+      "webp": 15868,
+      "best": 10345,
+      "savings": 177094,
+      "savingsPct": 94.48087111006781
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Explore the teams/Pudhucherry.png",
+      "orig": 191007,
+      "avif": 14223,
+      "webp": 19076,
+      "best": 14223,
+      "savings": 176784,
+      "savingsPct": 92.55367604328637
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Explore the teams/Pudhucherry.png",
+      "orig": 191007,
+      "avif": 14223,
+      "webp": 19076,
+      "best": 14223,
+      "savings": 176784,
+      "savingsPct": 92.55367604328637
+    },
+    {
+      "file": "public/Explore the teams/Pudhucherry.png",
+      "orig": 191007,
+      "avif": 14223,
+      "webp": 19076,
+      "best": 14223,
+      "savings": 176784,
+      "savingsPct": 92.55367604328637
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Explore the teams/Tamil Nadu.png",
+      "orig": 194249,
+      "avif": 18045,
+      "webp": 22776,
+      "best": 18045,
+      "savings": 176204,
+      "savingsPct": 90.7103768873971
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Explore the teams/Tamil Nadu.png",
+      "orig": 194249,
+      "avif": 18045,
+      "webp": 22776,
+      "best": 18045,
+      "savings": 176204,
+      "savingsPct": 90.7103768873971
+    },
+    {
+      "file": "public/Explore the teams/Tamil-Nadu.png",
+      "orig": 194249,
+      "avif": 18045,
+      "webp": 22776,
+      "best": 18045,
+      "savings": 176204,
+      "savingsPct": 90.7103768873971
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Explore the teams/Telangana.png",
+      "orig": 189018,
+      "avif": 17147,
+      "webp": 21104,
+      "best": 17147,
+      "savings": 171871,
+      "savingsPct": 90.92837719159022
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Explore the teams/Telangana.png",
+      "orig": 189018,
+      "avif": 17147,
+      "webp": 21104,
+      "best": 17147,
+      "savings": 171871,
+      "savingsPct": 90.92837719159022
+    },
+    {
+      "file": "public/Explore the teams/Telangana.png",
+      "orig": 189018,
+      "avif": 17147,
+      "webp": 21104,
+      "best": 17147,
+      "savings": 171871,
+      "savingsPct": 90.92837719159022
+    },
+    {
+      "file": "public/Our-Sponsors/Equitas-Bank.png",
+      "orig": 179362,
+      "avif": 9567,
+      "webp": 21952,
+      "best": 9567,
+      "savings": 169795,
+      "savingsPct": 94.6660942674591
+    },
+    {
+      "file": "Gallery/image_28.png",
+      "orig": 174316,
+      "avif": 13045,
+      "webp": 17398,
+      "best": 13045,
+      "savings": 161271,
+      "savingsPct": 92.5164643520962
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Gallery/image_28.png",
+      "orig": 174316,
+      "avif": 13045,
+      "webp": 17398,
+      "best": 13045,
+      "savings": 161271,
+      "savingsPct": 92.5164643520962
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Gallery/image_28.png",
+      "orig": 174316,
+      "avif": 13045,
+      "webp": 17398,
+      "best": 13045,
+      "savings": 161271,
+      "savingsPct": 92.5164643520962
+    },
+    {
+      "file": "Gallery/image_22.png",
+      "orig": 179423,
+      "avif": 19750,
+      "webp": 24772,
+      "best": 19750,
+      "savings": 159673,
+      "savingsPct": 88.992492601283
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Gallery/image_22.png",
+      "orig": 179423,
+      "avif": 19750,
+      "webp": 24772,
+      "best": 19750,
+      "savings": 159673,
+      "savingsPct": 88.992492601283
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Gallery/image_22.png",
+      "orig": 179423,
+      "avif": 19750,
+      "webp": 24772,
+      "best": 19750,
+      "savings": 159673,
+      "savingsPct": 88.992492601283
+    },
+    {
+      "file": "Gallery/image_26.png",
+      "orig": 172255,
+      "avif": 14691,
+      "webp": 19418,
+      "best": 14691,
+      "savings": 157564,
+      "savingsPct": 91.47136512728223
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Gallery/image_26.png",
+      "orig": 172255,
+      "avif": 14691,
+      "webp": 19418,
+      "best": 14691,
+      "savings": 157564,
+      "savingsPct": 91.47136512728223
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Gallery/image_26.png",
+      "orig": 172255,
+      "avif": 14691,
+      "webp": 19418,
+      "best": 14691,
+      "savings": 157564,
+      "savingsPct": 91.47136512728223
+    },
+    {
+      "file": "public/Our-Sponsors/Royal-Peacocks-.png",
+      "orig": 175846,
+      "avif": 20105,
+      "webp": 41584,
+      "best": 20105,
+      "savings": 155741,
+      "savingsPct": 88.56670040831182
+    },
+    {
+      "file": "Gallery/image_27.png",
+      "orig": 153150,
+      "avif": 8228,
+      "webp": 12030,
+      "best": 8228,
+      "savings": 144922,
+      "savingsPct": 94.62748938948742
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Gallery/image_27.png",
+      "orig": 153150,
+      "avif": 8228,
+      "webp": 12030,
+      "best": 8228,
+      "savings": 144922,
+      "savingsPct": 94.62748938948742
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Gallery/image_27.png",
+      "orig": 153150,
+      "avif": 8228,
+      "webp": 12030,
+      "best": 8228,
+      "savings": 144922,
+      "savingsPct": 94.62748938948742
+    },
+    {
+      "file": "Gallery/image_25.png",
+      "orig": 139438,
+      "avif": 7097,
+      "webp": 10516,
+      "best": 7097,
+      "savings": 132341,
+      "savingsPct": 94.9102827062924
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Gallery/image_25.png",
+      "orig": 139438,
+      "avif": 7097,
+      "webp": 10516,
+      "best": 7097,
+      "savings": 132341,
+      "savingsPct": 94.9102827062924
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Gallery/image_25.png",
+      "orig": 139438,
+      "avif": 7097,
+      "webp": 10516,
+      "best": 7097,
+      "savings": 132341,
+      "savingsPct": 94.9102827062924
+    },
+    {
+      "file": "Gallery/image_19.png",
+      "orig": 138969,
+      "avif": 7248,
+      "webp": 10124,
+      "best": 7248,
+      "savings": 131721,
+      "savingsPct": 94.78444833020315
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Gallery/image_19.png",
+      "orig": 138969,
+      "avif": 7248,
+      "webp": 10124,
+      "best": 7248,
+      "savings": 131721,
+      "savingsPct": 94.78444833020315
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Gallery/image_19.png",
+      "orig": 138969,
+      "avif": 7248,
+      "webp": 10124,
+      "best": 7248,
+      "savings": 131721,
+      "savingsPct": 94.78444833020315
+    },
+    {
+      "file": "Gallery/image_21.png",
+      "orig": 127983,
+      "avif": 5023,
+      "webp": 7652,
+      "best": 5023,
+      "savings": 122960,
+      "savingsPct": 96.07525999546814
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Gallery/image_21.png",
+      "orig": 127983,
+      "avif": 5023,
+      "webp": 7652,
+      "best": 5023,
+      "savings": 122960,
+      "savingsPct": 96.07525999546814
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Gallery/image_21.png",
+      "orig": 127983,
+      "avif": 5023,
+      "webp": 7652,
+      "best": 5023,
+      "savings": 122960,
+      "savingsPct": 96.07525999546814
+    },
+    {
+      "file": "Gallery/image_17.png",
+      "orig": 129206,
+      "avif": 7899,
+      "webp": 10854,
+      "best": 7899,
+      "savings": 121307,
+      "savingsPct": 93.88650681856879
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Gallery/image_17.png",
+      "orig": 129206,
+      "avif": 7899,
+      "webp": 10854,
+      "best": 7899,
+      "savings": 121307,
+      "savingsPct": 93.88650681856879
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Gallery/image_17.png",
+      "orig": 129206,
+      "avif": 7899,
+      "webp": 10854,
+      "best": 7899,
+      "savings": 121307,
+      "savingsPct": 93.88650681856879
+    },
+    {
+      "file": "Gallery/image_52.png",
+      "orig": 127846,
+      "avif": 8361,
+      "webp": 11252,
+      "best": 8361,
+      "savings": 119485,
+      "savingsPct": 93.46010043333386
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/Gallery/image_52.png",
+      "orig": 127846,
+      "avif": 8361,
+      "webp": 11252,
+      "best": 8361,
+      "savings": 119485,
+      "savingsPct": 93.46010043333386
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/Gallery/image_52.png",
+      "orig": 127846,
+      "avif": 8361,
+      "webp": 11252,
+      "best": 8361,
+      "savings": 119485,
+      "savingsPct": 93.46010043333386
+    },
+    {
+      "file": "public/ravi-mohan.jpg",
+      "orig": 132158,
+      "avif": 16242,
+      "webp": 41310,
+      "best": 16242,
+      "savings": 115916,
+      "savingsPct": 87.71016510540413
+    },
+    {
+      "file": "public/ravi-mohan.png",
+      "orig": 132158,
+      "avif": 16242,
+      "webp": 41310,
+      "best": 16242,
+      "savings": 115916,
+      "savingsPct": 87.71016510540413
+    },
+    {
+      "file": "public/cp-rao.jpg",
+      "orig": 123030,
+      "avif": 17306,
+      "webp": 41942,
+      "best": 17306,
+      "savings": 105724,
+      "savingsPct": 85.93351215150776
+    },
+    {
+      "file": "public/cp-rao.png",
+      "orig": 123030,
+      "avif": 17306,
+      "webp": 41942,
+      "best": 17306,
+      "savings": 105724,
+      "savingsPct": 85.93351215150776
+    },
+    {
+      "file": "public/Pugazhendi.jpg",
+      "orig": 116001,
+      "avif": 14913,
+      "webp": 34838,
+      "best": 14913,
+      "savings": 101088,
+      "savingsPct": 87.14407634416945
+    },
+    {
+      "file": "public/Pugazhendi.png",
+      "orig": 116001,
+      "avif": 14913,
+      "webp": 34838,
+      "best": 14913,
+      "savings": 101088,
+      "savingsPct": 87.14407634416945
+    },
+    {
+      "file": "public/Nawab.jpg",
+      "orig": 120603,
+      "avif": 21032,
+      "webp": 42298,
+      "best": 21032,
+      "savings": 99571,
+      "savingsPct": 82.56096448678723
+    },
+    {
+      "file": "public/Nawab.png",
+      "orig": 120603,
+      "avif": 21032,
+      "webp": 42298,
+      "best": 21032,
+      "savings": 99571,
+      "savingsPct": 82.56096448678723
+    },
+    {
+      "file": "public/Our-Sponsors/Radio-city.png",
+      "orig": 111345,
+      "avif": 12470,
+      "webp": 31062,
+      "best": 12470,
+      "savings": 98875,
+      "savingsPct": 88.80057479006692
+    },
+    {
+      "file": "public/Adv-Sheela.jpg",
+      "orig": 112629,
+      "avif": 16934,
+      "webp": 38384,
+      "best": 16934,
+      "savings": 95695,
+      "savingsPct": 84.9647959228973
+    },
+    {
+      "file": "public/Adv-Sheela.png",
+      "orig": 112629,
+      "avif": 16934,
+      "webp": 38384,
+      "best": 16934,
+      "savings": 95695,
+      "savingsPct": 84.9647959228973
+    },
+    {
+      "file": "public/Lt-anand.jpg",
+      "orig": 100727,
+      "avif": 11791,
+      "webp": 30178,
+      "best": 11791,
+      "savings": 88936,
+      "savingsPct": 88.29410187933722
+    },
+    {
+      "file": "public/Lt-anand.png",
+      "orig": 100727,
+      "avif": 11791,
+      "webp": 30178,
+      "best": 11791,
+      "savings": 88936,
+      "savingsPct": 88.29410187933722
+    },
+    {
+      "file": "public/dynamic-format.png",
+      "orig": 113267,
+      "avif": 28360,
+      "webp": 48112,
+      "best": 28360,
+      "savings": 84907,
+      "savingsPct": 74.96181588635702
+    },
+    {
+      "file": "public/Our-Sponsors/Play-O---Png.png",
+      "orig": 81309,
+      "avif": 5629,
+      "webp": 24986,
+      "best": 5629,
+      "savings": 75680,
+      "savingsPct": 93.07702714336666
+    },
+    {
+      "file": "public/icon-512x512-maskable.png",
+      "orig": 96094,
+      "avif": 23293,
+      "webp": 36458,
+      "best": 23293,
+      "savings": 72801,
+      "savingsPct": 75.76019314421296
+    },
+    {
+      "file": "public/icon-512x512.png",
+      "orig": 96094,
+      "avif": 23293,
+      "webp": 36458,
+      "best": 23293,
+      "savings": 72801,
+      "savingsPct": 75.76019314421296
+    },
+    {
+      "file": "public/Our-Sponsors/Turf-Town-.png",
+      "orig": 72172,
+      "avif": 2660,
+      "webp": 7746,
+      "best": 2660,
+      "savings": 69512,
+      "savingsPct": 96.31436013966635
+    },
+    {
+      "file": "public/Dilip-Narayanan.jpg",
+      "orig": 75995,
+      "avif": 6513,
+      "webp": 20084,
+      "best": 6513,
+      "savings": 69482,
+      "savingsPct": 91.42969932232383
+    },
+    {
+      "file": "public/Dilip-Narayanan.png",
+      "orig": 75995,
+      "avif": 6513,
+      "webp": 20084,
+      "best": 6513,
+      "savings": 69482,
+      "savingsPct": 91.42969932232383
+    },
+    {
+      "file": "image_3.png",
+      "orig": 70445,
+      "avif": 11389,
+      "webp": 16096,
+      "best": 11389,
+      "savings": 59056,
+      "savingsPct": 83.83277734402725
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/image_3.png",
+      "orig": 70445,
+      "avif": 11389,
+      "webp": 16096,
+      "best": 11389,
+      "savings": 59056,
+      "savingsPct": 83.83277734402725
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/image_3.png",
+      "orig": 70445,
+      "avif": 11389,
+      "webp": 16096,
+      "best": 11389,
+      "savings": 59056,
+      "savingsPct": 83.83277734402725
+    },
+    {
+      "file": "public/image_3.png",
+      "orig": 70445,
+      "avif": 11389,
+      "webp": 16096,
+      "best": 11389,
+      "savings": 59056,
+      "savingsPct": 83.83277734402725
+    },
+    {
+      "file": "public/ourMoto.jpg",
+      "orig": 69713,
+      "avif": 11265,
+      "webp": 20524,
+      "best": 11265,
+      "savings": 58448,
+      "savingsPct": 83.84089050822658
+    },
+    {
+      "file": "image_8.png",
+      "orig": 55922,
+      "avif": 3203,
+      "webp": 6404,
+      "best": 3203,
+      "savings": 52719,
+      "savingsPct": 94.27237938557276
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/image_8.png",
+      "orig": 55922,
+      "avif": 3203,
+      "webp": 6404,
+      "best": 3203,
+      "savings": 52719,
+      "savingsPct": 94.27237938557276
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/image_8.png",
+      "orig": 55922,
+      "avif": 3203,
+      "webp": 6404,
+      "best": 3203,
+      "savings": 52719,
+      "savingsPct": 94.27237938557276
+    },
+    {
+      "file": "public/image_8.png",
+      "orig": 55922,
+      "avif": 3203,
+      "webp": 6404,
+      "best": 3203,
+      "savings": 52719,
+      "savingsPct": 94.27237938557276
+    },
+    {
+      "file": "public/Our-Sponsors/I-Merge.png",
+      "orig": 58446,
+      "avif": 5943,
+      "webp": 13602,
+      "best": 5943,
+      "savings": 52503,
+      "savingsPct": 89.83163946206754
+    },
+    {
+      "file": "public/icon-384x384-maskable.png",
+      "orig": 64803,
+      "avif": 16537,
+      "webp": 24258,
+      "best": 16537,
+      "savings": 48266,
+      "savingsPct": 74.4811197012484
+    },
+    {
+      "file": "public/icon-384x384.png",
+      "orig": 64803,
+      "avif": 16537,
+      "webp": 24258,
+      "best": 16537,
+      "savings": 48266,
+      "savingsPct": 74.4811197012484
+    },
+    {
+      "file": "public/logo.png",
+      "orig": 65174,
+      "avif": 20596,
+      "webp": 27258,
+      "best": 20596,
+      "savings": 44578,
+      "savingsPct": 68.39844109614263
+    },
+    {
+      "file": "public/Our-Sponsors/Sixit.png",
+      "orig": 45270,
+      "avif": 6749,
+      "webp": 22070,
+      "best": 6749,
+      "savings": 38521,
+      "savingsPct": 85.0916721890877
+    },
+    {
+      "file": "public/icon-192x192-maskable.png",
+      "orig": 25602,
+      "avif": 6362,
+      "webp": 9212,
+      "best": 6362,
+      "savings": 19240,
+      "savingsPct": 75.15037887665027
+    },
+    {
+      "file": "public/icon-192x192.png",
+      "orig": 25602,
+      "avif": 6362,
+      "webp": 9212,
+      "best": 6362,
+      "savings": 19240,
+      "savingsPct": 75.15037887665027
+    },
+    {
+      "file": "public/logo-192w.png",
+      "orig": 24854,
+      "avif": 7758,
+      "webp": 9264,
+      "best": 7758,
+      "savings": 17096,
+      "savingsPct": 68.78570853786111
+    },
+    {
+      "file": "public/ssplt10-logo-192w.png",
+      "orig": 22497,
+      "avif": 5482,
+      "webp": 7074,
+      "best": 5482,
+      "savings": 17015,
+      "savingsPct": 75.63230652975952
+    },
+    {
+      "file": "apple-touch-icon.png",
+      "orig": 17730,
+      "avif": 5309,
+      "webp": 7226,
+      "best": 5309,
+      "savings": 12421,
+      "savingsPct": 70.05640157924422
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/apple-touch-icon.png",
+      "orig": 17730,
+      "avif": 5309,
+      "webp": 7226,
+      "best": 5309,
+      "savings": 12421,
+      "savingsPct": 70.05640157924422
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/apple-touch-icon.png",
+      "orig": 17730,
+      "avif": 5309,
+      "webp": 7226,
+      "best": 5309,
+      "savings": 12421,
+      "savingsPct": 70.05640157924422
+    },
+    {
+      "file": "public/apple-touch-icon.png",
+      "orig": 17730,
+      "avif": 5309,
+      "webp": 7226,
+      "best": 5309,
+      "savings": 12421,
+      "savingsPct": 70.05640157924422
+    },
+    {
+      "file": "Explore the teams/Kerala.png",
+      "orig": 27887,
+      "avif": 16387,
+      "webp": 20670,
+      "best": 16387,
+      "savings": 11500,
+      "savingsPct": 41.237852762936136
+    },
+    {
+      "file": "Explore the teams/Karnataka.png",
+      "orig": 23985,
+      "avif": 12883,
+      "webp": 16528,
+      "best": 12883,
+      "savings": 11102,
+      "savingsPct": 46.28726287262872
+    },
+    {
+      "file": "Explore the teams/Pudhucherry.png",
+      "orig": 19009,
+      "avif": 8599,
+      "webp": 11400,
+      "best": 8599,
+      "savings": 10410,
+      "savingsPct": 54.763533063285806
+    },
+    {
+      "file": "Explore the teams/Tamil Nadu.png",
+      "orig": 20812,
+      "avif": 10619,
+      "webp": 13456,
+      "best": 10619,
+      "savings": 10193,
+      "savingsPct": 48.976551989236974
+    },
+    {
+      "file": "Explore the teams/Andra Pradesh.png",
+      "orig": 16683,
+      "avif": 6668,
+      "webp": 9816,
+      "best": 6668,
+      "savings": 10015,
+      "savingsPct": 60.03116945393514
+    },
+    {
+      "file": "Explore the teams/Telangana.png",
+      "orig": 20185,
+      "avif": 10562,
+      "webp": 13212,
+      "best": 10562,
+      "savings": 9623,
+      "savingsPct": 47.67401535793906
+    },
+    {
+      "file": "public/logo-128w.png",
+      "orig": 14629,
+      "avif": 5016,
+      "webp": 5598,
+      "best": 5016,
+      "savings": 9613,
+      "savingsPct": 65.71194203294826
+    },
+    {
+      "file": "public/ssplt10-logo-128w.png",
+      "orig": 13011,
+      "avif": 3653,
+      "webp": 4170,
+      "best": 3653,
+      "savings": 9358,
+      "savingsPct": 71.92375682115133
+    },
+    {
+      "file": "public/logo-96w.png",
+      "orig": 10075,
+      "avif": 3605,
+      "webp": 3934,
+      "best": 3605,
+      "savings": 6470,
+      "savingsPct": 64.21836228287842
+    },
+    {
+      "file": "public/icon-96x96.png",
+      "orig": 9611,
+      "avif": 3154,
+      "webp": 3986,
+      "best": 3154,
+      "savings": 6457,
+      "savingsPct": 67.18343564665487
+    },
+    {
+      "file": "public/ssplt10-logo-96w.png",
+      "orig": 8545,
+      "avif": 2618,
+      "webp": 2914,
+      "best": 2618,
+      "savings": 5927,
+      "savingsPct": 69.36220011702751
+    },
+    {
+      "file": "favicon-16x16.png",
+      "orig": 1557,
+      "avif": 1007,
+      "webp": 750,
+      "best": 1007,
+      "savings": 550,
+      "savingsPct": 35.32434168272319
+    },
+    {
+      "file": "favicon-32x32.png",
+      "orig": 1557,
+      "avif": 1007,
+      "webp": 750,
+      "best": 1007,
+      "savings": 550,
+      "savingsPct": 35.32434168272319
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/favicon-16x16.png",
+      "orig": 1557,
+      "avif": 1007,
+      "webp": 750,
+      "best": 1007,
+      "savings": 550,
+      "savingsPct": 35.32434168272319
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-13/favicon-32x32.png",
+      "orig": 1557,
+      "avif": 1007,
+      "webp": 750,
+      "best": 1007,
+      "savings": 550,
+      "savingsPct": 35.32434168272319
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/favicon-16x16.png",
+      "orig": 1557,
+      "avif": 1007,
+      "webp": 750,
+      "best": 1007,
+      "savings": 550,
+      "savingsPct": 35.32434168272319
+    },
+    {
+      "file": "dist_backup_2025-09-11_20-20/favicon-32x32.png",
+      "orig": 1557,
+      "avif": 1007,
+      "webp": 750,
+      "best": 1007,
+      "savings": 550,
+      "savingsPct": 35.32434168272319
+    },
+    {
+      "file": "public/favicon-16x16.png",
+      "orig": 1557,
+      "avif": 1007,
+      "webp": 750,
+      "best": 1007,
+      "savings": 550,
+      "savingsPct": 35.32434168272319
+    },
+    {
+      "file": "public/favicon-32x32.png",
+      "orig": 1557,
+      "avif": 1007,
+      "webp": 750,
+      "best": 1007,
+      "savings": 550,
+      "savingsPct": 35.32434168272319
+    }
+  ]
+}

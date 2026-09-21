@@ -1,0 +1,63 @@
+import type { SSPLStanding } from '@/types/sspl';
+
+// Temporary MVP standings data. Replace with API/Supabase source later.
+export const standings: SSPLStanding[] = [
+  {
+    id: 'stand-tn',
+    team_id: 'tn',
+    season: '2025',
+    matches_played: 3,
+    wins: 3,
+    losses: 0,
+    draws: 0,
+    points: 6,
+    net_run_rate: 1.42,
+    position: 1,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'stand-ka',
+    team_id: 'ka',
+    season: '2025',
+    matches_played: 3,
+    wins: 2,
+    losses: 1,
+    draws: 0,
+    points: 4,
+    net_run_rate: 0.65,
+    position: 2,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'stand-ke',
+    team_id: 'ke',
+    season: '2025',
+    matches_played: 3,
+    wins: 1,
+    losses: 2,
+    draws: 0,
+    points: 2,
+    net_run_rate: -0.15,
+    position: 3,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: 'stand-ts',
+    team_id: 'ts',
+    season: '2025',
+    matches_played: 3,
+    wins: 0,
+    losses: 3,
+    draws: 0,
+    points: 0,
+    net_run_rate: -1.12,
+    position: 4,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  },
+];
+
+export default standings;

@@ -1,0 +1,12 @@
+import { chromium } from 'playwright-core';
+const [,, w, out] = process.argv;
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: +w, height: 900 } });
+const errs = []; page.on('pageerror', e => errs.push(e.message.slice(0, 100)));
+await page.goto('http://127.0.0.1:5199/', { waitUntil: 'load' });
+await page.waitForSelector('.sts-spirit', { timeout: 30000 });
+await page.evaluate(() => document.fonts.ready); await page.waitForTimeout(800);
+const box = await page.evaluate(() => { const a = document.querySelector('#street-to-stadium').getBoundingClientRect(), b = document.querySelector('.sts-spirit').getBoundingClientRect(); return { top: a.top + scrollY, height: b.bottom - a.top, over: document.documentElement.scrollWidth - innerWidth }; });
+await page.screenshot({ path: out, fullPage: true, clip: { x: 0, y: box.top, width: +w, height: box.height } });
+console.log(w + 'px', JSON.stringify(box), errs.length ? errs : 'no page errors');
+await browser.close();

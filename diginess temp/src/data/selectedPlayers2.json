@@ -1,0 +1,302 @@
+[
+  {
+    "name": "RAHUL.L",
+    "location": "KARNATAKA",
+    "role": "BATSMAN",
+    "image": "/assets/players2/rahul-l.webp"
+  },
+  {
+    "name": "STEPHEN RAJ",
+    "location": "KARNATAKA",
+    "role": "AR",
+    "image": "/assets/players2/stephen-raj.webp"
+  },
+  {
+    "name": "AMALSITHAN",
+    "location": "KERALA",
+    "role": "BOWLER",
+    "image": "/assets/players2/amalsithan.webp"
+  },
+  {
+    "name": "S MANIKANDAN",
+    "location": "KARNATAKA",
+    "role": "AR",
+    "image": "/assets/players2/s-manikandan.webp"
+  },
+  {
+    "name": "KIRAN MONTHU P",
+    "location": "KARNATAKA",
+    "role": "",
+    "image": "/assets/players2/kiran-monthu-p.webp"
+  },
+  {
+    "name": "JEBA PRAKASH",
+    "location": "TAMILNADU",
+    "role": "AR",
+    "image": "/assets/players2/jeba-prakash.webp"
+  },
+  {
+    "name": "MURALI A",
+    "location": "KARNATAKA",
+    "role": "AR",
+    "image": "/assets/players2/murali-a.webp"
+  },
+  {
+    "name": "KANNAN ARUMUGAM",
+    "location": "TAMILNADU",
+    "role": "BATTING",
+    "image": "/assets/players2/kannan-arumugam.webp"
+  },
+  {
+    "name": "BHUKYA SATHISH RATHOD",
+    "location": "ANDHRAPRADESH",
+    "role": "AR",
+    "image": "/assets/players2/bhukya-sathish-rathod.webp"
+  },
+  {
+    "name": "UMESH K R",
+    "location": "KARNATAKA",
+    "role": "AR",
+    "image": "/assets/players2/umesh-k-r.webp"
+  },
+  {
+    "name": "PRAVEEN SHARMA",
+    "location": "RAJASTHAN",
+    "role": "AR",
+    "image": "/assets/players2/praveen-sharma.webp"
+  },
+  {
+    "name": "SHIBU",
+    "location": "TAMILNADU",
+    "role": "AR",
+    "image": "/assets/players2/shibu.webp"
+  },
+  {
+    "name": "DEEPAK CHAKRAVARTHY",
+    "location": "TAMILNADU",
+    "role": "BOWLER",
+    "image": "/assets/players2/deepak-chakravarthy.webp"
+  },
+  {
+    "name": "MIZRA AKBHAR",
+    "location": "MAHARASHTRA",
+    "role": "AR",
+    "image": "/assets/players2/mizra-akbhar.webp"
+  },
+  {
+    "name": "MIRIYALA RAVI CHANDRA",
+    "location": "ANDHRAPRADESH",
+    "role": "BATSMAN",
+    "image": "/assets/players2/miriyala-ravi-chandra.webp"
+  },
+  {
+    "name": "BASHETTY",
+    "location": "TELANGANA",
+    "role": "AR",
+    "image": "/assets/players2/bashetty.webp"
+  },
+  {
+    "name": "GUNTI SRINIVAS",
+    "location": "TELANGANA",
+    "role": "AR",
+    "image": "/assets/players2/gunti-srinivas.webp"
+  },
+  {
+    "name": "FASIL K",
+    "location": "KERALA",
+    "role": "AR",
+    "image": "/assets/players2/fasil-k.webp"
+  },
+  {
+    "name": "ABHILASH B GOPAL",
+    "location": "KERALA",
+    "role": "AR",
+    "image": "/assets/players2/abhilash-b-gopal.webp"
+  },
+  {
+    "name": "NAVEEN GOWDA CHOO",
+    "location": "KARNATAKA",
+    "role": "",
+    "image": "/assets/players2/naveen-gowda-choo.webp"
+  },
+  {
+    "name": "LOGANATHAN GURUMOORTHI",
+    "location": "TAMILNADU",
+    "role": "AR",
+    "image": "/assets/players2/loganathan-gurumoorthi.webp"
+  },
+  {
+    "name": "HARI SAIDEEPAK",
+    "location": "TELANGANA",
+    "role": "",
+    "image": "/assets/players2/hari-saideepak.webp"
+  },
+  {
+    "name": "MOHD AYYUB",
+    "location": "TELANGANA",
+    "role": "BOWLING",
+    "image": "/assets/players2/mohd-ayyub.webp"
+  },
+  {
+    "name": "VIJENDRA KUMAR BHARDWAJ",
+    "location": "HARYANA",
+    "role": "BOWLER",
+    "image": "/assets/players2/vijendra-kumar-bhardwaj.webp"
+  },
+  {
+    "name": "MOHAMMED ZAHEER",
+    "location": "KARNATAKA",
+    "role": "AR",
+    "image": "/assets/players2/mohammed-zaheer.webp"
+  },
+  {
+    "name": "NITHIN V B",
+    "location": "KERALA",
+    "role": "AR",
+    "image": "/assets/players2/nithin-v-b.webp"
+  },
+  {
+    "name": "VISHNU M U",
+    "location": "KERALA",
+    "role": "BOWLER",
+    "image": "/assets/players2/vishnu-m-u.webp"
+  },
+  {
+    "name": "PRASHANT KUCHBANDIYA",
+    "location": "MADHYAPRADESH",
+    "role": "AR",
+    "image": "/assets/players2/prashant-kuchbandiya.webp"
+  },
+  {
+    "name": "ANAND BAGHEL",
+    "location": "UTTARPRADESH",
+    "role": "AR",
+    "image": "/assets/players2/anand-baghel.webp"
+  },
+  {
+    "name": "ROHIT YADAV",
+    "location": "MAHARASHTRA",
+    "role": "BATSMAN",
+    "image": "/assets/players2/rohit-yadav.webp"
+  },
+  {
+    "name": "PRUTHVI SHINDE",
+    "location": "MAHARASHTRA",
+    "role": "AR",
+    "image": "/assets/players2/pruthvi-shinde.webp"
+  },
+  {
+    "name": "INDRAJIT DATTATRAY SAWANT",
+    "location": "MAHARASHTRA",
+    "role": "BATSMAN",
+    "image": "/assets/players2/indrajit-dattatray-sawant.webp"
+  },
+  {
+    "name": "SARTHAK KINAGE",
+    "location": "MAHARASHTRA",
+    "role": "AR",
+    "image": "/assets/players2/sarthak-kinage.webp"
+  },
+  {
+    "name": "HIMANSHU HANS",
+    "location": "MAHARASHTRA",
+    "role": "BOWLER",
+    "image": "/assets/players2/himanshu-hans.webp"
+  },
+  {
+    "name": "ANURAG SHARMA",
+    "location": "UTTARPRADESH",
+    "role": "AR",
+    "image": "/assets/players2/anurag-sharma.webp"
+  },
+  {
+    "name": "ISHWAR CHANDRA SAHAY",
+    "location": "UTTARPRADESH",
+    "role": "BOWLER",
+    "image": "/assets/players2/ishwar-chandra-sahay.webp"
+  },
+  {
+    "name": "AZAZ AHMED",
+    "location": "UTTARPRADESH",
+    "role": "AR",
+    "image": "/assets/players2/azaz-ahmed.webp"
+  },
+  {
+    "name": "PRAVEEN PRATAPGARH",
+    "location": "UTTARPRADESH",
+    "role": "BATSMAN",
+    "image": "/assets/players2/praveen-pratapgarh.webp"
+  },
+  {
+    "name": "GUMPARTHI NAVEEN",
+    "location": "TELANGANA",
+    "role": "AR",
+    "image": "/assets/players2/gumparthi-naveen.webp"
+  },
+  {
+    "name": "NITESH KUMAR",
+    "location": "UTTARPRADESH",
+    "role": "AR",
+    "image": "/assets/players2/nitesh-kumar.webp"
+  },
+  {
+    "name": "SHANTANU KUMAR RAGHUVANCI",
+    "location": "UTTARPRADESH",
+    "role": "BOWLER",
+    "image": "/assets/players2/shantanu-kumar-raghuvanci.webp"
+  },
+  {
+    "name": "GARIBA THAKUR",
+    "location": "UTTARPRADESH",
+    "role": "BOWLER",
+    "image": "/assets/players2/gariba-thakur.webp"
+  },
+  {
+    "name": "MATHIYAZHAGAN  A",
+    "location": "TAMILNADU",
+    "role": "BATSMAN",
+    "image": "/assets/players2/mathiyazhagan-a.webp"
+  },
+  {
+    "name": "SHRINANDA K M",
+    "location": "KARNATAKA",
+    "role": "BOWLER",
+    "image": "/assets/players2/shrinanda-k-m.webp"
+  },
+  {
+    "name": "NITIN RAUT",
+    "location": "MAHARASHTRA",
+    "role": "BATSMAN",
+    "image": "/assets/players2/nitin-raut.webp"
+  },
+  {
+    "name": "ANURAG OJHA",
+    "location": "RAJASTHAN",
+    "role": "AR",
+    "image": "/assets/players2/anurag-ojha.webp"
+  },
+  {
+    "name": "KANNAN",
+    "location": "TAMILNADU",
+    "role": "BOWLER",
+    "image": "/assets/players2/kannan.webp"
+  },
+  {
+    "name": "RAVIKUMAR GOUND",
+    "location": "ANDHRAPRADESH",
+    "role": "AR",
+    "image": "/assets/players2/ravikumar-gound.webp"
+  },
+  {
+    "name": "SARAN B",
+    "location": "TAMILNADU",
+    "role": "AR",
+    "image": "/assets/players2/saran-b.webp"
+  },
+  {
+    "name": "DEVANDAR SINGH GAREWAL",
+    "location": "MAHARASHTRA",
+    "role": "AR",
+    "image": "/assets/players2/devandar-singh-garewal.webp"
+  }
+]

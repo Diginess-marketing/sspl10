@@ -1,0 +1,94 @@
+/* Auction announcement — section-specific layout only; colour, type, buttons, cards come from styles/brand.css.
+   Proportions follow the approved reference: one compact horizontal band (copy | prize card | helmet), a slim stat row and a benefit strip. */
+
+.auc.brand-section { --auc-pad: clamp(40px, 5vw, 72px); --auc-gap: clamp(24px, 2.4vw, 32px); position: relative; overflow: hidden; width: 100%; align-self: stretch; border-top: 0; padding: var(--auc-pad) 0; }
+
+.auc__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-areas:
+    'copy prize art'
+    'stats stats art'
+    'features features features';
+  column-gap: clamp(24px, 3.4vw, 56px);
+  row-gap: clamp(24px, 2.4vw, 32px);
+  align-items: center;
+}
+
+/* copy */
+.auc__copy { grid-area: copy; min-width: 0; position: relative; z-index: 1; }
+.auc__badges { display: flex; align-items: center; gap: 12px; margin-bottom: clamp(10px, 1.2vw, 16px); }
+.auc__pill { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 16px 0 12px; border-radius: var(--brand-radius-pill); background: var(--brand-navy-deep); color: #fff; font-family: var(--brand-font-display); font-size: var(--brand-fs-label); font-weight: 700; letter-spacing: var(--brand-ls-label); white-space: nowrap; }
+.auc__pill svg { color: var(--brand-lime); }
+.auc__pill b { color: var(--brand-lime); font-weight: 700; }
+.auc__rule { width: 1px; height: 22px; background: var(--brand-line); flex: none; }
+.auc__eyebrow { margin: 0; font-size: var(--brand-fs-label); letter-spacing: var(--brand-ls-label); color: var(--brand-navy); white-space: nowrap; }
+
+.auc .auc__title { font-style: italic; font-size: var(--brand-fs-h2); line-height: 0.86; letter-spacing: var(--brand-ls-display); }
+.auc__line { display: block; }
+.auc__out { display: block; width: 88%; max-width: 360px; margin: 0.04em 0 0 -3%; }
+.auc__out img { display: block; width: 100%; height: auto; }
+
+.auc__lead { margin-top: clamp(8px, 1vw, 14px); max-width: 36ch; font-size: var(--brand-fs-lead); line-height: 1.45; color: var(--brand-navy); }
+.auc__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(14px, 1.6vw, 20px); }
+.auc__actions .brand-btn { height: 46px; padding: 0 18px; font-size: var(--brand-fs-btn); letter-spacing: var(--brand-ls-btn); }
+
+/* prize card (artwork carries the text) */
+.auc__prize { grid-area: prize; justify-self: center; width: 100%; max-width: 400px; min-width: 0; position: relative; z-index: 1; }
+.auc__prize img { display: block; width: 100%; height: auto; border-radius: 20px; box-shadow: 0 18px 40px rgba(31, 87, 214, 0.26); }
+
+/* helmet + ball */
+/* helmet = background art: bleeds off the right edge, sits on the line above the benefit strip, behind the content */
+.auc__art { position: absolute; z-index: 0; right: clamp(-90px, -4vw, -30px); bottom: calc(var(--auc-pad) + 60px + var(--auc-gap)); width: clamp(300px, 34vw, 520px); pointer-events: none; }
+.auc__art img { display: block; width: 100%; height: auto; }
+
+/* stat cards */
+.auc__stats { grid-area: stats; position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 1.2vw, 16px); margin: 0; padding: 0; list-style: none; }
+.auc-stat { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 14px; }
+.auc-stat__icon { flex: none; width: 40px; height: 40px; }
+.auc-stat__icon svg { width: 20px; height: 20px; }
+.auc-stat__text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.auc-stat__label { font-family: var(--brand-font-display); font-size: var(--brand-fs-label); font-weight: 600; letter-spacing: var(--brand-ls-label); text-transform: uppercase; color: var(--brand-muted); white-space: nowrap; }
+.auc-stat__value { font-family: var(--brand-font-display); font-size: var(--brand-fs-h3); font-weight: 700; line-height: 1.05; letter-spacing: var(--brand-ls-h3); text-transform: uppercase; color: var(--brand-blue); white-space: nowrap; }
+
+/* benefit strip */
+.auc__features { grid-area: features; position: relative; z-index: 1; box-sizing: border-box; min-height: 60px; display: flex; justify-content: space-between; align-items: center; margin: 0; padding: clamp(18px, 2vw, 24px) 0 0; list-style: none; border-top: 1px solid var(--brand-line); }
+.auc-feature { display: flex; align-items: center; gap: 8px; padding: 0 clamp(6px, 0.9vw, 12px); font-size: var(--brand-fs-small); font-weight: 500; line-height: 1.25; color: var(--brand-navy); }
+.auc-feature + .auc-feature { border-left: 1px solid var(--brand-line); }
+.auc-feature:first-child { padding-left: 0; }
+.auc-feature:last-child { padding-right: 0; }
+.auc-feature svg { flex: none; width: 22px; height: 22px; color: var(--brand-blue); }
+
+/* tablet: copy | prize card side by side, helmet dropped */
+@media (max-width: 1239px) {
+  .auc__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr);
+    grid-template-areas:
+      'copy prize'
+      'stats stats'
+      'features features';
+  }
+  .auc__art { display: none; }
+  .auc__prize { justify-self: end; width: 100%; max-width: 440px; }
+  .auc .auc__title { font-size: var(--brand-fs-h2); letter-spacing: var(--brand-ls-display); }
+  .auc__features { display: grid; grid-template-columns: repeat(3, 1fr); row-gap: 14px; }
+  .auc-feature:nth-child(4) { border-left: 0; padding-left: 0; }
+}
+
+/* mobile: single column */
+@media (max-width: 699px) {
+  .auc__grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: 'copy' 'prize' 'stats' 'features';
+  }
+  .auc .auc__title { font-size: var(--brand-fs-h2); letter-spacing: var(--brand-ls-display); }
+  .auc__out { width: 74%; }
+  .auc__badges { flex-wrap: wrap; row-gap: 8px; }
+  .auc__rule { display: none; }
+  .auc__actions .brand-btn { flex: 1 1 100%; }
+  .auc__stats { grid-template-columns: 1fr; gap: 10px; }
+  .auc__features { grid-template-columns: repeat(2, 1fr); row-gap: 14px; column-gap: 0; }
+  .auc-feature { padding: 0 10px; font-size: var(--brand-fs-small); }
+  .auc-feature:nth-child(odd) { border-left: 0; padding-left: 0; }
+  .auc-feature:nth-child(even) { border-left: 1px solid var(--brand-line); }
+}

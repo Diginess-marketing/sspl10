@@ -1,0 +1,34 @@
+/* Highlights — section-specific layout only; tokens come from styles/brand.css. Photo tiles are the client's own posters, shown uncropped-ish and untouched. */
+.hlx { position: relative; overflow: hidden; isolation: isolate; padding: clamp(40px, 5.5vw, 76px) 0 clamp(44px, 5.5vw, 76px); background: var(--brand-white); color: var(--brand-navy); font-family: var(--brand-font-body); border-top: 1px solid var(--brand-line); }
+.hlx__bg, .hlx__bg img { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+.hlx__bg img { display: block; object-fit: cover; }
+
+.hlx__head { display: flex; flex-direction: column; align-items: center; gap: 18px; margin-bottom: clamp(22px, 3vw, 36px); text-align: center; }
+.hlx__title { margin: 0; }
+.hlx__title img { display: block; width: clamp(240px, 32vw, 420px); height: auto; margin: 0 auto; }
+.hlx__lead { margin: 4px auto 0; max-width: 46ch; font-size: var(--brand-fs-lead); font-weight: 500; line-height: 1.5; color: var(--brand-navy); }
+
+/* one grid: 3 columns on desktop (2 squares | trophy | 2 squares), trophy beside a stack on phones */
+.hlx__grid { display: grid; gap: clamp(10px, 1.4vw, 18px); grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: 't a' 't b' 'c d'; }
+.hlx__tile { position: relative; display: block; width: 100%; padding: 0; margin: 0; overflow: hidden; cursor: pointer; border: 3px solid var(--brand-white); border-radius: clamp(14px, 1.6vw, 20px); background: var(--brand-sky-2); box-shadow: 0 14px 34px rgba(10, 18, 64, 0.14); transition: transform 0.3s ease, box-shadow 0.3s ease; aspect-ratio: 1; }
+.hlx__tile--a { grid-area: a; } .hlx__tile--b { grid-area: b; } .hlx__tile--c { grid-area: c; } .hlx__tile--d { grid-area: d; }
+.hlx__tile--t { grid-area: t; aspect-ratio: auto; height: 100%; min-height: 0; background: #05070d; }
+.hlx__tile img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+.hlx__tile:hover { transform: translateY(-4px); box-shadow: 0 22px 44px rgba(31, 87, 214, 0.28); }
+.hlx__tile:hover img { transform: scale(1.05); }
+.hlx__tile:focus-visible { outline: 3px solid var(--brand-blue); outline-offset: 3px; }
+.hlx__zoom { position: absolute; right: 12px; bottom: 12px; display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: var(--brand-navy-deep); color: var(--brand-lime); opacity: 0; transform: translateY(6px); transition: opacity 0.25s ease, transform 0.25s ease; }
+.hlx__tile:hover .hlx__zoom, .hlx__tile:focus-visible .hlx__zoom { opacity: 1; transform: none; }
+.hlx__badge { position: absolute; top: 12px; left: 12px; z-index: 1; padding: 7px 14px; border-radius: var(--brand-radius-pill); background: var(--brand-navy-deep); color: var(--brand-lime); font-family: var(--brand-font-display); font-size: var(--brand-fs-label); font-weight: 700; letter-spacing: var(--brand-ls-label); text-transform: uppercase; box-shadow: 0 6px 16px rgba(2, 20, 71, 0.35); }
+
+@media (min-width: 768px) {
+  .hlx__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-areas: 'a t c' 'b t d'; }
+  .hlx__head { flex-direction: row; justify-content: space-between; align-items: center; text-align: left; gap: 32px; }
+  .hlx__titles { display: flex; align-items: center; gap: clamp(20px, 3vw, 44px); min-width: 0; }
+  .hlx__title img { margin: 0; width: clamp(240px, 28vw, 380px); }
+  .hlx__lead { margin: 0; max-width: 30ch; }
+  .hlx__all { flex: none; }
+}
+@media (max-width: 767px) { .hlx__all { width: 100%; max-width: 360px; } .hlx__head { order: 0; } }
+@media (prefers-reduced-motion: reduce) { .hlx__tile, .hlx__tile img, .hlx__zoom { transition: none; } .hlx__tile:hover { transform: none; } .hlx__tile:hover img { transform: none; } }
+@media (max-width: 767px) { .hlx__badge { top: 8px; left: 8px; max-width: calc(100% - 16px); padding: 6px 12px; border-radius: 14px; line-height: 1.15; white-space: normal; } }

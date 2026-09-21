@@ -1,0 +1,353 @@
+/* Sporty Card Styles - Enhanced Design System */
+
+/* Base Card Enhancements */
+@layer components {
+  /* Card Variants */
+  .card-stats {
+    background: linear-gradient(to bottom right, hsl(var(--sport-orange) / 5%), hsl(var(--sport-teal) / 5%));
+    border-color: hsl(var(--sport-orange) / 20%);
+    background-image:
+      radial-gradient(circle at 20% 80%, rgb(255 102 0 / 5%) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgb(0 180 180 / 5%) 0%, transparent 50%);
+  }
+
+  .card-stats:hover {
+    border-color: hsl(var(--sport-orange) / 40%);
+    box-shadow:
+      0 20px 60px rgb(255 102 0 / 15%),
+      0 8px 32px rgb(0 180 180 / 10%),
+      0 4px 16px rgb(0 0 0 / 8%);
+    background-image:
+      radial-gradient(circle at 20% 80%, rgb(255 102 0 / 10%) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgb(0 180 180 / 10%) 0%, transparent 50%);
+  }
+
+  .card-feature {
+    background-color: white;
+    border-color: hsl(var(--sport-orange) / 15%);
+    box-shadow: 0 4px 20px rgb(255 102 0 / 30%), 0 2px 10px rgb(255 102 0 / 20%);
+    position: relative;
+  }
+
+  .card-feature::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, hsl(var(--sport-orange)), hsl(var(--sport-teal)));
+    border-radius: 12px 12px 0 0;
+  }
+
+  .card-feature:hover {
+    border-color: hsl(var(--sport-orange) / 30%);
+    box-shadow:
+      0 20px 60px rgb(255 102 0 / 15%),
+      0 8px 32px rgb(0 180 180 / 10%),
+      0 4px 16px rgb(0 0 0 / 8%);
+    transform: translateY(-8px);
+  }
+
+  .card-info {
+    background-color: hsl(var(--sport-light));
+    border-color: hsl(var(--sport-orange) / 10%);
+  }
+
+  .card-info:hover {
+    border-color: hsl(var(--sport-orange) / 25%);
+    box-shadow:
+      0 20px 60px rgb(255 102 0 / 15%),
+      0 8px 32px rgb(0 180 180 / 10%),
+      0 4px 16px rgb(0 0 0 / 8%);
+    background: linear-gradient(135deg, hsl(var(--sport-light)), hsl(var(--sport-mint)));
+  }
+
+  /* Card Grid Layouts */
+  .card-grid-responsive {
+    display: grid;
+    gap: clamp(1rem, 3vw, 1.5rem);
+  }
+
+  .card-grid-responsive.grid-1 {
+    grid-template-columns: 1fr;
+  }
+
+  .card-grid-responsive.grid-2 {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .card-grid-responsive.grid-3 {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .card-grid-responsive.grid-4 {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .card-grid-responsive.grid-stats {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  /* Mobile-first responsive adjustments */
+  @media (width <= 640px) {
+    .card-grid-responsive.grid-stats {
+      grid-template-columns: 1fr;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .card-grid-responsive.grid-3,
+    .card-grid-responsive.grid-4 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (640px <= width <= 768px) {
+    .card-grid-responsive.grid-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card-grid-responsive.grid-3 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (width >= 768px) {
+    .card-grid-responsive.grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card-grid-responsive.grid-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (width >= 1024px) {
+    .card-grid-responsive.grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Enhanced Card Headers */
+  .card-header-sport {
+    position: relative;
+    padding-bottom: 1rem;
+  }
+
+  .card-header-sport::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, hsl(var(--sport-orange)), transparent, hsl(var(--sport-teal)));
+    border-radius: 1px;
+  }
+
+  /* Card Content Enhancements */
+  .card-content-sport {
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Card Footer Enhancements */
+  .card-footer-sport {
+    position: relative;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid hsl(var(--sport-orange) / 10%);
+  }
+
+  /* Hover Accent Stripes */
+  .card-hover-accent {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-hover-accent::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      transparent,
+      rgb(255 102 0 / 10%),
+      rgb(0 180 180 / 10%),
+      transparent
+    );
+    transition: left 0.5s ease;
+    z-index: 1;
+  }
+
+  .card-hover-accent:hover::before {
+    left: 100%;
+  }
+
+  .card-hover-accent > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Loading States for Cards */
+  .card-loading {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .card-loading .card-content {
+    background: linear-gradient(90deg,
+      hsl(var(--sport-light)) 25%,
+      hsl(var(--sport-mint)) 50%,
+      hsl(var(--sport-light)) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Card Animation Classes */
+  .card-enter {
+    animation: card-enter 0.6s ease-out forwards;
+  }
+
+  .card-hover-lift {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+  }
+
+  .card-hover-lift:hover {
+    transform: translateZ(0) translateY(-8px);
+  }
+
+  /* Enhanced Focus States */
+  .card-focusable:focus-visible {
+    outline: 3px solid hsl(var(--sport-orange));
+    outline-offset: 2px;
+    border-radius: 14px;
+  }
+
+  /* Card Size Variants */
+  .card-sm {
+    padding: 1rem;
+  }
+
+  .card-md {
+    padding: 1.5rem;
+  }
+
+  .card-lg {
+    padding: 2rem;
+  }
+
+  .card-xl {
+    padding: 2.5rem;
+  }
+}
+
+/* Keyframes for Card Animations */
+@keyframes card-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Enhanced Card Shadows */
+@layer utilities {
+  .shadow-sport {
+    box-shadow: 0 4px 20px rgb(255 102 0 / 30%), 0 2px 10px hsl(var(--sport-orange) / 20%);
+  }
+
+  .shadow-card-sport {
+    box-shadow:
+      0 4px 20px rgb(255 102 0 / 12%),
+      0 2px 8px rgb(0 180 180 / 8%),
+      0 1px 3px rgb(0 0 0 / 5%);
+  }
+
+  .shadow-card-hover {
+    box-shadow:
+      0 12px 40px rgb(255 102 0 / 20%),
+      0 6px 20px rgb(0 180 180 / 15%),
+      0 2px 8px rgb(0 0 0 / 10%);
+  }
+
+  .shadow-card-float {
+    box-shadow:
+      0 20px 60px rgb(255 102 0 / 15%),
+      0 8px 32px rgb(0 180 180 / 10%),
+      0 4px 16px rgb(0 0 0 / 8%);
+  }
+}
+
+/* Responsive Card Spacing */
+@layer utilities {
+  .card-spacing-responsive {
+    padding: clamp(1rem, 4vw, 2rem);
+  }
+
+  .card-gap-responsive {
+    gap: clamp(0.75rem, 3vw, 1.5rem);
+  }
+}
+
+/* High Contrast Support */
+@media (prefers-contrast: more) {
+  .card-stats,
+  .card-feature,
+  .card-info {
+    border-width: 2px;
+  }
+
+  .card-hover-accent::before {
+    display: none;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .card-hover-accent::before,
+  .card-enter,
+  .card-loading .card-content {
+    animation: none;
+    transition: none;
+  }
+
+  .card-hover-lift:hover {
+    transform: none;
+  }
+}
+
+/* Mobile Touch Enhancements */
+@media (width <= 768px) {
+  .card-touch {
+    -webkit-tap-highlight-color: rgb(255 102 0 / 20%);
+  }
+
+  .card-touch:active {
+    transform: scale(0.98);
+  }
+
+  .card-hover-accent:active {
+    background-color: rgb(255 102 0 / 5%);
+  }
+}

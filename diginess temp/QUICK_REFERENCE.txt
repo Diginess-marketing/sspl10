@@ -1,0 +1,95 @@
+# QUICK REFERENCE - DEPLOYMENT CARD
+
+## 🟢 STATUS: READY FOR DATABASE DEPLOYMENT
+
+```
+Environment: ✅ CONFIGURED
+Code Files: ✅ READY  
+.env File: ✅ UPDATED
+SQL Schema: ✅ READY
+```
+
+---
+
+## ⚡ DO THIS NOW (5 MINUTES)
+
+### 1. Open Supabase SQL Editor
+```
+https://supabase.com/dashboard
+→ Project: fazpykekypcktcmniwbj
+→ SQL Editor (left sidebar)
+→ New Query
+```
+
+### 2. Copy SQL File
+- Open: `SUPABASE_UTM_SETUP.sql`
+- Select All: Ctrl+A
+- Copy: Ctrl+C
+
+### 3. Paste & Run
+- Paste into SQL Editor: Ctrl+V
+- Click: **RUN** button
+- Wait for completion
+
+### 4. Verify Success
+Run in SQL Editor:
+```sql
+SELECT * FROM utm_events LIMIT 1;
+SELECT * FROM utm_summary LIMIT 1;
+SELECT COUNT(*) FROM pg_indexes WHERE tablename = 'utm_events';
+```
+
+---
+
+## 🚀 THEN DO THIS (10 MINUTES)
+
+### Start Dev Server
+```bash
+npm run dev
+```
+
+### Test URL
+```
+http://localhost:5173/register?utm_id=TEST001&utm_source=google&utm_medium=cpc&utm_campaign=test
+```
+
+### Check Analytics
+```
+http://localhost:5173/analytics
+```
+
+---
+
+## 📍 YOUR CREDENTIALS
+
+**Project URL**: https://fazpykekypcktcmniwbj.supabase.co  
+**Config File**: `.env` (auto-configured)
+
+---
+
+## 📞 IF SOMETHING FAILS
+
+### "Table already exists"
+→ This is OK, SQL uses `IF NOT EXISTS`
+
+### "Permission denied"
+→ Make sure you're in SQL Editor (not PostgreSQL console)
+
+### "No data showing"
+→ Check that URL has utm parameters
+→ Wait 2 seconds, refresh page
+
+---
+
+## ✨ YOU'RE DONE WHEN
+
+- [ ] SQL deployed to Supabase
+- [ ] Dev server running
+- [ ] Analytics dashboard shows test data
+- [ ] No console errors
+
+**Total Time**: 15 minutes
+
+---
+
+**Next Step**: Open Supabase Dashboard

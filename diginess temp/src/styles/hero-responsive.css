@@ -1,0 +1,31 @@
+/* Hero Section Responsive Image Optimization */
+
+/* Ensure hero images maintain aspect ratio and responsiveness */
+#home picture {
+  display: block;
+  line-height: 0;
+  margin: 0;
+}
+
+#home picture img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Retina display optimization */
+@media (resolution >= 2dppx), (resolution >= 192dpi) {
+  #home picture img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Ensure stacked hero images have no extra gaps */
+
+/* Loading optimization */
+#home picture img[loading="eager"] {
+  content-visibility: auto;
+}

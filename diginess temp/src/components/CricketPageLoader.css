@@ -1,0 +1,236 @@
+/* Dedicated styles for CricketPageLoader to avoid inline styling */
+
+.loader-grid-overlay {
+  background-image:
+    linear-gradient(
+      0deg,
+      transparent 24%,
+      rgba(139, 92, 246, 0.1) 25%,
+      rgba(139, 92, 246, 0.1) 26%,
+      transparent 27%,
+      transparent 74%,
+      rgba(139, 92, 246, 0.1) 75%,
+      rgba(139, 92, 246, 0.1) 76%,
+      transparent 77%,
+      transparent
+    ),
+    linear-gradient(
+      90deg,
+      transparent 24%,
+      rgba(139, 92, 246, 0.1) 25%,
+      rgba(139, 92, 246, 0.1) 26%,
+      transparent 27%,
+      transparent 74%,
+      rgba(139, 92, 246, 0.1) 75%,
+      rgba(139, 92, 246, 0.1) 76%,
+      transparent 77%,
+      transparent
+    );
+  background-size: 50px 50px;
+}
+
+.loader-grid-overlay-animated {
+  animation: cricket-loader-grid 20s linear infinite;
+}
+
+@keyframes cricket-loader-grid {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 50px 50px, 50px 50px;
+  }
+}
+
+.loader-radial-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.3) 0%, transparent 70%);
+}
+
+.loader-radial-glow-animated {
+  animation: cricket-loader-radial 4s ease-in-out infinite;
+}
+
+@keyframes cricket-loader-radial {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.loader-particles {
+  pointer-events: none;
+}
+
+.loader-particle {
+  position: absolute;
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 9999px;
+  opacity: 0.6;
+  background-image: linear-gradient(to right, #c084fc, #60a5fa);
+  animation-name: cricket-loader-float;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes cricket-loader-float {
+  0% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-12px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+}
+
+.loader-particles .loader-particle:nth-child(1) {
+  left: 5%;
+  top: 15%;
+  animation-duration: 3400ms;
+  animation-delay: 0ms;
+}
+
+.loader-particles .loader-particle:nth-child(2) {
+  left: 18%;
+  top: 35%;
+  animation-duration: 3600ms;
+  animation-delay: 150ms;
+}
+
+.loader-particles .loader-particle:nth-child(3) {
+  left: 30%;
+  top: 10%;
+  animation-duration: 3200ms;
+  animation-delay: 300ms;
+}
+
+.loader-particles .loader-particle:nth-child(4) {
+  left: 42%;
+  top: 45%;
+  animation-duration: 3800ms;
+  animation-delay: 450ms;
+}
+
+.loader-particles .loader-particle:nth-child(5) {
+  left: 55%;
+  top: 20%;
+  animation-duration: 4000ms;
+  animation-delay: 600ms;
+}
+
+.loader-particles .loader-particle:nth-child(6) {
+  left: 68%;
+  top: 32%;
+  animation-duration: 3600ms;
+  animation-delay: 750ms;
+}
+
+.loader-particles .loader-particle:nth-child(7) {
+  left: 80%;
+  top: 12%;
+  animation-duration: 4200ms;
+  animation-delay: 900ms;
+}
+
+.loader-particles .loader-particle:nth-child(8) {
+  left: 12%;
+  top: 55%;
+  animation-duration: 3900ms;
+  animation-delay: 1050ms;
+}
+
+.loader-particles .loader-particle:nth-child(9) {
+  left: 28%;
+  top: 70%;
+  animation-duration: 3600ms;
+  animation-delay: 1200ms;
+}
+
+.loader-particles .loader-particle:nth-child(10) {
+  left: 40%;
+  top: 62%;
+  animation-duration: 4100ms;
+  animation-delay: 1350ms;
+}
+
+.loader-particles .loader-particle:nth-child(11) {
+  left: 52%;
+  top: 75%;
+  animation-duration: 3700ms;
+  animation-delay: 1500ms;
+}
+
+.loader-particles .loader-particle:nth-child(12) {
+  left: 65%;
+  top: 60%;
+  animation-duration: 4000ms;
+  animation-delay: 1650ms;
+}
+
+.loader-particles .loader-particle:nth-child(13) {
+  left: 78%;
+  top: 72%;
+  animation-duration: 3500ms;
+  animation-delay: 1800ms;
+}
+
+.loader-particles .loader-particle:nth-child(14) {
+  left: 90%;
+  top: 50%;
+  animation-duration: 4200ms;
+  animation-delay: 1950ms;
+}
+
+.loader-particles .loader-particle:nth-child(15) {
+  left: 8%;
+  top: 78%;
+  animation-duration: 3300ms;
+  animation-delay: 2100ms;
+}
+
+.loader-particles .loader-particle:nth-child(16) {
+  left: 22%;
+  top: 88%;
+  animation-duration: 3600ms;
+  animation-delay: 2250ms;
+}
+
+.loader-particles .loader-particle:nth-child(17) {
+  left: 48%;
+  top: 85%;
+  animation-duration: 4000ms;
+  animation-delay: 2400ms;
+}
+
+.loader-particles .loader-particle:nth-child(18) {
+  left: 60%;
+  top: 90%;
+  animation-duration: 3700ms;
+  animation-delay: 2550ms;
+}
+
+.loader-particles .loader-particle:nth-child(19) {
+  left: 72%;
+  top: 82%;
+  animation-duration: 3900ms;
+  animation-delay: 2700ms;
+}
+
+.loader-particles .loader-particle:nth-child(20) {
+  left: 88%;
+  top: 88%;
+  animation-duration: 4100ms;
+  animation-delay: 2850ms;
+}
+
+.loader-progress-fill {
+  width: var(--cricket-loader-progress, 0%);
+}

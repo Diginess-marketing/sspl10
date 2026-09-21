@@ -1,0 +1,173 @@
+/* Featured selected players — section-specific layout only; colour, type and container come from styles/brand.css.
+   Strip: title panel (supplied art) | scrolling player cards | "Many more talents" link card. Cards are slightly slanted to echo the panel art. */
+
+.fps.brand-section {
+  --fps-h: clamp(264px, 22vw, 320px);
+  --fps-gap: clamp(12px, 1.2vw, 16px);
+  --fps-skew: 4deg;
+  --fps-bleed: 16px;               /* extra width inside a skewed card so the un-skewed content still fills the slanted edges */
+  --fps-cols: 4;
+  --fps-gaps: 3;
+  scroll-margin-top: 96px;
+  padding: clamp(32px, 4vw, 56px) 0;
+  overflow: hidden;
+  align-self: stretch;
+}
+
+.fps__row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'panel stage more';
+  column-gap: clamp(14px, 1.6vw, 22px);
+  align-items: center;
+}
+
+/* ---- title panel ---- */
+.fps__panel { grid-area: panel; position: relative; height: var(--fps-h); aspect-ratio: 1118 / 1251; filter: drop-shadow(0 14px 22px rgba(2, 20, 71, 0.22)); }
+.fps__panel picture, .fps__panel img { display: block; width: 100%; height: 100%; }
+.fps__panel img { object-fit: contain; user-select: none; }
+.fps__tagline {
+  position: absolute; left: 14%; top: 68%; margin: 0;
+  font-family: var(--brand-font-body); font-style: italic; font-weight: 500;
+  font-size: calc(var(--fps-h) * 0.052); line-height: 1.22; color: #fff;
+  text-shadow: 0 1px 8px rgba(2, 20, 71, 0.55);
+}
+
+/* ---- scroller ---- */
+.fps__stage { grid-area: stage; position: relative; min-width: 0; }
+.fps__track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - var(--fps-gaps) * var(--fps-gap)) / var(--fps-cols));
+  column-gap: var(--fps-gap);
+  margin: -34px 0;
+  padding: 34px var(--fps-bleed);                 /* room for the card shadow, lift and slanted edges */
+  scroll-padding-inline: var(--fps-bleed);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  list-style: none;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+.fps__track::-webkit-scrollbar { display: none; }
+.fps__track:focus-visible { outline: 3px solid var(--brand-blue); outline-offset: 2px; border-radius: 12px; }
+
+.fps__nav {
+  position: absolute; z-index: 3; top: calc(var(--fps-h) * 0.31); transform: translateY(-50%);
+  display: grid; place-items: center; width: 40px; height: 40px; padding: 0;
+  border: 0; border-radius: 50%; background: #fff; color: var(--brand-navy);
+  box-shadow: 0 8px 22px rgba(10, 18, 64, 0.22); cursor: pointer;
+  transition: opacity 0.2s, background 0.2s, color 0.2s, transform 0.2s;
+}
+.fps__nav svg { width: 22px; height: 22px; }
+.fps__nav--prev { left: 2px; }
+.fps__nav--next { right: 2px; }
+.fps__nav:hover:not(:disabled) { background: var(--brand-navy-deep); color: #fff; transform: translateY(-50%) scale(1.06); }
+.fps__nav:focus-visible { outline: 3px solid var(--brand-blue); outline-offset: 3px; }
+.fps__nav:disabled { opacity: 0; pointer-events: none; }
+
+/* ---- player card ---- */
+.fps-card { scroll-snap-align: start; height: var(--fps-h); min-width: 0; }
+.fps-card, .fps__more-in { transform: skewX(calc(var(--fps-skew) * -1)); }
+.fps-card {
+  position: relative; overflow: hidden; border-radius: 22px;
+  background: #fff; border: 1px solid var(--brand-line);
+  box-shadow: 0 10px 26px rgba(10, 18, 64, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.fps-card:hover { transform: skewX(calc(var(--fps-skew) * -1)) translateY(-5px); box-shadow: 0 18px 36px rgba(31, 87, 214, 0.22); }
+.fps-card__in { position: absolute; inset: 0 calc(var(--fps-bleed) * -1); display: flex; flex-direction: column; transform: skewX(var(--fps-skew)); }
+
+.fps-card__photo { position: relative; flex: 0 0 63%; overflow: hidden; background: linear-gradient(160deg, var(--brand-sky-2), var(--brand-sky) 60%, #fff); }
+.fps-card__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; user-select: none; transition: transform 0.5s ease; }
+.fps-card:hover .fps-card__photo img { transform: scale(1.04); }
+.fps-card__num {
+  position: absolute; z-index: 1; top: 6px; right: calc(var(--fps-bleed) + 10px);
+  font-family: var(--brand-font-display); font-style: italic; font-weight: 700;
+  font-size: clamp(40px, 3.6vw, 54px); line-height: 1; letter-spacing: -0.01em;
+  color: rgba(176, 205, 255, 0.9); text-shadow: 0 1px 10px rgba(31, 87, 214, 0.3);
+  pointer-events: none;
+}
+
+.fps-card__body { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 5px; padding: 6px calc(var(--fps-bleed) + 8px) 8px; min-width: 0; }
+.fps-card__name {
+  margin: 0 0 3px; font-family: var(--brand-font-display); font-style: italic; font-weight: 700;
+  font-size: clamp(16px, 1.3vw, 18px); line-height: 1.1; letter-spacing: 0.01em; text-transform: uppercase; color: var(--brand-navy);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.fps-card__meta {
+  display: flex; align-items: center; gap: 9px; margin: 0; min-width: 0;
+  font-family: var(--brand-font-display); font-weight: 600; font-size: 13px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--brand-muted);
+}
+.fps-card__meta svg { flex: none; width: 16px; height: 16px; color: var(--brand-blue); }
+.fps-card__meta span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---- "Many more talents" ---- */
+.fps__more { grid-area: more; display: block; width: calc(var(--fps-h) * 0.68); height: var(--fps-h); padding: 0 var(--fps-bleed); box-sizing: border-box; text-decoration: none; }
+.fps__more:focus-visible { outline: 3px solid var(--brand-blue); outline-offset: 4px; border-radius: 22px; }
+.fps__more-in {
+  position: relative; display: flex; height: 100%; box-sizing: border-box; padding: 22px 18px 18px;
+  flex-direction: column; justify-content: space-between; align-items: stretch;
+  border-radius: 22px; border: 2px solid #fff;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.9), var(--brand-sky-2));
+  box-shadow: 0 10px 26px rgba(10, 18, 64, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+.fps__more:hover .fps__more-in { transform: skewX(calc(var(--fps-skew) * -1)) translateY(-5px); box-shadow: 0 18px 36px rgba(31, 87, 214, 0.22); }
+.fps__more-text {
+  font-family: var(--brand-font-display); font-style: italic; font-weight: 700; text-transform: uppercase;
+  font-size: clamp(24px, 2.2vw, 32px); line-height: 1.02; letter-spacing: 0.005em; color: rgba(31, 87, 214, 0.72);
+  transition: color 0.3s;
+}
+.fps__more:hover .fps__more-text { color: var(--brand-blue); }
+.fps__more-btn {
+  align-self: flex-end; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%;
+  background: #fff; color: var(--brand-navy); box-shadow: 0 8px 22px rgba(10, 18, 64, 0.2);
+  transform: skewX(var(--fps-skew)); transition: background 0.25s, color 0.25s, transform 0.25s;
+}
+.fps__more-btn svg { width: 24px; height: 24px; }
+.fps__more:hover .fps__more-btn { background: var(--brand-navy-deep); color: #fff; }
+
+/* ---- responsive ---- */
+/* mid desktop: three cards */
+@media (max-width: 1399px) {
+  .fps.brand-section { --fps-cols: 3; --fps-gaps: 2; }
+}
+
+/* tablet: title panel + scroller, "more" becomes a slim bar underneath */
+@media (max-width: 1199px) {
+  .fps__row {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas: 'panel stage' 'more more';
+    row-gap: clamp(14px, 2vw, 22px);
+  }
+  .fps.brand-section { --fps-cols: 3; --fps-gaps: 2; }
+  .fps__more { width: 100%; height: 72px; padding: 0; }
+  .fps__more-in { flex-direction: row; align-items: center; padding: 0 12px 0 22px; border-radius: 18px; transform: none; }
+  .fps__more:hover .fps__more-in { transform: translateY(-3px); }
+  .fps__more-text { font-size: 26px; line-height: 1; }
+  .fps__more-text br { display: none; }
+  .fps__more-btn { align-self: center; width: 46px; height: 46px; transform: none; }
+}
+
+@media (max-width: 999px) {
+  .fps.brand-section { --fps-cols: 2.2; --fps-gaps: 2; --fps-h: 264px; }
+}
+
+/* phone: title becomes a banner above a peeking scroller */
+@media (max-width: 699px) {
+  .fps.brand-section { --fps-cols: 1.55; --fps-gaps: 1; --fps-h: 300px; }
+  .fps__row { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'panel' 'stage' 'more'; }
+  .fps__panel { width: 100%; height: 176px; aspect-ratio: auto; border-radius: 22px; overflow: hidden; background: var(--brand-navy-deep); filter: none; box-shadow: 0 10px 26px rgba(2, 20, 71, 0.25); }
+  .fps__panel img { object-fit: cover; object-position: 30% 32%; transform: scale(1.18); transform-origin: 40% 40%; }
+  .fps__tagline { left: 22px; top: auto; bottom: 16px; font-size: 15px; }
+  .fps__tagline br { display: none; }
+  .fps__nav { top: 96px; width: 40px; height: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fps-card, .fps-card__photo img, .fps__more-in, .fps__more-btn, .fps__nav { transition: none; }
+  .fps__track { scroll-behavior: auto; }
+}

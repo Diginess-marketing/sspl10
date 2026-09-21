@@ -1,0 +1,50 @@
+{
+  "packageId": "com.ssplt10.cricket",
+  "hostName": "yourdomains.com",
+  "startUrl": "/",
+  "name": "SSPL T10",
+  "launcherName": "SSPL T10",
+  "launcherIcon": "icon-192x192.png",
+  "displayMode": "standalone",
+  "themeColor": "#1f2937",
+  "navigationColor": "#1f2937",
+  "navigationColorDark": "#111827",
+  "backgroundColor": "#ffffff",
+  "orientation": "portrait",
+  "enableNotifications": true,
+  "enableSiteSettingsShortcut": true,
+  "fallbackType": "custom-tabs",
+  "features": [
+    {
+      "name": "android.permission.INTERNET"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "url": "/dashboard?utm_source=pwa_shortcut",
+      "chosenIconFile": "icon-96x96.png"
+    },
+    {
+      "name": "Matches",
+      "short_name": "Matches",
+      "url": "/matches?utm_source=pwa_shortcut",
+      "chosenIconFile": "icon-96x96.png"
+    },
+    {
+      "name": "Teams",
+      "short_name": "Teams",
+      "url": "/teams?utm_source=pwa_shortcut",
+      "chosenIconFile": "icon-96x96.png"
+    }
+  ],
+  "appVersionMajor": 1,
+  "appVersionMinor": 0,
+  "appVersionPatch": 0,
+  "splashScreenFadeOutDuration": 300,
+  "generatorApp": "Bubblewrap CLI",
+  "minSdkVersion": 24,
+  "targetSdkVersion": 34,
+  "maskableIconFile": "icon-192x192-maskable.png"
+}

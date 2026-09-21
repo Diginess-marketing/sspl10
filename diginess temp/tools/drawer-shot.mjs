@@ -1,0 +1,11 @@
+import { chromium } from 'playwright-core';
+const browser = await chromium.launch({ channel: 'chrome' });
+const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+await page.goto('http://127.0.0.1:5199/', { waitUntil: 'load' }); await page.waitForSelector('.site-header'); await page.waitForTimeout(1000);
+await page.click('.site-header__burger'); await page.waitForTimeout(500);
+await page.evaluate(() => { const p = document.querySelector('.site-drawer__panel'); p.scrollTop = p.scrollHeight; });
+await page.waitForTimeout(200);
+await page.screenshot({ path: 'shots/h-drawer-mobile-bottom.png' });
+await page.evaluate(() => { document.querySelector('.site-drawer__panel').scrollTop = 0; });
+await page.screenshot({ path: 'shots/h-drawer-mobile.png' });
+await browser.close();

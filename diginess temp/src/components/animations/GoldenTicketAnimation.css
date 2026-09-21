@@ -1,0 +1,668 @@
+/* Golden Ticket animation specific styles extracted to avoid inline CSS */
+
+.golden-heading-shadow {
+  text-shadow: 2px 2px 4px rgba(251, 191, 36, 0.3), -1px -1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* ========================= BURST LINES ========================= */
+.golden-burst-lines .golden-burst-line {
+  transform-origin: bottom;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(1) {
+  transform: rotate(0deg) translateY(-50vh);
+  animation-delay: 0ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(2) {
+  transform: rotate(15deg) translateY(-50vh);
+  animation-delay: 20ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(3) {
+  transform: rotate(30deg) translateY(-50vh);
+  animation-delay: 40ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(4) {
+  transform: rotate(45deg) translateY(-50vh);
+  animation-delay: 60ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(5) {
+  transform: rotate(60deg) translateY(-50vh);
+  animation-delay: 80ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(6) {
+  transform: rotate(75deg) translateY(-50vh);
+  animation-delay: 100ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(7) {
+  transform: rotate(90deg) translateY(-50vh);
+  animation-delay: 120ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(8) {
+  transform: rotate(105deg) translateY(-50vh);
+  animation-delay: 140ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(9) {
+  transform: rotate(120deg) translateY(-50vh);
+  animation-delay: 160ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(10) {
+  transform: rotate(135deg) translateY(-50vh);
+  animation-delay: 180ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(11) {
+  transform: rotate(150deg) translateY(-50vh);
+  animation-delay: 200ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(12) {
+  transform: rotate(165deg) translateY(-50vh);
+  animation-delay: 220ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(13) {
+  transform: rotate(180deg) translateY(-50vh);
+  animation-delay: 240ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(14) {
+  transform: rotate(195deg) translateY(-50vh);
+  animation-delay: 260ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(15) {
+  transform: rotate(210deg) translateY(-50vh);
+  animation-delay: 280ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(16) {
+  transform: rotate(225deg) translateY(-50vh);
+  animation-delay: 300ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(17) {
+  transform: rotate(240deg) translateY(-50vh);
+  animation-delay: 320ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(18) {
+  transform: rotate(255deg) translateY(-50vh);
+  animation-delay: 340ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(19) {
+  transform: rotate(270deg) translateY(-50vh);
+  animation-delay: 360ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(20) {
+  transform: rotate(285deg) translateY(-50vh);
+  animation-delay: 380ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(21) {
+  transform: rotate(300deg) translateY(-50vh);
+  animation-delay: 400ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(22) {
+  transform: rotate(315deg) translateY(-50vh);
+  animation-delay: 420ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(23) {
+  transform: rotate(330deg) translateY(-50vh);
+  animation-delay: 440ms;
+}
+
+.golden-burst-lines .golden-burst-line:nth-child(24) {
+  transform: rotate(345deg) translateY(-50vh);
+  animation-delay: 460ms;
+}
+
+/* ========================= SPARKLE BURST ========================= */
+.golden-sparkle-burst .golden-sparkle {
+  transform-origin: center;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(1) {
+  transform: rotate(0deg) translateY(-140px);
+  animation-delay: 0ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(2) {
+  transform: rotate(9deg) translateY(-180px);
+  animation-delay: 15ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(3) {
+  transform: rotate(18deg) translateY(-130px);
+  animation-delay: 30ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(4) {
+  transform: rotate(27deg) translateY(-210px);
+  animation-delay: 45ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(5) {
+  transform: rotate(36deg) translateY(-170px);
+  animation-delay: 60ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(6) {
+  transform: rotate(45deg) translateY(-220px);
+  animation-delay: 75ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(7) {
+  transform: rotate(54deg) translateY(-150px);
+  animation-delay: 90ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(8) {
+  transform: rotate(63deg) translateY(-200px);
+  animation-delay: 105ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(9) {
+  transform: rotate(72deg) translateY(-160px);
+  animation-delay: 120ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(10) {
+  transform: rotate(81deg) translateY(-230px);
+  animation-delay: 135ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(11) {
+  transform: rotate(90deg) translateY(-140px);
+  animation-delay: 150ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(12) {
+  transform: rotate(99deg) translateY(-190px);
+  animation-delay: 165ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(13) {
+  transform: rotate(108deg) translateY(-150px);
+  animation-delay: 180ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(14) {
+  transform: rotate(117deg) translateY(-220px);
+  animation-delay: 195ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(15) {
+  transform: rotate(126deg) translateY(-180px);
+  animation-delay: 210ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(16) {
+  transform: rotate(135deg) translateY(-240px);
+  animation-delay: 225ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(17) {
+  transform: rotate(144deg) translateY(-160px);
+  animation-delay: 240ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(18) {
+  transform: rotate(153deg) translateY(-210px);
+  animation-delay: 255ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(19) {
+  transform: rotate(162deg) translateY(-170px);
+  animation-delay: 270ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(20) {
+  transform: rotate(171deg) translateY(-230px);
+  animation-delay: 285ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(21) {
+  transform: rotate(180deg) translateY(-140px);
+  animation-delay: 300ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(22) {
+  transform: rotate(189deg) translateY(-180px);
+  animation-delay: 315ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(23) {
+  transform: rotate(198deg) translateY(-150px);
+  animation-delay: 330ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(24) {
+  transform: rotate(207deg) translateY(-210px);
+  animation-delay: 345ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(25) {
+  transform: rotate(216deg) translateY(-160px);
+  animation-delay: 360ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(26) {
+  transform: rotate(225deg) translateY(-220px);
+  animation-delay: 375ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(27) {
+  transform: rotate(234deg) translateY(-150px);
+  animation-delay: 390ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(28) {
+  transform: rotate(243deg) translateY(-240px);
+  animation-delay: 405ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(29) {
+  transform: rotate(252deg) translateY(-170px);
+  animation-delay: 420ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(30) {
+  transform: rotate(261deg) translateY(-200px);
+  animation-delay: 435ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(31) {
+  transform: rotate(270deg) translateY(-140px);
+  animation-delay: 450ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(32) {
+  transform: rotate(279deg) translateY(-190px);
+  animation-delay: 465ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(33) {
+  transform: rotate(288deg) translateY(-150px);
+  animation-delay: 480ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(34) {
+  transform: rotate(297deg) translateY(-220px);
+  animation-delay: 495ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(35) {
+  transform: rotate(306deg) translateY(-180px);
+  animation-delay: 510ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(36) {
+  transform: rotate(315deg) translateY(-230px);
+  animation-delay: 525ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(37) {
+  transform: rotate(324deg) translateY(-160px);
+  animation-delay: 540ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(38) {
+  transform: rotate(333deg) translateY(-210px);
+  animation-delay: 555ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(39) {
+  transform: rotate(342deg) translateY(-170px);
+  animation-delay: 570ms;
+}
+
+.golden-sparkle-burst .golden-sparkle:nth-child(40) {
+  transform: rotate(351deg) translateY(-200px);
+  animation-delay: 585ms;
+}
+
+/* ========================= CONFETTI ========================= */
+.golden-confetti-layer .golden-confetti-piece {
+  border-radius: 9999px;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+1) {
+  background-color: #ffd700;
+  width: 10px;
+  height: 14px;
+  --confetti-start-x: 5%;
+  --confetti-end-x: 15%;
+  --confetti-start-rotate: 5deg;
+  --confetti-end-rotate: 540deg;
+  animation-delay: 0ms;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+2) {
+  background-color: #ffa500;
+  width: 12px;
+  height: 16px;
+  --confetti-start-x: 20%;
+  --confetti-end-x: 35%;
+  --confetti-start-rotate: 25deg;
+  --confetti-end-rotate: 720deg;
+  animation-delay: 45ms;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+3) {
+  background-color: #ffdf00;
+  width: 14px;
+  height: 10px;
+  --confetti-start-x: 40%;
+  --confetti-end-x: 30%;
+  --confetti-start-rotate: 90deg;
+  --confetti-end-rotate: 810deg;
+  animation-delay: 90ms;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+4) {
+  background-color: #daa520;
+  width: 16px;
+  height: 12px;
+  --confetti-start-x: 60%;
+  --confetti-end-x: 55%;
+  --confetti-start-rotate: 140deg;
+  --confetti-end-rotate: 940deg;
+  animation-delay: 135ms;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+5) {
+  background-color: #ffffff;
+  width: 12px;
+  height: 12px;
+  --confetti-start-x: 75%;
+  --confetti-end-x: 65%;
+  --confetti-start-rotate: 210deg;
+  --confetti-end-rotate: 1100deg;
+  animation-delay: 180ms;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+6) {
+  background-color: #ffe55c;
+  width: 10px;
+  height: 10px;
+  --confetti-start-x: 85%;
+  --confetti-end-x: 95%;
+  --confetti-start-rotate: 260deg;
+  --confetti-end-rotate: 1200deg;
+  animation-delay: 225ms;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+7) {
+  background-color: #ff6b6b;
+  width: 16px;
+  height: 16px;
+  --confetti-start-x: 10%;
+  --confetti-end-x: 20%;
+  --confetti-start-rotate: 300deg;
+  --confetti-end-rotate: 1440deg;
+  animation-delay: 270ms;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+8) {
+  background-color: #ffd700;
+  width: 10px;
+  height: 12px;
+  --confetti-start-x: 25%;
+  --confetti-end-x: 40%;
+  --confetti-start-rotate: 45deg;
+  --confetti-end-rotate: 990deg;
+  animation-delay: 315ms;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+9) {
+  background-color: #ffa500;
+  width: 12px;
+  height: 10px;
+  --confetti-start-x: 45%;
+  --confetti-end-x: 50%;
+  --confetti-start-rotate: 85deg;
+  --confetti-end-rotate: 870deg;
+  animation-delay: 360ms;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+10) {
+  background-color: #ffdf00;
+  width: 14px;
+  height: 16px;
+  --confetti-start-x: 55%;
+  --confetti-end-x: 45%;
+  --confetti-start-rotate: 130deg;
+  --confetti-end-rotate: 1080deg;
+  animation-delay: 405ms;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+11) {
+  background-color: #daa520;
+  width: 16px;
+  height: 10px;
+  --confetti-start-x: 70%;
+  --confetti-end-x: 80%;
+  --confetti-start-rotate: 175deg;
+  --confetti-end-rotate: 990deg;
+  animation-delay: 450ms;
+}
+
+.golden-confetti-layer .golden-confetti-piece:nth-child(12n+12) {
+  background-color: #ffffff;
+  width: 12px;
+  height: 14px;
+  --confetti-start-x: 90%;
+  --confetti-end-x: 75%;
+  --confetti-start-rotate: 220deg;
+  --confetti-end-rotate: 1300deg;
+  animation-delay: 495ms;
+}
+
+/* ========================= FLOATING SPARKLES ========================= */
+.golden-floating-sparkles .golden-floating-sparkle {
+  position: absolute;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(10n+1) {
+  left: 8%;
+  top: 12%;
+  width: 18px;
+  height: 18px;
+  animation-delay: 0ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(10n+2) {
+  left: 20%;
+  top: 35%;
+  width: 16px;
+  height: 16px;
+  animation-delay: 200ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(10n+3) {
+  left: 32%;
+  top: 55%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 400ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(10n+4) {
+  left: 44%;
+  top: 25%;
+  width: 14px;
+  height: 14px;
+  animation-delay: 600ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(10n+5) {
+  left: 58%;
+  top: 10%;
+  width: 22px;
+  height: 22px;
+  animation-delay: 800ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(10n+6) {
+  left: 65%;
+  top: 40%;
+  width: 16px;
+  height: 16px;
+  animation-delay: 1000ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(10n+7) {
+  left: 72%;
+  top: 60%;
+  width: 18px;
+  height: 18px;
+  animation-delay: 1200ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(10n+8) {
+  left: 84%;
+  top: 30%;
+  width: 14px;
+  height: 14px;
+  animation-delay: 1400ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(10n+9) {
+  left: 12%;
+  top: 70%;
+  width: 16px;
+  height: 16px;
+  animation-delay: 1600ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(10n+10) {
+  left: 48%;
+  top: 75%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 1800ms;
+}
+
+/* Repeat set provides variation for remaining sparkles */
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(20n+11) {
+  left: 5%;
+  top: 45%;
+  width: 16px;
+  height: 16px;
+  animation-delay: 2000ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(20n+12) {
+  left: 25%;
+  top: 15%;
+  width: 18px;
+  height: 18px;
+  animation-delay: 2200ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(20n+13) {
+  left: 38%;
+  top: 80%;
+  width: 14px;
+  height: 14px;
+  animation-delay: 2400ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(20n+14) {
+  left: 52%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  animation-delay: 2600ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(20n+15) {
+  left: 68%;
+  top: 20%;
+  width: 18px;
+  height: 18px;
+  animation-delay: 2800ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(20n+16) {
+  left: 78%;
+  top: 48%;
+  width: 14px;
+  height: 14px;
+  animation-delay: 3000ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(20n+17) {
+  left: 88%;
+  top: 65%;
+  width: 20px;
+  height: 20px;
+  animation-delay: 3200ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(20n+18) {
+  left: 30%;
+  top: 72%;
+  width: 16px;
+  height: 16px;
+  animation-delay: 3400ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(20n+19) {
+  left: 15%;
+  top: 28%;
+  width: 18px;
+  height: 18px;
+  animation-delay: 3600ms;
+}
+
+.golden-floating-sparkles .golden-floating-sparkle:nth-child(20n+20) {
+  left: 60%;
+  top: 70%;
+  width: 22px;
+  height: 22px;
+  animation-delay: 3800ms;
+}
+
+/* ========================= FLIP ANIMATION ========================= */
+@keyframes flip-in-y {
+  0% {
+    transform: perspective(400px) rotateY(90deg);
+    opacity: 0;
+  }
+
+  40% {
+    transform: perspective(400px) rotateY(-20deg);
+  }
+
+  60% {
+    transform: perspective(400px) rotateY(10deg);
+    opacity: 1;
+  }
+
+  80% {
+    transform: perspective(400px) rotateY(-5deg);
+  }
+
+  100% {
+    transform: perspective(400px) rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-flip-in-y {
+  animation: flip-in-y 1s ease-in-out forwards;
+}

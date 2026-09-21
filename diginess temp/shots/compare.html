@@ -1,0 +1,20 @@
+<!doctype html><meta charset="utf-8"><title>Hero: mockup vs build</title>
+<style>
+  body{margin:0;background:#111;color:#eee;font:14px system-ui}
+  header{padding:12px 16px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  .wrap{position:relative;width:1342px;max-width:100%;margin:0 auto;aspect-ratio:1342/474;overflow:hidden;background:#fff}
+  .wrap img{position:absolute;inset:0;width:100%;height:100%;display:block}
+  #top{clip-path:inset(0 50% 0 0)}
+  .bar{position:absolute;top:0;bottom:0;width:2px;background:#f33;left:50%;pointer-events:none}
+  input{width:min(600px,80vw)}
+  small{opacity:.7}
+</style>
+<header><b>Drag to compare</b><span>left = mockup · right = build (1342px wide)</span>
+<input id="s" type="range" min="0" max="100" value="50"><label><input type="checkbox" id="d"> show pixel diff</label></header>
+<div class="wrap"><img id="build" src="hero-render.png" alt="build"><img id="top" src="../mockup/hero-mockup.png" alt="mockup"><img id="diff" src="hero-diff.png" alt="diff" hidden><div class="bar" id="bar"></div></div>
+<p style="text-align:center"><small>Note: the mockup's top-left "PREMIER LEAGUE / TAMIL NADU" text is the site header's logo peeking in, not part of the hero, so it is intentionally absent from the build.</small></p>
+<script>
+const s=document.getElementById('s'),top=document.getElementById('top'),bar=document.getElementById('bar'),d=document.getElementById('d'),diff=document.getElementById('diff');
+s.oninput=()=>{top.style.clipPath=`inset(0 ${100-s.value}% 0 0)`;bar.style.left=s.value+'%'};
+d.onchange=()=>{diff.hidden=!d.checked;diff.style.zIndex=5;bar.style.display=d.checked?'none':'block'};
+</script>

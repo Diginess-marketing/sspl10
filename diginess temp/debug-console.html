@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Console Log Checker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2563eb;
+      border-bottom: 3px solid #2563eb;
+      padding-bottom: 10px;
+    }
+    .step {
+      margin: 20px 0;
+      padding: 15px;
+      background: #f8fafc;
+      border-left: 4px solid #2563eb;
+    }
+    .important {
+      background: #fef3c7;
+      border-left-color: #f59e0b;
+      font-weight: bold;
+    }
+    .success {
+      background: #d1fae5;
+      border-left-color: #10b981;
+    }
+    .error {
+      background: #fee2e2;
+      border-left-color: #ef4444;
+    }
+    code {
+      background: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      margin: 10px 5px;
+    }
+    .button:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Trials Workflow Console Debugging Guide</h1>
+    
+    <div class="step important">
+      <strong>⚠️ IMPORTANT: Keep Browser DevTools Open!</strong><br>
+      Press <code>F12</code> or <code>Ctrl+Shift+I</code> to open DevTools<br>
+      Click on the <strong>"Console"</strong> tab
+    </div>
+
+    <div class="step">
+      <strong>Step 1: Navigate to the page</strong><br>
+      <a href="http://localhost:5173/trials-workflow" class="button" target="_blank">
+        Open Trials Workflow →
+      </a>
+    </div>
+
+    <div class="step">
+      <strong>Step 2: What to look for in Console</strong><br>
+      <br>
+      <strong style="color: green;">✅ You SHOULD see these logs:</strong>
+      <pre style="background: #1e293b; color: #10b981; padding: 10px; border-radius: 5px; overflow-x: auto;">
+🏏 TrialsWorkflow page rendering
+🏏 Page state: {hasUser: true, ...}
+🔄 RegistrationWorkflowTab component rendered
+📋 useEffect triggered, reloadTrigger: 0
+📋 [RegistrationWorkflowTab] Starting to load player registrations...
+📋 [Auth State] {hasUser: true, userEmail: "..."}
+📋 [Supabase Client] {exists: true, url: "..."}
+      </pre>
+    </div>
+
+    <div class="step">
+      <strong>Step 3: Click the "Debug" tab</strong><br>
+      Look for a RED tab with a bug icon 🐛 at the top of the page<br>
+      Click it to see the test component
+    </div>
+
+    <div class="step success">
+      <strong>✅ If you see this - Everything works!</strong><br>
+      <pre style="background: #1e293b; color: #10b981; padding: 10px; border-radius: 5px;">
+=== SIMPLE TEST COMPONENT MOUNTED ===
+Starting test query...
+Supabase client exists: true
+Query result: {data: [5 items], error: null}
+Query success! Rows: 5
+      </pre>
+      And the blue box on the page shows JSON data with player names and emails
+    </div>
+
+    <div class="step error">
+      <strong>❌ Common Errors and Fixes</strong><br>
+      <br>
+      <strong>1. No logs appear at all:</strong>
+      <ul>
+        <li>Console tab is not selected (click "Console" in DevTools)</li>
+        <li>Console is filtered - click the filter icon and select "All levels"</li>
+        <li>Page didn't load - check the URL is correct</li>
+      </ul>
+      
+      <strong>2. Error: "PGRST116" or "new row violates row-level security":</strong>
+      <ul>
+        <li>RLS (Row Level Security) is blocking database access</li>
+        <li>Run the SQL file: <code>DIAGNOSE_PLAYER_REGISTRATIONS.sql</code> in Supabase</li>
+        <li>Check if policies allow SELECT for authenticated users</li>
+      </ul>
+      
+      <strong>3. Error: "Failed to fetch" or network error:</strong>
+      <ul>
+        <li>Supabase connection issue</li>
+        <li>Check <code>.env</code> file has correct VITE_SUPABASE_URL</li>
+        <li>Verify internet connection</li>
+      </ul>
+      
+      <strong>4. Query returns 0 rows but no error:</strong>
+      <ul>
+        <li>Table is empty - no data in player_registrations</li>
+        <li>Or RLS is silently filtering all rows</li>
+      </ul>
+    </div>
+
+    <div class="step">
+      <strong>Step 4: Copy Console Output</strong><br>
+      Right-click in the Console → "Save as..." to save all logs<br>
+      Or manually copy the relevant error messages
+    </div>
+
+    <div class="step important">
+      <strong>Quick SQL Check (Run in Supabase SQL Editor):</strong>
+      <pre style="background: #1e293b; color: #94a3b8; padding: 10px; border-radius: 5px; overflow-x: auto;">
+-- Check row count
+SELECT COUNT(*) FROM player_registrations;
+
+-- Check RLS policies
+SELECT policyname, cmd, roles 
+FROM pg_policies 
+WHERE tablename = 'player_registrations';
+
+-- Try to select data
+SELECT id, full_name, email, payment_status 
+FROM player_registrations 
+LIMIT 5;
+      </pre>
+    </div>
+  </div>
+
+  <script>
+    // Auto-log when page loads
+    console.log('%c🔍 CONSOLE DEBUG HELPER LOADED', 'background: #2563eb; color: white; padding: 5px 10px; border-radius: 3px; font-weight: bold;');
+    console.log('This page will help you debug the Trials Workflow.');
+    console.log('Click the blue button above to open the Trials Workflow page.');
+    console.log('Keep this console open to see all logs!');
+  </script>
+</body>
+</html>

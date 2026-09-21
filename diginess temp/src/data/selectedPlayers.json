@@ -1,0 +1,308 @@
+[
+  {
+    "name": "ABHISHEK KUMAR YADAV",
+    "location": "LUCKNOW, UTTAR PRADESH",
+    "role": "BOWLER",
+    "image": "/assets/players/abhishek-kumar-yadav.webp"
+  },
+  {
+    "name": "ADITYA LOKHANDE",
+    "location": "PUNE, MAHARASHTRA",
+    "role": "AR",
+    "image": "/assets/players/adithya-lokhande.webp"
+  },
+  {
+    "name": "AJAY",
+    "location": "TAMILNADU",
+    "role": "BOWLER",
+    "image": "/assets/players/ajay.webp"
+  },
+  {
+    "name": "AJITH",
+    "location": "KHALAPUR, MAHARASTRA",
+    "role": "PLAYER",
+    "image": "/assets/players/ajith-mukunda-bagadi.webp"
+  },
+  {
+    "name": "AJITHGURU",
+    "location": "TAMILNADU",
+    "role": "BATTING",
+    "image": "/assets/players/ajithguru.webp"
+  },
+  {
+    "name": "AJU",
+    "location": "TAMILNADU",
+    "role": "BOWLER",
+    "image": "/assets/players/aju.webp"
+  },
+  {
+    "name": "ARUNKUMAR",
+    "location": "KERALA",
+    "role": "BOWLER",
+    "image": "/assets/players/arunkumar.webp"
+  },
+  {
+    "name": "ASHISH YADAV",
+    "location": "NAGPUR, MAHARASHTRA",
+    "role": "BOWLER",
+    "image": "/assets/players/ashish-yadav.webp"
+  },
+  {
+    "name": "BALAJI S SRINIVASAN- BHARATH",
+    "location": "CHENNAI, TAMIL NADU",
+    "role": "BOWLER",
+    "image": "/assets/players/balaji-s-srinivasan.webp"
+  },
+  {
+    "name": "DAVID",
+    "location": "TAMILNADU",
+    "role": "BATTING",
+    "image": "/assets/players/david.webp"
+  },
+  {
+    "name": "DHARSHAN D",
+    "location": "KARNATAKA",
+    "role": "BATTING",
+    "image": "/assets/players/dharshan-d.webp"
+  },
+  {
+    "name": "DILEEP KUMAR S",
+    "location": "COIMBATORE, TAMIL NADU",
+    "role": "BOWLER",
+    "image": "/assets/players/dileep-kumar-s.webp"
+  },
+  {
+    "name": "DIWAKAR",
+    "location": "TAMILNADU",
+    "role": "BOWLER",
+    "image": "/assets/players/diwakar.webp"
+  },
+  {
+    "name": "AJITH",
+    "location": "TAMILNADU",
+    "role": "PLAYER",
+    "image": "/assets/players/g-ajith.webp"
+  },
+  {
+    "name": "GOPINATH",
+    "location": "CHENNAI, TAMIL NADU",
+    "role": "BOWLER",
+    "image": "/assets/players/gopinath.webp"
+  },
+  {
+    "name": "IMDAD ILLU",
+    "location": "BANGALORE, KARNATAKA",
+    "role": "AR",
+    "image": "/assets/players/imdad-illu.webp"
+  },
+  {
+    "name": "KARTHIK SHANKAR",
+    "location": "CHIKKABALLAPUR, KARNATAKA",
+    "role": "BATTING",
+    "image": "/assets/players/karthik-shankar.webp"
+  },
+  {
+    "name": "KUNCHAPU NARSHIMHA",
+    "location": "HYDERABAD, TELANGANA",
+    "role": "AR",
+    "image": "/assets/players/kunchapa-narashima.webp"
+  },
+  {
+    "name": "M ARAVIND",
+    "location": "MAHBUBNAGAR, TELANGANA",
+    "role": "AR",
+    "image": "/assets/players/m-aravind.webp"
+  },
+  {
+    "name": "MADHANKUMAR S",
+    "location": "CHENNAI, TAMIL NADU",
+    "role": "AR",
+    "image": "/assets/players/madhankumar-s.webp"
+  },
+  {
+    "name": "MANIKANDAN E",
+    "location": "TAMILNADU",
+    "role": "BOWLER",
+    "image": "/assets/players/manikandan-e.webp"
+  },
+  {
+    "name": "MD SHARIK KHAN",
+    "location": "BISAULI, UTTAR PRADESH",
+    "role": "BATSMAN",
+    "image": "/assets/players/md-shakir-khan.webp"
+  },
+  {
+    "name": "MOHAMED MANSOOR",
+    "location": "CHENNAI, IN",
+    "role": "BOWLER",
+    "image": "/assets/players/mohamed-mansoor.webp"
+  },
+  {
+    "name": "MOHAMMED ABHI VAKKAS",
+    "location": "TAMILNADU",
+    "role": "PLAYER",
+    "image": "/assets/players/mohammed-abhi-vakkas.webp"
+  },
+  {
+    "name": "MUSTKIM BAREZA SINDHI",
+    "location": "UDAIPUR, RAJASTHAN",
+    "role": "AR",
+    "image": "/assets/players/mustkim-bareza-sindhi.webp"
+  },
+  {
+    "name": "N LOKESH",
+    "location": "TAMILNADU",
+    "role": "AR",
+    "image": "/assets/players/n-lokesh.webp"
+  },
+  {
+    "name": "NILIMEHS ROY",
+    "location": "TELANGANA",
+    "role": "AR",
+    "image": "/assets/players/nimilesh-roy.webp"
+  },
+  {
+    "name": "NITHISH KUMAR",
+    "location": "TAMILNADU",
+    "role": "AR",
+    "image": "/assets/players/nithish-kumar.webp"
+  },
+  {
+    "name": "PRABHAKARAN V",
+    "location": "CHENNAI, TAMIL NADU",
+    "role": "BOWLER",
+    "image": "/assets/players/prabhakaran-v.webp"
+  },
+  {
+    "name": "PRANAV JADAV",
+    "location": "AHMEDABAD, GUJARAT",
+    "role": "BOWLER",
+    "image": "/assets/players/pranav-jadav.webp"
+  },
+  {
+    "name": "S VEERAMANI",
+    "location": "TAMILNADU",
+    "role": "BATTING",
+    "image": "/assets/players/s-veeramani.webp"
+  },
+  {
+    "name": "SANJAY",
+    "location": "TAMILNADU",
+    "role": "BOWLER",
+    "image": "/assets/players/sanjay.webp"
+  },
+  {
+    "name": "SANJIV A",
+    "location": "TAMILNADU",
+    "role": "BOWLER",
+    "image": "/assets/players/sanjiv-a.webp"
+  },
+  {
+    "name": "SARANRAJ KOHLI",
+    "location": "TAMILNADU",
+    "role": "BATTING",
+    "image": "/assets/players/saranraj-kohli.webp"
+  },
+  {
+    "name": "SATHAM",
+    "location": "TAMILNADU",
+    "role": "BATTING",
+    "image": "/assets/players/satham.webp"
+  },
+  {
+    "name": "SATISH",
+    "location": "TAMILNADU",
+    "role": "BATTING",
+    "image": "/assets/players/satish-v.webp"
+  },
+  {
+    "name": "SHANMUGANANDA",
+    "location": "KARNATAKA",
+    "role": "AR",
+    "image": "/assets/players/shanmugananda.webp"
+  },
+  {
+    "name": "SHIEK KHADAR",
+    "location": "BANGALORE RURAL, KARNATAKA",
+    "role": "BATSMAN",
+    "image": "/assets/players/shiek-khadar.webp"
+  },
+  {
+    "name": "SIDDU",
+    "location": "HYDERABAD, TELANGANA",
+    "role": "AR",
+    "image": "/assets/players/siddu.webp"
+  },
+  {
+    "name": "SOORAJ PK",
+    "location": "MALAPPURAM, KERALA",
+    "role": "BOWLER",
+    "image": "/assets/players/sooraj-pk.webp"
+  },
+  {
+    "name": "SUNMOGAN SUNDARAM",
+    "location": "TAMILNADU",
+    "role": "BATTING",
+    "image": "/assets/players/sunmogam-sundaram.webp"
+  },
+  {
+    "name": "SUVEESH KUMAR",
+    "location": "KOLLAM, KERALA",
+    "role": "AR",
+    "image": "/assets/players/suveesh-kumar.webp"
+  },
+  {
+    "name": "SWAMINATHAN",
+    "location": "TAMILNADU",
+    "role": "BATSMAN",
+    "image": "/assets/players/swaminathan.webp"
+  },
+  {
+    "name": "SYED AZHAR",
+    "location": "HYDERABAD, TELANGANA",
+    "role": "PLAYER",
+    "image": "/assets/players/syed-azhar.webp"
+  },
+  {
+    "name": "SYED MAZHAR",
+    "location": "HYDERABAD, TELANGANA",
+    "role": "BATSMAN",
+    "image": "/assets/players/syed-mazhar.webp"
+  },
+  {
+    "name": "T SHAJI",
+    "location": "TAMILNADU",
+    "role": "BATTING",
+    "image": "/assets/players/t-shaji.webp"
+  },
+  {
+    "name": "VARUN SURI",
+    "location": "ROHINI, DELHI",
+    "role": "BOWLER",
+    "image": "/assets/players/varun-suri.webp"
+  },
+  {
+    "name": "VIJENDRA KUMAR",
+    "location": "JAIPUR, RAJASTHAN",
+    "role": "BOWLER",
+    "image": "/assets/players/vijendra-kumar.webp"
+  },
+  {
+    "name": "VIPIN VERMA",
+    "location": "PUSHPRAJGARH, MADHYA PRADESH",
+    "role": "BATSMAN",
+    "image": "/assets/players/vipin-verma.webp"
+  },
+  {
+    "name": "VISHNU",
+    "location": "KERALA",
+    "role": "PLAYER",
+    "image": "/assets/players/vishnu-mu.webp"
+  },
+  {
+    "name": "YUVA",
+    "location": "CHENNAI, TAMIL NADU",
+    "role": "PLAYER",
+    "image": "/assets/players/yuvaraj.webp"
+  }
+]
