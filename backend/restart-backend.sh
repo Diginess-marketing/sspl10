@@ -1,7 +1,7 @@
 #!/bin/bash
 
 APP_NAME="sspl-backend"
-APP_PATH="/var/www/vhosts/ssplt10.cloud/httpdocs_live/httpdocs/backend/server.cjs"
+APP_PATH="/var/www/vhosts/ssplt10.cloud/httpdocs_live/httpdocs/backend/server.js"
 PORT=3001
 
 echo "Stopping PM2 process if exists..."

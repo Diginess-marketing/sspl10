@@ -1,3 +1,14 @@
-﻿node_modules/
+node_modules/
 scratch/
 
+# Secrets — never commit these.
+.env
+.env.*
+!.env.example
+
+# Python virtualenv used by webrtc_agent
+venv/
+
+# Local logs and one-off data dumps
+*.log
+npm-debug.log*
