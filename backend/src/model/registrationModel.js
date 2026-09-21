@@ -1,6 +1,6 @@
-const supabase = require('../config/supabase');
+import supabase from '../config/supabase.js';
 
-const TABLE = 'player_registrations';
+export const TABLE = 'player_registrations';
 
 const PAID_UPDATE = {
   payment_status: 'captured',
@@ -8,21 +8,21 @@ const PAID_UPDATE = {
 };
 
 /** Fetch a single registration by id. Returns null when not found. */
-async function findById(id) {
+export async function findById(id) {
   const { data, error } = await supabase.from(TABLE).select('*').eq('id', id).single();
   if (error) return null;
   return data;
 }
 
 /** All registrations belonging to a team. */
-async function findByTeamId(teamId) {
+export async function findByTeamId(teamId) {
   const { data, error } = await supabase.from(TABLE).select('*').eq('team_id', teamId);
   if (error) throw error;
   return data || [];
 }
 
 /** The team a registration belongs to, or null for individual entries. */
-async function findTeamId(registrationId) {
+export async function findTeamId(registrationId) {
   const { data, error } = await supabase
     .from(TABLE)
     .select('team_id')
@@ -33,7 +33,7 @@ async function findTeamId(registrationId) {
 }
 
 /** Look up registrations by their Razorpay payment ids (used by reconciliation). */
-async function findByPaymentIds(paymentIds) {
+export async function findByPaymentIds(paymentIds) {
   const { data, error } = await supabase
     .from(TABLE)
     .select('razorpay_payment_id, payment_status, id')
@@ -43,7 +43,7 @@ async function findByPaymentIds(paymentIds) {
 }
 
 /** Mark one registration as paid. `amount` is optional (webhook path only). */
-async function markPaid(registrationId, { paymentId, orderId, amount }) {
+export async function markPaid(registrationId, { paymentId, orderId, amount }) {
   const update = {
     ...PAID_UPDATE,
     razorpay_payment_id: paymentId,
@@ -55,7 +55,7 @@ async function markPaid(registrationId, { paymentId, orderId, amount }) {
 }
 
 /** Mark every registration in a team as paid. */
-async function markTeamPaid(teamId, { paymentId, orderId, amount }) {
+export async function markTeamPaid(teamId, { paymentId, orderId, amount }) {
   const update = {
     ...PAID_UPDATE,
     razorpay_payment_id: paymentId,
@@ -67,14 +67,14 @@ async function markTeamPaid(teamId, { paymentId, orderId, amount }) {
 }
 
 /** Every registered email address, de-duplicated. */
-async function listEmails() {
+export async function listEmails() {
   const { data, error } = await supabase.from(TABLE).select('email');
   if (error) throw error;
   return [...new Set((data || []).map((row) => row.email).filter(Boolean))];
 }
 
 /** Registrations still awaiting payment that were created inside a window. */
-async function findPendingBetween(startIso, endIso) {
+export async function findPendingBetween(startIso, endIso) {
   const { data, error } = await supabase
     .from(TABLE)
     .select('email, phone, payment_status, created_at')
@@ -84,15 +84,3 @@ async function findPendingBetween(startIso, endIso) {
   if (error) throw error;
   return data || [];
 }
-
-module.exports = {
-  TABLE,
-  findById,
-  findByTeamId,
-  findTeamId,
-  findByPaymentIds,
-  markPaid,
-  markTeamPaid,
-  listEmails,
-  findPendingBetween,
-};

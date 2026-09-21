@@ -1,4 +1,4 @@
-const logger = require('./logger');
+import logger from './logger.js';
 
 const KEEP_ALIVE_MS = 20000;
 
@@ -9,7 +9,7 @@ const clients = new Map();
  * Turn a response into an SSE stream and register it under `registrationId`.
  * The stream is cleaned up when the client disconnects.
  */
-function subscribe(registrationId, req, res) {
+export function subscribe(registrationId, req, res) {
   logger.info(`SSE connection opened for: ${registrationId}`);
 
   res.setHeader('Content-Type', 'text/event-stream');
@@ -31,7 +31,7 @@ function subscribe(registrationId, req, res) {
 /**
  * Push an event to a subscribed client. No-op when nobody is listening.
  */
-function notify(registrationId, data, event = 'payment_success') {
+export function notify(registrationId, data, event = 'payment_success') {
   const client = clients.get(registrationId);
   if (!client) {
     logger.info(`No active SSE client for ${registrationId}`);
@@ -42,5 +42,3 @@ function notify(registrationId, data, event = 'payment_success') {
   client.write(`data: ${JSON.stringify(data)}\n\n`);
   return true;
 }
-
-module.exports = { subscribe, notify };

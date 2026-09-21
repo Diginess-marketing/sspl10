@@ -1,9 +1,9 @@
-const env = require('../config/env');
-const ApiError = require('../utils/ApiError');
-const logger = require('../utils/logger');
+import env from '../config/env.js';
+import ApiError from '../utils/ApiError.js';
+import logger from '../utils/logger.js';
 
 /** Terminal 404 handler for unmatched routes. */
-function notFound(req, res) {
+export function notFound(req, res) {
   res.status(404).json({ success: false, error: `Route not found: ${req.method} ${req.originalUrl}` });
 }
 
@@ -12,7 +12,7 @@ function notFound(req, res) {
  * and hides internal messages in production.
  */
 // eslint-disable-next-line no-unused-vars -- Express identifies this by arity.
-function errorHandler(err, req, res, next) {
+export function errorHandler(err, req, res, next) {
   const status = err instanceof ApiError ? err.status : 500;
 
   if (status >= 500) {
@@ -26,5 +26,3 @@ function errorHandler(err, req, res, next) {
 
   res.status(status).json({ success: false, error: message });
 }
-
-module.exports = { notFound, errorHandler };

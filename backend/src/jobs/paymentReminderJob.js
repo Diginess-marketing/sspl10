@@ -1,12 +1,12 @@
-const cron = require('node-cron');
-const emailService = require('../service/emailService');
-const paymentLedgerModel = require('../model/paymentLedgerModel');
-const registrationModel = require('../model/registrationModel');
-const emailLogModel = require('../model/emailLogModel');
-const logger = require('../utils/logger');
-const template = require('./templates/paymentReminderEmail');
+import cron from 'node-cron';
+import * as emailService from '../service/emailService.js';
+import * as paymentLedgerModel from '../model/paymentLedgerModel.js';
+import * as registrationModel from '../model/registrationModel.js';
+import * as emailLogModel from '../model/emailLogModel.js';
+import logger from '../utils/logger.js';
+import * as template from './templates/paymentReminderEmail.js';
 
-const SCHEDULE = '*/30 * * * *'; // every 30 minutes
+export const SCHEDULE = '*/30 * * * *'; // every 30 minutes
 const EMAIL_TYPE = 'payment_reminder';
 
 /**
@@ -28,7 +28,7 @@ const hoursAgo = (from, hours) => new Date(from.getTime() - hours * 60 * 60 * 10
  * @param {string} [customStartTime] ISO start of the window (overrides default).
  * @param {string} [customEndTime] ISO end of the window (overrides default).
  */
-async function checkAndSendReminders(customStartTime = null, customEndTime = null) {
+export async function checkAndSendReminders(customStartTime = null, customEndTime = null) {
   logger.info('Checking for failed payments to send reminders...');
 
   const now = new Date();
@@ -112,9 +112,7 @@ async function checkAndSendReminders(customStartTime = null, customEndTime = nul
 }
 
 /** Register the recurring schedule. */
-function start() {
+export function start() {
   cron.schedule(SCHEDULE, () => checkAndSendReminders());
   logger.info('Payment reminder job scheduled (every 30 mins)');
 }
-
-module.exports = { start, checkAndSendReminders, SCHEDULE };

@@ -1,13 +1,13 @@
-const supabase = require('../config/supabase');
+import supabase from '../config/supabase.js';
 
-const TABLE = 'email_logs';
+export const TABLE = 'email_logs';
 
 /**
  * Record the outcome of a send.
  * @param {{recipientEmail:string, recipientName?:string, type:string,
  *          success:boolean, error?:string}} entry
  */
-async function insert({ recipientEmail, recipientName, type, success, error: errorMessage }) {
+export async function insert({ recipientEmail, recipientName, type, success, error: errorMessage }) {
   const { error } = await supabase.from(TABLE).insert({
     recipient_email: recipientEmail,
     recipient_name: recipientName || recipientEmail.split('@')[0],
@@ -20,7 +20,7 @@ async function insert({ recipientEmail, recipientName, type, success, error: err
 }
 
 /** One page of send logs, newest first. */
-async function paginate({ page = 1, limit = 50, type }) {
+export async function paginate({ page = 1, limit = 50, type }) {
   const offset = (page - 1) * limit;
 
   let query = supabase
@@ -37,7 +37,7 @@ async function paginate({ page = 1, limit = 50, type }) {
 }
 
 /** Sends of a given type to an address since a time — used to avoid re-sending. */
-async function findSentSince(email, type, sinceIso) {
+export async function findSentSince(email, type, sinceIso) {
   const { data, error } = await supabase
     .from(TABLE)
     .select('id')
@@ -47,5 +47,3 @@ async function findSentSince(email, type, sinceIso) {
   if (error) throw error;
   return data || [];
 }
-
-module.exports = { TABLE, insert, paginate, findSentSince };

@@ -1,4 +1,4 @@
-const env = require('./env');
+import env from './env.js';
 
 const allowedOrigins = [
   'https://ssplt10.co.in',
@@ -21,7 +21,7 @@ const allowedOrigins = [
   'http://127.0.0.1:5173',
 ];
 
-const corsOptions = {
+export const corsOptions = {
   origin(origin, callback) {
     // Requests with no origin (curl, mobile apps, file://) are allowed outside
     // of production only.
@@ -39,4 +39,4 @@ const corsOptions = {
   },
 };
 
-module.exports = { allowedOrigins, corsOptions };
+export { allowedOrigins };

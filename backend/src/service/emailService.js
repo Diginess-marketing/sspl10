@@ -1,7 +1,7 @@
-const fetch = require('node-fetch');
-const env = require('../config/env');
-const emailLogModel = require('../model/emailLogModel');
-const logger = require('../utils/logger');
+import fetch from 'node-fetch';
+import env from '../config/env.js';
+import * as emailLogModel from '../model/emailLogModel.js';
+import logger from '../utils/logger.js';
 
 const TOKEN_REFRESH_BUFFER_MS = 5 * 60 * 1000;
 
@@ -59,7 +59,7 @@ function buildRecipient(address) {
  * @param {{to:string, cc?:string, subject:string, html?:string, text?:string,
  *          attachments?:Array}} message
  */
-async function sendEmail({ to, cc, subject, html, text, attachments = [] }) {
+export async function sendEmail({ to, cc, subject, html, text, attachments = [] }) {
   try {
     const token = await getAccessToken();
     const fromEmail = env.msGraph.fromEmail;
@@ -120,7 +120,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
  * @returns {Promise<{success:number, failed:number, successful:string[],
  *                    errors:Array<{email:string, error:string}>}>}
  */
-async function sendBulkEmail(recipients, subject, htmlContent, attachments = []) {
+export async function sendBulkEmail(recipients, subject, htmlContent, attachments = []) {
   const results = { success: 0, failed: 0, successful: [], errors: [] };
 
   logger.info(`Starting bulk email to ${recipients.length} recipients via MS Graph...`);
@@ -167,5 +167,3 @@ async function sendBulkEmail(recipients, subject, htmlContent, attachments = [])
 
   return results;
 }
-
-module.exports = { sendEmail, sendBulkEmail };

@@ -1,6 +1,8 @@
-const path = require('path');
-const dotenv = require('dotenv');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, '..', '..');
 
 // `.env.production` is loaded first and wins, matching the previous server.cjs
@@ -70,4 +72,4 @@ const requiredKeys = [
 
 env.missingKeys = requiredKeys.filter(([, value]) => !value).map(([name]) => name);
 
-module.exports = env;
+export default env;

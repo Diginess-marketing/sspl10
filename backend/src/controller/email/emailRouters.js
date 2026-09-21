@@ -1,6 +1,6 @@
-const express = require('express');
-const asyncHandler = require('../../utils/asyncHandler');
-const controller = require('./emailController');
+import express from 'express';
+import asyncHandler from '../../utils/asyncHandler.js';
+import * as controller from './emailController.js';
 
 const router = express.Router();
 
@@ -9,4 +9,4 @@ const router = express.Router();
 router.post('/admin/email/bulk', asyncHandler(controller.sendBulk));
 router.get('/admin/email/logs', asyncHandler(controller.listLogs));
 
-module.exports = router;
+export default router;

@@ -1,6 +1,6 @@
-const express = require('express');
-const asyncHandler = require('../../utils/asyncHandler');
-const controller = require('./aiQueryController');
+import express from 'express';
+import asyncHandler from '../../utils/asyncHandler.js';
+import * as controller from './aiQueryController.js';
 
 const router = express.Router();
 
@@ -8,4 +8,4 @@ const router = express.Router();
 // `requireAdmin` from ../../middleware/authMiddleware here.
 router.post('/admin/ai-query', asyncHandler(controller.handleQuery));
 
-module.exports = router;
+export default router;

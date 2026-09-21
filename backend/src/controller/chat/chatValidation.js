@@ -1,13 +1,13 @@
-const ApiError = require('../../utils/ApiError');
+import ApiError from '../../utils/ApiError.js';
 
-const WHATSAPP_OBJECT = 'whatsapp_business_account';
+export const WHATSAPP_OBJECT = 'whatsapp_business_account';
 
 /**
  * Validate an inbound web chat turn.
  * @returns {{message:string, history:Array, sessionId:string|undefined,
  *            mobile:string|undefined}}
  */
-function validateWebChat(body = {}) {
+export function validateWebChat(body = {}) {
   const { message, history, sessionId, mobile } = body;
 
   if (!message || typeof message !== 'string' || !message.trim()) {
@@ -26,7 +26,7 @@ function validateWebChat(body = {}) {
  * Validate the Meta webhook subscription handshake.
  * @returns {{mode:string, token:string, challenge:string}}
  */
-function validateWebhookHandshake(query = {}) {
+export function validateWebhookHandshake(query = {}) {
   const mode = query['hub.mode'];
   const token = query['hub.verify_token'];
   const challenge = query['hub.challenge'];
@@ -44,7 +44,7 @@ function validateWebhookHandshake(query = {}) {
  *
  * @returns {Array<{from:string, text:string, messageId:string}>}
  */
-function extractTextMessages(body = {}) {
+export function extractTextMessages(body = {}) {
   if (body.object !== WHATSAPP_OBJECT) return null;
 
   const messages = [];
@@ -65,5 +65,3 @@ function extractTextMessages(body = {}) {
 
   return messages;
 }
-
-module.exports = { WHATSAPP_OBJECT, validateWebChat, validateWebhookHandshake, extractTextMessages };

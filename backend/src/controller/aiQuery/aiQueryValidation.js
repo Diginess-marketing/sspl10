@@ -1,12 +1,12 @@
-const ApiError = require('../../utils/ApiError');
+import ApiError from '../../utils/ApiError.js';
 
-const MAX_QUERY_LENGTH = 1000;
+export const MAX_QUERY_LENGTH = 1000;
 
 /**
  * Validate an admin natural-language query request.
  * @returns {{query:string}}
  */
-function validateQuery(body = {}) {
+export function validateQuery(body = {}) {
   const { query } = body;
 
   if (!query || typeof query !== 'string' || !query.trim()) {
@@ -18,5 +18,3 @@ function validateQuery(body = {}) {
 
   return { query: query.trim() };
 }
-
-module.exports = { MAX_QUERY_LENGTH, validateQuery };

@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const axios = require('axios');
-const env = require('../config/env');
-const logger = require('../utils/logger');
+import fs from 'fs';
+import path from 'path';
+import axios from 'axios';
+import env from '../config/env.js';
+import logger from '../utils/logger.js';
 
 const REQUEST_TIMEOUT_MS = 15000;
 const MAX_TOKENS = 300;
@@ -79,7 +79,7 @@ If the user asks for their trial results, asks to check their results, or provid
  * @param {Array<{role:string, content:string}>} history Prior turns.
  * @returns {Promise<string>}
  */
-async function generateResponse(userMessage, history = []) {
+export async function generateResponse(userMessage, history = []) {
   if (!env.sarvam.apiKey) {
     logger.error('SARVAM_API_KEY is not configured; cannot generate a reply.');
     return FALLBACK_REPLY;
@@ -122,5 +122,3 @@ async function generateResponse(userMessage, history = []) {
     return FALLBACK_REPLY;
   }
 }
-
-module.exports = { generateResponse };

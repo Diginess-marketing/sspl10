@@ -1,9 +1,9 @@
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
 
-const { corsOptions } = require('./config/cors');
-const routes = require('./controller');
-const { notFound, errorHandler } = require('./middleware/errorMiddleware');
+import { corsOptions } from './config/cors.js';
+import routes from './controller/index.js';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 const BODY_LIMIT = '50mb';
 
@@ -27,4 +27,4 @@ app.use('/api', routes);
 app.use(notFound);
 app.use(errorHandler);
 
-module.exports = app;
+export default app;

@@ -1,9 +1,9 @@
-const supabase = require('../config/supabase');
+import supabase from '../config/supabase.js';
 
-const TABLE = 'razorpay_ledger';
+export const TABLE = 'razorpay_ledger';
 
 /** Supabase caps a single response at 1000 rows; paging uses this window. */
-const PAGE_SIZE = 1000;
+export const PAGE_SIZE = 1000;
 
 /**
  * Apply the shared admin filters to a query builder.
@@ -20,7 +20,7 @@ function applyFilters(query, { status, search, from, to } = {}) {
 }
 
 /** Insert or update ledger rows, keyed on payment_id. */
-async function upsertMany(records) {
+export async function upsertMany(records) {
   if (!records.length) return [];
   const { data, error } = await supabase
     .from(TABLE)
@@ -31,7 +31,7 @@ async function upsertMany(records) {
 }
 
 /** One page of transactions, newest first, plus the total row count. */
-async function paginate({ page = 1, limit = 50, filters = {} }) {
+export async function paginate({ page = 1, limit = 50, filters = {} }) {
   const start = (page - 1) * limit;
   const query = applyFilters(
     supabase
@@ -54,7 +54,7 @@ async function paginate({ page = 1, limit = 50, filters = {} }) {
  * @param {string} [options.columns='*'] Columns to select.
  * @param {boolean} [options.ordered=true] Order by created_at descending.
  */
-async function fetchAll(filters = {}, { columns = '*', ordered = true } = {}) {
+export async function fetchAll(filters = {}, { columns = '*', ordered = true } = {}) {
   const all = [];
   let page = 0;
 
@@ -78,7 +78,7 @@ async function fetchAll(filters = {}, { columns = '*', ordered = true } = {}) {
 }
 
 /** De-duplicated email addresses for every payment with the given status. */
-async function listEmailsByStatus(status) {
+export async function listEmailsByStatus(status) {
   const { data, error } = await supabase.from(TABLE).select('email').eq('status', status);
   if (error) throw error;
   return [...new Set((data || []).map((row) => row.email).filter(Boolean))];
@@ -88,7 +88,7 @@ async function listEmailsByStatus(status) {
  * Payments that never completed (failed, or created and abandoned) inside a
  * time window — the candidate pool for reminder emails.
  */
-async function findIncompleteBetween(startIso, endIso) {
+export async function findIncompleteBetween(startIso, endIso) {
   const { data, error } = await supabase
     .from(TABLE)
     .select('email, contact, status, created_at, payment_id')
@@ -100,7 +100,7 @@ async function findIncompleteBetween(startIso, endIso) {
 }
 
 /** Successful payments for an email address since a given time. */
-async function findSuccessfulSince(email, sinceIso) {
+export async function findSuccessfulSince(email, sinceIso) {
   const { data, error } = await supabase
     .from(TABLE)
     .select('payment_id')
@@ -110,14 +110,3 @@ async function findSuccessfulSince(email, sinceIso) {
   if (error) throw error;
   return data || [];
 }
-
-module.exports = {
-  TABLE,
-  PAGE_SIZE,
-  upsertMany,
-  paginate,
-  fetchAll,
-  listEmailsByStatus,
-  findIncompleteBetween,
-  findSuccessfulSince,
-};

@@ -1,10 +1,10 @@
-const paymentReminderJob = require('./paymentReminderJob');
-const razorpaySyncJob = require('./razorpaySyncJob');
+import * as paymentReminderJob from './paymentReminderJob.js';
+import * as razorpaySyncJob from './razorpaySyncJob.js';
 
 /** Start every scheduled job. Called once from server.js at boot. */
-function startAll() {
+export function startAll() {
   razorpaySyncJob.start();
   paymentReminderJob.start();
 }
 
-module.exports = { startAll, paymentReminderJob, razorpaySyncJob };
+export { paymentReminderJob, razorpaySyncJob };

@@ -1,12 +1,12 @@
-const supabase = require('../config/supabase');
-const ApiError = require('../utils/ApiError');
+import supabase from '../config/supabase.js';
+import ApiError from '../utils/ApiError.js';
 
 /**
  * Tables the AI query endpoint may read. The query descriptor comes from an
  * LLM, so the table name is never trusted — anything outside this list is
  * rejected rather than passed through to Supabase.
  */
-const ALLOWED_TABLES = new Set([
+export const ALLOWED_TABLES = new Set([
   'player_registrations',
   'teams',
   'trial_candidates',
@@ -15,7 +15,7 @@ const ALLOWED_TABLES = new Set([
   'chat_logs',
 ]);
 
-const ALLOWED_OPERATORS = new Set(['eq', 'ilike', 'in', 'gt', 'lt', 'gte', 'lte']);
+export const ALLOWED_OPERATORS = new Set(['eq', 'ilike', 'in', 'gt', 'lt', 'gte', 'lte']);
 
 const DEFAULT_TABLE = 'player_registrations';
 const DEFAULT_LIMIT = 500;
@@ -29,7 +29,7 @@ const COLUMN_PATTERN = /^[a-z0-9_]+$/i;
  * Validate and normalise an LLM-produced query descriptor.
  * @returns {{table:string, select:string, filters:Array, order:Object|null, limit:number}}
  */
-function sanitize(descriptor = {}) {
+export function sanitize(descriptor = {}) {
   const table = descriptor.table || DEFAULT_TABLE;
   if (!ALLOWED_TABLES.has(table)) {
     throw ApiError.badRequest(`Querying table '${table}' is not allowed`);
@@ -58,7 +58,7 @@ function sanitize(descriptor = {}) {
  * Run a sanitized query descriptor against Supabase.
  * @returns {Promise<{query:Object, data:Array}>} The sanitized query and its rows.
  */
-async function run(descriptor) {
+export async function run(descriptor) {
   const query = sanitize(descriptor);
 
   let sbQuery = supabase.from(query.table).select(query.select);
@@ -76,5 +76,3 @@ async function run(descriptor) {
 
   return { query, data: data || [] };
 }
-
-module.exports = { ALLOWED_TABLES, ALLOWED_OPERATORS, sanitize, run };

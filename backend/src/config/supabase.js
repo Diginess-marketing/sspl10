@@ -1,6 +1,6 @@
-const { createClient } = require('@supabase/supabase-js');
-const env = require('./env');
-const logger = require('../utils/logger');
+import { createClient } from '@supabase/supabase-js';
+import env from './env.js';
+import logger from '../utils/logger.js';
 
 if (!env.supabase.url || !env.supabase.key) {
   logger.error('Missing Supabase URL or key in environment variables.');
@@ -8,4 +8,4 @@ if (!env.supabase.url || !env.supabase.key) {
 
 const supabase = createClient(env.supabase.url, env.supabase.key);
 
-module.exports = supabase;
+export default supabase;

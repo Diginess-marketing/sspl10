@@ -2,7 +2,7 @@
  * Error carrying an HTTP status code. Thrown by controllers/validators and
  * turned into a JSON response by the central error middleware.
  */
-class ApiError extends Error {
+export default class ApiError extends Error {
   constructor(status, message) {
     super(message);
     this.name = 'ApiError';
@@ -29,5 +29,3 @@ class ApiError extends Error {
     return new ApiError(500, message);
   }
 }
-
-module.exports = ApiError;

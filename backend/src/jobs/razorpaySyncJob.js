@@ -1,12 +1,12 @@
-const cron = require('node-cron');
-const reconciliationService = require('../service/reconciliationService');
-const logger = require('../utils/logger');
+import cron from 'node-cron';
+import * as reconciliationService from '../service/reconciliationService.js';
+import logger from '../utils/logger.js';
 
 // 20:30 UTC == 02:00 IST, a low-traffic window.
-const SCHEDULE = '30 20 * * *';
+export const SCHEDULE = '30 20 * * *';
 
 /** Reconcile the previous UTC day against Razorpay. */
-async function runDailySync() {
+export async function runDailySync() {
   logger.info('Starting daily Razorpay reconciliation...');
 
   const yesterday = new Date();
@@ -25,9 +25,7 @@ async function runDailySync() {
 }
 
 /** Register the recurring schedule. */
-function start() {
+export function start() {
   cron.schedule(SCHEDULE, runDailySync);
   logger.info('Razorpay synchronization job scheduled (daily 02:00 IST)');
 }
-
-module.exports = { start, runDailySync, SCHEDULE };

@@ -1,9 +1,9 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const env = require('../config/env');
-const ApiError = require('../utils/ApiError');
-const logger = require('../utils/logger');
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import env from '../config/env.js';
+import ApiError from '../utils/ApiError.js';
+import logger from '../utils/logger.js';
 
-const SYSTEM_PROMPT = `You are a natural language to database query translator.
+export const SYSTEM_PROMPT = `You are a natural language to database query translator.
 Translate the user's natural language query into a structured JSON query object for a Supabase JS client.
 The database schema for the main table 'player_registrations' includes:
 id, full_name, email, phone, city, state, position, preferred_trials, school_name, status, payment_status, payment_amount, created_at, gender, dob, parent_name, razorpay_order_id, razorpay_payment_id
@@ -44,7 +44,7 @@ const stripCodeFences = (text) => text.replace(/```json/g, '').replace(/```/g, '
  * @param {string} question
  * @returns {Promise<Object>} Untrusted query descriptor — validate before use.
  */
-async function translateToQuery(question) {
+export async function translateToQuery(question) {
   if (!env.gemini.apiKey) {
     throw ApiError.internal('Gemini API Key is not configured on the server');
   }
@@ -62,5 +62,3 @@ async function translateToQuery(question) {
     throw ApiError.internal('Failed to parse AI response into query object.');
   }
 }
-
-module.exports = { translateToQuery, SYSTEM_PROMPT };

@@ -1,17 +1,17 @@
-const env = require('../../config/env');
-const razorpayConfig = require('../../config/razorpay');
-const razorpayService = require('../../service/razorpayService');
-const reconciliationService = require('../../service/reconciliationService');
-const registrationModel = require('../../model/registrationModel');
-const teamModel = require('../../model/teamModel');
-const trialCandidateModel = require('../../model/trialCandidateModel');
-const paymentLedgerModel = require('../../model/paymentLedgerModel');
-const sseManager = require('../../utils/sseManager');
-const { mapPaymentToLedger } = require('../../utils/paymentMapper');
-const { toCsv } = require('../../utils/csv');
-const ApiError = require('../../utils/ApiError');
-const logger = require('../../utils/logger');
-const validation = require('./paymentValidation');
+import env from '../../config/env.js';
+import * as razorpayConfig from '../../config/razorpay.js';
+import * as razorpayService from '../../service/razorpayService.js';
+import * as reconciliationService from '../../service/reconciliationService.js';
+import * as registrationModel from '../../model/registrationModel.js';
+import * as teamModel from '../../model/teamModel.js';
+import * as trialCandidateModel from '../../model/trialCandidateModel.js';
+import * as paymentLedgerModel from '../../model/paymentLedgerModel.js';
+import * as sseManager from '../../utils/sseManager.js';
+import { mapPaymentToLedger } from '../../utils/paymentMapper.js';
+import { toCsv } from '../../utils/csv.js';
+import ApiError from '../../utils/ApiError.js';
+import logger from '../../utils/logger.js';
+import * as validation from './paymentValidation.js';
 
 const DASHBOARD_URL = 'https://dashboard.razorpay.com/app/payments';
 
@@ -78,12 +78,12 @@ async function settleIndividual(registration, payment) {
  * ------------------------------------------------------------------ */
 
 /** GET /api/health */
-exports.health = (req, res) => {
+export const health = (req, res) => {
   res.json({ status: 'ok' });
 };
 
 /** GET /api/config — the publishable Razorpay key for the checkout widget. */
-exports.getConfig = (req, res) => {
+export const getConfig = (req, res) => {
   const keyId = env.razorpay.keyId;
   if (!keyId) {
     throw ApiError.internal('Razorpay key not configured on server');
@@ -92,7 +92,7 @@ exports.getConfig = (req, res) => {
 };
 
 /** POST /api/create-order */
-exports.createOrder = async (req, res) => {
+export const createOrder = async (req, res) => {
   const { amount, notes } = validation.validateCreateOrder(req.body);
 
   if (!razorpayConfig.isConfigured()) {
@@ -111,12 +111,12 @@ exports.createOrder = async (req, res) => {
 };
 
 /** GET /api/sse/:registrationId — server-sent events for payment completion. */
-exports.subscribe = (req, res) => {
+export const subscribe = (req, res) => {
   sseManager.subscribe(req.params.registrationId, req, res);
 };
 
 /** POST /api/verify-payment — called by the browser after checkout closes. */
-exports.verifyPayment = async (req, res) => {
+export const verifyPayment = async (req, res) => {
   const { registrationId, paymentId, orderId, signature } = validation.validateVerifyPayment(
     req.body
   );
@@ -155,7 +155,7 @@ exports.verifyPayment = async (req, res) => {
  * settles the registration if the browser callback never arrived, and pushes
  * an SSE event to any waiting client.
  */
-exports.handleWebhook = async (req, res) => {
+export const handleWebhook = async (req, res) => {
   // Signature is computed over the exact bytes Razorpay sent; `rawBody` is
   // captured by the JSON body parser in app.js.
   const rawBody = req.rawBody ? req.rawBody.toString('utf8') : JSON.stringify(req.body);
@@ -223,7 +223,7 @@ exports.handleWebhook = async (req, res) => {
  * ------------------------------------------------------------------ */
 
 /** GET /api/admin/razorpay/transactions */
-exports.listTransactions = async (req, res) => {
+export const listTransactions = async (req, res) => {
   const { page, limit, filters } = validation.parseTransactionQuery(req.query);
   const { data, count } = await paymentLedgerModel.paginate({ page, limit, filters });
 
@@ -237,7 +237,7 @@ exports.listTransactions = async (req, res) => {
 };
 
 /** GET /api/admin/razorpay/export — CSV of every matching transaction. */
-exports.exportTransactions = async (req, res) => {
+export const exportTransactions = async (req, res) => {
   const { filters } = validation.parseTransactionQuery(req.query);
   logger.info('Exporting transactions...', filters);
 
@@ -266,7 +266,7 @@ exports.exportTransactions = async (req, res) => {
 };
 
 /** GET /api/admin/razorpay/stats — totals for the current filter. */
-exports.getStats = async (req, res) => {
+export const getStats = async (req, res) => {
   const { filters } = validation.parseTransactionQuery(req.query);
 
   const transactions = await paymentLedgerModel.fetchAll(filters, {
@@ -298,7 +298,7 @@ exports.getStats = async (req, res) => {
 };
 
 /** GET /api/admin/razorpay/reconcile */
-exports.reconcile = async (req, res) => {
+export const reconcile = async (req, res) => {
   const { from, to } = validation.validateReconcileQuery(req.query);
   res.json(await reconciliationService.reconcile(from, to));
 };

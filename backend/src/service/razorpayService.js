@@ -1,12 +1,12 @@
-const crypto = require('crypto');
-const { getRazorpay } = require('../config/razorpay');
-const logger = require('../utils/logger');
+import crypto from 'crypto';
+import { getRazorpay } from '../config/razorpay.js';
+import logger from '../utils/logger.js';
 
 /**
  * Create an order.
  * @param {{amount:number, currency?:string, notes?:Object}} params amount in paise.
  */
-async function createOrder({ amount, currency = 'INR', notes = {} }) {
+export async function createOrder({ amount, currency = 'INR', notes = {} }) {
   return getRazorpay().orders.create({
     amount: Number(amount),
     currency,
@@ -21,7 +21,7 @@ async function createOrder({ amount, currency = 'INR', notes = {} }) {
  * @param {{from?:number, to?:number, count?:number, skip?:number}} options
  *        `from`/`to` are unix timestamps in seconds.
  */
-async function fetchPayments({ from, to, count = 100, skip = 0 } = {}) {
+export async function fetchPayments({ from, to, count = 100, skip = 0 } = {}) {
   const response = await getRazorpay().payments.all({
     count,
     skip,
@@ -35,7 +35,7 @@ async function fetchPayments({ from, to, count = 100, skip = 0 } = {}) {
  * Fetch every payment in a range, paging until Razorpay runs out.
  * Stops at `maxRecords` so an unbounded range cannot run forever.
  */
-async function fetchAllPayments({ from, to, maxRecords = 10000 } = {}) {
+export async function fetchAllPayments({ from, to, maxRecords = 10000 } = {}) {
   const all = [];
   const count = 100;
   let skip = 0;
@@ -57,7 +57,7 @@ async function fetchAllPayments({ from, to, maxRecords = 10000 } = {}) {
 }
 
 /** Fetch a single payment by id. */
-async function fetchPaymentById(paymentId) {
+export async function fetchPaymentById(paymentId) {
   return getRazorpay().payments.fetch(paymentId);
 }
 
@@ -77,7 +77,7 @@ function hmac(secret, body) {
  * Verify an `x-razorpay-signature` webhook header against the raw body.
  * @returns {boolean}
  */
-function verifyWebhookSignature(body, signature, secret) {
+export function verifyWebhookSignature(body, signature, secret) {
   if (!secret) {
     logger.warn('Webhook secret not configured; rejecting webhook.');
     return false;
@@ -90,16 +90,7 @@ function verifyWebhookSignature(body, signature, secret) {
  * Verify the checkout handler signature returned to the browser.
  * @returns {boolean}
  */
-function verifyPaymentSignature(orderId, paymentId, signature, secret) {
+export function verifyPaymentSignature(orderId, paymentId, signature, secret) {
   if (!secret || !signature) return false;
   return safeEquals(hmac(secret, `${orderId}|${paymentId}`), signature);
 }
-
-module.exports = {
-  createOrder,
-  fetchPayments,
-  fetchAllPayments,
-  fetchPaymentById,
-  verifyWebhookSignature,
-  verifyPaymentSignature,
-};

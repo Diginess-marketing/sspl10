@@ -1,6 +1,6 @@
-const SUBJECT = 'Final Reminder: Immediate Action Required';
+export const SUBJECT = 'Final Reminder: Immediate Action Required';
 
-const HTML = `
+export const HTML = `
 <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #333; max-width: 600px; margin: 0 auto; line-height: 1.6;">
     <p>Dear Player,</p>
 
@@ -44,7 +44,7 @@ const HTML = `
 </div>
 `;
 
-const TEXT = `Dear Player,
+export const TEXT = `Dear Player,
 
 🚨 Final Reminder – Immediate Action Required 🚨
 
@@ -72,5 +72,3 @@ Warm regards,
 Team SSPL
 Southern Street Premier League
 `;
-
-module.exports = { SUBJECT, HTML, TEXT };

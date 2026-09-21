@@ -1,9 +1,9 @@
-const supabase = require('../config/supabase');
+import supabase from '../config/supabase.js';
 
-const TABLE = 'teams';
+export const TABLE = 'teams';
 
 /** Record a captured team payment against the team row. */
-async function markPaid(teamId, { paymentId, orderId }) {
+export async function markPaid(teamId, { paymentId, orderId }) {
   const { error } = await supabase
     .from(TABLE)
     .update({
@@ -14,5 +14,3 @@ async function markPaid(teamId, { paymentId, orderId }) {
     .eq('id', teamId);
   if (error) throw error;
 }
-
-module.exports = { TABLE, markPaid };

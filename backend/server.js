@@ -1,7 +1,7 @@
-const env = require('./src/config/env');
-const app = require('./src/app');
-const jobs = require('./src/jobs');
-const logger = require('./src/utils/logger');
+import env from './src/config/env.js';
+import app from './src/app.js';
+import * as jobs from './src/jobs/index.js';
+import logger from './src/utils/logger.js';
 
 if (env.missingKeys.length > 0) {
   logger.warn(`Missing environment variables: ${env.missingKeys.join(', ')}`);

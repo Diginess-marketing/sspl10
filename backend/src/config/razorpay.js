@@ -1,6 +1,6 @@
-const Razorpay = require('razorpay');
-const env = require('./env');
-const logger = require('../utils/logger');
+import Razorpay from 'razorpay';
+import env from './env.js';
+import logger from '../utils/logger.js';
 
 let razorpay = null;
 
@@ -20,11 +20,12 @@ if (env.razorpay.keyId && env.razorpay.keySecret) {
  * Returns the Razorpay client, or throws if the server was started without
  * credentials. Callers get a clear error instead of a TypeError on `null`.
  */
-function getRazorpay() {
+export function getRazorpay() {
   if (!razorpay) {
     throw new Error('Razorpay credentials are not configured on the server.');
   }
   return razorpay;
 }
 
-module.exports = { razorpay, getRazorpay, isConfigured: () => Boolean(razorpay) };
+export const isConfigured = () => Boolean(razorpay);
+export { razorpay };

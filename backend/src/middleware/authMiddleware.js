@@ -1,9 +1,9 @@
-const supabase = require('../config/supabase');
-const ApiError = require('../utils/ApiError');
-const logger = require('../utils/logger');
+import supabase from '../config/supabase.js';
+import ApiError from '../utils/ApiError.js';
+import logger from '../utils/logger.js';
 
 /** Pull a bearer token out of the Authorization header. */
-function readBearerToken(req) {
+export function readBearerToken(req) {
   const header = req.headers.authorization || '';
   if (!header.startsWith('Bearer ')) return null;
   return header.slice('Bearer '.length).trim() || null;
@@ -31,7 +31,7 @@ async function resolveUser(req) {
  * Reject the request unless it carries a valid Supabase session token.
  * On success `req.user` holds the authenticated user.
  */
-async function requireAuth(req, res, next) {
+export async function requireAuth(req, res, next) {
   const user = await resolveUser(req);
   if (!user) return next(ApiError.unauthorized('Invalid or missing access token'));
   req.user = user;
@@ -42,7 +42,7 @@ async function requireAuth(req, res, next) {
  * Attach `req.user` when a valid token is present, but let anonymous requests
  * through. Useful for endpoints that merely personalise their response.
  */
-async function optionalAuth(req, res, next) {
+export async function optionalAuth(req, res, next) {
   req.user = await resolveUser(req);
   return next();
 }
@@ -52,7 +52,7 @@ async function optionalAuth(req, res, next) {
  * The role is read from Supabase app metadata (set it server-side, never from
  * user metadata, which the client can edit).
  */
-async function requireAdmin(req, res, next) {
+export async function requireAdmin(req, res, next) {
   const user = await resolveUser(req);
   if (!user) return next(ApiError.unauthorized('Invalid or missing access token'));
 
@@ -64,5 +64,3 @@ async function requireAdmin(req, res, next) {
   req.user = user;
   return next();
 }
-
-module.exports = { requireAuth, optionalAuth, requireAdmin, readBearerToken };

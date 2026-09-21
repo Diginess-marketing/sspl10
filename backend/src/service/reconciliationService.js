@@ -1,8 +1,8 @@
-const razorpayService = require('./razorpayService');
-const paymentLedgerModel = require('../model/paymentLedgerModel');
-const registrationModel = require('../model/registrationModel');
-const { mapPaymentToLedger } = require('../utils/paymentMapper');
-const logger = require('../utils/logger');
+import * as razorpayService from './razorpayService.js';
+import * as paymentLedgerModel from '../model/paymentLedgerModel.js';
+import * as registrationModel from '../model/registrationModel.js';
+import { mapPaymentToLedger } from '../utils/paymentMapper.js';
+import logger from '../utils/logger.js';
 
 /** Supabase `in` filters are chunked to keep the query string bounded. */
 const COMPARE_CHUNK_SIZE = 100;
@@ -22,7 +22,7 @@ const toUnixSeconds = (value) =>
  * @param {string} from ISO date/time, inclusive.
  * @param {string} [to] ISO date/time, inclusive.
  */
-async function reconcile(from, to) {
+export async function reconcile(from, to) {
   logger.info(`Reconciling from ${from} to ${to}...`);
 
   const results = {
@@ -106,5 +106,3 @@ async function reconcile(from, to) {
 
   return results;
 }
-
-module.exports = { reconcile };

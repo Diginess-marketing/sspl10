@@ -1,13 +1,13 @@
-const ApiError = require('../../utils/ApiError');
+import ApiError from '../../utils/ApiError.js';
 
-const DEFAULT_PAGE_SIZE = 50;
-const MAX_PAGE_SIZE = 500;
+export const DEFAULT_PAGE_SIZE = 50;
+export const MAX_PAGE_SIZE = 500;
 
 /**
  * Validate an order creation request.
  * @returns {{amount:number, notes:Object}} amount in paise.
  */
-function validateCreateOrder(body = {}) {
+export function validateCreateOrder(body = {}) {
   const { amount, notes } = body;
 
   if (amount === undefined || amount === null || amount === '' || Number.isNaN(Number(amount))) {
@@ -27,7 +27,7 @@ function validateCreateOrder(body = {}) {
  * Validate a checkout verification request.
  * @returns {{registrationId:string, paymentId:string, orderId:string, signature:string}}
  */
-function validateVerifyPayment(body = {}) {
+export function validateVerifyPayment(body = {}) {
   const { registrationId, paymentId, orderId, signature } = body;
 
   const missing = Object.entries({ registrationId, paymentId, orderId, signature })
@@ -45,7 +45,7 @@ function validateVerifyPayment(body = {}) {
  * Normalise the shared admin list/export/stats query string.
  * @returns {{page:number, limit:number, filters:Object}}
  */
-function parseTransactionQuery(query = {}) {
+export function parseTransactionQuery(query = {}) {
   const page = Math.max(parseInt(query.page, 10) || 1, 1);
   const limit = Math.min(
     Math.max(parseInt(query.limit, 10) || DEFAULT_PAGE_SIZE, 1),
@@ -61,7 +61,7 @@ function parseTransactionQuery(query = {}) {
  * Validate the reconciliation window.
  * @returns {{from:string, to:string|undefined}}
  */
-function validateReconcileQuery(query = {}) {
+export function validateReconcileQuery(query = {}) {
   const { from, to } = query;
   if (!from) throw ApiError.badRequest('Missing from date');
   if (Number.isNaN(new Date(from).getTime())) {
@@ -72,12 +72,3 @@ function validateReconcileQuery(query = {}) {
   }
   return { from, to };
 }
-
-module.exports = {
-  DEFAULT_PAGE_SIZE,
-  MAX_PAGE_SIZE,
-  validateCreateOrder,
-  validateVerifyPayment,
-  parseTransactionQuery,
-  validateReconcileQuery,
-};

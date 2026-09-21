@@ -1,8 +1,8 @@
-const emailService = require('../../service/emailService');
-const paymentLedgerModel = require('../../model/paymentLedgerModel');
-const registrationModel = require('../../model/registrationModel');
-const emailLogModel = require('../../model/emailLogModel');
-const validation = require('./emailValidation');
+import * as emailService from '../../service/emailService.js';
+import * as paymentLedgerModel from '../../model/paymentLedgerModel.js';
+import * as registrationModel from '../../model/registrationModel.js';
+import * as emailLogModel from '../../model/emailLogModel.js';
+import * as validation from './emailValidation.js';
 
 /**
  * Resolve an audience filter into a de-duplicated recipient list.
@@ -23,7 +23,7 @@ async function resolveRecipients(filter) {
 }
 
 /** POST /api/admin/email/bulk */
-exports.sendBulk = async (req, res) => {
+export const sendBulk = async (req, res) => {
   const { subject, body, filter, testEmail, recipients, attachments } =
     validation.validateBulkEmail(req.body);
 
@@ -44,7 +44,7 @@ exports.sendBulk = async (req, res) => {
 };
 
 /** GET /api/admin/email/logs */
-exports.listLogs = async (req, res) => {
+export const listLogs = async (req, res) => {
   const { page, limit, type } = validation.parseLogQuery(req.query);
   const { data, count } = await emailLogModel.paginate({ page, limit, type });
 

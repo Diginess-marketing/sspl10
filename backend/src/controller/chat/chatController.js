@@ -1,12 +1,12 @@
-const env = require('../../config/env');
-const aiService = require('../../service/aiService');
-const whatsappService = require('../../service/whatsappService');
-const chatLogModel = require('../../model/chatLogModel');
-const logger = require('../../utils/logger');
-const validation = require('./chatValidation');
+import env from '../../config/env.js';
+import * as aiService from '../../service/aiService.js';
+import * as whatsappService from '../../service/whatsappService.js';
+import * as chatLogModel from '../../model/chatLogModel.js';
+import logger from '../../utils/logger.js';
+import * as validation from './chatValidation.js';
 
 /** POST /api/chat/web */
-exports.handleWebChat = async (req, res) => {
+export const handleWebChat = async (req, res) => {
   const { message, history, sessionId, mobile } = validation.validateWebChat(req.body);
 
   await chatLogModel.insert({
@@ -34,7 +34,7 @@ exports.handleWebChat = async (req, res) => {
  * GET /api/chat/whatsapp/webhook
  * Meta's subscription handshake: echo the challenge when the token matches.
  */
-exports.verifyWhatsAppWebhook = (req, res) => {
+export const verifyWhatsAppWebhook = (req, res) => {
   const { mode, token, challenge } = validation.validateWebhookHandshake(req.query);
 
   if (mode === 'subscribe' && token === env.whatsapp.verifyToken) {
@@ -50,7 +50,7 @@ exports.verifyWhatsAppWebhook = (req, res) => {
  * POST /api/chat/whatsapp/webhook
  * Answer each inbound text message with the support agent.
  */
-exports.handleWhatsAppWebhook = async (req, res) => {
+export const handleWhatsAppWebhook = async (req, res) => {
   const messages = validation.extractTextMessages(req.body);
 
   if (messages === null) {

@@ -1,13 +1,13 @@
-const supabase = require('../config/supabase');
+import supabase from '../config/supabase.js';
 
-const TABLE = 'trial_candidates';
+export const TABLE = 'trial_candidates';
 
 /**
  * Project a paid registration onto a trial candidate row.
  * The registration id is reused as the candidate id, which makes the upsert
  * below idempotent when a webhook is delivered more than once.
  */
-function fromRegistration(registration, paymentId) {
+export function fromRegistration(registration, paymentId) {
   return {
     id: registration.id,
     registration_id: registration.id,
@@ -23,10 +23,8 @@ function fromRegistration(registration, paymentId) {
 }
 
 /** Insert or update candidates, keyed on id. */
-async function upsertMany(candidates) {
+export async function upsertMany(candidates) {
   if (!candidates.length) return;
   const { error } = await supabase.from(TABLE).upsert(candidates, { onConflict: 'id' });
   if (error) throw error;
 }
-
-module.exports = { TABLE, fromRegistration, upsertMany };

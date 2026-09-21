@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
 
-const paymentRouters = require('./payment/paymentRouters');
-const emailRouters = require('./email/emailRouters');
-const chatRouters = require('./chat/chatRouters');
-const aiQueryRouters = require('./aiQuery/aiQueryRouters');
+import paymentRouters from './payment/paymentRouters.js';
+import emailRouters from './email/emailRouters.js';
+import chatRouters from './chat/chatRouters.js';
+import aiQueryRouters from './aiQuery/aiQueryRouters.js';
 
 /**
  * Every module router, mounted under a single `/api` prefix by app.js.
@@ -16,4 +16,4 @@ router.use(emailRouters);
 router.use(chatRouters);
 router.use(aiQueryRouters);
 
-module.exports = router;
+export default router;

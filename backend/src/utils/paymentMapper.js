@@ -8,7 +8,7 @@
  * @param {Object} payment Razorpay payment entity.
  * @param {Object} [rawPayload] Payload to store verbatim; defaults to `payment`.
  */
-function mapPaymentToLedger(payment, rawPayload = payment) {
+export function mapPaymentToLedger(payment, rawPayload = payment) {
   return {
     payment_id: payment.id,
     order_id: payment.order_id,
@@ -27,5 +27,3 @@ function mapPaymentToLedger(payment, rawPayload = payment) {
     last_synced_at: new Date().toISOString(),
   };
 }
-
-module.exports = { mapPaymentToLedger };

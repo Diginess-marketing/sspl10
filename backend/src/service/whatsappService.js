@@ -1,6 +1,6 @@
-const axios = require('axios');
-const env = require('../config/env');
-const logger = require('../utils/logger');
+import axios from 'axios';
+import env from '../config/env.js';
+import logger from '../utils/logger.js';
 
 const apiUrl = () =>
   `https://graph.facebook.com/${env.whatsapp.apiVersion}/${env.whatsapp.phoneNumberId}/messages`;
@@ -23,7 +23,7 @@ function assertConfigured() {
  * @param {string} to Recipient phone number, country code included, no '+'.
  * @param {string} text
  */
-async function sendMessage(to, text) {
+export async function sendMessage(to, text) {
   assertConfigured();
   try {
     const response = await axios.post(
@@ -46,7 +46,7 @@ async function sendMessage(to, text) {
  * Mark an inbound message as read. Best-effort: failures are logged, not thrown,
  * since they must not stop us from replying.
  */
-async function markAsRead(messageId) {
+export async function markAsRead(messageId) {
   try {
     assertConfigured();
     await axios.post(
@@ -58,5 +58,3 @@ async function markAsRead(messageId) {
     logger.error('Error marking WhatsApp message as read:', error.message);
   }
 }
-
-module.exports = { sendMessage, markAsRead };

@@ -10,7 +10,7 @@ const escapeField = (value) => `"${String(value ?? '').replace(/"/g, '""')}"`;
  * @param {Array<Array<*>>} rows Row values, in the same order as `headers`.
  * @returns {string}
  */
-function toCsv(headers, rows) {
+export function toCsv(headers, rows) {
   const lines = [headers.join(',')];
   for (const row of rows) {
     lines.push(row.map(escapeField).join(','));
@@ -18,4 +18,4 @@ function toCsv(headers, rows) {
   return `${lines.join('\n')}\n`;
 }
 
-module.exports = { toCsv, escapeField };
+export { escapeField };

@@ -1,9 +1,9 @@
-const ApiError = require('../../utils/ApiError');
+import ApiError from '../../utils/ApiError.js';
 
 const DEFAULT_PAGE_SIZE = 50;
 const MAX_PAGE_SIZE = 500;
 
-const VALID_FILTERS = ['paid_users', 'all_registrations', 'failed_payments'];
+export const VALID_FILTERS = ['paid_users', 'all_registrations', 'failed_payments'];
 
 const isEmail = (value) => typeof value === 'string' && value.includes('@');
 
@@ -14,7 +14,7 @@ const isEmail = (value) => typeof value === 'string' && value.includes('@');
  *            testEmail:string|undefined, recipients:string[]|null,
  *            attachments:Array}}
  */
-function validateBulkEmail(body = {}) {
+export function validateBulkEmail(body = {}) {
   const { subject, body: htmlBody, filter, testEmail, recipients, attachments } = body;
 
   if (!subject || !htmlBody) {
@@ -49,7 +49,7 @@ function validateBulkEmail(body = {}) {
  * Normalise the email log query string.
  * @returns {{page:number, limit:number, type:string|undefined}}
  */
-function parseLogQuery(query = {}) {
+export function parseLogQuery(query = {}) {
   const page = Math.max(parseInt(query.page, 10) || 1, 1);
   const limit = Math.min(
     Math.max(parseInt(query.limit, 10) || DEFAULT_PAGE_SIZE, 1),
@@ -57,5 +57,3 @@ function parseLogQuery(query = {}) {
   );
   return { page, limit, type: query.type };
 }
-
-module.exports = { VALID_FILTERS, validateBulkEmail, parseLogQuery };
