@@ -131,8 +131,8 @@ class RegistrationAnalyticsService {
       qr_target_url: null,
       // Computed fields
       revenue: isPaid ? (row.payment_amount || 0) : 0,
-      has_utm_attribution: !!(row.utm_source || row.utm_campaign),
-      is_qr_sourced: !!row.qr_code_id,
+      has_utm_attribution: Boolean(row.utm_source || row.utm_campaign),
+      is_qr_sourced: Boolean(row.qr_code_id),
     };
   }
 
@@ -253,7 +253,7 @@ class RegistrationAnalyticsService {
         ...c,
         conversion_rate: c.total_registrations > 0
           ? (c.paid_registrations / c.total_registrations) * 100
-          : 0
+          : 0,
       })).sort((a, b) => b.total_revenue - a.total_revenue);
 
     } catch (error) {
@@ -316,16 +316,16 @@ class RegistrationAnalyticsService {
       const total = registrations.length;
 
       const paid = registrations.filter(r =>
-        PAID_STATUSES.includes((r.payment_status || '').toLowerCase())
+        PAID_STATUSES.includes((r.payment_status || '').toLowerCase()),
       );
 
       const pending = registrations.filter(r =>
         !PAID_STATUSES.includes((r.payment_status || '').toLowerCase()) &&
-        !['failed', 'error', 'cancelled'].includes((r.payment_status || '').toLowerCase())
+        !['failed', 'error', 'cancelled'].includes((r.payment_status || '').toLowerCase()),
       );
 
       const failed = registrations.filter(r =>
-        ['failed', 'error', 'cancelled'].includes((r.payment_status || '').toLowerCase())
+        ['failed', 'error', 'cancelled'].includes((r.payment_status || '').toLowerCase()),
       );
 
       const utmAttributed = registrations.filter(r => r.utm_source);

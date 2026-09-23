@@ -1,5 +1,5 @@
 import { Card, CardProps, styled } from '@mui/material';
-import { effects, colors } from '@/theme/design-tokens';
+import { effects } from '@/theme/design-tokens';
 
 interface SportCardProps extends Omit<CardProps, 'variant'> {
     variant?: 'default' | 'glass' | 'glass-dark' | 'outlined';

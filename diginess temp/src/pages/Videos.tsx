@@ -28,7 +28,7 @@ const VideosPage: React.FC = () => {
             description: v.description,
             thumbnail: `https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg`,
             publishedAt: v.publishedAt,
-            isShort: false
+            isShort: false,
           })));
         }
       } catch (error) {

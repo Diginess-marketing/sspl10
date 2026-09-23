@@ -73,7 +73,7 @@ const UserDashboard = () => {
     setIsLinking(true);
     try {
       const { data, error } = await supabase.auth.updateUser({
-        data: { linked_mobile: cleanMobile }
+        data: { linked_mobile: cleanMobile },
       });
 
       if (error) throw error;
@@ -201,7 +201,7 @@ const UserDashboard = () => {
                 onClick={async () => {
                   try {
                     await supabase.auth.updateUser({
-                      data: { linked_mobile: null }
+                      data: { linked_mobile: null },
                     });
                     setLinkedMobile(null);
                     setMobileInput('');

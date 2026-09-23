@@ -81,7 +81,7 @@ export async function diagnosePaymentStatusUpdates(): Promise<DiagnosticResult> 
       console.log('   Sample record:', {
         id: readTest.id,
         payment_status: readTest.payment_status,
-        has_payment_id: !!readTest.razorpay_payment_id,
+        has_payment_id: Boolean(readTest.razorpay_payment_id),
       });
     } else if ((readError as any)?.code === 'PGRST116') {
       result.canRead = true;
@@ -104,7 +104,7 @@ export async function diagnosePaymentStatusUpdates(): Promise<DiagnosticResult> 
 
     if (testRecord) {
       const originalStatus = testRecord.payment_status;
-      const testStatus = 'test_' + Date.now();
+      const testStatus = `test_${  Date.now()}`;
 
       // Try to update
       const updateResult = await (supabase
@@ -169,7 +169,7 @@ export async function diagnosePaymentStatusUpdates(): Promise<DiagnosticResult> 
   }
 
   // Summary
-  console.log('\n' + '='.repeat(60));
+  console.log(`\n${  '='.repeat(60)}`);
   console.log('DIAGNOSTIC SUMMARY');
   console.log('='.repeat(60));
   console.log(`Supabase Connected: ${result.supabaseConnected ? '✅' : '❌'}`);
@@ -193,7 +193,7 @@ export async function diagnosePaymentStatusUpdates(): Promise<DiagnosticResult> 
  */
 export async function testPaymentStatusUpdate(
   registrationId: string,
-  newStatus: string
+  newStatus: string,
 ): Promise<{ success: boolean; error?: string; data?: any }> {
   try {
     console.log(`🔄 Testing update for registration: ${registrationId}`);
@@ -255,7 +255,7 @@ export async function testPaymentStatusUpdate(
  * Check if updates are being persisted
  */
 export async function verifyPaymentStatusPersistence(
-  registrationId: string
+  registrationId: string,
 ): Promise<{ persistent: boolean; lastUpdated: string; currentStatus: string }> {
   try {
     console.log(`🔍 Verifying persistence for registration: ${registrationId}`);

@@ -1,20 +1,19 @@
 
 import { useState, useMemo, useEffect } from 'react';
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { Plus, Minus, ArrowRight, Globe } from "lucide-react";
+import { ArrowRight } from 'lucide-react';
 import { faqData, Language } from '@/data/faqData';
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
-    AccordionTrigger
-} from "@/components/ui/accordion";
+    AccordionTrigger,
+} from '@/components/ui/accordion';
 import { fetchCategorizedContent, PlaylistCategory, YouTubeVideo } from '@/services/youtubeService';
 import { VideoCarousel } from '@/components/SSPLSocialWallSection';
-import { Loader2 } from 'lucide-react';
 import { LiteYouTube } from '@/components/LiteYouTube';
 
 const languageNames: Record<string, string> = {
@@ -24,7 +23,7 @@ const languageNames: Record<string, string> = {
     te: 'తెలుగు (Telugu)',
     ml: 'മലയാളം (Malayalam)',
     kn: 'ಕನ್ನಡ (Kannada)',
-    ur: 'اردو (Urdu)'
+    ur: 'اردو (Urdu)',
 };
 
 const langToPlaylistKeywords: Record<string, string[]> = {
@@ -34,7 +33,7 @@ const langToPlaylistKeywords: Record<string, string[]> = {
     te: ['telugu', 'తెలుగు'],
     ml: ['malayalam', 'മലയാളം'],
     kn: ['kannada', 'ಕನ್ನಡ'],
-    ur: ['hindi', 'हिन्दी', 'हिंदी', 'urdu', 'اردو']
+    ur: ['hindi', 'हिन्दी', 'हिंदी', 'urdu', 'اردو'],
 };
 
 const FAQHomePreview = () => {
@@ -55,7 +54,7 @@ const FAQHomePreview = () => {
                     setActiveVideoTab(engFaq ? engFaq.id : faqs[0].id);
                 }
             } catch (error) {
-                console.error("Failed to load FAQ videos:", error);
+                console.error('Failed to load FAQ videos:', error);
             } finally {
                 setLoadingVideos(false);
             }
@@ -87,7 +86,7 @@ const FAQHomePreview = () => {
         const effectiveLang = currentLang === 'ur' ? 'hi' : currentLang;
         const keywords = langToPlaylistKeywords[effectiveLang] || [effectiveLang];
         const currentLangPlaylist = faqPlaylists.find(p => 
-            keywords.some(kw => p.title.toLowerCase().includes(kw))
+            keywords.some(kw => p.title.toLowerCase().includes(kw)),
         );
 
         return items.map(item => {
@@ -102,7 +101,7 @@ const FAQHomePreview = () => {
                     results: 'RESULT',
                     general: 'GENERAL',
                     about: 'ABOUT',
-                    format: 'FORMAT'
+                    format: 'FORMAT',
                 };
                 
                 // Find category and index (Home Preview defaults to 'registration' or first)
@@ -198,8 +197,8 @@ const FAQHomePreview = () => {
                                         </p>
                                         {faq.video && (
                                             <div className={cn(
-                                                "max-w-2xl",
-                                                faq.video.isShort ? "max-w-[280px]" : "w-full"
+                                                'max-w-2xl',
+                                                faq.video.isShort ? 'max-w-[280px]' : 'w-full',
                                             )}>
                                                 <LiteYouTube 
                                                     id={faq.video.id} 
@@ -236,10 +235,10 @@ const FAQHomePreview = () => {
                                         key={playlist.id}
                                         onClick={() => setActiveVideoTab(playlist.id)}
                                         className={cn(
-                                            "px-6 py-2.5 rounded-full font-bold uppercase tracking-wider transition-all duration-300 border text-sm md:text-base cursor-pointer",
+                                            'px-6 py-2.5 rounded-full font-bold uppercase tracking-wider transition-all duration-300 border text-sm md:text-base cursor-pointer',
                                             activeVideoTab === playlist.id
-                                                ? "bg-[#00B4D8] border-[#00B4D8] text-white shadow-lg shadow-[#00B4D8]/20"
-                                                : "bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-white/10"
+                                                ? 'bg-[#00B4D8] border-[#00B4D8] text-white shadow-lg shadow-[#00B4D8]/20'
+                                                : 'bg-white/5 border-white/10 text-white/60 hover:text-white hover:bg-white/10',
                                         )}
                                     >
                                         {shortName}

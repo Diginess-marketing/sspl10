@@ -6,9 +6,7 @@ import {
     Trophy,
     CheckCircle2,
     Gift,
-    MapPin,
     Award,
-    Loader2
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -137,7 +135,7 @@ const TournamentOrganizerRegistration: React.FC = () => {
             const current = prev[field];
             return {
                 ...prev,
-                [field]: current.includes(value) ? current.filter((v: string) => v !== value) : [...current, value]
+                [field]: current.includes(value) ? current.filter((v: string) => v !== value) : [...current, value],
             };
         });
     };
@@ -172,9 +170,9 @@ const TournamentOrganizerRegistration: React.FC = () => {
             setCurrentStep(prev => Math.min(prev + 1, 3));
         } else {
             toast({
-                title: "Validation Error",
-                description: "Please fill all required fields correctly.",
-                variant: 'destructive'
+                title: 'Validation Error',
+                description: 'Please fill all required fields correctly.',
+                variant: 'destructive',
             });
         }
     };
@@ -219,7 +217,7 @@ const TournamentOrganizerRegistration: React.FC = () => {
                     // Based on schema review, most were nullable.
 
                     branding_support: [], // Default empty
-                    status: 'pending'
+                    status: 'pending',
                 });
 
             if (insertError) {
@@ -240,9 +238,9 @@ const TournamentOrganizerRegistration: React.FC = () => {
             }
             setIsSubmitting(false);
             toast({
-                title: "Registration Failed",
-                description: error.message || "Something went wrong. Please try again.",
-                variant: 'destructive'
+                title: 'Registration Failed',
+                description: error.message || 'Something went wrong. Please try again.',
+                variant: 'destructive',
             });
         }
     };

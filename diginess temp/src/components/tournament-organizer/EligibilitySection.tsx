@@ -1,28 +1,27 @@
-import React from 'react';
 import { Users, Club, Trophy, School } from 'lucide-react';
 
 const EligibilitySection = () => {
     const eligibleEntities = [
         {
             icon: <Users size={32} className="text-[#F5C542]" />,
-            title: "Local Organisers",
-            subtitle: "Gully & Society Tournaments"
+            title: 'Local Organisers',
+            subtitle: 'Gully & Society Tournaments',
         },
         {
             icon: <Club size={32} className="text-[#F5C542]" />,
-            title: "Cricket Clubs",
-            subtitle: "Registered and Private Clubs"
+            title: 'Cricket Clubs',
+            subtitle: 'Registered and Private Clubs',
         },
         {
             icon: <Trophy size={32} className="text-[#F5C542]" />,
-            title: "Community Leagues",
-            subtitle: "Corporate & Weekend Leagues"
+            title: 'Community Leagues',
+            subtitle: 'Corporate & Weekend Leagues',
         },
         {
             icon: <School size={32} className="text-[#F5C542]" />,
-            title: "Schools & Colleges",
-            subtitle: "Inter-school and Varsity Events"
-        }
+            title: 'Schools & Colleges',
+            subtitle: 'Inter-school and Varsity Events',
+        },
     ];
 
     return (

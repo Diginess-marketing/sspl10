@@ -6,16 +6,13 @@ import theme from './theme/mui-theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Suspense, lazy, useEffect, useState } from 'react';
-import { lazyWithTimeout } from '@/utils/lazyWithTimeout';
 import { HelmetProvider } from 'react-helmet-async';
 import DynamicThemeProvider from './components/DynamicThemeProvider';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import ErrorBoundary from './components/ErrorBoundary';
-import { LoadingSpinner, CardSkeleton } from './components/ui/enhanced-loading';
 import BackgroundWrapper from './components/BackgroundWrapper';
 import CricketPageLoader from './components/CricketPageLoader';
 import NotificationSystem from './components/NotificationSystem';
-import RegistrationAnnouncement from './components/RegistrationAnnouncement';
 import GullyToGloryAnnouncement from './components/GullyToGloryAnnouncement';
 import ExitIntentPopup from './components/ExitIntentPopup';
 import GoogleAnalytics4 from './components/GoogleAnalytics4';
@@ -50,7 +47,7 @@ const NewsPage = lazy(() => import('./pages/News'));
 const NewsArticlePage = lazy(() => import('./pages/NewsArticle'));
 const VideosPage = lazy(() => import('./pages/Videos'));
 const Teams = lazy(() => import('./pages/Teams'));
-const TeamDetails = lazy(() => import("./pages/TeamDetails"));
+const TeamDetails = lazy(() => import('./pages/TeamDetails'));
 const Players = lazy(() => import('./pages/Players'));
 const ResultLookupPage = lazy(() => import('./pages/ResultLookup'));
 const AnalyticsPage = lazy(() => import('./pages/Analytics'));
@@ -67,13 +64,9 @@ const UserDashboard = lazy(() => import('./pages/UserDashboard'));
 const AuctionPage = lazy(() => import('./pages/AuctionPage'));
 const PlayerProfile = lazy(() => import('./pages/PlayerProfile'));
 
-import TrialsWorkflow from './pages/TrialsWorkflow';
-import SimpleGA4Page from './pages/SimpleGA4';
-import BottomNavigation from './components/BottomNavigation';
 import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
 import FloatingRegistrationButton from './components/FloatingRegistrationButton';
 import SSPLChatbot from './components/SSPLChatbot';
-import CricketPageLoaderTest from './components/CricketPageLoaderTest';
 
 import ScrollToTop from './components/ScrollToTop';
 
@@ -228,7 +221,7 @@ const WebVitalsTracker = () => {
 // Wrapper component to conditionally show Gully announcement (not on /register page)
 const GullyAnnouncementWrapper = ({
   showGullyAnnouncement,
-  onClose
+  onClose,
 }: {
   showGullyAnnouncement: boolean;
   onClose: () => void
@@ -250,7 +243,7 @@ const GullyAnnouncementWrapper = ({
 // Bridge component to handle the Android App's "Profile" button
 const AppProfileBridge = () => {
   const { user } = useAuth();
-  return <Navigate to={user ? "/dashboard" : "/auth"} replace />;
+  return <Navigate to={user ? '/dashboard' : '/auth'} replace />;
 };
 
 const App = () => {

@@ -6,7 +6,7 @@ interface ParallaxWrapperProps {
     className?: string;
 }
 
-const ParallaxWrapper: React.FC<ParallaxWrapperProps> = ({ children, className = "" }) => {
+const ParallaxWrapper: React.FC<ParallaxWrapperProps> = ({ children, className = '' }) => {
     const ref = useRef<HTMLDivElement>(null);
 
     const x = useMotionValue(0);
@@ -15,8 +15,8 @@ const ParallaxWrapper: React.FC<ParallaxWrapperProps> = ({ children, className =
     const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
     const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
 
-    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
-    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ['15deg', '-15deg']);
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ['-15deg', '15deg']);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!ref.current) return;
@@ -48,14 +48,14 @@ const ParallaxWrapper: React.FC<ParallaxWrapperProps> = ({ children, className =
             style={{
                 rotateX,
                 rotateY,
-                transformStyle: "preserve-3d",
+                transformStyle: 'preserve-3d',
             }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className={`relative perspective-[1000px] inline-block ${className}`}
         >
             <div 
-                style={{ transform: "translateZ(20px)" }} 
+                style={{ transform: 'translateZ(20px)' }} 
                 className="w-full h-full block"
             >
                 {/* Optional glow effect that follows cursor. Using pseudo element or overlay */}

@@ -13,7 +13,7 @@ import {
     TableCell,
     TableHead,
     TableHeader,
-    TableRow
+    TableRow,
 } from '@/components/ui/table';
 import {
     Dialog,
@@ -23,7 +23,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -38,9 +38,9 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, MoreHorizontal, Shield, ShieldAlert, UserCheck, Trash2, Mail } from 'lucide-react';
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Loader2, MoreHorizontal, Trash2, Mail } from 'lucide-react';
 import { LoadingSpinner } from '@/components/ui/enhanced-loading';
 
 // Available permissions
@@ -453,7 +453,7 @@ const UserManagement = () => {
             </Tabs>
 
             {/* Edit User Modal */}
-            <Dialog open={!!editingUser} onOpenChange={(open) => !open && setEditingUser(null)}>
+            <Dialog open={Boolean(editingUser)} onOpenChange={(open) => !open && setEditingUser(null)}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Edit User Access</DialogTitle>

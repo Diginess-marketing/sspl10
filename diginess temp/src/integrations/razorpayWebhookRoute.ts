@@ -66,8 +66,8 @@ export function setupRazorpayWebhookRoute(app: any) {
   router.post('/webhook', async (req: RazorpayWebhookRequest, res: Response) => {
     try {
       console.log('📨 Webhook request received');
-      console.log(`Headers:`, req.headers);
-      console.log(`Body:`, JSON.stringify(req.body, null, 2));
+      console.log('Headers:', req.headers);
+      console.log('Body:', JSON.stringify(req.body, null, 2));
 
       // Get signature from header
       const signature = req.headers['x-razorpay-signature'] as string;
@@ -90,7 +90,7 @@ export function setupRazorpayWebhookRoute(app: any) {
         console.error('❌ Invalid webhook signature:', verification.error);
         return res.status(401).json({
           error: 'Unauthorized',
-          message: 'Invalid signature: ' + verification.error,
+          message: `Invalid signature: ${  verification.error}`,
         });
       }
 

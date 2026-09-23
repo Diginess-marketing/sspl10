@@ -83,7 +83,7 @@ const StatsCard = React.forwardRef<
         'bg-white/[0.04] backdrop-blur-2xl border border-white/10',
         'hover:bg-white/[0.06] hover:border-white/20',
         onClick && 'cursor-pointer',
-        className
+        className,
       )}
       style={{
         boxShadow: `0 4px 20px -4px rgba(0,0,0,0.5), 0 0 10px -5px ${color}20`,
@@ -103,8 +103,8 @@ const StatsCard = React.forwardRef<
       />
 
       <div className={cn(
-        "relative flex flex-col items-center text-center justify-center h-full z-10 space-y-1.5",
-        paddingClasses[size]
+        'relative flex flex-col items-center text-center justify-center h-full z-10 space-y-1.5',
+        paddingClasses[size],
       )}>
         <div className="flex flex-col items-center space-y-0.5">
           <h3 
@@ -116,7 +116,7 @@ const StatsCard = React.forwardRef<
 
           <div className={cn(
             'font-black tracking-tighter leading-tight font-numbers text-white',
-            textSizeClasses[size]
+            textSizeClasses[size],
           )}>
             {formatValue(value)}
           </div>
@@ -125,8 +125,8 @@ const StatsCard = React.forwardRef<
         {icon && (
           <div 
             className={cn(
-              "opacity-100 transition-all duration-500 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] pt-0.5",
-              size === 'xxs' || size === 'xs' ? 'scale-[0.85]' : 'scale-[1.1]'
+              'opacity-100 transition-all duration-500 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] pt-0.5',
+              size === 'xxs' || size === 'xs' ? 'scale-[0.85]' : 'scale-[1.1]',
             )}
             style={{ color }}
           >
@@ -145,7 +145,7 @@ const StatsCard = React.forwardRef<
       <div 
         className="absolute top-0 right-0 w-8 h-8 opacity-10 blur-lg pointer-events-none"
         style={{ 
-          background: `radial-gradient(circle at top right, ${color}, transparent)` 
+          background: `radial-gradient(circle at top right, ${color}, transparent)`, 
         }}
       />
     </motion.div>

@@ -1,5 +1,4 @@
 import { Button, ButtonProps, styled } from '@mui/material';
-import { effects } from '@/theme/design-tokens';
 
 interface SportButtonProps extends ButtonProps {
     glow?: boolean;

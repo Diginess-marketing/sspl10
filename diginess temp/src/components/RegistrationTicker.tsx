@@ -26,12 +26,12 @@ const RegistrationTicker: React.FC = () => {
         {
           event: 'INSERT',
           schema: 'public',
-          table: 'player_registrations'
+          table: 'player_registrations',
         },
         (payload) => {
           const newReg = payload.new as Registration;
           setRegistrations(prev => [newReg, ...prev].slice(0, 10)); // Keep last 10
-        }
+        },
       )
       .subscribe();
 
@@ -78,7 +78,7 @@ const RegistrationTicker: React.FC = () => {
       if (data && data.length > 0) {
         // Filter to get only unique names and limit to 10
         const uniqueRegistrations = data.filter((reg, index, self) => 
-          index === self.findIndex((r) => r.full_name === reg.full_name)
+          index === self.findIndex((r) => r.full_name === reg.full_name),
         ).slice(0, 10);
         
         setRegistrations(uniqueRegistrations);
@@ -180,7 +180,7 @@ const RegistrationTicker: React.FC = () => {
           .animate-shimmer {
             animation: shimmer 3s infinite;
           }
-        `
+        `,
       }} />
     </div>
   );

@@ -3,7 +3,6 @@ import { X, ChevronLeft, ChevronRight, Play, CheckCircle, Star, Users, Trophy, C
 import { Button } from './button';
 import { Card, CardContent, CardHeader, CardTitle } from './card';
 import { Badge } from './badge';
-import { cn } from '@/lib/utils';
 
 interface OnboardingStep {
   id: string;

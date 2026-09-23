@@ -14,7 +14,7 @@ const TrialsWorkflow = () => {
   const [activeTab, setActiveTab] = useState('registrations');
   const [refreshKey, setRefreshKey] = useState(0);
 
-  console.log('🏏 Page state:', { hasUser: !!user, userRole, loading, activeTab });
+  console.log('🏏 Page state:', { hasUser: Boolean(user), userRole, loading, activeTab });
 
   // Force show after 5 seconds if loading is stuck (increased timeout)
   useEffect(() => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Filter, X, ChevronDown, MapPin, Calendar, Users, Trophy } from 'lucide-react';
+import { Search, Filter, ChevronDown, MapPin, Calendar, Users, Trophy } from 'lucide-react';
 import { EnhancedInput } from './enhanced-components';
 import { Badge } from './badge';
 import { Button } from './button';

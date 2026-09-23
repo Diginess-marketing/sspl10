@@ -1,29 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Facebook,
   Instagram,
   Linkedin,
   Youtube,
-  Share2,
   MessageCircle,
-  Send,
-  Bot,
-  User,
-  X,
-  Minimize2,
-  Maximize2,
-  RefreshCw,
-  HelpCircle,
   ArrowUp,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { supabase } from '@/integrations/supabase/client';
 import type {
   ChatMessage,
   ChatbotQuery,

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import { UserPlus, Trophy } from 'lucide-react';
 import { EnhancedButton, LoadingSpinner } from '@/components/ui/enhanced-components';
 import TermsAndConditions from '../TermsAndConditions';

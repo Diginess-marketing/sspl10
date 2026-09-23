@@ -69,7 +69,7 @@ const PaymentConfirmationModal: React.FC<PaymentConfirmationModalProps> = ({
   }, []);
 
   // Use config amount if available, else props (fallback)
-  const isConfigTotal = !!config?.amount;
+  const isConfigTotal = Boolean(config?.amount);
   const configTotal = config?.amount ?? 0;
 
   // If config is present, we treat it as the Total Payable amount (e.g. 825).
@@ -212,7 +212,7 @@ const PaymentConfirmationModal: React.FC<PaymentConfirmationModalProps> = ({
               response.razorpay_payment_id,
               response.razorpay_order_id,
               response.razorpay_signature,
-              newRegistrationId || registrationId || ''
+              newRegistrationId || registrationId || '',
             );
 
             // Immediate success feedback

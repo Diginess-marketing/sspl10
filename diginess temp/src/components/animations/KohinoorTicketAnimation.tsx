@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Star, X, Sparkles, PartyPopper, Download, RotateCw } from 'lucide-react';
+import { Star, X, Download, RotateCw } from 'lucide-react';
 import type { PlayerResult } from '@/types/playerData';
 import './GoldenTicketAnimation.css';
 import html2pdf from 'html2pdf.js';
@@ -66,13 +66,13 @@ const KohinoorTicketAnimation: React.FC<KohinoorTicketAnimationProps> = ({ playe
       filename: `SSPL_Kohinoor_Ticket_${player.name.replace(/\s+/g, '_')}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true, logging: false },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' },
     };
 
     try {
       await html2pdf().set(opt as any).from(element).save();
     } catch (e) {
-      console.error("Download failed", e);
+      console.error('Download failed', e);
     } finally {
       setIsDownloading(false);
     }

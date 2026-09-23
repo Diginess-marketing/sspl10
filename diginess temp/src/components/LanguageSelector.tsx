@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 const LanguageSelector = ({
@@ -81,7 +81,7 @@ const LanguageSelector = ({
         if ((window as any).google && (window as any).google.translate) {
           new (window as any).google.translate.TranslateElement(
             { pageLanguage: 'en', autoDisplay: false },
-            'google_translate_element'
+            'google_translate_element',
           );
         }
       };
@@ -134,7 +134,7 @@ const LanguageSelector = ({
             translate="no"
             className={cn(
               'notranslate font-bold transition-colors',
-              lang === l.code ? 'font-extrabold relative z-10' : 'opacity-70 hover:opacity-100'
+              lang === l.code ? 'font-extrabold relative z-10' : 'opacity-70 hover:opacity-100',
             )}
             style={{
               fontSize: mobile ? '14px' : (isMobileScreen ? '12px' : '13px'),

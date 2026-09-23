@@ -19,7 +19,7 @@ export const ContentBlock = ({
     image,
     imagePosition = 'right',
     alt = 'Section Image',
-    background = 'white'
+    background = 'white',
 }: ContentBlockProps) => {
     const theme = useTheme();
 
@@ -51,7 +51,7 @@ export const ContentBlock = ({
                                 sx={{
                                     width: '100%',
                                     borderRadius: 4,
-                                    boxShadow: theme.shadows[4]
+                                    boxShadow: theme.shadows[4],
                                 }}
                             />
                         </Grid>
@@ -92,7 +92,7 @@ export const ContentBlock = ({
                                 sx={{
                                     width: '100%',
                                     borderRadius: 4,
-                                    boxShadow: theme.shadows[4]
+                                    boxShadow: theme.shadows[4],
                                 }}
                             />
                         </Grid>

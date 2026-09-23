@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 import { motion } from 'framer-motion';
-import { cn } from "@/lib/utils";
 import { Youtube, Instagram, Facebook, Linkedin, Share2, ChevronLeft, ChevronRight, ThumbsUp, MessageCircle, ExternalLink } from 'lucide-react';
 import LiteYouTube from '@/components/LiteYouTube';
 import { Button } from '@/components/ui/button';
@@ -27,7 +26,7 @@ const SocialCard = ({ video }: { video: YouTubeVideo }) => {
             try {
                 await navigator.share({
                     title: video.title,
-                    url: url,
+                    url,
                 });
             } catch (err) {
                 if ((err as Error).name !== 'AbortError') {
@@ -47,8 +46,8 @@ const SocialCard = ({ video }: { video: YouTubeVideo }) => {
     const formatCount = (count?: string) => {
         if (!count) return '0';
         const num = parseInt(count);
-        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-        if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+        if (num >= 1000000) return `${(num / 1000000).toFixed(1)  }M`;
+        if (num >= 1000) return `${(num / 1000).toFixed(1)  }K`;
         return num.toString();
     };
 
@@ -59,11 +58,11 @@ const SocialCard = ({ video }: { video: YouTubeVideo }) => {
             <div className="absolute -inset-[3px] bg-gradient-to-b from-sspl-orange via-sspl-orange-hover to-sspl-navy rounded-[2.2rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-[2px]"></div>
 
             <div className="relative bg-white rounded-[2rem] overflow-hidden border-4 border-white shadow-lg ring-1 ring-slate-100 flex flex-col h-full">
-                <div className={video.isShort ? "aspect-[9/16] w-full bg-slate-100 relative" : "aspect-video w-full bg-slate-100 relative"}>
+                <div className={video.isShort ? 'aspect-[9/16] w-full bg-slate-100 relative' : 'aspect-video w-full bg-slate-100 relative'}>
                     <LiteYouTube
                         id={video.id}
                         title={video.title}
-                        variant={video.isShort ? "short" : "standard"}
+                        variant={video.isShort ? 'short' : 'standard'}
                         posterQuality="hqdefault"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 pointer-events-none"></div>
@@ -122,15 +121,15 @@ const VideoCarousel = ({ title, videos, type }: { title: string, videos: YouTube
         loop: videos.length > 2,
         slidesToScroll: 1,
         breakpoints: {
-            '(min-width: 1024px)': { slidesToScroll: 2 }
-        }
+            '(min-width: 1024px)': { slidesToScroll: 2 },
+        },
     }, [
         Autoplay({
             delay: 4000,
             stopOnInteraction: false,
             stopOnMouseEnter: true,
-            rootNode: (emblaRoot) => emblaRoot.parentElement
-        })
+            rootNode: (emblaRoot) => emblaRoot.parentElement,
+        }),
     ]);
 
     const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
@@ -146,8 +145,8 @@ const VideoCarousel = ({ title, videos, type }: { title: string, videos: YouTube
                         <div
                             key={`${video.id}-${index}`}
                             className={type === 'short'
-                                ? "flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_20%] pl-4"
-                                : "flex-[0_0_90%] sm:flex-[0_0_60%] md:flex-[0_0_45%] lg:flex-[0_0_33.33%] pl-4"}
+                                ? 'flex-[0_0_85%] sm:flex-[0_0_45%] md:flex-[0_0_30%] lg:flex-[0_0_20%] pl-4'
+                                : 'flex-[0_0_90%] sm:flex-[0_0_60%] md:flex-[0_0_45%] lg:flex-[0_0_33.33%] pl-4'}
                         >
                             <SocialCard video={video} />
                         </div>
@@ -191,13 +190,13 @@ const SSPLSocialWallSection = () => {
                     setCategories(data);
                 } else {
                     const fallback = [
-                        { id: 'shorts', title: 'Latest Shorts', videos: (SOCIAL_VIDEOS_FALLBACK as any[]).filter(v => v.isShort) }
+                        { id: 'shorts', title: 'Latest Shorts', videos: (SOCIAL_VIDEOS_FALLBACK as any[]).filter(v => v.isShort) },
                     ];
                     setCategories(fallback);
                 }
             } catch (err) {
                 const fallback = [
-                    { id: 'shorts', title: 'Latest Shorts', videos: (SOCIAL_VIDEOS_FALLBACK as any[]).filter(v => v.isShort) }
+                    { id: 'shorts', title: 'Latest Shorts', videos: (SOCIAL_VIDEOS_FALLBACK as any[]).filter(v => v.isShort) },
                 ];
                 setCategories(fallback);
             } finally {
@@ -208,7 +207,7 @@ const SSPLSocialWallSection = () => {
     }, []);
 
     const nonFaqCategories = categories.filter(
-        (cat) => !cat.title.toLowerCase().includes('faq')
+        (cat) => !cat.title.toLowerCase().includes('faq'),
     );
 
     return (

@@ -1,10 +1,8 @@
-import React from 'react';
 
 import { Phone, Mail, MessageCircle } from 'lucide-react';
 import SEO from '@/components/SEO';
 import { EnquiryForm } from '@/components/forms/EnquiryForm';
 import { Box, Container, Typography, Grid, Card, useTheme, alpha } from '@mui/material';
-import { InternalPageHero } from '@/components/layout/content/InternalPageHero';
 
 const Enquiry = () => {
   const theme = useTheme();

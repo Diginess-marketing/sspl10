@@ -46,7 +46,7 @@ const CATEGORIES: { title: string; span: 2 | 4; partners: Partner[] }[] = [
 
 const Logo = ({ partner, large }: { partner: Partner; large?: boolean }) => (
   <li className={`ptn__logo${large ? ' ptn__logo--lg' : ''}`}>
-    <img src={partner.isSimple ? partner.src + (partner.ext || '.png') : partner.src + '.avif'} alt={partner.alt} loading="lazy" decoding="async" />
+    <img src={partner.isSimple ? partner.src + (partner.ext || '.png') : `${partner.src  }.avif`} alt={partner.alt} loading="lazy" decoding="async" />
   </li>
 );
 

@@ -15,7 +15,7 @@ import {
     ArrowLeft,
     ArrowRight,
     ChevronDown,
-    Loader2
+    Loader2,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { googleAnalytics } from '@/utils/googleAnalytics';
@@ -134,7 +134,7 @@ const SelectorRegistrationForm: React.FC = () => {
             const current = prev.availability;
             return {
                 ...prev,
-                availability: current.includes(value) ? current.filter(v => v !== value) : [...current, value]
+                availability: current.includes(value) ? current.filter(v => v !== value) : [...current, value],
             };
         });
     };
@@ -179,10 +179,10 @@ const SelectorRegistrationForm: React.FC = () => {
             setCurrentStep(prev => Math.min(prev + 1, 3));
         } else {
             toast({
-                title: "Validation Error",
-                description: "Please fill all required fields correctly.",
+                title: 'Validation Error',
+                description: 'Please fill all required fields correctly.',
                 variant: 'destructive',
-                className: TOAST_ERROR_CLASS
+                className: TOAST_ERROR_CLASS,
             });
         }
     };
@@ -238,7 +238,7 @@ const SelectorRegistrationForm: React.FC = () => {
                     preferred_region: formData.preferred_region,
                     declaration_accepted: formData.declaration_accepted,
                     document_url: documentUrl,
-                    status: 'pending'
+                    status: 'pending',
                 });
 
             if (insertError) throw insertError;
@@ -250,10 +250,10 @@ const SelectorRegistrationForm: React.FC = () => {
             console.error('Registration error:', error);
             setIsSubmitting(false);
             toast({
-                title: "Registration Failed",
-                description: error.message || "Something went wrong. Please try again.",
+                title: 'Registration Failed',
+                description: error.message || 'Something went wrong. Please try again.',
                 variant: 'destructive',
-                className: TOAST_ERROR_CLASS
+                className: TOAST_ERROR_CLASS,
             });
         }
     };
@@ -308,7 +308,7 @@ const SelectorRegistrationForm: React.FC = () => {
                                 onChange={handleInputChange}
                                 className="selform-input"
                                 placeholder="Enter your full name"
-                                aria-invalid={!!errors.full_name}
+                                aria-invalid={Boolean(errors.full_name)}
                                 autoComplete="name"
                             />
                         </Field>
@@ -320,7 +320,7 @@ const SelectorRegistrationForm: React.FC = () => {
                                 value={formData.dob}
                                 onChange={handleInputChange}
                                 className="selform-input"
-                                aria-invalid={!!errors.dob}
+                                aria-invalid={Boolean(errors.dob)}
                                 autoComplete="bday"
                             />
                         </Field>
@@ -331,7 +331,7 @@ const SelectorRegistrationForm: React.FC = () => {
                                 value={formData.state}
                                 onChange={handleInputChange}
                                 className="selform-input"
-                                aria-invalid={!!errors.state}
+                                aria-invalid={Boolean(errors.state)}
                             >
                                 <option value="">Select State</option>
                                 {availableStates.map(s => <option key={s} value={s}>{s}</option>)}
@@ -345,7 +345,7 @@ const SelectorRegistrationForm: React.FC = () => {
                                 onChange={handleInputChange}
                                 disabled={!formData.state}
                                 className="selform-input"
-                                aria-invalid={!!errors.city_district}
+                                aria-invalid={Boolean(errors.city_district)}
                             >
                                 <option value="">Select City</option>
                                 {availableCities.map(c => <option key={c} value={c}>{c}</option>)}
@@ -362,7 +362,7 @@ const SelectorRegistrationForm: React.FC = () => {
                                 placeholder="10-digit phone number"
                                 maxLength={10}
                                 inputMode="numeric"
-                                aria-invalid={!!errors.contact_number}
+                                aria-invalid={Boolean(errors.contact_number)}
                                 autoComplete="tel-national"
                             />
                         </Field>
@@ -375,7 +375,7 @@ const SelectorRegistrationForm: React.FC = () => {
                                 onChange={handleInputChange}
                                 className="selform-input"
                                 placeholder="email@example.com"
-                                aria-invalid={!!errors.email}
+                                aria-invalid={Boolean(errors.email)}
                                 autoComplete="email"
                             />
                         </Field>
@@ -445,7 +445,7 @@ const SelectorRegistrationForm: React.FC = () => {
                                 onChange={handleInputChange}
                                 className="selform-input"
                                 placeholder="Enter preferred region"
-                                aria-invalid={!!errors.preferred_region}
+                                aria-invalid={Boolean(errors.preferred_region)}
                             />
                         </Field>
                         <div className="selform-field">
@@ -457,7 +457,7 @@ const SelectorRegistrationForm: React.FC = () => {
                                     onChange={handleFileChange}
                                     accept=".pdf,.jpg,.jpeg,.png"
                                     className="selform-upload__input"
-                                    aria-invalid={!!errors.document_file}
+                                    aria-invalid={Boolean(errors.document_file)}
                                 />
                                 <FileText className="selform-upload__icon" aria-hidden="true" />
                                 <p className="selform-upload__name">{formData.document_file ? formData.document_file.name : 'Click or Drag to Upload ID'}</p>

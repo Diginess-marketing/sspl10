@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,10 +12,9 @@ import {
     Alert,
     Stack,
     InputAdornment,
-    MenuItem,
-    CircularProgress
+    CircularProgress,
 } from '@mui/material';
-import { Phone, Mail, User, MessageSquare, Briefcase, Send } from 'lucide-react';
+import { Mail, User, MessageSquare, Send } from 'lucide-react';
 
 // --- Validation Schema ---
 const enquirySchema = z.object({
@@ -42,8 +41,8 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
             phone: '',
             email: '',
             interestType: 'sponsor',
-            message: ''
-        }
+            message: '',
+        },
     });
 
     const activeTab = watch('interestType');
@@ -80,7 +79,7 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
                 '& .MuiInputAdornment-root svg': { color: '#64748b !important' },
                 '& .MuiTypography-root': { color: '#000000 !important' },
                 '& .MuiToggleButton-root': { color: '#4b5563 !important', borderColor: '#d1d5db !important' },
-                '& .MuiToggleButton-root.Mui-selected': { color: '#ffffff !important' }
+                '& .MuiToggleButton-root.Mui-selected': { color: '#ffffff !important' },
             }}
         >
             {submitStatus === 'success' && (
@@ -119,9 +118,9 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
                                     '&.Mui-selected': {
                                         bgcolor: 'brand.primary.main',
                                         color: 'common.white',
-                                        '&:hover': { bgcolor: 'brand.primary.dark' }
-                                    }
-                                }
+                                        '&:hover': { bgcolor: 'brand.primary.dark' },
+                                    },
+                                },
                             }}
                         >
                             <ToggleButton value="sponsor">Sponsor</ToggleButton>
@@ -141,7 +140,7 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
                         label="Full Name"
                         placeholder="Enter your full name"
                         fullWidth
-                        error={!!errors.name}
+                        error={Boolean(errors.name)}
                         helperText={errors.name?.message}
                         InputProps={{
                             startAdornment: (
@@ -166,7 +165,7 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
                             placeholder="9876543210"
                             fullWidth
                             type="tel"
-                            error={!!errors.phone}
+                            error={Boolean(errors.phone)}
                             helperText={errors.phone?.message}
                             InputProps={{
                                 startAdornment: (
@@ -194,7 +193,7 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
                             placeholder="you@example.com"
                             fullWidth
                             type="email"
-                            error={!!errors.email}
+                            error={Boolean(errors.email)}
                             helperText={errors.email?.message}
                             InputProps={{
                                 startAdornment: (
@@ -220,7 +219,7 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
                         multiline
                         rows={5}
                         fullWidth
-                        error={!!errors.message}
+                        error={Boolean(errors.message)}
                         helperText={errors.message?.message}
                         InputProps={{
                             startAdornment: (
@@ -246,7 +245,7 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
                     py: 1.5,
                     fontWeight: 'bold',
                     letterSpacing: 1,
-                    boxShadow: 4
+                    boxShadow: 4,
                 }}
             >
                 {isSubmitting ? 'Sending...' : 'Submit Enquiry'}

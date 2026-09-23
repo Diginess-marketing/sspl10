@@ -5,10 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
 
 interface PaidRegistration {
-    "S.No": number;
-    "Mail ID": string;
-    "Phone Number": string;
-    "null": number | null; // Pincode?
+    'S.No': number;
+    'Mail ID': string;
+    'Phone Number': string;
+    'null': number | null; // Pincode?
 }
 
 interface PlayerData {
@@ -27,7 +27,7 @@ const DataInsertionTool = () => {
         matchedNames: 0,
         inserted: 0,
         failed: 0,
-        skipped: 0
+        skipped: 0,
     });
 
     const addLog = (msg: string) => setLogs(prev => [...prev, `${new Date().toLocaleTimeString()}: ${msg}`]);
@@ -44,7 +44,7 @@ const DataInsertionTool = () => {
     };
 
     const runInsertion = async () => {
-        if (!confirm("Are you sure you want to insert paid registrations into the database?")) return;
+        if (!confirm('Are you sure you want to insert paid registrations into the database?')) return;
 
         setLoading(true);
         setLogs([]);
@@ -52,17 +52,17 @@ const DataInsertionTool = () => {
 
         try {
             // 1. Fetch Data
-            addLog("Fetching Paid_registrations.json...");
+            addLog('Fetching Paid_registrations.json...');
             const paidRes = await fetch('/Paid_registrations.json');
-            if (!paidRes.ok) throw new Error("Could not find Paid_registrations.json in public folder");
+            if (!paidRes.ok) throw new Error('Could not find Paid_registrations.json in public folder');
             const paidData: PaidRegistration[] = await paidRes.json();
 
             addLog(`Loaded ${paidData.length} paid records.`);
             setStats(s => ({ ...s, totalInFile: paidData.length }));
 
-            addLog("Fetching Players Data.json...");
+            addLog('Fetching Players Data.json...');
             const playersRes = await fetch('/Players Data.json');
-            if (!playersRes.ok) throw new Error("Could not find Players Data.json in public folder");
+            if (!playersRes.ok) throw new Error('Could not find Players Data.json in public folder');
             const playersData: PlayerData[] = await playersRes.json();
             addLog(`Loaded ${playersData.length} existing player records.`);
 
@@ -78,7 +78,7 @@ const DataInsertionTool = () => {
             let matchCount = 0;
             let failCount = 0;
 
-            addLog("Starting insertion process...");
+            addLog('Starting insertion process...');
 
             // Process in chunks to avoid overwhelming the browser/network
             const chunkSize = 50;
@@ -89,7 +89,7 @@ const DataInsertionTool = () => {
                 const rowsToInsert = [];
 
                 for (const item of chunk) {
-                    const normPhone = normalizePhone(item["Phone Number"]);
+                    const normPhone = normalizePhone(item['Phone Number']);
                     const player = playerMap.get(normPhone);
 
                     let fullName = '';
@@ -102,7 +102,7 @@ const DataInsertionTool = () => {
                         // For now, let's insert with generic name or leave blank if schema allows. 
                         // Assuming we want to insert even if name is missing.
                         // Extract name from email as best guess
-                        const emailName = item["Mail ID"]?.split('@')[0] || 'Unknown';
+                        const emailName = item['Mail ID']?.split('@')[0] || 'Unknown';
                         fullName = emailName;
                     }
 
@@ -112,8 +112,8 @@ const DataInsertionTool = () => {
 
                     rowsToInsert.push({
                         full_name: fullName,
-                        email: item["Mail ID"],
-                        phone: item["Phone Number"], // Keep original or normalized? Let's use original for input, but normalized for matching
+                        email: item['Mail ID'],
+                        phone: item['Phone Number'], // Keep original or normalized? Let's use original for input, but normalized for matching
                         payment_status: 'completed',
                         payment_amount: 49.00, // Assuming 49 based on context, or leave null
                         created_at: new Date().toISOString(),
@@ -128,7 +128,7 @@ const DataInsertionTool = () => {
                         .insert(rowsToInsert); // or .upsert(rowsToInsert, { onConflict: 'email' }) if unique constraint exists
 
                     if (error) {
-                        console.error("Batch insert error:", error);
+                        console.error('Batch insert error:', error);
                         addLog(`Error inserting batch ${i}: ${error.message}`);
                         failCount += rowsToInsert.length;
                     } else {
@@ -141,14 +141,14 @@ const DataInsertionTool = () => {
                     ...prev,
                     matchedNames: matchCount,
                     inserted: insertedCount,
-                    failed: failCount
+                    failed: failCount,
                 }));
 
                 // Small delay to yield UI
                 await new Promise(r => setTimeout(r, 50));
             }
 
-            addLog("Insertion complete!");
+            addLog('Insertion complete!');
 
         } catch (error: any) {
             addLog(`CRITICAL ERROR: ${error.message}`);
@@ -202,7 +202,7 @@ const DataInsertionTool = () => {
                 </Button>
 
                 <div className="h-64 overflow-y-auto bg-black text-green-400 p-4 rounded-md font-mono text-xs">
-                    {logs.length === 0 ? "Ready to start..." : logs.map((log, i) => (
+                    {logs.length === 0 ? 'Ready to start...' : logs.map((log, i) => (
                         <div key={i}>{log}</div>
                     ))}
                 </div>

@@ -1,8 +1,7 @@
-import React from "react"
-import { Badge, LiveBadge, NumericBadge } from "@/components/ui/badge"
-import { Label, CategoryLabel, TagLabel, StatusLabel, PriorityLabel } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
+import { Badge, LiveBadge, NumericBadge } from '@/components/ui/badge';
+import { Label, CategoryLabel } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 /**
  * Comprehensive showcase of Badge and Label components
@@ -235,5 +234,5 @@ export function BadgeLabelShowcase() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

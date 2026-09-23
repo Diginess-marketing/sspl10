@@ -1,5 +1,4 @@
-import React from 'react';
-import { Trophy, Zap, Shield, Award, Flame, Star, ChevronRight, TrendingUp, Users } from 'lucide-react';
+import { Trophy, Zap, Shield, Award, Flame, Star, TrendingUp, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const MatchFixtures = () => {
@@ -11,7 +10,7 @@ const MatchFixtures = () => {
             color: 'from-emerald-500/20 to-emerald-900/40',
             border: 'border-emerald-500/30',
             accent: 'emerald',
-            neon: '#10b981'
+            neon: '#10b981',
         },
         { 
             id: 'B',
@@ -20,7 +19,7 @@ const MatchFixtures = () => {
             color: 'from-blue-500/20 to-blue-900/40',
             border: 'border-blue-500/30',
             accent: 'blue',
-            neon: '#3b82f6'
+            neon: '#3b82f6',
         },
         { 
             id: 'C',
@@ -29,7 +28,7 @@ const MatchFixtures = () => {
             color: 'from-orange-500/20 to-orange-900/40',
             border: 'border-orange-500/30',
             accent: 'orange',
-            neon: '#f97316'
+            neon: '#f97316',
         },
         { 
             id: 'D',
@@ -38,7 +37,7 @@ const MatchFixtures = () => {
             color: 'from-purple-500/20 to-purple-900/40',
             border: 'border-purple-500/30',
             accent: 'purple',
-            neon: '#a855f7'
+            neon: '#a855f7',
         },
     ];
 
@@ -101,7 +100,7 @@ const MatchFixtures = () => {
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: idx * 0.1 }}
-                                className={`relative group`}
+                                className={'relative group'}
                             >
                                 <div className={`absolute inset-0 bg-linear-to-br ${group.color} rounded-2xl blur-0 group-hover:blur-md transition-all duration-500 opacity-20`}></div>
                                 <div className={`relative bg-slate-900/50 backdrop-blur-xl border ${group.border} rounded-2xl p-6 overflow-hidden h-full flex flex-col`}>
@@ -260,11 +259,11 @@ const MatchFixtures = () => {
                                             transition={{ 
                                                 duration: 2 + Math.random() * 2,
                                                 repeat: Infinity,
-                                                delay: Math.random() * 2
+                                                delay: Math.random() * 2,
                                             }}
                                             style={{ 
                                                 top: `${Math.random() * 100}%`,
-                                                left: `${Math.random() * 100}%`
+                                                left: `${Math.random() * 100}%`,
                                             }}
                                             className="absolute"
                                         >
@@ -326,7 +325,7 @@ const MatchFixtures = () => {
                     filter: blur(20px);
                     animation: shine 4s infinite;
                 }
-            `}} />
+            ` }} />
         </div>
     );
 };

@@ -160,7 +160,7 @@ export function setupRazorpaySyncRoutes(app: any) {
 
       res.json({
         success: true,
-        message: `Synced pending payments`,
+        message: 'Synced pending payments',
         stats: {
           total: result.total,
           synced: result.synced,

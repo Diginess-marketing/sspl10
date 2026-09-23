@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, MapPin, Users, Trophy } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface TeamData {

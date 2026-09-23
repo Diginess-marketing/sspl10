@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { faqData, Language } from '@/data/faqData';
+import { faqData } from '@/data/faqData';
 import { supabase } from '@/integrations/supabase/client';
 import type {
   ChatMessage,
@@ -167,7 +167,7 @@ const SSPLChatbot: React.FC<SSPLChatbotProps> = ({ isOpen, onToggle, className =
       try {
         recognitionRef.current.start();
         setIsListening(true);
-      } catch(e) {
+      } catch (e) {
         setIsListening(false);
       }
     }
@@ -193,7 +193,7 @@ const SSPLChatbot: React.FC<SSPLChatbotProps> = ({ isOpen, onToggle, className =
                recognitionRef.current?.start();
                setIsListening(true);
             }
-          } catch(e) {}
+          } catch (e) {}
         }, 800);
       }
     };
@@ -222,7 +222,7 @@ const SSPLChatbot: React.FC<SSPLChatbotProps> = ({ isOpen, onToggle, className =
       try {
         recognitionRef.current.start();
         setIsListening(true);
-      } catch(e) {
+      } catch (e) {
         setIsListening(false);
       }
       toast({ title: 'Voice Chat Started', description: 'I am listening! Say something like "What is the fee?"' });
@@ -288,7 +288,7 @@ What would you like to know about SSPL? You can type or use the microphone.`,
           }
         }
         
-        let score = matches / Math.max(searchWords.length, qWords.length * 0.5);
+        const score = matches / Math.max(searchWords.length, qWords.length * 0.5);
         
         if (score > highestScore) {
           highestScore = score;
@@ -368,7 +368,7 @@ What would you like to know about SSPL? You can type or use the microphone.`,
         return {
           text: "I couldn't find an exact FAQ for that. Can you rephrase?",
           type: 'text',
-          suggestions: ['How to register?', 'Registration fee?']
+          suggestions: ['How to register?', 'Registration fee?'],
         };
       case 'teams':
         if (entities.team) {
@@ -433,7 +433,7 @@ What would you like to know about SSPL? You can type or use the microphone.`,
         const fallbacks = [
           "I'm here to help with SSPL information! Try asking about registration, trials, or fees.",
           'I can tell you about SSPL eligibility, trials schedule, and selection process. What interests you?',
-          "I have answers from our FAQ. You can ask me how to check your results or about the tournament format.",
+          'I have answers from our FAQ. You can ask me how to check your results or about the tournament format.',
           'Need SSPL info? Send me a text or click the mic to ask a question.',
         ];
         return {
@@ -467,7 +467,7 @@ What would you like to know about SSPL? You can type or use the microphone.`,
         .slice(-5)
         .map(m => ({
           role: m.sender === 'bot' ? 'assistant' : 'user',
-          content: m.content
+          content: m.content,
         }));
 
       let botResponseText = '';
@@ -481,8 +481,8 @@ What would you like to know about SSPL? You can type or use the microphone.`,
             history: chatHistory,
             mobile: user?.phone || null,
             mode: 'customer_care',
-            language: localStorage.getItem('selectedLanguage') || 'en'
-          }
+            language: localStorage.getItem('selectedLanguage') || 'en',
+          },
         });
 
         if (error) throw error;
@@ -601,7 +601,7 @@ What would you like to know about SSPL? You can type or use the microphone.`,
                   toggleVoiceChatMode();
                 }}
                 className={`h-6 w-6 p-0 text-white flex items-center justify-center mr-1 ${isVoiceChatMode ? 'bg-red-500 hover:bg-red-600 animate-pulse' : 'hover:bg-white/20'}`}
-                title={isVoiceChatMode ? "End Voice Chat" : "Start Voice Chat"}
+                title={isVoiceChatMode ? 'End Voice Chat' : 'Start Voice Chat'}
               >
                 <PhoneCall className="w-3 h-3" />
               </Button>
@@ -696,7 +696,7 @@ What would you like to know about SSPL? You can type or use the microphone.`,
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder={isListening ? "Listening..." : "Ask your question..."}
+                  placeholder={isListening ? 'Listening...' : 'Ask your question...'}
                   className={`flex-1 bg-white text-slate-900 border-slate-200 pr-10 focus:ring-cricket-blue ${isListening ? 'border-red-400 ring-2 ring-red-200' : ''}`}
                   style={{ color: '#0f172a', backgroundColor: '#ffffff' }}
                   disabled={isTyping}

@@ -1,7 +1,7 @@
 
-import FAQSection from "@/components/FAQSection";
-import React, { useEffect } from "react";
-import { Helmet } from "react-helmet-async";
+import FAQSection from '@/components/FAQSection';
+import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 const FAQPage = () => {
     // Scroll to top on mount

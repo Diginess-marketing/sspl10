@@ -56,11 +56,11 @@ async function getRazorpayPaymentStatus(paymentId: string): Promise<string> {
     // Razorpay payment statuses: created, authorized, failed, captured, refunded
     if (payment.status === 'captured') {
       return 'completed';
-    } else if (payment.status === 'failed') {
+    } if (payment.status === 'failed') {
       return 'failed';
-    } else if (payment.status === 'authorized') {
+    } if (payment.status === 'authorized') {
       return 'authorized';
-    } else if (payment.status === 'created') {
+    } if (payment.status === 'created') {
       return 'pending';
     }
     
@@ -76,7 +76,7 @@ async function getRazorpayPaymentStatus(paymentId: string): Promise<string> {
  */
 export async function updatePaymentStatusFromRazorpay(
   registrationId: string,
-  paymentId: string
+  paymentId: string,
 ): Promise<PaymentStatusUpdate | null> {
   try {
     // Get current status from database
@@ -135,7 +135,7 @@ export async function updatePaymentStatusFromRazorpay(
     }
 
     console.log(
-      `🔄 Updated payment status for ${registrationId}: ${currentStatus} → ${razorpayStatus}`
+      `🔄 Updated payment status for ${registrationId}: ${currentStatus} → ${razorpayStatus}`,
     );
 
     return {
@@ -191,7 +191,7 @@ export async function syncAllPendingPaymentStatuses(): Promise<PaymentSyncResult
 
         const update = await updatePaymentStatusFromRazorpay(
           p.id,
-          p.razorpay_payment_id
+          p.razorpay_payment_id,
         );
 
         if (update) {
@@ -210,7 +210,7 @@ export async function syncAllPendingPaymentStatuses(): Promise<PaymentSyncResult
       }
     }
 
-    console.log(`✅ Sync complete:`, {
+    console.log('✅ Sync complete:', {
       total: result.totalProcessed,
       updated: result.updated,
       noChange: result.noChange,
@@ -264,7 +264,7 @@ export async function fixAllIncorrectPaymentStatuses(): Promise<PaymentSyncResul
 
         const update = await updatePaymentStatusFromRazorpay(
           p.id,
-          p.razorpay_payment_id
+          p.razorpay_payment_id,
         );
 
         if (update) {
@@ -283,7 +283,7 @@ export async function fixAllIncorrectPaymentStatuses(): Promise<PaymentSyncResul
       }
     }
 
-    console.log(`✅ Fix complete:`, {
+    console.log('✅ Fix complete:', {
       total: result.totalProcessed,
       updated: result.updated,
       noChange: result.noChange,
@@ -347,7 +347,7 @@ export async function getPaymentStatistics(): Promise<{
  */
 export async function manualSyncPayment(
   registrationId: string,
-  paymentId: string
+  paymentId: string,
 ): Promise<PaymentStatusUpdate | null> {
   console.log(`🔍 Manual sync requested for ${registrationId} with payment ${paymentId}`);
   return await updatePaymentStatusFromRazorpay(registrationId, paymentId);

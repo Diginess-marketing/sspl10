@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { generateQRUrl, generateQRCode, generateQRCodeSVG } from '@/utils/utm';
+import { generateQRCode, generateQRCodeSVG } from '@/utils/utm';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

@@ -72,7 +72,7 @@ const CommercialGuidelines: React.FC = () => {
                                         'Umpire branding',
                                         'Scoreboard / live stream overlays',
                                         'Official social media promotions',
-                                        'Press & media coverage rights'
+                                        'Press & media coverage rights',
                                     ].map((item, idx) => (
                                         <div key={idx} className="flex items-center space-x-2 text-slate-600 bg-slate-50/50 p-2 rounded-lg border border-slate-100/50">
                                             <span className="w-1.5 h-1.5 bg-sspl-blue rounded-full"></span>
@@ -122,7 +122,7 @@ const CommercialGuidelines: React.FC = () => {
                             <div className="flex flex-wrap gap-2 mb-4">
                                 {[
                                     'Betting / Gambling', 'Tobacco / Nicotine', 'Narcotics', 
-                                    'Adult Content', 'Hate Speech', 'Unlawful Activities'
+                                    'Adult Content', 'Hate Speech', 'Unlawful Activities',
                                 ].map((tag, idx) => (
                                     <span key={idx} className="px-3 py-1 bg-red-50 text-red-700 rounded-full text-xs font-bold border border-red-100">
                                         {tag}

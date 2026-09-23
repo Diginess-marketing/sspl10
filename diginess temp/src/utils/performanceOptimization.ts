@@ -278,7 +278,7 @@ export const imageOptimizationChecks = {
     // Batch getBoundingClientRect calls to avoid forced reflows
     const imagePositions = images.map(img => ({
       img,
-      top: img.getBoundingClientRect().top
+      top: img.getBoundingClientRect().top,
     }));
     
     return imagePositions

@@ -132,7 +132,7 @@ const Header = () => {
   const isActive = (item: NavItem) =>
     item.end
       ? path === item.to
-      : path === item.to || path.startsWith(item.to + '/') || !!item.children?.some((c) => path === c.to || path.startsWith(c.to + '/'));
+      : path === item.to || path.startsWith(`${item.to  }/`) || Boolean(item.children?.some((c) => path === c.to || path.startsWith(`${c.to  }/`)));
 
   const resultsActive = path === '/trial-results';
   const registerActive = path === '/register';

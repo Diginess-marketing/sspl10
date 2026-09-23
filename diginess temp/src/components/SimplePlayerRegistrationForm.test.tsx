@@ -27,7 +27,7 @@ describe('SimplePlayerRegistrationForm', () => {
         render(
             <BrowserRouter>
                 <SimplePlayerRegistrationForm />
-            </BrowserRouter>
+            </BrowserRouter>,
         );
 
         // Verify common fields exist

@@ -13,7 +13,7 @@ const SimpleTest = () => {
       console.log('Starting test query...');
       
       try {
-        console.log('Supabase client exists:', !!supabase);
+        console.log('Supabase client exists:', Boolean(supabase));
         
         const result = await supabase
           .from('player_registrations')

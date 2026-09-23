@@ -17,7 +17,6 @@ import {
     Building2,
     Award,
     CheckCircle,
-    Tag
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';

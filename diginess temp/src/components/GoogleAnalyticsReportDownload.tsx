@@ -17,15 +17,9 @@ import {
   Calendar as CalendarIcon,
   Settings,
   BarChart3,
-  Users,
-  Eye,
-  TrendingUp,
   AlertTriangle,
-  CheckCircle,
   Loader2,
   FileSpreadsheet,
-  FileImage,
-  RefreshCw,
 } from 'lucide-react';
 // import { format, subDays } from 'date-fns'; // Temporarily disabled for build
 

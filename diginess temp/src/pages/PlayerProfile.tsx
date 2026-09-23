@@ -1,8 +1,7 @@
 
-import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ArrowLeft, User, Trophy, Activity, MapPin } from 'lucide-react';
+import { ArrowLeft, User, Activity, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -21,9 +20,9 @@ const MOCK_PLAYER_DB = {
             runs: 450,
             strikeRate: 185.5,
             fifties: 3,
-            highest: 89
+            highest: 89,
         },
-        bio: 'Rahul Sharma is an explosive top-order batsman known for his power-hitting in powerplay overs. Represents Mumbai Mavericks in SSPL T10.'
+        bio: 'Rahul Sharma is an explosive top-order batsman known for his power-hitting in powerplay overs. Represents Mumbai Mavericks in SSPL T10.',
     },
     // Default fallback
     'default': {
@@ -34,8 +33,8 @@ const MOCK_PLAYER_DB = {
         age: 0,
         city: 'Unknown',
         stats: { matches: 0, runs: 0, strikeRate: 0, fifties: 0, highest: 0 },
-        bio: 'Player details not found or waiting for update.'
-    }
+        bio: 'Player details not found or waiting for update.',
+    },
 };
 
 const PlayerProfile = () => {
@@ -44,15 +43,15 @@ const PlayerProfile = () => {
 
     // SEO Schema
     const playerSchema = {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": player.name,
-        "jobTitle": "Cricketer",
-        "athlete": {
-            "@type": "SportsTeam",
-            "name": player.team
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        'name': player.name,
+        'jobTitle': 'Cricketer',
+        'athlete': {
+            '@type': 'SportsTeam',
+            'name': player.team,
         },
-        "description": player.bio
+        'description': player.bio,
     };
 
     return (

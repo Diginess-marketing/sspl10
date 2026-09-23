@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { VisuallyHidden } from '@/components/ui/visually-hidden';
-import { Trophy, UserPlus } from 'lucide-react';
 import PlayerRegistrationStepper from './PlayerRegistrationStepper';
 import { useLocation } from 'react-router-dom';
 

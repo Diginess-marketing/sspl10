@@ -134,10 +134,10 @@ class PlayerDataService {
         else if (remarksUpper.includes('ABSENT')) status = 'ABSENT';
 
         level2Data = {
-          status: status,
+          status,
           score: level2Match.score,
           remarks: level2Match.remarks,
-          listName: level2Match.listName
+          listName: level2Match.listName,
         };
         level = 'Both'; // Actually 'Level 2' or 'Both'
       }
@@ -150,10 +150,10 @@ class PlayerDataService {
         else if (remarksUpper.includes('ABSENT')) status = 'ABSENT';
 
         level3Data = {
-          status: status,
+          status,
           score: level3Match.score,
           remarks: level3Match.remarks,
-          listName: level3Match.listName
+          listName: level3Match.listName,
         };
         // If they have L3 data, they definitely have L1 and likely L2
         level = 'Both';
@@ -167,10 +167,10 @@ class PlayerDataService {
         else if (remarksUpper.includes('BLANK')) status = 'BLANK';
 
         level4Data = {
-          status: status,
+          status,
           score: level4Match.score,
           remarks: level4Match.remarks,
-          listName: level4Match.listName
+          listName: level4Match.listName,
         };
         level = 'Both';
       }
@@ -183,10 +183,10 @@ class PlayerDataService {
         else if (remarksUpper === 'BLANK') status = 'BLANK';
 
         level5Data = {
-          status: status,
+          status,
           score: level5Match.score,
           remarks: level5Match.remarks,
-          listName: level5Match.listName
+          listName: level5Match.listName,
         };
         level = 'Both';
       }
@@ -196,11 +196,11 @@ class PlayerDataService {
         id: `player_${index + 1}`,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
-        level: level,
-        level2Data: level2Data,
-        level3Data: level3Data,
-        level4Data: level4Data,
-        level5Data: level5Data
+        level,
+        level2Data,
+        level3Data,
+        level4Data,
+        level5Data,
       };
     });
 
@@ -230,7 +230,7 @@ class PlayerDataService {
       const query = criteria.query.toLowerCase().trim();
       filteredResults = filteredResults.filter(player =>
         player.name.toLowerCase().includes(query) ||
-        player.mobile.includes(query)
+        player.mobile.includes(query),
       );
     }
 
@@ -245,7 +245,7 @@ class PlayerDataService {
     if (criteria.name) {
       const name = criteria.name.toLowerCase().trim();
       filteredResults = filteredResults.filter(player =>
-        player.name.toLowerCase().includes(name)
+        player.name.toLowerCase().includes(name),
       );
     }
 
@@ -274,7 +274,7 @@ class PlayerDataService {
     await this.ensureDataLoaded();
     const searchName = name.toLowerCase().trim();
     return this.playersData.find(player =>
-      player.name.toLowerCase() === searchName
+      player.name.toLowerCase() === searchName,
     ) || null;
   }
 

@@ -50,7 +50,7 @@ const setCachedData = (data: Partial<CacheData>) => {
         const newData: CacheData = {
             ...existing,
             ...data,
-            timestamp: Date.now()
+            timestamp: Date.now(),
         };
         localStorage.setItem(CACHE_KEY, JSON.stringify(newData));
     } catch (e) {
@@ -71,7 +71,7 @@ const fetchVideoStats = async (videoIds: string[]): Promise<Record<string, any>>
     try {
         await Promise.all(chunks.map(async (chunk) => {
             const response = await fetch(
-                `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${chunk.join(',')}&key=${YOUTUBE_API_KEY}`
+                `https://www.googleapis.com/youtube/v3/videos?part=statistics&id=${chunk.join(',')}&key=${YOUTUBE_API_KEY}`,
             );
             if (response.ok) {
                 const data = await response.json();
@@ -96,7 +96,7 @@ export const fetchAllYouTubeContent = async (): Promise<YouTubeVideo[]> => {
 
     try {
         const searchRes = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=${MAX_RESULTS}&order=date&type=video&key=${YOUTUBE_API_KEY}`
+            `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${CHANNEL_ID}&maxResults=${MAX_RESULTS}&order=date&type=video&key=${YOUTUBE_API_KEY}`,
         );
 
         if (!searchRes.ok) {
@@ -130,7 +130,7 @@ export const fetchAllYouTubeContent = async (): Promise<YouTubeVideo[]> => {
                 viewCount: stats.viewCount,
                 likeCount: stats.likeCount,
                 commentCount: stats.commentCount,
-                isShort: item.isShort
+                isShort: item.isShort,
             };
         });
 
@@ -154,7 +154,7 @@ export const fetchCategorizedContent = async (): Promise<PlaylistCategory[]> => 
     try {
         // 1. Fetch Playlists
         const playlistsRes = await fetch(
-            `https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=${CHANNEL_ID}&maxResults=20&key=${YOUTUBE_API_KEY}`
+            `https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=${CHANNEL_ID}&maxResults=20&key=${YOUTUBE_API_KEY}`,
         );
         if (!playlistsRes.ok) throw new Error('Failed to fetch playlists');
         const playlistsData = await playlistsRes.json();
@@ -163,7 +163,7 @@ export const fetchCategorizedContent = async (): Promise<PlaylistCategory[]> => 
         // 2. Fetch Items for each Playlist
         const categories: PlaylistCategory[] = await Promise.all(playlists.map(async (playlist: any) => {
             const itemsRes = await fetch(
-                `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlist.id}&maxResults=10&key=${YOUTUBE_API_KEY}`
+                `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlist.id}&maxResults=10&key=${YOUTUBE_API_KEY}`,
             );
             if (!itemsRes.ok) return { id: playlist.id, title: playlist.snippet.title, videos: [] };
 
@@ -185,14 +185,14 @@ export const fetchCategorizedContent = async (): Promise<PlaylistCategory[]> => 
                     viewCount: stats.viewCount,
                     likeCount: stats.likeCount,
                     commentCount: stats.commentCount,
-                    isShort: item.snippet.title.toLowerCase().includes('#shorts') || item.snippet.description?.toLowerCase().includes('#shorts')
+                    isShort: item.snippet.title.toLowerCase().includes('#shorts') || item.snippet.description?.toLowerCase().includes('#shorts'),
                 };
             });
 
             return {
                 id: playlist.id,
                 title: playlist.snippet.title,
-                videos
+                videos,
             };
         }));
 
@@ -206,7 +206,7 @@ export const fetchCategorizedContent = async (): Promise<PlaylistCategory[]> => 
             categories.push({
                 id: 'standalone-shorts',
                 title: 'Latest Shorts',
-                videos: standaloneShorts
+                videos: standaloneShorts,
             });
         }
 

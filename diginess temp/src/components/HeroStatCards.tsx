@@ -5,28 +5,28 @@ import { Trophy, MapPin, User, Users } from 'lucide-react';
 const HeroStatCards: React.FC = () => {
     const stats = [
         {
-            title: "UPTO ₹3 CRORES*",
-            value: "PRIZE MONEY",
+            title: 'UPTO ₹3 CRORES*',
+            value: 'PRIZE MONEY',
             icon: Trophy,
-            gradient: "from-blue-600 via-purple-600 to-indigo-800",
+            gradient: 'from-blue-600 via-purple-600 to-indigo-800',
         },
         {
-            title: "FINALS AT",
-            value: "SHARJAH UAE",
+            title: 'FINALS AT',
+            value: 'SHARJAH UAE',
             icon: MapPin,
-            gradient: "from-emerald-500 via-cyan-400 to-teal-600",
+            gradient: 'from-emerald-500 via-cyan-400 to-teal-600',
         },
         {
-            title: "UPTO",
-            value: "₹3 LAKHS",
+            title: 'UPTO',
+            value: '₹3 LAKHS',
             icon: User,
-            gradient: "from-pink-500 via-rose-500 to-amber-500",
+            gradient: 'from-pink-500 via-rose-500 to-amber-500',
         },
         {
-            title: "TEAMS",
-            value: "12",
+            title: 'TEAMS',
+            value: '12',
             icon: Users,
-            gradient: "from-orange-500 via-yellow-400 to-red-600",
+            gradient: 'from-orange-500 via-yellow-400 to-red-600',
         },
     ];
 
@@ -44,7 +44,7 @@ const HeroStatCards: React.FC = () => {
                 transition={{
                     duration: 4,
                     repeat: Infinity,
-                    ease: "easeInOut"
+                    ease: 'easeInOut',
                 }}
                 className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8"
             >

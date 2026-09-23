@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -92,7 +92,7 @@ const AdminCertificateLookup = () => {
             p.name.toLowerCase().includes(lowerQuery) ||
             p.mobile.includes(lowerQuery) ||
             p.city?.toLowerCase().includes(lowerQuery) ||
-            p.state.toLowerCase().includes(lowerQuery)
+            p.state.toLowerCase().includes(lowerQuery),
         );
     }, [players, searchQuery]);
 
@@ -100,7 +100,7 @@ const AdminCertificateLookup = () => {
     const totalPages = Math.ceil(filteredPlayers.length / PAGE_SIZE);
     const displayedPlayers = filteredPlayers.slice(
         (currentPage - 1) * PAGE_SIZE,
-        currentPage * PAGE_SIZE
+        currentPage * PAGE_SIZE,
     );
 
     // Reset page when search changes
@@ -114,7 +114,7 @@ const AdminCertificateLookup = () => {
         try {
             await playerExportService.exportPlayerData(filteredPlayers, {
                 format: 'csv',
-                includeFields: ['name', 'mobile', 'state', 'city', 'status', 'proficiency', 'timing', 'marks', 'remarks']
+                includeFields: ['name', 'mobile', 'state', 'city', 'status', 'proficiency', 'timing', 'marks', 'remarks'],
             });
             toast({ title: 'Export Successful', description: `${filteredPlayers.length} records exported.` });
         } catch (error) {
@@ -130,7 +130,7 @@ const AdminCertificateLookup = () => {
         const type = isSelected ? 'achievement' : 'participation';
 
         toast({
-            title: "Generating Certificate",
+            title: 'Generating Certificate',
             description: `Please wait while we generate the ${type} certificate for ${player.name}...`,
         });
 
@@ -142,16 +142,16 @@ const AdminCertificateLookup = () => {
             }
 
             toast({
-                title: "Download Complete",
+                title: 'Download Complete',
                 description: `${player.name}'s certificate has been downloaded.`,
-                className: "bg-green-600 text-white border-green-700",
+                className: 'bg-green-600 text-white border-green-700',
             });
         } catch (error) {
             console.error('Certificate generation failed:', error);
             toast({
-                title: "Download Failed",
-                description: "There was an error generating the certificate. Please try again.",
-                variant: "destructive",
+                title: 'Download Failed',
+                description: 'There was an error generating the certificate. Please try again.',
+                variant: 'destructive',
             });
         }
     };

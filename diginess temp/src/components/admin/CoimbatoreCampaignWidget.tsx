@@ -23,7 +23,7 @@ export default function CoimbatoreCampaignWidget() {
   }>({
     isOpen: false,
     title: '',
-    players: []
+    players: [],
   });
 
   const handleCardClick = (type: 'all' | 'successful' | 'failed') => {
@@ -35,7 +35,7 @@ export default function CoimbatoreCampaignWidget() {
         r.payment_status === 'captured' || 
         r.payment_status === 'paid' || 
         r.payment_status === 'success' ||
-        r.payment_status === 'completed'
+        r.payment_status === 'completed',
       );
       title = 'Successful Registrations (Coimbatore Campaign)';
     } else if (type === 'failed') {
@@ -57,13 +57,13 @@ export default function CoimbatoreCampaignWidget() {
       state: p.state,
       status: p.status,
       payment_status: p.payment_status,
-      date: p.created_at ? new Date(p.created_at).toLocaleDateString() : undefined
+      date: p.created_at ? new Date(p.created_at).toLocaleDateString() : undefined,
     }));
     
     setDrillDown({
       isOpen: true,
       title,
-      players: playersList
+      players: playersList,
     });
   };
 
@@ -87,13 +87,13 @@ export default function CoimbatoreCampaignWidget() {
           const ga4Data = ga4Response?.data || [];
           const campaignData = ga4Data.filter((d: any) => 
             (d.utm_source || '').toLowerCase().includes('karthikeyan') ||
-            (d.utm_campaign || '').toLowerCase().includes('coimbatore')
+            (d.utm_campaign || '').toLowerCase().includes('coimbatore'),
           );
           
           ga4Scans = campaignData.reduce((sum: number, item: any) => sum + (item.sessions || 0), 0);
           ga4Visits = campaignData.reduce((sum: number, item: any) => sum + (item.users || 0), 0);
         } catch (e) {
-          console.error("GA4 fetch error:", e);
+          console.error('GA4 fetch error:', e);
         }
 
         // 2. Fetch Supabase precise tracking data directly from player_registrations
@@ -104,7 +104,7 @@ export default function CoimbatoreCampaignWidget() {
           .ilike('utm_campaign', '%coimbatore%');
 
         if (error) {
-          console.error("Supabase fetch error:", error);
+          console.error('Supabase fetch error:', error);
         }
         
         let totalDBRegistrations = 0;
@@ -136,13 +136,13 @@ export default function CoimbatoreCampaignWidget() {
             scans: ga4Scans > 0 ? ga4Scans : totalDBRegistrations,
             visits: ga4Visits > 0 ? ga4Visits : totalDBRegistrations,
             successfulRegistrations: successfulDBRegistrations,
-            failedRegistrations: failedDBRegistrations
+            failedRegistrations: failedDBRegistrations,
           });
           setLoading(false);
           isInitialLoad = false;
         }
       } catch (err) {
-        console.error("Error fetching Coimbatore campaign metrics:", err);
+        console.error('Error fetching Coimbatore campaign metrics:', err);
         if (isMounted) setLoading(false);
       }
     }

@@ -1,6 +1,6 @@
 
-import { supabase } from "@/integrations/supabase/client";
-import { getUTMData } from "@/utils/utm";
+import { supabase } from '@/integrations/supabase/client';
+import { getUTMData } from '@/utils/utm';
 
 interface VisitorLeadData {
     full_name?: string;

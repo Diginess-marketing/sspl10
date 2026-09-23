@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import { MessageCircle, X, Send, Bot, User, Mic, Volume2, RefreshCcw, Phone, PhoneOff } from 'lucide-react';
+import { X, Send, Bot, Mic, Volume2, RefreshCcw, Phone, PhoneOff } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,7 +30,7 @@ interface Message {
 
 // Generate a unique session ID
 const generateSessionId = () => {
-    return 'chat_' + Date.now() + '_' + Math.random().toString(36).substring(2, 9);
+    return `chat_${  Date.now()  }_${  Math.random().toString(36).substring(2, 9)}`;
 };
 
 const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
@@ -69,7 +69,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
         { label: 'తెలుగు (Telugu)', value: 'te', type: 'language' },
         { label: 'മലയാളം (Malayalam)', value: 'ma', type: 'language' },
         { label: 'ಕನ್ನಡ (Kannada)', value: 'ka', type: 'language' },
-        { label: 'اردو (Urdu)', value: 'ur', type: 'language' }
+        { label: 'اردو (Urdu)', value: 'ur', type: 'language' },
     ];
 
     const localizedWelcomeMessages: Record<string, string> = {
@@ -80,15 +80,15 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
         'ma': 'നമസ്കാരം! ഞാൻ നിങ്ങളുടെ SSPL കസ്റ്റമർ കെയർ എക്സിക്യൂട്ടീവ് ആണ്. എനിക്ക് നിങ്ങളെ എങ്ങനെ സഹായിക്കാനാകും?',
         'ka': 'ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ SSPL ಗ್ರಾಹಕ ಸೇವಾ ಕಾರ್ಯನಿರ್ವಾಹಕ. ನಾನು ನಿಮಗೆ ಹೇಗೆ ಸಹಾಯ ಮಾಡಬಹುದು?',
         'ur': 'ہیلو! میں آپ کا SSPL کسٹمر کیئر ایگزیکٹو ہوں۔ میں آپ کی کیسے مدد کر سکتا ہوں?',
-        'ml': 'നമസ്കാരം! ഞാൻ നിങ്ങളുടെ SSPL കസ്റ്റമർ കെയർ എക്സിക്യൂട്ടീവ് ആണ്. എനിക്ക് നിങ്ങളെ എങ്ങനെ സഹായിക്കാനാകും?'
+        'ml': 'നമസ്കാരം! ഞാൻ നിങ്ങളുടെ SSPL കസ്റ്റമർ കെയർ എക്സിക്യൂട്ടീവ് ആണ്. എനിക്ക് നിങ്ങളെ എങ്ങനെ സഹായിക്കാനാകും?',
     };
 
     const [messages, setMessages] = useState<Message[]>([
         {
             role: 'assistant',
             content: 'Welcome to SSPL T10! Please select your language to continue.',
-            options: languageOptions
-        }
+            options: languageOptions,
+        },
     ]);
     const [inputValue, setInputValue] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -105,7 +105,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
             const cleanMessages = msgs.map(m => ({
                 role: m.role,
                 content: m.content,
-                ...(m.options ? { options: m.options.map(o => o.label) } : {})
+                ...(m.options ? { options: m.options.map(o => o.label) } : {}),
             }));
 
             const { error } = await supabase
@@ -114,9 +114,9 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                     session_id: sessionId,
                     mobile: mobile || null,
                     language: lang || 'en',
-                    mode: mode,
+                    mode,
                     messages: cleanMessages,
-                    updated_at: new Date().toISOString()
+                    updated_at: new Date().toISOString(),
                 }, { onConflict: 'session_id' });
 
             if (error) {
@@ -186,7 +186,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                 'te': 'te-IN',
                 'ma': 'ml-IN',
                 'ka': 'kn-IN',
-                'ur': 'ur-PK'
+                'ur': 'ur-PK',
             };
             recognitionRef.current.lang = langMap[language || 'en'] || 'en-IN';
             recognitionRef.current.start();
@@ -223,8 +223,8 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
         }
         // Try Sarvam API for instantaneous high-quality regional voice
         try {
-            const SARVAM_API_KEY = "sk_m73kio8h_04B7T8qzwRqnn6epiSCZqxVy";
-            const functionUrl = `https://api.sarvam.ai/text-to-speech`;
+            const SARVAM_API_KEY = 'sk_m73kio8h_04B7T8qzwRqnn6epiSCZqxVy';
+            const functionUrl = 'https://api.sarvam.ai/text-to-speech';
 
             // Map frontend languages to Sarvam supported language codes
             const langMap: Record<string, string> = {
@@ -234,35 +234,35 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                 'te': 'te-IN',
                 'ma': 'ml-IN',
                 'ka': 'kn-IN',
-                'ur': 'hi-IN' // Sarvam doesn't officially support Urdu yet, Hindi provides closest natural fallback
+                'ur': 'hi-IN', // Sarvam doesn't officially support Urdu yet, Hindi provides closest natural fallback
             };
 
             const targetLang = langMap[language || 'en'] || 'en-IN';
 
             // Pronunciation fixes for brand terms
             let spokenText = text;
-            spokenText = spokenText.replace(/SSPL/gi, "S S P L");
-            spokenText = spokenText.replace(/T10/gi, "T ten");
+            spokenText = spokenText.replace(/SSPL/gi, 'S S P L');
+            spokenText = spokenText.replace(/T10/gi, 'T ten');
 
             const requestBody = {
                 inputs: [spokenText],
                 target_language_code: targetLang,
-                speaker: "anushka",
+                speaker: 'anushka',
                 pitch: 0,
                 pace: 1.05,
                 loudness: 1.5,
                 speech_sample_rate: 8000,
                 enable_preprocessing: true,
-                model: "bulbul:v2"
+                model: 'bulbul:v2',
             };
 
             const response = await fetch(functionUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'api-subscription-key': SARVAM_API_KEY
+                    'api-subscription-key': SARVAM_API_KEY,
                 },
-                body: JSON.stringify(requestBody)
+                body: JSON.stringify(requestBody),
             });
 
             if (!response.ok) {
@@ -274,7 +274,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
 
             // Sarvam TTS returns base64 encoded audio in `audios[0]`
             if (!data.audios || data.audios.length === 0) {
-                throw new Error("No audio returned from Sarvam API");
+                throw new Error('No audio returned from Sarvam API');
             }
 
             const audioSrc = `data:audio/wav;base64,${data.audios[0]}`;
@@ -319,8 +319,8 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
             let spokenText = text;
 
             // Pronunciation fixes for brand terms
-            spokenText = spokenText.replace(/SSPL/g, "S S P L");
-            spokenText = spokenText.replace(/T10/g, "T ten");
+            spokenText = spokenText.replace(/SSPL/g, 'S S P L');
+            spokenText = spokenText.replace(/T10/g, 'T ten');
 
             const utterance = new SpeechSynthesisUtterance(spokenText);
 
@@ -332,7 +332,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                 'te': 'te-IN',
                 'ma': 'ml-IN',
                 'ka': 'kn-IN',
-                'ur': 'ur-PK' // Fallback for Urdu
+                'ur': 'ur-PK', // Fallback for Urdu
             };
             const targetLang = langMap[language || 'en'] || 'en-IN';
             utterance.lang = targetLang;
@@ -352,7 +352,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                 'te-IN': ['Google తెలుగు', 'Microsoft Shruti'],
                 'ml-IN': ['Google മലയാളം', 'Microsoft Sobhana'],
                 'kn-IN': ['Google ಕನ್ನಡ', 'Microsoft Trupti'],
-                'ur-PK': ['Google اردو', 'Microsoft Uzma', 'Google Urdu']
+                'ur-PK': ['Google اردو', 'Microsoft Uzma', 'Google Urdu'],
             };
 
             const preferredList = highQualityVoices[targetLang] || [];
@@ -410,7 +410,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
         if (scrollContainerRef.current) {
             scrollContainerRef.current.scrollTo({
                 top: scrollContainerRef.current.scrollHeight,
-                behavior: 'smooth'
+                behavior: 'smooth',
             });
         } else {
             messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -426,7 +426,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                     const scrollTarget = lastMessageRef.current.offsetTop - 20;
                     scrollContainerRef.current.scrollTo({
                         top: scrollTarget,
-                        behavior: 'smooth'
+                        behavior: 'smooth',
                     });
                 } else {
                     lastMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -454,7 +454,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
 
             botResponse = {
                 role: 'assistant',
-                content: `You selected ${option.label}. Please provide your 10-digit mobile number to help us assist you better.`
+                content: `You selected ${option.label}. Please provide your 10-digit mobile number to help us assist you better.`,
             };
 
             // Add bot response after a short delay for natural feel
@@ -474,13 +474,13 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                     label: item.question,
                     value: `q-${option.value}-${index}`,
                     type: 'question',
-                    answer: item.answer
+                    answer: item.answer,
                 }));
 
                 botResponse = {
                     role: 'assistant',
                     content: `Here are some common questions about ${category.title}:`,
-                    options: questions
+                    options: questions,
                 };
             } else {
                 botResponse = { role: 'assistant', content: "I couldn't find details for that category." };
@@ -492,7 +492,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
             const categories: ChatOption[] = faqData[currentLang].map(cat => ({
                 label: cat.title,
                 value: cat.id,
-                type: 'category'
+                type: 'category',
             }));
 
             botResponse = {
@@ -500,9 +500,9 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                 content: option.answer,
                 // Offer main categories again after an answer
                 options: [
-                    { label: "Back to Main Menu", value: "main-menu", type: 'category' }, // Special case handled below
-                    ...categories
-                ]
+                    { label: 'Back to Main Menu', value: 'main-menu', type: 'category' }, // Special case handled below
+                    ...categories,
+                ],
             };
         } else {
             // Fallback
@@ -513,13 +513,13 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
             const categories: ChatOption[] = faqData[currentLang].map(cat => ({
                 label: cat.title,
                 value: cat.id,
-                type: 'category'
+                type: 'category',
             }));
 
             botResponse = {
                 role: 'assistant',
-                content: "Sure, what else can I help you with?",
-                options: categories
+                content: 'Sure, what else can I help you with?',
+                options: categories,
             };
         }
 
@@ -563,14 +563,14 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                 const categories: ChatOption[] = faqData[currentLang].map(cat => ({
                     label: cat.title,
                     value: cat.id,
-                    type: 'category'
+                    type: 'category',
                 }));
 
                 setTimeout(() => {
                     setMessages(prev => [...prev, {
                         role: 'assistant',
                         content: 'Thank you! How can I help you today?',
-                        options: categories
+                        options: categories,
                     }]);
                     setIsLoading(false);
                 }, 500);
@@ -578,7 +578,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                 setTimeout(() => {
                     setMessages(prev => [...prev, {
                         role: 'assistant',
-                        content: 'Please enter a valid 10-digit Indian mobile number (starts with 6-9).'
+                        content: 'Please enter a valid 10-digit Indian mobile number (starts with 6-9).',
                     }]);
                     setIsLoading(false);
                 }, 500);
@@ -600,11 +600,11 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
             const { data, error } = await supabase.functions.invoke('chat', {
                 body: {
                     message: userMsg,
-                    history: history,
+                    history,
                     language: language || 'en',
                     mobile: mobileNumber,
-                    mode: isCallMode ? 'customer_care' : 'chat'
-                }
+                    mode: isCallMode ? 'customer_care' : 'chat',
+                },
             });
 
             console.log('[ChatWidget] Chat response:', { data, error });
@@ -663,8 +663,8 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
             {
                 role: 'assistant',
                 content: 'Welcome to SSPL T10! Please select your language to continue.',
-                options: languageOptions
-            }
+                options: languageOptions,
+            },
         ]);
         setStep('language');
         setLanguage(null);
@@ -680,8 +680,8 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
 
     return (
         <div className={cn(
-            "font-sans",
-            fullScreen ? "w-full h-full flex flex-col" : "fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4"
+            'font-sans',
+            fullScreen ? 'w-full h-full flex flex-col' : 'fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4',
         )}>
             <AnimatePresence>
                 {isOpen && (
@@ -691,10 +691,10 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                         exit={fullScreen ? undefined : { opacity: 0, y: 20, scale: 0.95 }}
                         transition={{ duration: 0.2 }}
                         className={cn(
-                            "bg-white flex flex-col overflow-hidden",
+                            'bg-white flex flex-col overflow-hidden',
                             fullScreen
-                                ? "w-full h-full flex-1 rounded-none shadow-none"
-                                : "fixed bottom-24 right-6 z-50 w-[90vw] max-w-[450px] h-[600px] max-h-[80vh] rounded-2xl shadow-2xl border border-gray-100"
+                                ? 'w-full h-full flex-1 rounded-none shadow-none'
+                                : 'fixed bottom-24 right-6 z-50 w-[90vw] max-w-[450px] h-[600px] max-h-[80vh] rounded-2xl shadow-2xl border border-gray-100',
                         )}
                     >
                         {/* Header */}
@@ -706,7 +706,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                                 <div>
                                     <h3 className="font-bold text-sm text-white">{isCallMode ? 'SSPL Voice Support (Live)' : 'SSPL Customer Care Executive'}</h3>
                                     <div className="flex items-center gap-1.5">
-                                        <span className={cn("w-2 h-2 rounded-full animate-pulse", isCallMode ? (isListening ? "bg-red-500" : "bg-orange-400") : "bg-green-400")}></span>
+                                        <span className={cn('w-2 h-2 rounded-full animate-pulse', isCallMode ? (isListening ? 'bg-red-500' : 'bg-orange-400') : 'bg-green-400')}></span>
                                         <span className="text-xs text-white/80">
                                             {isCallMode ? (isListening ? 'Listening...' : 'Thinking...') : 'Online'}
                                         </span>
@@ -732,10 +732,10 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                                         }
                                     }}
                                     className={cn(
-                                        "text-white/70 hover:text-white transition-colors p-1",
-                                        isCallMode ? "bg-red-100/20 text-red-400 rounded-full" : ""
+                                        'text-white/70 hover:text-white transition-colors p-1',
+                                        isCallMode ? 'bg-red-100/20 text-red-400 rounded-full' : '',
                                     )}
-                                    title={isCallMode ? "End Call" : "Call Support"}
+                                    title={isCallMode ? 'End Call' : 'Call Support'}
                                 >
                                     {isCallMode ? <PhoneOff size={18} /> : <Phone size={18} />}
                                 </button>
@@ -780,18 +780,18 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                                         key={idx}
                                         ref={idx === messages.length - 1 ? lastMessageRef : null}
                                         className={cn(
-                                            "flex flex-col w-full mb-2", // Changed to flex-col to handle options below bubble
-                                            msg.role === 'user' ? "items-end" : "items-start"
+                                            'flex flex-col w-full mb-2', // Changed to flex-col to handle options below bubble
+                                            msg.role === 'user' ? 'items-end' : 'items-start',
                                         )}
                                     >
                                         <div
                                             className={cn(
-                                                "max-w-[80%] p-3 rounded-2xl text-sm shadow-sm",
+                                                'max-w-[80%] p-3 rounded-2xl text-sm shadow-sm',
                                                 msg.role === 'user'
-                                                    ? "bg-sspl-orange text-white rounded-tr-none"
+                                                    ? 'bg-sspl-orange text-white rounded-tr-none'
                                                     : msg.role === 'system'
-                                                        ? "bg-red-50 text-red-600 border border-red-100"
-                                                        : "bg-white text-gray-800 border border-gray-100 rounded-tl-none"
+                                                        ? 'bg-red-50 text-red-600 border border-red-100'
+                                                        : 'bg-white text-gray-800 border border-gray-100 rounded-tl-none',
                                             )}
                                         >
                                             {msg.content}
@@ -842,10 +842,10 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                                     <button
                                         onClick={toggleListening}
                                         className={cn(
-                                            "p-2 rounded-full transition-colors",
-                                            isListening ? "bg-red-100 text-red-600 animate-pulse" : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                                            'p-2 rounded-full transition-colors',
+                                            isListening ? 'bg-red-100 text-red-600 animate-pulse' : 'bg-gray-100 text-gray-500 hover:bg-gray-200',
                                         )}
-                                        title={isListening ? "Listening..." : "Speak"}
+                                        title={isListening ? 'Listening...' : 'Speak'}
                                     >
                                         <Mic size={18} />
                                     </button>
@@ -854,7 +854,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                                     value={inputValue}
                                     onChange={(e) => setInputValue(e.target.value)}
                                     onKeyDown={handleKeyPress}
-                                    placeholder={isCallMode ? "Voice mode active..." : "Type a message..."}
+                                    placeholder={isCallMode ? 'Voice mode active...' : 'Type a message...'}
                                     className="pr-10 rounded-full border-gray-200 focus:ring-sspl-navy focus:border-sspl-navy"
                                     disabled={isLoading || isCallMode}
                                 />
@@ -863,8 +863,8 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                                     onClick={() => handleSendMessage()}
                                     disabled={!inputValue.trim() || isLoading || isCallMode}
                                     className={cn(
-                                        "rounded-full w-10 h-10 shrink-0 shadow-sm transition-opacity",
-                                        isCallMode ? "opacity-50 cursor-not-allowed bg-gray-400" : "bg-[#4C8C00] hover:bg-[#3d7000] text-white"
+                                        'rounded-full w-10 h-10 shrink-0 shadow-sm transition-opacity',
+                                        isCallMode ? 'opacity-50 cursor-not-allowed bg-gray-400' : 'bg-[#4C8C00] hover:bg-[#3d7000] text-white',
                                     )}
                                 >
                                     <Send size={18} className={isLoading ? 'opacity-50' : ''} />
@@ -929,7 +929,7 @@ const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
                                         { code: 'hi', label: 'Hindi', native: 'हिन्दी' },
                                         { code: 'te', label: 'Telugu', native: 'తెలుగు' },
                                         { code: 'ml', label: 'Malayalam', native: 'മലയാളം' },
-                                        { code: 'kn', label: 'Kannada', native: 'ಕನ್ನಡ' }
+                                        { code: 'kn', label: 'Kannada', native: 'ಕನ್ನಡ' },
                                     ].map((lang) => (
                                         <button
                                             key={lang.code}

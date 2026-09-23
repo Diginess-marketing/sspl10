@@ -1,7 +1,5 @@
-import React from 'react';
 import { useWebsiteContent } from '@/hooks/useWebsiteContent';
-import { Skeleton } from '@/components/ui/skeleton';
-import { CheckCircle2, Trophy, Users, Star, Shield, Zap, Gavel, Globe, Target, Award } from 'lucide-react';
+import { CheckCircle2, Trophy, Users, Star, Shield, Zap, Target, Award } from 'lucide-react';
 import MatchFixtures from '@/components/MatchFixtures';
 
 const HowItWorks = () => {
@@ -10,24 +8,24 @@ const HowItWorks = () => {
 
     // Default content structure based on user input
     const content = {
-        title: dbContent.title || "SSPL Dynamic Format",
+        title: dbContent.title || 'SSPL Dynamic Format',
         tagline: dbContent.tagline || "SSPL breaks barriers by offering unprecedented access to undiscovered talent from all corners of India's.",
-        formatHeading: "Format Details",
-        description: "",
+        formatHeading: 'Format Details',
+        description: '',
         formatSteps: [
-            { title: "Teams", description: "SSPL-T10 Season 1 will feature 12 teams, each consisting of 25 players.", icon: Users },
-            { title: "Age Requirement", description: "Boys 12+ can register for trial.", icon: CheckCircle2 },
-            { title: "Matches", description: "21 matches to be played. Top 4 teams would qualify for playoffs.", icon: Trophy },
-            { title: "Player Opportunity", description: "Each player to play a minimum of 1 match in a league.", icon: Star },
+            { title: 'Teams', description: 'SSPL-T10 Season 1 will feature 12 teams, each consisting of 25 players.', icon: Users },
+            { title: 'Age Requirement', description: 'Boys 12+ can register for trial.', icon: CheckCircle2 },
+            { title: 'Matches', description: '21 matches to be played. Top 4 teams would qualify for playoffs.', icon: Trophy },
+            { title: 'Player Opportunity', description: 'Each player to play a minimum of 1 match in a league.', icon: Star },
         ],
-        highlightsHeading: "League Highlights",
+        highlightsHeading: 'League Highlights',
         highlights: [
-            { title: "FINALS AT SHARJAH", description: "First ever tennis ball cricket League in India's to be played in the Stadium." },
-            { title: "CELEBRITY PATRON", description: "Ravi Mohan serves as the celebrity face and patron of the league." },
-            { title: "12 Franchisees", description: "Representing different states, they will compete in the inaugural season. Who will take the crown?" },
-            { title: "500 PLAYERS", description: "The tournament boasts an impressive lineup of cricketing talent, promising thrilling matches and intense competition." },
-            { title: "4 WEEKS", description: "Of nonstop tennis ball cricket action delivering high quality entertainment. 21 matches across the season." },
-        ]
+            { title: 'FINALS AT SHARJAH', description: "First ever tennis ball cricket League in India's to be played in the Stadium." },
+            { title: 'CELEBRITY PATRON', description: 'Ravi Mohan serves as the celebrity face and patron of the league.' },
+            { title: '12 Franchisees', description: 'Representing different states, they will compete in the inaugural season. Who will take the crown?' },
+            { title: '500 PLAYERS', description: 'The tournament boasts an impressive lineup of cricketing talent, promising thrilling matches and intense competition.' },
+            { title: '4 WEEKS', description: 'Of nonstop tennis ball cricket action delivering high quality entertainment. 21 matches across the season.' },
+        ],
     };
 
     return (
@@ -127,11 +125,11 @@ const HowItWorks = () => {
                             <div className="lg:col-span-6 flex flex-col items-center relative z-10 px-4">
                                 <div className="w-full max-w-sm flex flex-col gap-6 relative z-10">
                                     {[
-                                        { level: "LEVEL 1", title: "DOUBLE EAGLE", color: "from-sky-100 to-sky-200", icon: <Target className="w-6 h-6"/> },
-                                        { level: "LEVEL 2", title: "KOHINOOR", color: "from-blue-100 to-blue-200", icon: <Award className="w-6 h-6"/> },
-                                        { level: "LEVEL 3", title: "PLATINUM", color: "from-cyan-100 to-cyan-200", icon: <Shield className="w-6 h-6"/> },
-                                        { level: "LEVEL 4", title: "PALLADIAN", color: "from-purple-100 to-purple-200", icon: <Zap className="w-6 h-6"/> },
-                                        { level: "LEVEL 5", title: "PRINCE TITAN", color: "from-slate-100 to-slate-200", icon: <Trophy className="w-6 h-6"/> },
+                                        { level: 'LEVEL 1', title: 'DOUBLE EAGLE', color: 'from-sky-100 to-sky-200', icon: <Target className="w-6 h-6"/> },
+                                        { level: 'LEVEL 2', title: 'KOHINOOR', color: 'from-blue-100 to-blue-200', icon: <Award className="w-6 h-6"/> },
+                                        { level: 'LEVEL 3', title: 'PLATINUM', color: 'from-cyan-100 to-cyan-200', icon: <Shield className="w-6 h-6"/> },
+                                        { level: 'LEVEL 4', title: 'PALLADIAN', color: 'from-purple-100 to-purple-200', icon: <Zap className="w-6 h-6"/> },
+                                        { level: 'LEVEL 5', title: 'PRINCE TITAN', color: 'from-slate-100 to-slate-200', icon: <Trophy className="w-6 h-6"/> },
                                     ].map((trial, idx) => (
                                         <div key={idx} className="relative group">
                                             <div className={`bg-gradient-to-r ${trial.color} p-6 text-center rounded-2xl shadow-xl border border-white/20 flex flex-col items-center relative overflow-hidden`}>

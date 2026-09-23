@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Simple GA4 Analytics Test Page

@@ -157,7 +157,7 @@ export class DatabaseUtils {
     return this.safeQuery(
       async () => {
         const query = supabase.from(table as any).upsert(data, {
-          onConflict: onConflict,
+          onConflict,
           ignoreDuplicates: false,
         }).select().single();
         return await query;

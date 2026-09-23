@@ -1,33 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Separator } from '@/components/ui/separator';
 import {
-  BarChart3,
   TrendingUp,
   Users,
   Eye,
-  MousePointer,
-  DollarSign,
   Calendar as CalendarIcon,
   Download,
   RefreshCw,
   AlertTriangle,
-  CheckCircle,
   Info,
   Target,
   Activity,
 } from 'lucide-react';
-import { format, subDays, startOfDay, endOfDay } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
-import { BarChart, LineChart, PieChart, AreaChart, MetricCard } from '@/components/charts';
+import { BarChart, PieChart, AreaChart, MetricCard } from '@/components/charts';
 import { googleAnalyticsService } from '@/services/googleAnalyticsService';
 
 interface AnalyticsMetric {

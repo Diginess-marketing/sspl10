@@ -1,4 +1,4 @@
-import { createTheme, responsiveFontSizes, PaletteColor, PaletteColorOptions } from '@mui/material/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import { colors, typography, effects } from '@/theme/design-tokens';
 
 // Create a theme instance.

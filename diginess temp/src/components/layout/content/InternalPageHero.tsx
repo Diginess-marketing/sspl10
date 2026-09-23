@@ -1,5 +1,4 @@
-import React from 'react';
-import { Box, Container, Typography, alpha, useTheme } from '@mui/material';
+import { Box, Container, Typography, useTheme } from '@mui/material';
 
 interface InternalPageHeroProps {
     title: string;
@@ -11,8 +10,8 @@ interface InternalPageHeroProps {
 export const InternalPageHero = ({
     title,
     subtitle,
-    backgroundImage = '/BG-Ravimohan-16x10.webp',
-    align = 'center'
+    backgroundImage = '/Team-Advisors/BG-Ravimohan-16x10.webp',
+    align = 'center',
 }: InternalPageHeroProps) => {
     const theme = useTheme();
 
@@ -23,7 +22,7 @@ export const InternalPageHero = ({
                 bgcolor: 'brand.primary.main',
                 color: 'white',
                 py: { xs: 8, md: 12 },
-                overflow: 'hidden'
+                overflow: 'hidden',
             }}
         >
             {/* Background with Standard Overlay */}
@@ -32,7 +31,7 @@ export const InternalPageHero = ({
                     position: 'absolute',
                     inset: 0,
                     zIndex: 0,
-                    opacity: 0.2
+                    opacity: 0.2,
                 }}
             >
                 <img
@@ -51,7 +50,7 @@ export const InternalPageHero = ({
                     left: 0,
                     right: 0,
                     height: '4px',
-                    background: `linear-gradient(90deg, ${theme.palette.brand.accent.main}, ${theme.palette.secondary.main})`
+                    background: `linear-gradient(90deg, ${theme.palette.brand.accent.main}, ${theme.palette.secondary.main})`,
                 }}
             />
 
@@ -62,7 +61,7 @@ export const InternalPageHero = ({
                         fontSize: { xs: '2.5rem', md: '3.5rem' },
                         textTransform: 'uppercase',
                         mb: 2,
-                        textShadow: '0 4px 10px rgba(0,0,0,0.3)'
+                        textShadow: '0 4px 10px rgba(0,0,0,0.3)',
                     }}
                 >
                     {title}
@@ -75,7 +74,7 @@ export const InternalPageHero = ({
                             maxWidth: align === 'center' ? '800px' : '600px',
                             mx: align === 'center' ? 'auto' : 0,
                             color: 'grey.300',
-                            fontWeight: 400
+                            fontWeight: 400,
                         }}
                     >
                         {subtitle}

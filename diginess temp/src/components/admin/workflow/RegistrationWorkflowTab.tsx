@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -14,7 +14,7 @@ import {
   Filter,
   CheckCircle,
   XCircle,
-  AlertCircle
+  AlertCircle,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
@@ -43,17 +43,17 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
   const { user } = useAuth();
   const {
     moveToTrialsSection,
-    sendConfirmationEmail
+    sendConfirmationEmail,
   } = usePlayerWorkflow();
 
   // Get unique cities for filter
-  const uniqueCities = Array.from(new Set(players.map(p => p.city).filter((city): city is string => !!city))).sort();
+  const uniqueCities = Array.from(new Set(players.map(p => p.city).filter((city): city is string => Boolean(city)))).sort();
 
   console.log('🔄 Component state:', {
     playersCount: players.length,
     localLoading,
     localError,
-    hasUser: !!user
+    hasUser: Boolean(user),
   });
 
   // Reload function that can be called from anywhere
@@ -69,8 +69,8 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
 
     const loadPlayers = async () => {
       console.log('📋 [RegistrationWorkflowTab] Starting to load player registrations...');
-      console.log('📋 [Auth State]', { hasUser: !!user, userEmail: user?.email });
-      console.log('📋 [Supabase Client]', { exists: !!supabase });
+      console.log('📋 [Auth State]', { hasUser: Boolean(user), userEmail: user?.email });
+      console.log('📋 [Supabase Client]', { exists: Boolean(supabase) });
 
       setLocalLoading(true);
       setLocalError(null);
@@ -80,7 +80,7 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
         console.log('📋 Step 1: Checking session...');
         const sessionPromise = supabase.auth.getSession();
         const sessionTimeout = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Session check timeout')), 3000)
+          setTimeout(() => reject(new Error('Session check timeout')), 3000),
         );
 
         let sessionData, sessionError;
@@ -89,10 +89,10 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
           sessionData = result.data;
           sessionError = result.error;
           console.log('📋 Session check completed:', {
-            hasSession: !!sessionData?.session,
+            hasSession: Boolean(sessionData?.session),
             user: sessionData?.session?.user?.email,
             userId: sessionData?.session?.user?.id,
-            error: sessionError?.message
+            error: sessionError?.message,
           });
         } catch (timeoutErr) {
           console.warn('⚠️ Session check timed out, proceeding with user prop');
@@ -135,9 +135,9 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
               'apikey': supabaseKey,
               'Authorization': `Bearer ${supabaseKey}`,
               'Content-Type': 'application/json',
-              'Prefer': 'count=exact'
+              'Prefer': 'count=exact',
             },
-            signal: controller.signal
+            signal: controller.signal,
           });
 
           clearTimeout(timeoutId);
@@ -145,7 +145,7 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
           console.log('📋 Direct API response:', {
             status: response.status,
             ok: response.ok,
-            statusText: response.statusText
+            statusText: response.statusText,
           });
 
           if (!response.ok) {
@@ -188,9 +188,9 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
             'apikey': supabaseKey,
             'Authorization': `Bearer ${supabaseKey}`,
             'Content-Type': 'application/json',
-            'Prefer': 'count=exact'
+            'Prefer': 'count=exact',
           },
-          signal: controller.signal
+          signal: controller.signal,
         });
 
         clearTimeout(timeoutId);
@@ -207,7 +207,7 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
         console.log('📋 Query completed:', {
           success: true,
           rowCount: playerRegs?.length || 0,
-          totalCount: count
+          totalCount: count,
         });
 
         console.log('📋 Query result:', {
@@ -216,8 +216,8 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
             id: playerRegs[0].id,
             name: playerRegs[0].full_name,
             email: playerRegs[0].email,
-            payment_status: playerRegs[0].payment_status
-          } : null
+            payment_status: playerRegs[0].payment_status,
+          } : null,
         });
 
         if (!playerRegs || playerRegs.length === 0) {
@@ -241,9 +241,9 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
             headers: {
               'apikey': supabaseKey,
               'Authorization': `Bearer ${supabaseKey}`,
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
             },
-            signal: AbortSignal.timeout(5000)
+            signal: AbortSignal.timeout(5000),
           });
           if (workflowResponse.ok) {
             workflows = await workflowResponse.json();
@@ -262,9 +262,9 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
             headers: {
               'apikey': supabaseKey,
               'Authorization': `Bearer ${supabaseKey}`,
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
             },
-            signal: AbortSignal.timeout(5000)
+            signal: AbortSignal.timeout(5000),
           });
           if (emailResponse.ok) {
             emailLogs = await emailResponse.json();
@@ -288,7 +288,7 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
             payment_status: reg.payment_status || 'pending',
             workflow_id: workflow?.id,
             workflow_stage: (workflow?.workflow_stage || 'registration') as WorkflowStage,
-            confirmation_email_sent: workflow?.confirmation_email_sent || !!emailLog,
+            confirmation_email_sent: workflow?.confirmation_email_sent || Boolean(emailLog),
             confirmation_email_sent_at: workflow?.confirmation_email_sent_at || emailLog?.sent_at,
           } as PlayerRegistrationWithEmailStatus;
         });
@@ -385,7 +385,7 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
 
   // Get count of players ready for trials (paid + email sent)
   const readyForTrialsCount = filteredPlayers.filter(
-    p => isEligibleForSelection(p) && p.confirmation_email_sent
+    p => isEligibleForSelection(p) && p.confirmation_email_sent,
   ).length;
 
   const handleSelectAll = (checked: boolean) => {
@@ -425,7 +425,7 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
     }
 
     const confirm = window.confirm(
-      `Are you sure you want to move ${selectedIds.size} player(s) to the Trials Section?`
+      `Are you sure you want to move ${selectedIds.size} player(s) to the Trials Section?`,
     );
     if (!confirm) return;
 
@@ -464,7 +464,7 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
         player.full_name,
         player.email,
         player.payment_amount || 0,
-        player.razorpay_payment_id || ''
+        player.razorpay_payment_id || '',
       );
 
       if (success) {

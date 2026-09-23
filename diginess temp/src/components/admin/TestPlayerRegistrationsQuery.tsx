@@ -24,7 +24,7 @@ const TestPlayerRegistrationsQuery = () => {
 
     const testResults: any = {
       timestamp: new Date().toISOString(),
-      tests: {}
+      tests: {},
     };
 
     try {
@@ -33,9 +33,9 @@ const TestPlayerRegistrationsQuery = () => {
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       testResults.tests.session = {
         success: !sessionError,
-        hasSession: !!sessionData?.session,
+        hasSession: Boolean(sessionData?.session),
         user: sessionData?.session?.user?.email || 'Not logged in',
-        error: sessionError?.message
+        error: sessionError?.message,
       };
 
       // Test 2: Simple count query
@@ -46,10 +46,10 @@ const TestPlayerRegistrationsQuery = () => {
       
       testResults.tests.count = {
         success: !countError,
-        count: count,
+        count,
         error: countError?.message,
         errorCode: countError?.code,
-        errorHint: countError?.hint
+        errorHint: countError?.hint,
       };
 
       // Test 3: Fetch first 5 rows
@@ -75,11 +75,11 @@ const TestPlayerRegistrationsQuery = () => {
           id: r.id,
           name: r.full_name,
           email: r.email,
-          payment_status: r.payment_status
+          payment_status: r.payment_status,
         })),
         error: fetchError?.message,
         errorCode: fetchError?.code,
-        errorDetails: fetchError?.details
+        errorDetails: fetchError?.details,
       };
 
       // Test 4: Check for paid registrations
@@ -94,7 +94,7 @@ const TestPlayerRegistrationsQuery = () => {
         success: !paidError,
         count: paidData?.length || 0,
         data: paidData,
-        error: paidError?.message
+        error: paidError?.message,
       };
 
       console.log('✅ All tests completed:', testResults);

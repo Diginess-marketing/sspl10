@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, Users, Target, Zap, MapPin, Globe, Building2, Calendar, Clock } from 'lucide-react';
+import { Trophy, Users, Globe, Building2, Calendar } from 'lucide-react';
 import {
   Carousel,
   CarouselContent,

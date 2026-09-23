@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import TrialResultModal from './TrialResultModal';
 import type { TrialResult } from '@/types/resultLookup';
@@ -68,7 +68,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     expect(screen.getByText('Trial Result Details')).toBeInTheDocument();
@@ -85,7 +85,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockRejectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     expect(screen.getByText('Trial Result Details')).toBeInTheDocument();
@@ -102,7 +102,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     expect(screen.queryByText('Trial Result Details')).not.toBeInTheDocument();
@@ -115,7 +115,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={true}
-      />
+      />,
     );
 
     // The confetti component should be present when modal is open for selected player
@@ -129,7 +129,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockRejectedResult}
         showConfetti={true}
-      />
+      />,
     );
 
     // Confetti should not be rendered for rejected players
@@ -143,7 +143,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     expect(screen.getByText('Player Information')).toBeInTheDocument();
@@ -160,7 +160,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     expect(screen.getByText('Performance Metrics')).toBeInTheDocument();
@@ -180,7 +180,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={excellentResult}
         showConfetti={false}
-      />
+      />,
     );
 
     // Should show "Excellent" for 95 points
@@ -192,7 +192,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={goodResult}
         showConfetti={false}
-      />
+      />,
     );
 
     // Should show "Good" for 75 points
@@ -204,7 +204,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={averageResult}
         showConfetti={false}
-      />
+      />,
     );
 
     // Should show "Average" for 55 points
@@ -218,7 +218,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     expect(screen.getByText('Timeline Information')).toBeInTheDocument();
@@ -233,7 +233,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     expect(screen.getByText('Selection Status')).toBeInTheDocument();
@@ -248,7 +248,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockRejectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     expect(screen.getByText('Thank You')).toBeInTheDocument();
@@ -262,7 +262,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     const closeButton = screen.getByText('Close');
@@ -278,7 +278,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     expect(screen.getByText('Next Steps')).toBeInTheDocument();
@@ -291,7 +291,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockRejectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     expect(screen.queryByText('Next Steps')).not.toBeInTheDocument();
@@ -306,7 +306,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     const nextStepsButton = screen.getByText('Next Steps');
@@ -324,7 +324,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     // Check that dates are displayed (format may vary based on locale)
@@ -339,7 +339,7 @@ describe('TrialResultModal', () => {
         onClose={mockOnClose}
         result={mockSelectedResult}
         showConfetti={false}
-      />
+      />,
     );
 
     expect(screen.getByText('Performance Level')).toBeInTheDocument();

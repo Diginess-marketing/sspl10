@@ -1,11 +1,10 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { playerExportService } from '@/utils/playerExportService';
 import { supabase } from '@/integrations/supabase/client';
 import type {
   PlayerResult,
   PlayerSearchCriteria,
-  PlayerSearchResult,
   PlayerLookupFormData,
   PlayerLookupFormErrors,
   PlayerLookupState,
@@ -121,27 +120,27 @@ export const usePlayerResultLookup = () => {
         status: l2Status,
         score: row.l2_marks ? String(row.l2_marks) : '',
         remarks: row.l2_remarks || '',
-        listName: 'Level 2'
+        listName: 'Level 2',
       },
       level3Data: {
         status: l3Status,
         score: row.l3_marks ? String(row.l3_marks) : '',
         remarks: row.l3_remarks || '',
-        listName: 'Level 3'
+        listName: 'Level 3',
       },
       level4Data: {
         status: l4Status,
         score: '',
         remarks: '',
-        listName: 'Level 4'
+        listName: 'Level 4',
       },
       level5Data: {
         status: l5Status,
         score: '',
         remarks: '',
-        listName: 'Level 5'
+        listName: 'Level 5',
       },
-      isCompletelyAbsent
+      isCompletelyAbsent,
     };
   };
 
@@ -281,7 +280,7 @@ export const usePlayerResultLookup = () => {
   // Export results
   const exportResults = useCallback(async (
     format: 'csv' | 'json' | 'pdf',
-    includeFields?: (keyof PlayerResult)[]
+    includeFields?: (keyof PlayerResult)[],
   ) => {
     if (state.results.length === 0) {
       return;

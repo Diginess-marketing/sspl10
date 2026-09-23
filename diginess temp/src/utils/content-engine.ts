@@ -1,5 +1,4 @@
 
-import { CITIES, ROLES } from '@/data/programmatic-mock';
 
 // --- Types ---
 interface CityData {
@@ -17,62 +16,62 @@ interface RoleData {
 // --- Content Variations Library ---
 
 const INTRO_TEMPLATES = [
-    "Aspiring cricketers in **{cityName}** now have a golden opportunity to showcase their talent on a national stage. The SSPL T10 is organizing extensive selection trials to scout the best {rolePlural} from {cityName}.",
+    'Aspiring cricketers in **{cityName}** now have a golden opportunity to showcase their talent on a national stage. The SSPL T10 is organizing extensive selection trials to scout the best {rolePlural} from {cityName}.',
     "The search for {cityName}'s next cricket superstar begins here. Join thousands of players in the journey from gully to glory. We are specifically looking for talented {rolePlural} to join the league.",
-    "Are you the next big thing in tennis ball cricket? **{cityName}** is calling! SSPL T10 is hosting official trials to find express pacers, power hitters, and agile fielders at {venue}.",
+    'Are you the next big thing in tennis ball cricket? **{cityName}** is calling! SSPL T10 is hosting official trials to find express pacers, power hitters, and agile fielders at {venue}.',
     "Cricket is more than just a game in **{cityName}**; it's a religion. SSPL T10 brings you the platform to turn your passion into a profession. Register for the {year} season trials today.",
-    "Get ready, **{cityName}**! The biggest tennis ball cricket talent hunt is here. We are scouting for {rolePlural} who have the technique and temperament to succeed in the T10 format."
+    'Get ready, **{cityName}**! The biggest tennis ball cricket talent hunt is here. We are scouting for {rolePlural} who have the technique and temperament to succeed in the T10 format.',
 ];
 
 const PROCESS_TEMPLATES = [
-    "Selectors will evaluate players on basic technique, match temperament, and fitness. Top performers from {cityName} will be drafted into the auction pool.",
-    "Our expert scouting team will test your skills in a simulated match environment. Impress the selectors at {venue} and earn your spot.",
-    "The trial process involves three stages: 1. Basic Skill Test, 2. Nets Session, and 3. Open Wicket Match scenarios.",
-    "We are looking for X-factor players. Speed, power, and accuracy are key. Show us what you've got at the {cityName} trials."
+    'Selectors will evaluate players on basic technique, match temperament, and fitness. Top performers from {cityName} will be drafted into the auction pool.',
+    'Our expert scouting team will test your skills in a simulated match environment. Impress the selectors at {venue} and earn your spot.',
+    'The trial process involves three stages: 1. Basic Skill Test, 2. Nets Session, and 3. Open Wicket Match scenarios.',
+    "We are looking for X-factor players. Speed, power, and accuracy are key. Show us what you've got at the {cityName} trials.",
 ];
 
 const CTA_TEMPLATES = [
-    "Ready to Play for {cityName}?",
+    'Ready to Play for {cityName}?',
     "Don't Miss Your Chance - Register Now!",
-    "Join the {cityName} Revolution",
-    "Your Journey to Stardom Starts Here",
-    "Secure Your Spot in the {year} Season"
+    'Join the {cityName} Revolution',
+    'Your Journey to Stardom Starts Here',
+    'Secure Your Spot in the {year} Season',
 ];
 
 // --- FAQ Library ---
 
 const SHARED_FAQS = [
     {
-        question: "What is the age limit for trials?",
-        answer: "The trials are open for all age groups above 14 years. There is no upper age limit."
+        question: 'What is the age limit for trials?',
+        answer: 'The trials are open for all age groups above 14 years. There is no upper age limit.',
     },
     {
-        question: "Do I need to bring my own kit?",
-        answer: "Yes, please bring your own cricket gear. Balls will be provided by the organizers."
+        question: 'Do I need to bring my own kit?',
+        answer: 'Yes, please bring your own cricket gear. Balls will be provided by the organizers.',
     },
     {
-        question: "Is there a registration fee?",
-        answer: "Yes, there is a nominal registration fee to cover the venue and operational costs."
+        question: 'Is there a registration fee?',
+        answer: 'Yes, there is a nominal registration fee to cover the venue and operational costs.',
     },
     {
-        question: "Will I get a certificate?",
-        answer: "All participants will receive a digital certificate of participation from SSPL T10."
+        question: 'Will I get a certificate?',
+        answer: 'All participants will receive a digital certificate of participation from SSPL T10.',
     },
     {
-        question: "When will the results be announced?",
-        answer: "Results are typically announced within 3-5 days after the trials conclude on our official website."
-    }
+        question: 'When will the results be announced?',
+        answer: 'Results are typically announced within 3-5 days after the trials conclude on our official website.',
+    },
 ];
 
 const CITY_SPECIFIC_FAQS = [
     {
-        question: "Where in {cityName} is the venue located?",
-        answer: "The trials will be held at **{venue}**. It is a centrally located ground with excellent facilities."
+        question: 'Where in {cityName} is the venue located?',
+        answer: 'The trials will be held at **{venue}**. It is a centrally located ground with excellent facilities.',
     },
     {
-        question: "Are there transport facilities to the {cityName} venue?",
-        answer: "Participants are requested to arrange their own transport to {venue}. It is accessible via public transport."
-    }
+        question: 'Are there transport facilities to the {cityName} venue?',
+        answer: 'Participants are requested to arrange their own transport to {venue}. It is accessible via public transport.',
+    },
 ];
 
 // --- Helper Functions ---
@@ -113,21 +112,21 @@ export class ContentEngine {
 
     getMetaTitle(): string {
         const patterns = [
-            "{cityName} Cricket Trials {year} | Register Now",
-            "Official SSPL T10 Trials in {cityName} {year}",
-            "Join the League: {cityName} Cricket Selection {year}",
-            "{roleName} Trials {cityName} {year} | SSPL T10"
+            '{cityName} Cricket Trials {year} | Register Now',
+            'Official SSPL T10 Trials in {cityName} {year}',
+            'Join the League: {cityName} Cricket Selection {year}',
+            '{roleName} Trials {cityName} {year} | SSPL T10',
         ];
 
         // Force specific pattern if role exists
         const pattern = this.role
-            ? "{roleName} Trials {cityName} {year} | SSPL T10"
+            ? '{roleName} Trials {cityName} {year} | SSPL T10'
             : getRandomItem(patterns.slice(0, 3), this.seed);
 
         return replaceVariables(pattern, {
             cityName: this.city.name,
             year: this.year,
-            roleName: this.role ? this.role.name : 'Cricket'
+            roleName: this.role ? this.role.name : 'Cricket',
         });
     }
 
@@ -137,7 +136,7 @@ export class ContentEngine {
             cityName: this.city.name,
             year: this.year,
             venue: this.city.venue,
-            rolePlural: this.role ? this.role.name + 's' : 'players'
+            rolePlural: this.role ? `${this.role.name  }s` : 'players',
         });
     }
 
@@ -145,7 +144,7 @@ export class ContentEngine {
         const template = getRandomItem(PROCESS_TEMPLATES, this.seed + 1); // Different seed offset
         return replaceVariables(template, {
             cityName: this.city.name,
-            venue: this.city.venue
+            venue: this.city.venue,
         });
     }
 
@@ -153,7 +152,7 @@ export class ContentEngine {
         const template = getRandomItem(CTA_TEMPLATES, this.seed + 2);
         return replaceVariables(template, {
             cityName: this.city.name,
-            year: this.year
+            year: this.year,
         });
     }
 
@@ -169,7 +168,7 @@ export class ContentEngine {
         // City specific FAQs
         const cityFaqs = CITY_SPECIFIC_FAQS.map(faq => ({
             question: replaceVariables(faq.question, { cityName: this.city.name }),
-            answer: replaceVariables(faq.answer, { cityName: this.city.name, venue: this.city.venue })
+            answer: replaceVariables(faq.answer, { cityName: this.city.name, venue: this.city.venue }),
         }));
 
         // Interleave them: Shared, City, Shared, City, Shared
@@ -178,7 +177,7 @@ export class ContentEngine {
             cityFaqs[0],
             sharedShuffled[1],
             cityFaqs[1],
-            sharedShuffled[2]
+            sharedShuffled[2],
         ];
     }
 

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Download, Heart, Star, Settings, Loader2 } from 'lucide-react';
+import { Play, Download, Heart, Settings } from 'lucide-react';
 
 const ButtonShowcase = () => {
   const [loadingStates, setLoadingStates] = useState({

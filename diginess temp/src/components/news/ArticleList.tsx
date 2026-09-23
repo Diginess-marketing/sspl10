@@ -1,5 +1,4 @@
-import React from 'react';
-import { Grid, Box, Typography, Button } from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 import { ArticleCard } from './ArticleCard';
 import { BlogPost } from '@/data/blogs';
 import { RefreshCw } from 'lucide-react';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 const FAQSection = () => {
@@ -6,25 +6,25 @@ const FAQSection = () => {
 
     const faqs = [
         {
-            question: "Who is eligible to register their tournament?",
-            answer: "Any local cricket tournament organiser, cricket club, community league, or school/college hosting a tennis ball, leather ball, or box cricket tournament in India is eligible."
+            question: 'Who is eligible to register their tournament?',
+            answer: 'Any local cricket tournament organiser, cricket club, community league, or school/college hosting a tennis ball, leather ball, or box cricket tournament in India is eligible.',
         },
         {
-            question: "How many tennis balls will I receive?",
-            answer: "The allocation of free tennis balls depends on the scale of your tournament (number of teams, matches). Once approved, our team will communicate the exact quantity allotted to your event."
+            question: 'How many tennis balls will I receive?',
+            answer: 'The allocation of free tennis balls depends on the scale of your tournament (number of teams, matches). Once approved, our team will communicate the exact quantity allotted to your event.',
         },
         {
-            question: "Is there any registration fee?",
-            answer: "No, registering your tournament for the free tennis ball sponsorship is completely free of charge. SSPL T10 aims to support local cricket across India."
+            question: 'Is there any registration fee?',
+            answer: 'No, registering your tournament for the free tennis ball sponsorship is completely free of charge. SSPL T10 aims to support local cricket across India.',
         },
         {
-            question: "How long does the approval process take?",
-            answer: "Our team typically reviews and approves tournament registrations within 48 to 72 hours. You will be notified via email and WhatsApp regarding your status."
+            question: 'How long does the approval process take?',
+            answer: 'Our team typically reviews and approves tournament registrations within 48 to 72 hours. You will be notified via email and WhatsApp regarding your status.',
         },
         {
-            question: "Do I need to pay for shipping?",
-            answer: "No, the cricket balls will be shipped to your registered tournament address at no additional cost to you."
-        }
+            question: 'Do I need to pay for shipping?',
+            answer: 'No, the cricket balls will be shipped to your registered tournament address at no additional cost to you.',
+        },
     ];
 
     const toggleFaq = (index: number) => {

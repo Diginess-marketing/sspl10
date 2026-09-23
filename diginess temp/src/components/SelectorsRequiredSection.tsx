@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
-import { ShieldCheck, Mail, Phone, CheckCircle2 } from 'lucide-react';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Mail, Phone, CheckCircle2 } from 'lucide-react';
 import SelectorRegistrationForm from './SelectorRegistrationForm';
 
 const SelectorsRequiredSection = () => {

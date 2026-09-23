@@ -1,5 +1,4 @@
-import React from 'react';
-import { Box, Typography, Stack, alpha, useTheme } from '@mui/material';
+import { Box, Typography, alpha, useTheme } from '@mui/material';
 import { LucideIcon } from 'lucide-react';
 
 interface ProcessStepProps {
@@ -25,7 +24,7 @@ export const ProcessStep = ({ stepNumber, title, description, icon: Icon, last =
                         bottom: 0,
                         width: '2px',
                         bgcolor: alpha(theme.palette.brand.primary.main, 0.1),
-                        zIndex: 0
+                        zIndex: 0,
                     }}
                 />
             )}
@@ -45,7 +44,7 @@ export const ProcessStep = ({ stepNumber, title, description, icon: Icon, last =
                     fontWeight: 'bold',
                     fontSize: '1.25rem',
                     zIndex: 1,
-                    boxShadow: theme.shadows[2]
+                    boxShadow: theme.shadows[2],
                 }}
             >
                 {Icon ? <Icon size={24} /> : stepNumber}

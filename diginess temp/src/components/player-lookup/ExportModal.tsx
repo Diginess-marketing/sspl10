@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Download, FileText, Table, FileSpreadsheet, Loader2, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
@@ -26,7 +26,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
 }) => {
   const [selectedFormat, setSelectedFormat] = useState<'csv' | 'json' | 'pdf'>('csv');
   const [selectedFields, setSelectedFields] = useState<Set<keyof PlayerResult>>(
-    new Set(['name', 'mobile', 'state', 'proficiency', 'status'])
+    new Set(['name', 'mobile', 'state', 'proficiency', 'status']),
   );
   const [exportComplete, setExportComplete] = useState(false);
 

@@ -159,7 +159,7 @@ const SimplePlayerRegistrationForm: React.FC = () => {
               response.razorpay_payment_id,
               response.razorpay_order_id,
               response.razorpay_signature,
-              registrationId // Mandatory now
+              registrationId, // Mandatory now
             );
 
             // 4) Immediate Success Feedback

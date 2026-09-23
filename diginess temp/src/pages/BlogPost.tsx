@@ -10,7 +10,7 @@ import { ArrowLeft, Calendar, Clock, User, Share2, Facebook, Twitter, Instagram 
 import ReactMarkdown from 'react-markdown';
 import '@/styles/blog.css';
 
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 
 // ... (imports remain the same, just adding useToast)
 
@@ -65,8 +65,8 @@ const BlogPost: React.FC = () => {
         } else if (platform === 'instagram') {
             navigator.clipboard.writeText(url);
             toast({
-                title: "Link Copied",
-                description: "Article link copied to clipboard for Instagram sharing!",
+                title: 'Link Copied',
+                description: 'Article link copied to clipboard for Instagram sharing!',
                 duration: 3000,
             });
         }

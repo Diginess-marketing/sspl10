@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
   Users, 
@@ -11,14 +10,14 @@ import {
   RefreshCw,
   Mail,
   AlertCircle,
-  FileText
+  FileText,
 } from 'lucide-react';
 import { 
   Dialog, 
   DialogContent, 
   DialogHeader, 
   DialogTitle, 
-  DialogTrigger 
+  DialogTrigger, 
 } from '@/components/ui/dialog';
 import { TrialsReportViewer } from './workflow/TrialsReportViewer';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
@@ -28,7 +27,7 @@ import {
   TrialsSectionTab, 
   TrialsAllocatedTab,
   TrialLevelView,
-  TrialAnalyticsDashboard
+  TrialAnalyticsDashboard,
 } from './workflow';
 
 const TrialsWorkflowTab = () => {

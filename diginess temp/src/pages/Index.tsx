@@ -1,11 +1,11 @@
-import HeroSection from "@/components/HeroSection";
-import StreetToStadium from "@/components/StreetToStadium";
-import SSPLAnthemSection from "@/components/SSPLAnthemSection";
-import SSPLHighlightsSection from "@/components/SSPLHighlightsSection";
-import OurPartnersSection from "@/components/OurPartnersSection";
-import FAQContactSection from "@/components/FAQContactSection";
-import GiveawayBanner from "@/components/GiveawayBanner";
-import SEO from "@/components/SEO";
+import HeroSection from '@/components/HeroSection';
+import StreetToStadium from '@/components/StreetToStadium';
+import SSPLAnthemSection from '@/components/SSPLAnthemSection';
+import SSPLHighlightsSection from '@/components/SSPLHighlightsSection';
+import OurPartnersSection from '@/components/OurPartnersSection';
+import FAQContactSection from '@/components/FAQContactSection';
+import GiveawayBanner from '@/components/GiveawayBanner';
+import SEO from '@/components/SEO';
 
 
 const Index = () => {

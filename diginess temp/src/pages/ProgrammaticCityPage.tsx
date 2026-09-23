@@ -1,11 +1,11 @@
 
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { MapPin, Calendar, Users, Trophy, ArrowRight } from 'lucide-react';
+import { MapPin, Calendar, Users, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { generateBreadcrumbSchema, generateEventSchema, generateFAQSchema, ORGANIZATION_SCHEMA } from '@/utils/schema-generator';
+import { generateBreadcrumbSchema, generateEventSchema, generateFAQSchema } from '@/utils/schema-generator';
 import { CITIES, EVENTS, ROLES } from '@/data/programmatic-mock';
 import { ContentEngine } from '@/utils/content-engine';
 
@@ -50,7 +50,7 @@ const ProgrammaticCityPage = () => {
     const breadcrumbItems = [
         { name: 'Home', item: '/' },
         { name: 'Trials', item: '/trials' },
-        { name: `${cityData.name} ${year}`, item: `/trials/${cityYear}` }
+        { name: `${cityData.name} ${year}`, item: `/trials/${cityYear}` },
     ];
 
     if (roleData) {
@@ -64,17 +64,17 @@ const ProgrammaticCityPage = () => {
 
     const eventSchema = eventData ? generateEventSchema({
         name: `SSPL T10 Selection Trials - ${cityData.name}`,
-        description: description,
+        description,
         startDate: `${eventData.date}T08:00`,
         locationName: cityData.venue,
         city: cityData.name,
         offers: {
-            url: "https://ssplt10.co.in/register",
-            price: "499",
-            priceCurrency: "INR",
-            availability: "https://schema.org/InStock",
-            validFrom: new Date().toISOString()
-        }
+            url: 'https://ssplt10.co.in/register',
+            price: '499',
+            priceCurrency: 'INR',
+            availability: 'https://schema.org/InStock',
+            validFrom: new Date().toISOString(),
+        },
     }) : null;
 
     // Indexation Control
@@ -192,7 +192,7 @@ const ProgrammaticCityPage = () => {
                             <div className="prose max-w-none text-gray-700">
                                 <p className="mb-4">
                                     The Southern Street Premier League (SSPL) is bringing high-octane T10 cricket to <strong>{cityData.name}</strong>.
-                                    We are looking for the most talented {roleData ? roleData.name.toLowerCase() + 's' : 'players'} to join the league.
+                                    We are looking for the most talented {roleData ? `${roleData.name.toLowerCase()  }s` : 'players'} to join the league.
                                 </p>
                                 <p>
                                     {processText}

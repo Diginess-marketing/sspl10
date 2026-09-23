@@ -17,7 +17,7 @@ const HorizontalStatCard: React.FC<HorizontalStatCardProps> = ({
     icon: Icon,
     customIcon,
     delay = 0,
-    bgClass = "bg-slate-900/90"
+    bgClass = 'bg-slate-900/90',
 }) => {
     return (
         <motion.div

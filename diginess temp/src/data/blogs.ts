@@ -13,9 +13,9 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
     {
-        id: "ultimate-guide-t10-cricket",
-        title: "The Ultimate Guide to T10 Tennis Ball Cricket: Rules, Format & Strategy",
-        excerpt: "Everything you need to know about T10 tennis ball cricket—from rules and equipment to pro strategies for batting, bowling, and winning matches in the SSPL format.",
+        id: 'ultimate-guide-t10-cricket',
+        title: 'The Ultimate Guide to T10 Tennis Ball Cricket: Rules, Format & Strategy',
+        excerpt: 'Everything you need to know about T10 tennis ball cricket—from rules and equipment to pro strategies for batting, bowling, and winning matches in the SSPL format.',
         content: `
 ## Introduction
 
@@ -86,17 +86,17 @@ T10 Tennis Ball Cricket is a test of nerve and skill. Whether you are an aspirin
 
 **Ready to play?** [Register for the next SSPL T10 Trials](/register) and showcase your talent to the world!
         `,
-        category: "Guide",
-        author: "SSPL T10 Technical Team",
-        date: "Feb 14, 2026",
-        readTime: "15 min read",
-        image: "/images/insta-tactics.jpg", // Updated to use valid blog asset
-        tags: ["Guide", "T10 Cricket", "Rules", "Strategy"]
+        category: 'Guide',
+        author: 'SSPL T10 Technical Team',
+        date: 'Feb 14, 2026',
+        readTime: '15 min read',
+        image: '/images/insta-tactics.jpg', // Updated to use valid blog asset
+        tags: ['Guide', 'T10 Cricket', 'Rules', 'Strategy'],
     },
     {
-        id: "power-hitting-tennis-ball-cricket",
-        title: "Mastering Power Hitting in Tennis Ball Cricket",
-        excerpt: "A comprehensive high-performance coaching manual on power hitting - covering biomechanics, technical execution, drills, and SSPLT10-specific applications.",
+        id: 'power-hitting-tennis-ball-cricket',
+        title: 'Mastering Power Hitting in Tennis Ball Cricket',
+        excerpt: 'A comprehensive high-performance coaching manual on power hitting - covering biomechanics, technical execution, drills, and SSPLT10-specific applications.',
         content: `
 
 ## PART 1 — INTRODUCTION (Performance Context & Importance)
@@ -344,17 +344,17 @@ Power hitting is a science of momentum and timing. With structured training usin
 
 **Master the kinetic chain, perfect your swing path, and become the match-winner your team needs.**
     `,
-        category: "Technique",
-        author: "SSPLT10 Coach",
-        date: "Dec 03, 2025",
-        readTime: "12 min read",
-        image: "/images/insta-power-hitting.jpg",
-        tags: ["Batting", "Power Hitting", "Drills", "Biomechanics", "Coaching"]
+        category: 'Technique',
+        author: 'SSPLT10 Coach',
+        date: 'Dec 03, 2025',
+        readTime: '12 min read',
+        image: '/images/insta-power-hitting.jpg',
+        tags: ['Batting', 'Power Hitting', 'Drills', 'Biomechanics', 'Coaching'],
     },
     {
-        id: "bowling-variations-drills",
-        title: "Advanced Bowling Variations & Skill Development in Tennis Ball Cricket",
-        excerpt: "High-Performance Coaching Manual Edition - Covering biomechanics, technical models, drill progressions, and SSPLT10 tactical frameworks.",
+        id: 'bowling-variations-drills',
+        title: 'Advanced Bowling Variations & Skill Development in Tennis Ball Cricket',
+        excerpt: 'High-Performance Coaching Manual Edition - Covering biomechanics, technical models, drill progressions, and SSPLT10 tactical frameworks.',
         content: `
 ## PART 1 — INTRODUCTION: The Bowler’s Role in T10 Tennis Ball Cricket
 
@@ -680,17 +680,17 @@ SSPLT10’s format demands bowlers adopt a 10-over micro-strategy.
 
 **A bowler scoring 15+ is tournament-ready.**
     `,
-        category: "Bowling",
-        author: "SSPLT10 Coach",
-        date: "Dec 02, 2025",
-        readTime: "5 min read",
-        image: "/images/insta-bowling.jpg",
-        tags: ["Bowling", "Variations", "Drills"]
+        category: 'Bowling',
+        author: 'SSPLT10 Coach',
+        date: 'Dec 02, 2025',
+        readTime: '5 min read',
+        image: '/images/insta-bowling.jpg',
+        tags: ['Bowling', 'Variations', 'Drills'],
     },
     {
-        id: "sharpening-fielding-skills",
-        title: "High-Performance Fielding for T10 Tennis Ball Cricket",
-        excerpt: "Professional Coaching Manual Edition - Expanding fielding training into biomechanics, motor learning, anticipation models, and SSPLT10-specific tactical relevance.",
+        id: 'sharpening-fielding-skills',
+        title: 'High-Performance Fielding for T10 Tennis Ball Cricket',
+        excerpt: 'Professional Coaching Manual Edition - Expanding fielding training into biomechanics, motor learning, anticipation models, and SSPLT10-specific tactical relevance.',
         content: `
 ## PART 1 — INTRODUCTION: THE CRITICAL ROLE OF FIELDING IN T10 TENNIS BALL CRICKET
 
@@ -1004,17 +1004,17 @@ Fielding excellence is built through:
 
 **In SSPLT10’s explosive T10 environment, elite fielders are often the hidden match-winners.**
     `,
-        category: "Fielding",
-        author: "SSPLT10 Coach",
-        date: "Dec 01, 2025",
-        readTime: "8 min read",
-        image: "/images/insta-fielding.jpg",
-        tags: ["Fielding", "Agility", "Drills", "Biomechanics", "Coaching"]
+        category: 'Fielding',
+        author: 'SSPLT10 Coach',
+        date: 'Dec 01, 2025',
+        readTime: '8 min read',
+        image: '/images/insta-fielding.jpg',
+        tags: ['Fielding', 'Agility', 'Drills', 'Biomechanics', 'Coaching'],
     },
     {
-        id: "equipment-gear-guide",
-        title: "Advanced Equipment & Gear Science for Tennis Ball Cricket",
-        excerpt: "High-Performance Coaching Manual Edition - Focus on bat engineering, ball physics, footwear biomechanics, and SSPLT10-specific gear strategy.",
+        id: 'equipment-gear-guide',
+        title: 'Advanced Equipment & Gear Science for Tennis Ball Cricket',
+        excerpt: 'High-Performance Coaching Manual Edition - Focus on bat engineering, ball physics, footwear biomechanics, and SSPLT10-specific gear strategy.',
         content: `
 ## PART 1 — INTRODUCTION: WHY EQUIPMENT SCIENCE MATTERS IN TENNIS BALL CRICKET
 
@@ -1336,17 +1336,17 @@ SSPLT10’s hybrid format demands intelligent gear adaptation.
 
 **A score of 18+ indicates strong technical literacy and match-ready preparation.**
         `,
-        category: "Equipment",
-        author: "SSPLT10 Team",
-        date: "Nov 30, 2025",
-        readTime: "10 min read",
-        image: "/images/insta-gear.jpg",
-        tags: ["Equipment", "Gear", "Bats", "Balls", "Science"]
+        category: 'Equipment',
+        author: 'SSPLT10 Team',
+        date: 'Nov 30, 2025',
+        readTime: '10 min read',
+        image: '/images/insta-gear.jpg',
+        tags: ['Equipment', 'Gear', 'Bats', 'Balls', 'Science'],
     },
     {
-        id: "fitness-training-routines",
-        title: "High-Performance Fitness & Conditioning for T10 Tennis Ball Cricket",
-        excerpt: "Professional Coaching Manual Edition - Focus on biomechanics, energy systems, agility science, strength periodization, and SSPLT10 performance demands.",
+        id: 'fitness-training-routines',
+        title: 'High-Performance Fitness & Conditioning for T10 Tennis Ball Cricket',
+        excerpt: 'Professional Coaching Manual Edition - Focus on biomechanics, energy systems, agility science, strength periodization, and SSPLT10 performance demands.',
         content: `
 ## PART 1 — INTRODUCTION: WHY FITNESS DECIDES MATCHES IN T10
 
@@ -1608,17 +1608,17 @@ Players with balanced profiles outperform pure specialists.
 
 **This schedule matches ICC-level high-performance centers adapted for tennis-ball cricket.**
         `,
-        category: "Fitness",
-        author: "SSPLT10 Fitness Coach",
-        date: "Nov 29, 2025",
-        readTime: "12 min read",
-        image: "/images/insta-fitness.jpg",
-        tags: ["Fitness", "Training", "Workout", "Conditioning", "Science"]
+        category: 'Fitness',
+        author: 'SSPLT10 Fitness Coach',
+        date: 'Nov 29, 2025',
+        readTime: '12 min read',
+        image: '/images/insta-fitness.jpg',
+        tags: ['Fitness', 'Training', 'Workout', 'Conditioning', 'Science'],
     },
     {
-        id: "tactical-matchplay-t10",
-        title: "Advanced Tactical Matchplay in T10 Tennis Ball Cricket",
-        excerpt: "High-Performance Coaching Manual Edition - Focus on tactical frameworks, decision models, matchup analysis, and SSPLT10-specific strategy.",
+        id: 'tactical-matchplay-t10',
+        title: 'Advanced Tactical Matchplay in T10 Tennis Ball Cricket',
+        excerpt: 'High-Performance Coaching Manual Edition - Focus on tactical frameworks, decision models, matchup analysis, and SSPLT10-specific strategy.',
         content: `
 ## PART 1 — INTRODUCTION: WHY T10 REQUIRES A NEW TACTICAL LANGUAGE
 
@@ -1807,17 +1807,17 @@ Success in T10 requires mastery of:
 
 **T10 is a strategy-first format, not a slogfest.**
         `,
-        category: "Strategy",
-        author: "SSPLT10 Analyst",
-        date: "Nov 28, 2025",
-        readTime: "15 min read",
-        image: "/images/insta-tactics.jpg",
-        tags: ["Tactics", "Strategy", "T10", "Matchplay", "Analysis"]
+        category: 'Strategy',
+        author: 'SSPLT10 Analyst',
+        date: 'Nov 28, 2025',
+        readTime: '15 min read',
+        image: '/images/insta-tactics.jpg',
+        tags: ['Tactics', 'Strategy', 'T10', 'Matchplay', 'Analysis'],
     },
     {
-        id: "ssplt10-season-launch",
-        title: "SSPLT10 Season Format, Competition Structure & Performance Model",
-        excerpt: "High-Performance Coaching Manual Edition - Focus on league framework, player pathways, match engineering, and tactical implications of SSPLT10’s unique format.",
+        id: 'ssplt10-season-launch',
+        title: 'SSPLT10 Season Format, Competition Structure & Performance Model',
+        excerpt: 'High-Performance Coaching Manual Edition - Focus on league framework, player pathways, match engineering, and tactical implications of SSPLT10’s unique format.',
         content: `
 ## PART 1 — INTRODUCTION: SSPLT10 AS A HIGH-PERFORMANCE TENNIS BALL CRICKET ECOSYSTEM
 
@@ -2064,17 +2064,17 @@ SSPLT10 redefines tennis-ball cricket through:
 
 **It is not just a league — it is an evolution.**
         `,
-        category: "League News",
-        author: "SSPLT10 Management",
-        date: "Nov 27, 2025",
-        readTime: "12 min read",
-        image: "/images/insta-launch.jpg",
-        tags: ["SSPLT10", "League", "Season", "Format", "Structure"]
+        category: 'League News',
+        author: 'SSPLT10 Management',
+        date: 'Nov 27, 2025',
+        readTime: '12 min read',
+        image: '/images/insta-launch.jpg',
+        tags: ['SSPLT10', 'League', 'Season', 'Format', 'Structure'],
     },
     {
-        id: "ssplt10-player-spotlight",
-        title: "SSPLT10 Player Spotlight: Journeys, Psychology & Performance Evolution",
-        excerpt: "High-Performance Coaching Manual Edition - Focus on player identity, developmental phases, psychological conditioning, and the importance of narrative in talent elevation.",
+        id: 'ssplt10-player-spotlight',
+        title: 'SSPLT10 Player Spotlight: Journeys, Psychology & Performance Evolution',
+        excerpt: 'High-Performance Coaching Manual Edition - Focus on player identity, developmental phases, psychological conditioning, and the importance of narrative in talent elevation.',
         content: `
 ## PART 1 — INTRODUCTION: WHY PLAYER STORIES MATTER IN SSPLT10
 
@@ -2257,17 +2257,17 @@ By documenting journeys, highlighting skills, showcasing growth, and presenting 
 
 **In a format as explosive as T10, stories bring meaning to the chaos. And players become more than performers — they become icons.**
         `,
-        category: "Player Stories",
-        author: "SSPLT10 Media Team",
-        date: "Nov 26, 2025",
-        readTime: "10 min read",
-        image: "/images/insta-spotlight.jpg",
-        tags: ["Players", "Stories", "Spotlight", "Journey", "Psychology"]
+        category: 'Player Stories',
+        author: 'SSPLT10 Media Team',
+        date: 'Nov 26, 2025',
+        readTime: '10 min read',
+        image: '/images/insta-spotlight.jpg',
+        tags: ['Players', 'Stories', 'Spotlight', 'Journey', 'Psychology'],
     },
     {
-        id: "ssplt10-trials-community-impact",
-        title: "SSPLT10 Trials & Community Impact: Talent Identification, Development Frameworks & Grassroots Transformation",
-        excerpt: "High-Performance Coaching Manual Edition - Focus on talent scouting, scientific evaluation models, trial structures, community upliftment, and the SSPLT10 ecosystem.",
+        id: 'ssplt10-trials-community-impact',
+        title: 'SSPLT10 Trials & Community Impact: Talent Identification, Development Frameworks & Grassroots Transformation',
+        excerpt: 'High-Performance Coaching Manual Edition - Focus on talent scouting, scientific evaluation models, trial structures, community upliftment, and the SSPLT10 ecosystem.',
         content: `
 ## PART 1 — INTRODUCTION: THE PURPOSE BEHIND SSPLT10 TRIALS
 
@@ -2471,11 +2471,11 @@ SSPLT10 Trials and the surrounding community model represent a revolution in ten
 
 **The league creates a bridge from street cricket to professional opportunity — and for thousands of young athletes, that bridge didn’t exist before.**
         `,
-        category: "Community",
-        author: "SSPLT10 Outreach Team",
-        date: "Nov 25, 2025",
-        readTime: "12 min read",
-        image: "/images/insta-trials.jpg",
-        tags: ["Trials", "Community", "Impact", "Opportunities", "Development"]
-    }
+        category: 'Community',
+        author: 'SSPLT10 Outreach Team',
+        date: 'Nov 25, 2025',
+        readTime: '12 min read',
+        image: '/images/insta-trials.jpg',
+        tags: ['Trials', 'Community', 'Impact', 'Opportunities', 'Development'],
+    },
 ];

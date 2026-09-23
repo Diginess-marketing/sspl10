@@ -1,21 +1,21 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
     Search,
     ChevronRight,
     ChevronDown,
     MessageCircle,
-    Globe
-} from "lucide-react";
-import { cn } from "@/lib/utils";
+    Globe,
+} from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { faqData, Language, FAQItem as FAQItemType } from '@/data/faqData'; // Import data and type
 import { fetchCategorizedContent, PlaylistCategory, YouTubeVideo } from '@/services/youtubeService';
 import { VideoCarousel } from '@/components/SSPLSocialWallSection';
@@ -31,7 +31,7 @@ const translations: Record<Language, { title: string, subtitle: string, searchPl
         noResultsDesc: 'Try a different search term or browse other categories.',
         questionsTitle: 'Still have questions?',
         questionsDesc: 'Chat with our support team on WhatsApp.',
-        whatsappBtn: 'WhatsApp Support'
+        whatsappBtn: 'WhatsApp Support',
     },
     hi: {
         title: 'अक्सर पूछे जाने वाले प्रश्न',
@@ -41,7 +41,7 @@ const translations: Record<Language, { title: string, subtitle: string, searchPl
         noResultsDesc: 'एक अलग खोज शब्द आज़माएं या अन्य श्रेणियों को ब्राउज़ करें।',
         questionsTitle: 'अभी भी प्रश्न हैं?',
         questionsDesc: 'व्हाट्सएप पर हमारी सहायता टीम से चैट करें।',
-        whatsappBtn: 'व्हाट्सएप सहायता'
+        whatsappBtn: 'व्हाट्सएप सहायता',
     },
     ta: {
         title: 'அடிக்கடி கேட்கப்படும் கேள்விகள்',
@@ -51,7 +51,7 @@ const translations: Record<Language, { title: string, subtitle: string, searchPl
         noResultsDesc: 'வேறு தேடல் சொல்லை முயற்சிக்கவும் அல்லது பிற வகைகளை உலாவவும்.',
         questionsTitle: 'இன்னும் கேள்விகள் உள்ளதா?',
         questionsDesc: 'WhatsApp இல் எங்கள் ஆதரவு குழுவுடன் அரட்டையடிக்கவும்.',
-        whatsappBtn: 'WhatsApp ஆதரவு'
+        whatsappBtn: 'WhatsApp ஆதரவு',
     },
     te: {
         title: 'తరచుగా అడిగే ప్రశ్నలు',
@@ -61,7 +61,7 @@ const translations: Record<Language, { title: string, subtitle: string, searchPl
         noResultsDesc: 'వేరే శోధన పదాన్ని ప్రయత్నించండి లేదా ఇతర వర్గాలను బ్రౌజ్ చేయండి.',
         questionsTitle: 'ఇంకా ప్రశ్నలు ఉన్నాయా?',
         questionsDesc: 'WhatsAppలో మా మద్దతు బృందంతో చాట్ చేయండి.',
-        whatsappBtn: 'WhatsApp మద్దతు'
+        whatsappBtn: 'WhatsApp మద్దతు',
     },
     ml: {
         title: 'പതിവ് ചോദ്യങ്ങൾ',
@@ -71,7 +71,7 @@ const translations: Record<Language, { title: string, subtitle: string, searchPl
         noResultsDesc: 'മറ്റൊരു തിരയൽ പദം പരീക്ഷിക്കുക അല്ലെങ്കിൽ മറ്റ് വിഭാഗങ്ങൾ ബ്രൗസ് ചെയ്യുക.',
         questionsTitle: 'ഇപ്പോഴും ചോദ്യങ്ങളുണ്ടോ?',
         questionsDesc: 'WhatsApp-ൽ ഞങ്ങളുടെ പിന്തുണാ ടീമുമായി ചാറ്റ് ചെയ്യുക.',
-        whatsappBtn: 'WhatsApp പിന്തുണ'
+        whatsappBtn: 'WhatsApp പിന്തുണ',
     },
     kn: {
         title: 'ಪದೇ ಪದೇ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು',
@@ -81,7 +81,7 @@ const translations: Record<Language, { title: string, subtitle: string, searchPl
         noResultsDesc: 'ಬೇರೆ ಹುಡುಕಾಟ ಪದವನ್ನು ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ ಇತರ ವರ್ಗಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ.',
         questionsTitle: 'ಇನ್ನೂ ಪ್ರಶ್ನೆಗಳಿವೆಯೇ?',
         questionsDesc: 'WhatsApp ನಲ್ಲಿ ನಮ್ಮ ಬೆಂಬಲ ತಂಡದೊಂದಿಗೆ ಚాٹ ಮಾಡಿ.',
-        whatsappBtn: 'WhatsApp ಬೆಂಬಲ'
+        whatsappBtn: 'WhatsApp ಬೆಂಬಲ',
     },
     ur: {
         title: 'اکثر پوچھے گئے سوالات',
@@ -91,8 +91,8 @@ const translations: Record<Language, { title: string, subtitle: string, searchPl
         noResultsDesc: 'ایک اور تلاش کی اصطلاح آزمائیں یا دیگر زمرے براؤز کریں۔',
         questionsTitle: 'ابھی بھی سوالات ہیں؟',
         questionsDesc: 'ہمارے سپورٹ ٹیم کے ساتھ WhatsApp پر چیٹ کریں۔',
-        whatsappBtn: 'WhatsApp سپورٹ'
-    }
+        whatsappBtn: 'WhatsApp سپورٹ',
+    },
 };
 
 const langToPlaylistKeywords: Record<string, string[]> = {
@@ -102,34 +102,34 @@ const langToPlaylistKeywords: Record<string, string[]> = {
     te: ['telugu', 'తెలుగు'],
     ml: ['malayalam', 'മലയാളം'],
     kn: ['kannada', 'ಕನ್ನಡ'],
-    ur: ['hindi', 'हिन्दी', 'हिंदी', 'urdu', 'اردو']
+    ur: ['hindi', 'हिन्दी', 'हिंदी', 'urdu', 'اردو'],
 };
 
 const FAQItem = ({ item, video }: { item: FAQItemType, video?: YouTubeVideo }) => {
     const [isOpen, setIsOpen] = useState(false);
     return (
         <div className={cn(
-            "border-b border-[#001B69]/10 pb-4 mb-4 last:border-b-0 last:mb-0 transition-all duration-300",
-            isOpen ? "border-l-4 border-l-[#001B69] pl-4 bg-[#001B69]/5 rounded-r-xl shadow-lg" : "border-l-0"
+            'border-b border-[#001B69]/10 pb-4 mb-4 last:border-b-0 last:mb-0 transition-all duration-300',
+            isOpen ? 'border-l-4 border-l-[#001B69] pl-4 bg-[#001B69]/5 rounded-r-xl shadow-lg' : 'border-l-0',
         )}>
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full flex justify-between items-center text-left gap-4 py-3 md:py-4"
             >
                 <h4 className={cn(
-                    "text-base md:text-lg font-semibold transition-colors font-body",
-                    isOpen ? "!text-[#0047AB]" : "!text-[#001B69]"
+                    'text-base md:text-lg font-semibold transition-colors font-body',
+                    isOpen ? '!text-[#0047AB]' : '!text-[#001B69]',
                 )}>
                     {item.question}
                 </h4>
                 <ChevronDown className={cn(
-                    "w-5 h-5 shrink-0 transition-transform !text-[#001B69]/60",
-                    isOpen && "rotate-180"
+                    'w-5 h-5 shrink-0 transition-transform !text-[#001B69]/60',
+                    isOpen && 'rotate-180',
                 )} />
             </button>
             <div className={cn(
-                "grid transition-all duration-300 ease-in-out",
-                isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                'grid transition-all duration-300 ease-in-out',
+                isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
             )}>
                 <div className="overflow-hidden">
                     <p className="!text-[#001B69]/80 text-base leading-relaxed font-body pb-3 pr-8">
@@ -137,8 +137,8 @@ const FAQItem = ({ item, video }: { item: FAQItemType, video?: YouTubeVideo }) =
                     </p>
                     {video && (
                         <div className={cn(
-                            "mt-4 mb-6 max-w-2xl mx-auto md:mx-0",
-                            video.isShort ? "max-w-[300px]" : "w-full"
+                            'mt-4 mb-6 max-w-2xl mx-auto md:mx-0',
+                            video.isShort ? 'max-w-[300px]' : 'w-full',
                         )}>
                             <LiteYouTube 
                                 id={video.id} 
@@ -155,7 +155,7 @@ const FAQItem = ({ item, video }: { item: FAQItemType, video?: YouTubeVideo }) =
 };
 
 const FAQSection = () => {
-    const [searchQuery, setSearchQuery] = useState("");
+    const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState<string>('registration');
     const [language, setLanguage] = useState<Language>(() => {
         // Try to get language from googtrans cookie
@@ -209,7 +209,7 @@ const FAQSection = () => {
                 // Filter for playlists that contain "faq" OR common terms like "सवाल" or "प्रश्न"
                 const faqKeywords = ['faq', 'प्रश्न', 'सवाल', 'अक्सर', 'वीडियो', 'அடிக்கடி', 'ప్రశ్నలు', 'చోద్యങ്ങൾ', 'ಪ್ರಶ್ನೆಗಳು', 'سوالات'];
                 const faqs = data.filter(cat => 
-                    faqKeywords.some(kw => cat.title.toLowerCase().includes(kw.toLowerCase()))
+                    faqKeywords.some(kw => cat.title.toLowerCase().includes(kw.toLowerCase())),
                 );
                 
                 // If still empty, take everything that isn't Shorts
@@ -221,7 +221,7 @@ const FAQSection = () => {
                     setFaqPlaylists(finalFaqs);
                 }
             } catch (error) {
-                console.error("Failed to load FAQ videos:", error);
+                console.error('Failed to load FAQ videos:', error);
             } finally {
                 setLoadingVideos(false);
             }
@@ -235,7 +235,7 @@ const FAQSection = () => {
             const effectiveLang = language === 'ur' ? 'hi' : language;
             const keywords = langToPlaylistKeywords[effectiveLang] || [effectiveLang];
             const playlist = faqPlaylists.find(p => 
-                keywords.some(kw => p.title.toLowerCase().includes(kw))
+                keywords.some(kw => p.title.toLowerCase().includes(kw)),
             );
             
             if (playlist) {
@@ -262,7 +262,7 @@ const FAQSection = () => {
                 const lowerQuery = searchQuery.toLowerCase();
                 items = category.items.filter(item =>
                     item.question.toLowerCase().includes(lowerQuery) ||
-                    item.answer.toLowerCase().includes(lowerQuery)
+                    item.answer.toLowerCase().includes(lowerQuery),
                 );
             }
         } else if (currentCategories.length > 0) {
@@ -273,7 +273,7 @@ const FAQSection = () => {
         const effectiveLang = language === 'ur' ? 'hi' : language;
         const keywords = langToPlaylistKeywords[effectiveLang] || [effectiveLang];
         let currentLangPlaylist = faqPlaylists.find(p => 
-            keywords.some(kw => p.title.toLowerCase().includes(kw))
+            keywords.some(kw => p.title.toLowerCase().includes(kw)),
         );
         
         // Fallback: If no language-specific playlist found, try English or any FAQ playlist
@@ -294,7 +294,7 @@ const FAQSection = () => {
                     results: 'RESULT',
                     general: 'GENERAL',
                     about: 'ABOUT',
-                    format: 'FORMAT'
+                    format: 'FORMAT',
                 };
                 
                 const parentCategory = currentCategories.find(cat => cat.items.some(i => i.question === item.question));
@@ -325,7 +325,7 @@ const FAQSection = () => {
             if (!matchedVideo && currentLangPlaylist) {
                 const noise = [
                     'how', 'can', 'i', 'what', 'is', 'the', 'are', 'do', 'need', 'to', 'for', 'in', 'of', 'and', 'my', 'ssplt10', 'sspl', 't10', 'faq', 'video', 'fees', 'payment', 'registrations', 'eligibility',
-                    'अक्सर', 'पूछे', 'जाने', 'वाले', 'प्रश्न', 'खेल', 'प्ले', 'हैं', 'क्या', 'कैसे', 'सकता', 'हूँ', 'लिए', 'में', 'का', 'की', 'के', 'को', 'था', 'थी', 'थी', 'थे', 'भी', 'और', 'पर', 'से'
+                    'अक्सर', 'पूछे', 'जाने', 'वाले', 'प्रश्न', 'खेल', 'प्ले', 'हैं', 'क्या', 'कैसे', 'सकता', 'हूँ', 'लिए', 'में', 'का', 'की', 'के', 'को', 'था', 'थी', 'थी', 'थे', 'भी', 'और', 'पर', 'से',
                 ];
                 const cleanWords = (text: string) => text.toLowerCase()
                     .replace(/[?.,!-]/g, ' ')
@@ -446,15 +446,15 @@ const FAQSection = () => {
                                 {currentCategories.map((cat) => (
                                     <button
                                         key={cat.id}
-                                        onClick={() => { setActiveCategory(cat.id); setSearchQuery(""); }}
+                                        onClick={() => { setActiveCategory(cat.id); setSearchQuery(''); }}
                                         className={cn(
-                                            "flex items-center gap-3 px-4 py-3 rounded-xl whitespace-nowrap lg:whitespace-normal text-sm md:text-base font-bold transition-colors shrink-0 uppercase tracking-widest",
+                                            'flex items-center gap-3 px-4 py-3 rounded-xl whitespace-nowrap lg:whitespace-normal text-sm md:text-base font-bold transition-colors shrink-0 uppercase tracking-widest',
                                             activeCategory === cat.id
-                                                ? "bg-[#CCFF00] text-[#0047AB] shadow-lg"
-                                                : "bg-white/5 text-white/70 border border-white/10 hover:bg-white/10"
+                                                ? 'bg-[#CCFF00] text-[#0047AB] shadow-lg'
+                                                : 'bg-white/5 text-white/70 border border-white/10 hover:bg-white/10',
                                         )}
                                     >
-                                        <cat.icon className={cn("h-5 w-5 shrink-0", activeCategory === cat.id ? "text-[#0047AB]" : "text-[#CCFF00]")} />
+                                        <cat.icon className={cn('h-5 w-5 shrink-0', activeCategory === cat.id ? 'text-[#0047AB]' : 'text-[#CCFF00]')} />
                                         <span>{cat.title}</span>
                                         {activeCategory === cat.id && (
                                             <ChevronRight className="ml-auto h-4 w-4 hidden lg:block text-[#0047AB]" />
@@ -549,10 +549,10 @@ const FAQSection = () => {
                                         key={playlist.id}
                                         onClick={() => setActiveVideoTab(playlist.id)}
                                         className={cn(
-                                            "px-6 py-2.5 rounded-full font-bold uppercase tracking-wider transition-all duration-300 border text-sm md:text-base cursor-pointer",
+                                            'px-6 py-2.5 rounded-full font-bold uppercase tracking-wider transition-all duration-300 border text-sm md:text-base cursor-pointer',
                                             activeVideoTab === playlist.id
-                                                ? "bg-[#00B4D8] border-[#00B4D8] text-white shadow-lg shadow-[#00B4D8]/20"
-                                                : "bg-[#0A1628] border-white/10 text-white/60 hover:text-white hover:bg-white/5"
+                                                ? 'bg-[#00B4D8] border-[#00B4D8] text-white shadow-lg shadow-[#00B4D8]/20'
+                                                : 'bg-[#0A1628] border-white/10 text-white/60 hover:text-white hover:bg-white/5',
                                         )}
                                     >
                                         {shortName}

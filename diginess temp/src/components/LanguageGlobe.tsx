@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Globe, Check } from 'lucide-react';
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 const languages = [
     { code: 'en', label: 'English' },
@@ -9,7 +9,7 @@ const languages = [
     { code: 'te', label: 'Telugu' },
     { code: 'ml', label: 'Malayalam' },
     { code: 'kn', label: 'Kannada' },
-    { code: 'ur', label: 'Urdu' }
+    { code: 'ur', label: 'Urdu' },
 ];
 
 const LanguageGlobe = () => {
@@ -79,10 +79,10 @@ const LanguageGlobe = () => {
                             key={lang.code}
                             onClick={() => handleLanguageChange(lang.code)}
                             className={cn(
-                                "w-full text-left px-4 py-2 text-sm flex items-center justify-between transition-colors",
+                                'w-full text-left px-4 py-2 text-sm flex items-center justify-between transition-colors',
                                 currentLang === lang.code
-                                    ? "text-sspl-orange bg-white/5"
-                                    : "text-white/70 hover:text-white hover:bg-white/5"
+                                    ? 'text-sspl-orange bg-white/5'
+                                    : 'text-white/70 hover:text-white hover:bg-white/5',
                             )}
                         >
                             {lang.label}

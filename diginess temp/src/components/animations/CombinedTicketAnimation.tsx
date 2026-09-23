@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { X, Sparkles, Star } from 'lucide-react';
+import { X, Star } from 'lucide-react';
 import type { PlayerResult } from '@/types/playerData';
 
 // Import the existing animations
@@ -49,12 +49,12 @@ const CombinedTicketAnimation: React.FC<CombinedTicketAnimationProps> = ({ playe
                             className="absolute rounded-full animate-[float_5s_ease-in-out_infinite]"
                             style={{
                                 backgroundColor: i % 2 === 0 ? '#FFD700' : '#00FFFF',
-                                width: Math.random() * 6 + 2 + 'px',
-                                height: Math.random() * 6 + 2 + 'px',
-                                left: Math.random() * 100 + '%',
-                                top: Math.random() * 100 + '%',
-                                animationDelay: Math.random() * 5 + 's',
-                                opacity: 0.6
+                                width: `${Math.random() * 6 + 2  }px`,
+                                height: `${Math.random() * 6 + 2  }px`,
+                                left: `${Math.random() * 100  }%`,
+                                top: `${Math.random() * 100  }%`,
+                                animationDelay: `${Math.random() * 5  }s`,
+                                opacity: 0.6,
                             }}
                         />
                     ))}

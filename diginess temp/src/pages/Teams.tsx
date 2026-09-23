@@ -1,9 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Trophy, Users, Calendar, MapPin, Star, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Trophy, Users, Calendar, MapPin, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import SEO from '@/components/SEO';
-import TeamsSection from '@/components/TeamsSection';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 

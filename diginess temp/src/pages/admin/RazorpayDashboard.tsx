@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -34,8 +34,8 @@ export default function RazorpayDashboard() {
 
       const response = await fetch(`${apiBase}/admin/razorpay/transactions?${queryParams}`, {
         headers: {
-          'Authorization': `Bearer ${session?.access_token || ''}`
-        }
+          'Authorization': `Bearer ${session?.access_token || ''}`,
+        },
       });
       
       if (!response.ok) throw new Error('Failed to fetch transactions');
@@ -246,7 +246,7 @@ export default function RazorpayDashboard() {
                     return (
                       <Button
                         key={pageNum}
-                        variant={page === pageNum ? "default" : "outline"}
+                        variant={page === pageNum ? 'default' : 'outline'}
                         size="sm"
                         className="w-8 h-8 p-0"
                         onClick={() => setPage(pageNum)}

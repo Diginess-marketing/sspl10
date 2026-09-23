@@ -6,7 +6,6 @@ import type {
   TrialLookupRequest,
   TrialLookupFormData,
   TrialLookupFormErrors,
-  TrialResult,
 } from '@/types/resultLookup';
 
 export const useResultLookup = () => {

@@ -17,8 +17,7 @@ import {
   MapPin,
   Users,
   AlertCircle,
-  Undo2,
-  Trash2
+  Trash2,
 } from 'lucide-react';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
 import { useAuth } from '@/hooks/useAuth';
@@ -37,7 +36,7 @@ const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
 
   // Allocation form state
   const [allocationDate, setAllocationDate] = useState(
-    new Date().toISOString().split('T')[0]
+    new Date().toISOString().split('T')[0],
   );
   const [allocationTime, setAllocationTime] = useState('09:00');
   const [allocationVenue, setAllocationVenue] = useState('');
@@ -49,7 +48,7 @@ const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
     getTrialsSectionPlayers,
     allocateToTrials,
     revertToRegistration,
-    error
+    error,
   } = usePlayerWorkflow();
 
   const loadPlayers = useCallback(async () => {
@@ -106,7 +105,7 @@ const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
         allocationTime || undefined,
         allocationVenue || undefined,
         allocationBatch || undefined,
-        user?.id
+        user?.id,
       );
 
       const successCount = results.filter(r => r.success).length;
@@ -136,7 +135,7 @@ const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
     }
 
     const confirm = window.confirm(
-      `Are you sure you want to remove ${selectedIds.size} player(s) from the Trials List? They will be moved back to the Registration list.`
+      `Are you sure you want to remove ${selectedIds.size} player(s) from the Trials List? They will be moved back to the Registration list.`,
     );
     if (!confirm) return;
 
@@ -291,7 +290,7 @@ const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
                       <TableCell>
                         <Checkbox
                           checked={selectedIds.has(player.workflow_id)}
-                          onCheckedChange={(checked) => handleSelectOne(player.workflow_id, !!checked)}
+                          onCheckedChange={(checked) => handleSelectOne(player.workflow_id, Boolean(checked))}
                           aria-label={`Select ${player.full_name}`}
                         />
                       </TableCell>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Video, Trophy, ShieldCheck, ArrowRight, ExternalLink, Gift, CheckCircle2, Mail, Phone } from 'lucide-react';
+import { Video, Trophy, ShieldCheck, ArrowRight, Gift, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import TournamentOrganizerRegistration from './TournamentOrganizerRegistration';

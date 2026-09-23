@@ -101,7 +101,7 @@ export function usePlayerWorkflow() {
         errorCode: regError?.code,
         status,
         statusText,
-        firstRecord: registrations?.[0]
+        firstRecord: registrations?.[0],
       });
 
       if (regError) {
@@ -149,7 +149,7 @@ export function usePlayerWorkflow() {
           ...reg,
           workflow_id: workflow?.workflow_id,
           workflow_stage: (workflow?.workflow_stage || 'registration') as WorkflowStage,
-          confirmation_email_sent: workflow?.confirmation_email_sent || !!emailLog,
+          confirmation_email_sent: workflow?.confirmation_email_sent || Boolean(emailLog),
           confirmation_email_sent_at: workflow?.confirmation_email_sent_at || emailLog?.sent_at,
         };
       });
@@ -326,7 +326,7 @@ export function usePlayerWorkflow() {
   // Move players to trials section
   const moveToTrialsSection = useCallback(async (
     registrationIds: string[],
-    adminId?: string
+    adminId?: string,
   ): Promise<BulkOperationResult[]> => {
     try {
       setLoading(true);
@@ -368,7 +368,7 @@ export function usePlayerWorkflow() {
     allocationTime?: string,
     allocationVenue?: string,
     allocationBatch?: string,
-    adminId?: string
+    adminId?: string,
   ): Promise<BulkOperationResult[]> => {
     try {
       setLoading(true);
@@ -411,7 +411,7 @@ export function usePlayerWorkflow() {
   const markAttendance = useCallback(async (
     allocationId: string,
     attendanceStatus: AttendanceStatus,
-    adminId?: string
+    adminId?: string,
   ): Promise<boolean> => {
     try {
       setLoading(true);
@@ -449,7 +449,7 @@ export function usePlayerWorkflow() {
     selectionStatus: SelectionStatus = 'pending',
     remarks?: string,
     evaluatorNotes?: string,
-    adminId?: string
+    adminId?: string,
   ): Promise<boolean> => {
     try {
       setLoading(true);
@@ -489,7 +489,7 @@ export function usePlayerWorkflow() {
     playerName: string,
     email: string,
     amount: number,
-    paymentId: string
+    paymentId: string,
   ): Promise<boolean> => {
     try {
       setLoading(true);
@@ -553,7 +553,7 @@ export function usePlayerWorkflow() {
   // Revert players to registration (remove from trials workflow)
   const revertToRegistration = useCallback(async (
     workflowIds: string[],
-    adminId?: string
+    adminId?: string,
   ): Promise<BulkOperationResult[]> => {
     try {
       setLoading(true);
@@ -578,7 +578,7 @@ export function usePlayerWorkflow() {
       return workflowIds.map(id => ({
         registration_id: id,
         success: true,
-        message: 'Reverted successfully'
+        message: 'Reverted successfully',
       }));
     } catch (err: any) {
       console.error('Exception reverting to registration:', err);

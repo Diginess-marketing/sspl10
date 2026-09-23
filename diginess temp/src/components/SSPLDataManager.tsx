@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Switch } from '@/components/ui/switch';
 import {
   Plus,
@@ -18,15 +18,10 @@ import {
   Upload,
   Database,
   Users,
-  Calendar,
-  Newspaper,
   Trophy,
   HelpCircle,
   MessageSquare,
   BarChart3,
-  Save,
-  X,
-  Check,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import type {

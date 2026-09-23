@@ -1,12 +1,8 @@
 
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Gavel, Clock, Users, DollarSign, Trophy, MapPin, Activity } from 'lucide-react';
+import { Trophy, MapPin, Activity } from 'lucide-react';
 import selectedPlayers from '@/data/selectedPlayers.json';
 import selectedPlayers2 from '@/data/selectedPlayers2.json';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
 
 const AuctionPage = () => {
     
@@ -21,13 +17,13 @@ const AuctionPage = () => {
                                 src={player.image} 
                                 alt={player.name}
                                 className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                                loading={idx < 8 ? "eager" : "lazy"}
+                                loading={idx < 8 ? 'eager' : 'lazy'}
                                 decoding="async"
-                                fetchPriority={idx < 4 ? "high" : "auto"}
+                                fetchPriority={idx < 4 ? 'high' : 'auto'}
                                 style={{
-                                    objectPosition: player.name === "SWAMINATHAN" ? "center 25%" : 
-                                                    (player.name === "HIMANSHU HANS" || player.name === "GUMPARTHI NAVEEN") ? "center 40%" :
-                                                    player.name.includes("BALAJI") ? "right top" : "top"
+                                    objectPosition: player.name === 'SWAMINATHAN' ? 'center 25%' : 
+                                                    (player.name === 'HIMANSHU HANS' || player.name === 'GUMPARTHI NAVEEN') ? 'center 40%' :
+                                                    player.name.includes('BALAJI') ? 'right top' : 'top',
                                 }}
                             />
                         ) : (
@@ -44,10 +40,10 @@ const AuctionPage = () => {
                         </h3>
                         <div className="flex flex-col gap-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                             <span className="flex items-center gap-1.5">
-                                <MapPin size={14} className="text-primary" /> {(player.location || "CHENNAI, IN").split(',').pop()?.trim()}
+                                <MapPin size={14} className="text-primary" /> {(player.location || 'CHENNAI, IN').split(',').pop()?.trim()}
                             </span>
                             <span className="flex items-center gap-1.5">
-                                <Activity size={14} className="text-primary" /> {player.role || "PLAYER"}
+                                <Activity size={14} className="text-primary" /> {player.role || 'PLAYER'}
                             </span>
                         </div>
                     </div>

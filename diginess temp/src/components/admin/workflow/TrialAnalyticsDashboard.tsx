@@ -11,10 +11,10 @@ import {
   ResponsiveContainer,
   PieChart, 
   Pie, 
-  Cell 
+  Cell, 
 } from 'recharts';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
-import { RefreshCw, TrendingUp, Users, CheckCircle, XCircle, Download } from 'lucide-react';
+import { RefreshCw, TrendingUp, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -79,7 +79,7 @@ export const TrialAnalyticsDashboard = () => {
       const headers = Object.keys(records[0]);
       const csvContent = [
         headers.join(','),
-        ...records.map((r: any) => headers.map(h => `"${r[h] || ''}"`).join(','))
+        ...records.map((r: any) => headers.map(h => `"${r[h] || ''}"`).join(',')),
       ].join('\n');
 
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });

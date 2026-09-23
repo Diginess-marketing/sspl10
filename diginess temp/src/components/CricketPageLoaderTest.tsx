@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import CricketPageLoader from './CricketPageLoader';
-import { PerformanceMonitor, sendMetricsToAnalytics } from '../utils/performanceMonitoring';
+import { PerformanceMonitor } from '../utils/performanceMonitoring';
 
 const CricketPageLoaderTest: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);

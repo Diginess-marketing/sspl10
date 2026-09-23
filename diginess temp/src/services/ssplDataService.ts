@@ -1,11 +1,8 @@
-import { supabase } from '@/integrations/supabase/client';
 import type {
   SSPLTeam,
   SSPLPlayer,
   SSPLMatch,
-  SSPLStanding,
   SSPLNews,
-  SSPLTournament,
   SSPLApiResponse,
   ScrapingResult,
   DataFetchOptions,

@@ -105,7 +105,7 @@ const MobileLookupForm: React.FC<MobileLookupFormProps> = ({
               disabled={isLoading || isSubmitting}
               maxLength={10}
               aria-describedby={errors.mobile ? 'mobile-error' : undefined}
-              aria-invalid={!!errors.mobile}
+              aria-invalid={Boolean(errors.mobile)}
             />
 
             {errors.mobile && (

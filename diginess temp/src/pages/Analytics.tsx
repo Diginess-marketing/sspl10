@@ -166,7 +166,7 @@ export const AnalyticsPage: React.FC = () => {
           setRealtimeEvents(prev => prev + 1);
           // Refresh data without showing loading spinner
           fetchAnalyticsData(false);
-        }
+        },
       )
       .subscribe((status: string) => {
         console.log('utm_events subscription status:', status);
@@ -190,7 +190,7 @@ export const AnalyticsPage: React.FC = () => {
           setRealtimeEvents(prev => prev + 1);
           // Refresh data without showing loading spinner
           fetchAnalyticsData(false);
-        }
+        },
       )
       .subscribe((status: string) => {
         console.log('utm_payment_users subscription status:', status);

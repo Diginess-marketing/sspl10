@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BlogPost } from '@/data/blogs';
 import { Calendar, Clock, User, ArrowRight } from 'lucide-react';

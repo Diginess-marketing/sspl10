@@ -1,8 +1,7 @@
-import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
-  PieChart, Pie, Cell, LineChart, Line
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell,
 } from 'recharts';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -21,7 +20,7 @@ export const TrialsAnalyticsReport = () => {
           .select('payment_status, city, state, position, status, created_at, phone'),
         supabase
           .from('trial_progress')
-          .select('l1_result, l2_result, l3_result, l1_attendance, l2_attendance, l3_attendance, l1_called, l2_called, l3_called, final_status')
+          .select('l1_result, l2_result, l3_result, l1_attendance, l2_attendance, l3_attendance, l1_called, l2_called, l3_called, final_status'),
       ]);
 
       if (regsResponse.error) throw regsResponse.error;
@@ -29,9 +28,9 @@ export const TrialsAnalyticsReport = () => {
 
       return {
         dbPlayers: regsResponse.data,
-        trialProgress: progressResponse.data
+        trialProgress: progressResponse.data,
       };
-    }
+    },
   });
 
   const dbPlayers = analyticsData?.dbPlayers;
@@ -61,13 +60,13 @@ export const TrialsAnalyticsReport = () => {
 
   const totalTransactions = totalDb;
   const capturedTransactionsCount = dbPlayers?.filter(p => 
-    ['captured', 'completed', 'paid', 'success'].includes(p.payment_status?.toLowerCase() || '')
+    ['captured', 'completed', 'paid', 'success'].includes(p.payment_status?.toLowerCase() || ''),
   ).length || 0;
   const failedTransactionsCount = totalTransactions - capturedTransactionsCount;
 
   const totalUniquePlayers = Object.keys(playerGroups || {}).length;
   const capturedPlayersCount = Object.values(playerGroups || {}).filter((statuses: any) => 
-    statuses.some((s: string) => ['captured', 'completed', 'paid', 'success'].includes(s))
+    statuses.some((s: string) => ['captured', 'completed', 'paid', 'success'].includes(s)),
   ).length;
   const netFailedPlayers = totalUniquePlayers - capturedPlayersCount;
 

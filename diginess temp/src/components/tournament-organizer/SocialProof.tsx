@@ -1,10 +1,9 @@
-import React from 'react';
 
 const SocialProof = () => {
     const metrics = [
         { label: '10+ Cities', icon: '✔' },
         { label: '5000+ Players', icon: '✔' },
-        { label: '100+ Tournaments', icon: '✔' }
+        { label: '100+ Tournaments', icon: '✔' },
     ];
 
     return (

@@ -307,7 +307,7 @@ export function applyImagePriorityHints(): void {
     // Batch all reads first
     const imageData = Array.from(images).map(img => ({
       img,
-      isAboveFold: img.getBoundingClientRect().top < viewportHeight
+      isAboveFold: img.getBoundingClientRect().top < viewportHeight,
     }));
     
     // Then batch all writes

@@ -21,16 +21,16 @@ const CityTrialsPage = () => {
     // Mock data - replace with React Query fetch
     const cityData = {
         name: cityName,
-        venue: "To Be Announced",
-        date: "Upcoming",
-        status: "Open",
-        description: `Join the best tennis ball cricket talent in ${cityName}. Register now for SSPL T10 selection trials.`
+        venue: 'To Be Announced',
+        date: 'Upcoming',
+        status: 'Open',
+        description: `Join the best tennis ball cricket talent in ${cityName}. Register now for SSPL T10 selection trials.`,
     };
 
     const breadcrumbSchema = generateBreadcrumbSchema([
         { name: 'Home', item: '/' },
         { name: 'Trials', item: '/trials' },
-        { name: cityData.name, item: `/trials/${citySlug}` }
+        { name: cityData.name, item: `/trials/${citySlug}` },
     ]);
 
     if (!citySlug) return <CricketPageLoader />;
@@ -45,25 +45,25 @@ const CityTrialsPage = () => {
                 {/* Local Business / Event Schema */}
                 <script type="application/ld+json">
                     {JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "SportsEvent",
-                        "name": `SSPL T10 Cricket Selection Trial - ${cityData.name}`,
-                        "startDate": `${year}-01-01`,
-                        "eventStatus": "https://schema.org/EventScheduled",
-                        "location": {
-                            "@type": "Place",
-                            "name": cityData.venue,
-                            "address": {
-                                "@type": "PostalAddress",
-                                "addressLocality": cityData.name,
-                                "addressCountry": "IN"
-                            }
+                        '@context': 'https://schema.org',
+                        '@type': 'SportsEvent',
+                        'name': `SSPL T10 Cricket Selection Trial - ${cityData.name}`,
+                        'startDate': `${year}-01-01`,
+                        'eventStatus': 'https://schema.org/EventScheduled',
+                        'location': {
+                            '@type': 'Place',
+                            'name': cityData.venue,
+                            'address': {
+                                '@type': 'PostalAddress',
+                                'addressLocality': cityData.name,
+                                'addressCountry': 'IN',
+                            },
                         },
-                        "organizer": {
-                            "@type": "SportsOrganization",
-                            "name": "SSPL T10",
-                            "url": "https://ssplt10.co.in"
-                        }
+                        'organizer': {
+                            '@type': 'SportsOrganization',
+                            'name': 'SSPL T10',
+                            'url': 'https://ssplt10.co.in',
+                        },
                     })}
                 </script>
                 {/* Breadcrumb Schema */}

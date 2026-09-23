@@ -1,13 +1,10 @@
-import Header from '@/components/Header';
 import LeagueHighlightsSection from '@/components/LeagueHighlightsSection';
 import SSPLAnthemSection from '@/components/SSPLAnthemSection';
 import SSPLHighlightsSection from '@/components/SSPLHighlightsSection';
 import HeroSection from '@/components/HeroSection';
 import RegistrationSection from '@/components/RegistrationSection';
-import FooterSection from '@/components/FooterSection';
 import SocialMediaButtons from '@/components/SocialMediaButtons';
 import { useAuth } from '@/hooks/useAuth';
-import { ArrowRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { SSPLOnboarding } from '@/components/ui/enhanced-onboarding';
 

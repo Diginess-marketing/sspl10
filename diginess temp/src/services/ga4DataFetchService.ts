@@ -72,7 +72,7 @@ class GA4DataFetchService {
     try {
       // Call your backend API or Supabase Edge Function
       const { data, error } = await supabase.functions.invoke('ga4-realtime-metrics', {
-        body: { propertyId: this.propertyId }
+        body: { propertyId: this.propertyId },
       });
 
       if (error) {
@@ -95,8 +95,8 @@ class GA4DataFetchService {
       const { data, error } = await supabase.functions.invoke('ga4-utm-report', {
         body: {
           startDate,
-          endDate
-        }
+          endDate,
+        },
       });
 
       if (error) {
@@ -127,9 +127,9 @@ class GA4DataFetchService {
           startDate,
           endDate,
           filters: {
-            'customEvent:qr_code': 'yes'
-          }
-        }
+            'customEvent:qr_code': 'yes',
+          },
+        },
       });
 
       if (error) {
@@ -164,7 +164,7 @@ class GA4DataFetchService {
       return {
         supabase: supabaseData || [],
         ga4: ga4Data,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       };
     } catch (error) {
       console.error('Error in getDataComparison:', error);
@@ -185,7 +185,7 @@ class GA4DataFetchService {
       conversions: Math.floor(Math.random() * 100) + 50,
       totalRevenue: Math.floor(Math.random() * 50000) + 10000,
       averageSessionDuration: Math.floor(Math.random() * 300) + 120,
-      bounceRate: Math.random() * 0.5 + 0.2
+      bounceRate: Math.random() * 0.5 + 0.2,
     };
   }
 

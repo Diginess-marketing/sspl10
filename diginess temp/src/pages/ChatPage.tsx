@@ -26,7 +26,7 @@ const ChatPage = () => {
                     transition={{
                         duration: 8,
                         repeat: Infinity,
-                        ease: "easeInOut"
+                        ease: 'easeInOut',
                     }}
                     className="absolute top-1/4 -left-32 w-96 h-96 bg-sspl-orange/20 rounded-full blur-[100px]"
                 />
@@ -38,8 +38,8 @@ const ChatPage = () => {
                     transition={{
                         duration: 10,
                         repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 2
+                        ease: 'easeInOut',
+                        delay: 2,
                     }}
                     className="absolute bottom-1/4 -right-32 w-96 h-96 bg-sspl-indigo/20 rounded-full blur-[100px]"
                 />

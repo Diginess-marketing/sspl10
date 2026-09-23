@@ -4,7 +4,7 @@ import { MapPin, Calendar, ArrowUpRight, Plane, Train, Bus, CheckCircle2, Phone,
 
 const UpcomingTrialsCards: React.FC = () => {
   const handleShare = async () => {
-    const text = `SSPL T10 Chennai Trials on 18th July 2026 at Nexus Sports Arena. Register now at ssplt10.co.in`;
+    const text = 'SSPL T10 Chennai Trials on 18th July 2026 at Nexus Sports Arena. Register now at ssplt10.co.in';
     if (navigator.share) {
       try {
         await navigator.share({ title: 'SSPL T10 Chennai Trials', text, url: 'https://ssplt10.co.in/register' });
@@ -45,7 +45,7 @@ const UpcomingTrialsCards: React.FC = () => {
             initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
             className="text-center"
           >
             <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8 mb-10">
@@ -215,7 +215,7 @@ const UpcomingTrialsCards: React.FC = () => {
                         'Reach the venue at least 30–45 minutes before reporting time.',
                         'Wear appropriate cricket attire and sports shoes.',
                         'Bring your own bat, gloves, and personal gear if applicable.',
-                        'Keep a valid ID proof handy.'
+                        'Keep a valid ID proof handy.',
                       ].map((item, i) => (
                         <li key={i} className="flex items-start gap-3 !text-black font-medium text-sm">
                           <CheckCircle2 className="w-5 h-5 !text-green-600 flex-shrink-0" />

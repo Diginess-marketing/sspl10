@@ -1,9 +1,0 @@
-Searching 1566 players...
-Found match for 9491682365: Index 615
-{
-  "mobile": "9491682365",
-  "state": "",
-  "name": "NAGARAJU",
-  "proficiency": "RIGHT HAND BOWLER",
-  "status": "NOT SELECTED"
-}

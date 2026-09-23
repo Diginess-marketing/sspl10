@@ -7,7 +7,7 @@ interface BetterLuckNexttimeAnimationProps {
     levelText?: string;
 }
 
-const BetterLuckNexttimeAnimation: React.FC<BetterLuckNexttimeAnimationProps> = ({ embedded = false, levelText = "Level 2 Result" }) => {
+const BetterLuckNexttimeAnimation: React.FC<BetterLuckNexttimeAnimationProps> = ({ embedded = false, levelText = 'Level 2 Result' }) => {
     const navigate = useNavigate();
 
     return (

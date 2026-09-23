@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Navigate, useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import MarqueeRibbon from '@/components/MarqueeRibbon';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -65,7 +65,7 @@ const AuthPage = () => {
     const { error } = await signUp(signUpEmail, signUpPassword, {
       full_name: signUpFullName,
       mobile_number: signUpMobile,
-      referred_by: signUpReferral
+      referred_by: signUpReferral,
     });
     handleAuthError(error);
     setIsLoading(false);
@@ -103,9 +103,9 @@ const AuthPage = () => {
         setLoadingTimeout(true);
       }, 5000);
       return () => clearTimeout(timer);
-    } else {
+    } 
       setLoadingTimeout(false);
-    }
+    
   }, [loading, user, roleLoading]);
 
   if ((loading || (user && roleLoading)) && !loadingTimeout) {

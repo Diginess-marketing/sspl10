@@ -89,7 +89,7 @@ export { getImageUrl };
 
 async function strapiRequest<T>(
     endpoint: string,
-    params?: Record<string, string>
+    params?: Record<string, string>,
 ): Promise<T> {
     const url = new URL(`${API_BASE}${endpoint}`);
     if (params) {
@@ -109,7 +109,7 @@ async function strapiRequest<T>(
 
     if (!response.ok) {
         throw new Error(
-            `Strapi API error: ${response.status} ${response.statusText}`
+            `Strapi API error: ${response.status} ${response.statusText}`,
         );
     }
 
@@ -145,7 +145,7 @@ export async function fetchArticles(options?: {
  * Fetch a single article by slug.
  */
 export async function fetchArticleBySlug(
-    slug: string
+    slug: string,
 ): Promise<StrapiSingleResponse<StrapiArticle[]>> {
     return strapiRequest<StrapiSingleResponse<StrapiArticle[]>>('/articles', {
         'filters[slug][$eq]': slug,
@@ -157,7 +157,7 @@ export async function fetchArticleBySlug(
  * Fetch a page by slug.
  */
 export async function fetchPageBySlug(
-    slug: string
+    slug: string,
 ): Promise<StrapiSingleResponse<StrapiPage[]>> {
     return strapiRequest<StrapiSingleResponse<StrapiPage[]>>('/pages', {
         'filters[slug][$eq]': slug,

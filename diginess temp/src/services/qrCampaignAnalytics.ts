@@ -162,7 +162,7 @@ export class QRCampaignAnalytics {
       return {
         success: true,
         data: data as UnifiedTrackingReport[],
-        count: data?.length || 0
+        count: data?.length || 0,
       };
     } catch (error: any) {
       console.error('Error fetching unified report:', error);
@@ -170,7 +170,7 @@ export class QRCampaignAnalytics {
         success: false,
         data: [],
         count: 0,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -220,7 +220,7 @@ export class QRCampaignAnalytics {
       return {
         success: true,
         data: data as QRCodePerformance[],
-        count: data?.length || 0
+        count: data?.length || 0,
       };
     } catch (error: any) {
       console.error('Error fetching QR code performance:', error);
@@ -228,7 +228,7 @@ export class QRCampaignAnalytics {
         success: false,
         data: [],
         count: 0,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -281,7 +281,7 @@ export class QRCampaignAnalytics {
       return {
         success: true,
         data: data as CampaignWithQRMetrics[],
-        count: data?.length || 0
+        count: data?.length || 0,
       };
     } catch (error: any) {
       console.error('Error fetching campaign report:', error);
@@ -289,7 +289,7 @@ export class QRCampaignAnalytics {
         success: false,
         data: [],
         count: 0,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -332,11 +332,11 @@ export class QRCampaignAnalytics {
 
       // Calculate summary statistics
       const uniqueCampaigns = new Set(
-        unifiedData?.map((r: any) => r.utm_campaign).filter(Boolean)
+        unifiedData?.map((r: any) => r.utm_campaign).filter(Boolean),
       ).size;
       
       const uniqueQRCodes = new Set(
-        unifiedData?.map((r: any) => r.qr_code_id).filter(Boolean)
+        unifiedData?.map((r: any) => r.qr_code_id).filter(Boolean),
       ).size;
 
       const totalScans = qrData?.reduce((sum: number, qr: any) => sum + (qr.total_scans || 0), 0) || 0;
@@ -345,7 +345,7 @@ export class QRCampaignAnalytics {
       const totalRevenue = unifiedData?.reduce((sum: number, r: any) => sum + (r.total_revenue || 0), 0) || 0;
 
       const registrationsFromQR = unifiedData?.reduce(
-        (sum: number, r: any) => sum + (r.qr_code_id ? r.total_registrations : 0), 0
+        (sum: number, r: any) => sum + (r.qr_code_id ? r.total_registrations : 0), 0,
       ) || 0;
       
       const registrationsFromDirect = totalRegistrations - registrationsFromQR;
@@ -380,8 +380,8 @@ export class QRCampaignAnalytics {
           overall_scan_to_payment_rate: Math.round(overallScanToPaymentRate * 100) / 100,
           avg_revenue_per_paid_user: Math.round(avgRevenuePerPaidUser * 100) / 100,
           registrations_from_qr: registrationsFromQR,
-          registrations_from_direct: registrationsFromDirect
-        }
+          registrations_from_direct: registrationsFromDirect,
+        },
       };
     } catch (error: any) {
       console.error('Error fetching summary statistics:', error);
@@ -399,9 +399,9 @@ export class QRCampaignAnalytics {
           overall_scan_to_payment_rate: 0,
           avg_revenue_per_paid_user: 0,
           registrations_from_qr: 0,
-          registrations_from_direct: 0
+          registrations_from_direct: 0,
         },
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -417,7 +417,7 @@ export class QRCampaignAnalytics {
     return this.getQRCodePerformance({
       limit,
       sortBy: 'total_revenue',
-      sortOrder: 'desc'
+      sortOrder: 'desc',
     });
   }
 
@@ -432,7 +432,7 @@ export class QRCampaignAnalytics {
     return this.getCampaignReport({
       limit,
       sortBy: 'total_revenue',
-      sortOrder: 'desc'
+      sortOrder: 'desc',
     });
   }
 
@@ -459,7 +459,7 @@ export class QRCampaignAnalytics {
       if (error) throw error;
 
       const totalRegistrations = unifiedData?.reduce(
-        (sum: number, r: any) => sum + (r.total_registrations || 0), 0
+        (sum: number, r: any) => sum + (r.total_registrations || 0), 0,
       ) || 0;
 
       // Group by attribution source
@@ -481,7 +481,7 @@ export class QRCampaignAnalytics {
             source,
             registrations: 0,
             paid: 0,
-            revenue: 0
+            revenue: 0,
           };
         }
 
@@ -498,7 +498,7 @@ export class QRCampaignAnalytics {
           : 0,
         percentage_of_total: totalRegistrations > 0 
           ? Math.round((item.registrations / totalRegistrations) * 10000) / 100
-          : 0
+          : 0,
       }));
 
       // Sort by registrations descending
@@ -506,14 +506,14 @@ export class QRCampaignAnalytics {
 
       return {
         success: true,
-        data: results
+        data: results,
       };
     } catch (error: any) {
       console.error('Error fetching attribution breakdown:', error);
       return {
         success: false,
         data: [],
-        error: error.message
+        error: error.message,
       };
     }
   }

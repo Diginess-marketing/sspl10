@@ -10,34 +10,16 @@ import { googleAnalytics } from '@/utils/googleAnalytics';
 import { getUTMCampaign } from '@/utils/utm-tracking';
 import { useUTMTracking } from '@/hooks/useUTMTracking';
 import {
-  ArrowRight,
   User,
   Users,
   Building,
-  FileText,
-  Mail,
-  Phone,
-  Calendar,
   MapPin,
-  ChevronRight,
-  Trophy,
   History,
-  Briefcase,
-  Award,
-  ShieldCheck,
-  CheckCircle2,
-  Gamepad2,
-  CheckCircle,
   CreditCard,
-  Shield,
   Loader2,
-  AlertCircle
 } from 'lucide-react';
 import { getUTMData, storeUTMData } from '@/utils/utm';
 import { visitorLeadService } from '@/services/visitorLeadService';
-import { Card, CardContent } from '@/components/ui/card';
-import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/ui/enhanced-loading';
 import { getAllStatesAsync, getCitiesAndDistrictsForStateAsync } from '@/data/indiaLocationsLazy';
 
@@ -81,7 +63,7 @@ const PlayerRegistrationStepper = () => {
     playerCount: 0,
     state: '',
     cityDistrict: '',
-    players: []
+    players: [],
   });
 
   // const [currentStep, setCurrentStep] = useState(1); // Merged into single page
@@ -248,7 +230,7 @@ const PlayerRegistrationStepper = () => {
   useEffect(() => {
     googleAnalytics.trackRegistrationStart({
       player_email: formData.email || user?.email,
-      registration_type: registrationType
+      registration_type: registrationType,
     });
   }, [registrationType]);
 
@@ -293,7 +275,7 @@ const PlayerRegistrationStepper = () => {
               state: '',
               cityDistrict: '',
               position: '',
-              pincode: ''
+              pincode: '',
             });
           }
         } else {
@@ -381,14 +363,14 @@ const PlayerRegistrationStepper = () => {
         ...currentUTM,
         name: updatedData.full_name,
         email: updatedData.email,
-        phone: updatedData.phone
+        phone: updatedData.phone,
       });
 
       // 2. Sync to DB (Debounced)
       visitorLeadService.syncVisitorLead({
         full_name: updatedData.full_name,
         email: updatedData.email,
-        phone: updatedData.phone
+        phone: updatedData.phone,
       });
     }
   };
@@ -416,7 +398,7 @@ const PlayerRegistrationStepper = () => {
     if (!player.full_name || !player.email || !player.phone || !player.position) return false;
     if (player.phone.length !== 10) return false;
     return true;
-  }
+  };
 
   const validateForm = () => {
     const errors: { [key: string]: boolean } = {};
@@ -433,7 +415,7 @@ const PlayerRegistrationStepper = () => {
       if (!formData.position) { errors.position = true; isValid = false; }
       if (!formData.school_name.trim()) { errors.school_name = true; isValid = false; }
       if (!acceptTerms) {
-        toast({ title: "Notice", description: "Please accept terms & conditions to proceed", variant: "destructive" });
+        toast({ title: 'Notice', description: 'Please accept terms & conditions to proceed', variant: 'destructive' });
         isValid = false;
       }
     } else if (registrationType === 'team' || registrationType === 'students') {
@@ -448,9 +430,9 @@ const PlayerRegistrationStepper = () => {
         }
       });
       if (!isValid && teamDetails.players.some(p => !p.full_name || !p.email || !p.phone || !p.date_of_birth || !p.position)) {
-        toast({ title: "Incomplete Team", description: "Please fill all player names, emails, DOBs and details", variant: "destructive" });
+        toast({ title: 'Incomplete Team', description: 'Please fill all player names, emails, DOBs and details', variant: 'destructive' });
       } else if (!acceptTerms) {
-        toast({ title: "Notice", description: "Please accept terms & conditions", variant: "destructive" });
+        toast({ title: 'Notice', description: 'Please accept terms & conditions', variant: 'destructive' });
         isValid = false;
       }
     }
@@ -458,7 +440,7 @@ const PlayerRegistrationStepper = () => {
     setFieldErrors(errors);
     if (!isValid) {
       if (Object.keys(errors).length > 0) {
-        toast({ title: "Required Fields", description: "Please correct the highlighted fields", variant: "destructive" });
+        toast({ title: 'Required Fields', description: 'Please correct the highlighted fields', variant: 'destructive' });
       }
     }
     return isValid;
@@ -484,7 +466,7 @@ const PlayerRegistrationStepper = () => {
         registrationType, // Pass to preview
         teamName: teamDetails.teamName,
         teamMembers: teamDetails.players,
-        totalAmount: totalAmount
+        totalAmount,
       };
       setCreatedRegistration(simulatedRegistration);
       // Form submitted successfully
@@ -496,7 +478,7 @@ const PlayerRegistrationStepper = () => {
         player_position: formData.position,
         player_state: formData.state,
         player_city: formData.cityDistrict,
-        registration_type: registrationType
+        registration_type: registrationType,
       });
 
     } catch (error: any) {
@@ -533,7 +515,7 @@ const PlayerRegistrationStepper = () => {
           primary_contact_email: teamDetails.players[0].email,
           primary_contact_phone: teamDetails.players[0].phone,
           payment_amount: totalAmount,
-          payment_status: 'pending' // Initial status
+          payment_status: 'pending', // Initial status
         };
 
         console.log('Inserting Team record...', teamPayload);
@@ -544,7 +526,7 @@ const PlayerRegistrationStepper = () => {
           .single();
 
         if (teamError) {
-          throw new Error('Failed to create team record: ' + teamError.message);
+          throw new Error(`Failed to create team record: ${  teamError.message}`);
         }
 
         const teamId = (newTeam as any).id;
@@ -581,7 +563,7 @@ const PlayerRegistrationStepper = () => {
           .insert(playersPayload);
 
         if (playersError) {
-          throw new Error('Failed to save team players: ' + playersError.message);
+          throw new Error(`Failed to save team players: ${  playersError.message}`);
         }
 
         // Let's query the captain's ID we just inserted.
@@ -609,7 +591,7 @@ const PlayerRegistrationStepper = () => {
         const finalTeamAmountRupees = (singleTotal * multiplier) - discountAmount;
         const finalTeamAmountPaise = finalTeamAmountRupees * 100;
 
-        console.log(`Payment Calculation:`);
+        console.log('Payment Calculation:');
         console.log(`Base: ${baseFee}, GST: ${gstVal}, Single: ${singleTotal}`);
         console.log(`Multiplier (Player Count): ${multiplier}`);
         console.log(`Final Amount: ₹${finalTeamAmountRupees} (${finalTeamAmountPaise} paise)`);
@@ -628,7 +610,7 @@ const PlayerRegistrationStepper = () => {
 
         const { order: newOrder } = await razorpayService.createOrder({
           createRegistration: false,
-          registrationId: registrationId,
+          registrationId,
           full_name: paymentPayload.full_name,
           name: paymentPayload.full_name,
           email: paymentPayload.email,
@@ -649,14 +631,14 @@ const PlayerRegistrationStepper = () => {
             team_id: teamId, // Pass Team ID in notes for backend hooks
             is_team_payment: true,
             player_count: multiplier,
-            discount_amount: discountAmount
-          }
+            discount_amount: discountAmount,
+          },
         });
         order = newOrder; // Assign to outer scope variable
 
       } else {
         // ... EXISTING INDIVIDUAL LOGIC ...
-        let payload: any = {
+        const payload: any = {
           full_name: formData.full_name,
           email: formData.email,
           phone: formData.phone,
@@ -688,9 +670,9 @@ const PlayerRegistrationStepper = () => {
         if (regError) {
           console.error('Registration insert detailed error:', regError);
           toast({
-            title: "Registration Failed",
+            title: 'Registration Failed',
             description: `Error: ${regError.message || 'Unknown error'}. ${regError.details || ''} ${regError.hint || ''}`,
-            variant: "destructive"
+            variant: 'destructive',
           });
           throw new Error(regError.message || 'Failed to save registration details.');
         }
@@ -702,7 +684,7 @@ const PlayerRegistrationStepper = () => {
         // Backend validates amount. We only pass details.
         const { order: newOrder } = await razorpayService.createOrder({
           createRegistration: false, // Handled by frontend now
-          registrationId: registrationId, // Pass the ID we just created
+          registrationId, // Pass the ID we just created
           full_name: paymentPayload.full_name,
           name: paymentPayload.full_name, // Backend expects 'name' for notes
           email: paymentPayload.email,
@@ -721,8 +703,8 @@ const PlayerRegistrationStepper = () => {
           qr_code_id: qrCodeId,
           amount: totalAmount * 100, // IMPORTANT: Backend expects amount in paise if passed directly, or it recalculates. Need to send current totalAmount in Paise * 100. Wait, previous branch multiplied by 100. Let's make sure it matches Razorpay's format if the backend accepts it directly. Actually `totalAmount` is handled by Razorpay's handler but the API takes it. Wait, `totalAmount` is in Rupees. The order.amount will be whatever the server returns. Our backend logic takes `amount` (in paise).
           notes: {
-            discount_amount: discountAmount
-          }
+            discount_amount: discountAmount,
+          },
         });
         order = newOrder; // Assign to outer scope variable
       }
@@ -749,7 +731,7 @@ const PlayerRegistrationStepper = () => {
               event: '*',
               schema: 'public',
               table: 'razorpay_ledger',
-              filter: `order_id=eq.${order.id}`
+              filter: `order_id=eq.${order.id}`,
             },
             (payload) => {
               console.log('Payment update received:', payload);
@@ -760,13 +742,13 @@ const PlayerRegistrationStepper = () => {
                   paymentId: newRecord.payment_id,
                   amount: newRecord.amount,
                   date: new Date().toLocaleDateString(),
-                  registrationId: registrationId
+                  registrationId,
                 });
                 setShowSuccessModal(true);
                 setRazorpayModalOpen(false);
                 supabase.removeChannel(channel);
               }
-            }
+            },
           )
           .subscribe();
       }
@@ -803,7 +785,7 @@ const PlayerRegistrationStepper = () => {
               response.razorpay_payment_id,
               response.razorpay_order_id,
               response.razorpay_signature,
-              registrationId // Pass registrationId returned by createOrder
+              registrationId, // Pass registrationId returned by createOrder
             );
 
             // 4. Show Success immediately (Client-side fallback/primary)
@@ -811,7 +793,7 @@ const PlayerRegistrationStepper = () => {
               paymentId: response.razorpay_payment_id,
               amount: order.amount / 100,
               date: new Date().toLocaleDateString(),
-              registrationId: registrationId,
+              registrationId,
             });
             setShowSuccessModal(true);
 
@@ -829,7 +811,7 @@ const PlayerRegistrationStepper = () => {
               paymentId: response.razorpay_payment_id,
               amount: order.amount / 100,
               date: new Date().toLocaleDateString(),
-              registrationId: registrationId,
+              registrationId,
             });
             setShowSuccessModal(true);
           }
@@ -1144,7 +1126,7 @@ const PlayerRegistrationStepper = () => {
                           value={teamDetails.playerCount || ''}
                           onChange={handleTeamDetailsChange}
                           className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.playerCount ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
-                          placeholder={registrationType === 'students' ? "Ex: 1" : "Ex: 11"}
+                          placeholder={registrationType === 'students' ? 'Ex: 1' : 'Ex: 11'}
                         />
                       </div>
                     </div>

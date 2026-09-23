@@ -1,4 +1,3 @@
-import React from 'react';
 import * as XLSX from 'xlsx';
 
 interface Player {
@@ -27,7 +26,7 @@ export default function DrillDownModal({ isOpen, onClose, title, players, loadin
     const handleDownloadExcel = () => {
         const worksheet = XLSX.utils.json_to_sheet(players);
         const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Players");
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Players');
         XLSX.writeFile(workbook, `${title.replace(/\s+/g, '_')}_List.xlsx`);
     };
 

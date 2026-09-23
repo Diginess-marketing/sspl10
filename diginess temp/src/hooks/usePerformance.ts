@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useState, useCallback } from 'react';
-import type { PerformanceMetrics, WebVitals } from '../utils/performanceMonitoring';
+import type { PerformanceMetrics } from '../utils/performanceMonitoring';
 import type { NetworkInfo } from '../utils/networkAdaptive';
 
 /**

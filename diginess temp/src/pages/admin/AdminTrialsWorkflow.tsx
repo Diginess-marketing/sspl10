@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, UserCheck, CalendarCheck, BarChart3, UploadCloud, FileText } from 'lucide-react';
 import { RegistrationWorkflowTab, TrialsSectionTab, TrialsAllocatedTab } from '@/components/admin/workflow';
@@ -13,7 +12,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
 const AdminTrialsWorkflow = () => {
     const [activeTab, setActiveTab] = useState('analytics');

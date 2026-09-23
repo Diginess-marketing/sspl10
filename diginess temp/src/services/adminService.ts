@@ -41,7 +41,7 @@ export const adminService = {
             const from = (page - 1) * limit;
             const to = from + limit - 1;
 
-            let query = (supabase as any)
+            const query = (supabase as any)
                 .from('user_roles')
                 .select(`
           user_id,
@@ -84,14 +84,14 @@ export const adminService = {
 
     async updateUserRole(userId: string, newRole: string, permissions: string[] = []) {
         // Cast to any to bypass strict enum typing if the DB type is restricted
-        const roleValue = newRole as "admin" | "user";
+        const roleValue = newRole as 'admin' | 'user';
 
         const { error } = await supabase
             .from('user_roles')
             .upsert({
                 user_id: userId,
                 role: roleValue,
-                permissions: permissions
+                permissions,
             });
 
         if (error) throw error;
@@ -106,7 +106,7 @@ export const adminService = {
                 email,
                 role,
                 permissions,
-                status: 'pending'
+                status: 'pending',
             });
 
         if (error) throw error;
@@ -195,12 +195,12 @@ export const adminService = {
             .from('admin_settings')
             .upsert(
                 { config_key: key, content, updated_at: new Date().toISOString() },
-                { onConflict: 'config_key' }
+                { onConflict: 'config_key' },
             )
             .select()
             .single();
 
         if (error) throw error;
         return data;
-    }
+    },
 };

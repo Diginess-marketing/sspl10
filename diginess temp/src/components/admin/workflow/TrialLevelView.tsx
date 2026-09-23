@@ -2,19 +2,15 @@ import { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   Phone, 
   MapPin, 
-  CheckCircle, 
-  XCircle, 
-  Clock, 
   RefreshCw,
   Search,
   Filter,
-  Download
+  Download,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
@@ -151,12 +147,12 @@ export const TrialLevelView = ({ level, onRefresh }: TrialLevelViewProps) => {
       p.city || '',
       getCalledStatus(p) ? 'Yes' : 'No',
       getAttendanceStatus(p),
-      getResultStatus(p)
+      getResultStatus(p),
     ]);
 
     const csvContent = [
       headers.join(','),
-      ...rows.map(r => r.map(cell => `"${cell}"`).join(','))
+      ...rows.map(r => r.map(cell => `"${cell}"`).join(',')),
     ].join('\n');
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });

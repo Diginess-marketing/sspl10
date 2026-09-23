@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Phone, MessageCircle, Sparkles, Trophy, Zap, Star, Heart, X, MapPin, Clock, Calendar } from 'lucide-react';
+import { Phone, MessageCircle, Sparkles, Trophy, Star, Heart, X, MapPin } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 interface GullyToGloryAnnouncementProps {

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Card,
     CardContent,
@@ -8,8 +7,7 @@ import {
     Chip,
     Button,
     Stack,
-    alpha,
-    useTheme
+    useTheme,
 } from '@mui/material';
 import { Calendar, Clock, ArrowRight, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -38,8 +36,8 @@ export const ArticleCard = ({ article, featured = false }: ArticleCardProps) => 
                     },
                     '& .article-image': {
                         transform: 'scale(1.05)',
-                    }
-                }
+                    },
+                },
             }}
         >
             <Box sx={{ position: 'relative', overflow: 'hidden', height: featured ? 320 : 220 }}>
@@ -52,7 +50,7 @@ export const ArticleCard = ({ article, featured = false }: ArticleCardProps) => 
                         height: '100%',
                         width: '100%',
                         objectFit: 'cover',
-                        transition: 'transform 0.5s ease'
+                        transition: 'transform 0.5s ease',
                     }}
                 />
                 {/* Category Badge */}
@@ -69,7 +67,7 @@ export const ArticleCard = ({ article, featured = false }: ArticleCardProps) => 
                         textTransform: 'uppercase',
                         letterSpacing: '0.05em',
                         borderRadius: 0,
-                        borderBottomRightRadius: 8
+                        borderBottomRightRadius: 8,
                     }}
                 />
 
@@ -84,7 +82,7 @@ export const ArticleCard = ({ article, featured = false }: ArticleCardProps) => 
                             top: 16,
                             right: 16,
                             fontWeight: 'bold',
-                            textTransform: 'uppercase'
+                            textTransform: 'uppercase',
                         }}
                     />
                 )}
@@ -112,7 +110,7 @@ export const ArticleCard = ({ article, featured = false }: ArticleCardProps) => 
                         lineHeight: 1.2,
                         transition: 'color 0.2s ease',
                         fontFamily: featured ? 'heading' : 'subheading',
-                        textTransform: featured ? 'uppercase' : 'none'
+                        textTransform: featured ? 'uppercase' : 'none',
                     }}
                 >
                     {article.title}
@@ -127,7 +125,7 @@ export const ArticleCard = ({ article, featured = false }: ArticleCardProps) => 
                         WebkitLineClamp: featured ? 4 : 3,
                         WebkitBoxOrient: 'vertical',
                         overflow: 'hidden',
-                        flexGrow: 1
+                        flexGrow: 1,
                     }}
                 >
                     {article.excerpt}
@@ -149,7 +147,7 @@ export const ArticleCard = ({ article, featured = false }: ArticleCardProps) => 
                             color: 'brand.primary.main',
                             '&:hover': { bgcolor: 'transparent', color: 'brand.accent.main' },
                             p: 0,
-                            minWidth: 'auto'
+                            minWidth: 'auto',
                         }}
                         disableRipple
                     >

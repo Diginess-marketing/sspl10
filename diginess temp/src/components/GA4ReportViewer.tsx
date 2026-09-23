@@ -23,7 +23,7 @@ const GA4ReportViewer: React.FC = () => {
     try {
       const response = await ga4DataFetchService.getUTMCampaignReport(
         dateRange.start,
-        dateRange.end
+        dateRange.end,
       );
 
       const data = response.data || [];
@@ -49,7 +49,7 @@ const GA4ReportViewer: React.FC = () => {
         totalConversions: acc.totalConversions + (report.conversions || 0),
         totalRevenue: acc.totalRevenue + (report.revenue || 0),
       }),
-      { totalUsers: 0, totalSessions: 0, totalConversions: 0, totalRevenue: 0 }
+      { totalUsers: 0, totalSessions: 0, totalConversions: 0, totalRevenue: 0 },
     );
   };
 

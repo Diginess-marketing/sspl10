@@ -1,12 +1,9 @@
 import { useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import PlayerRegistrationForm from '@/components/PlayerRegistrationForm';
 import SEO from '@/components/SEO';
-import { ArrowLeft, Home } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { googleAnalyticsService } from '@/services/googleAnalyticsService';
-import SSPLWordmark from '@/components/SSPLWordmark';
 import { useUTMTracking } from '@/hooks/useUTMTracking';
 
 const Register = () => {

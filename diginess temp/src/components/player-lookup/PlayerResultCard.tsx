@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Phone, CheckCircle2, XCircle, Download, Ticket, Trophy } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Phone, Download, Ticket, Trophy } from 'lucide-react';
 import type { PlayerResult } from '@/types/playerData'; // Make sure this path is correct
 import { generateAndDownloadCertificate, generateAndDownloadAchievementCertificate } from '@/utils/certificateGenerator';
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from '@/hooks/use-toast';
 import DoubleEagleTicketAnimation from '../animations/GoldenTicketAnimation';
 import KohinoorTicketAnimation from '../animations/KohinoorTicketAnimation';
 import PlatinumTicketAnimation from '../animations/PlatinumTicketAnimation';
@@ -119,7 +119,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                   {/* Level 1 Status */}
                   {player.status && (
                     <Badge
-                      variant={level1Selected ? "default" : "secondary"}
+                      variant={level1Selected ? 'default' : 'secondary'}
                       className={`px-3 py-1 text-xs font-bold tracking-wider uppercase shadow-sm ${level1Selected
                         ? 'bg-[#001B69] text-white hover:bg-[#001B69]/90 border border-[#001B69]'
                         : player.status?.toUpperCase() === 'ABSENT'
@@ -143,7 +143,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                     const isL2Pending = isL1Pending || (!level1Selected && !isL2NotSelected && !isL2Absent && !isL2Blank) || player.level2Data?.status === 'PENDING';
                     return (
                       <Badge
-                        variant={level2Selected && !isL1Pending ? "default" : "secondary"}
+                        variant={level2Selected && !isL1Pending ? 'default' : 'secondary'}
                         className={`px-3 py-1 text-xs font-bold tracking-wider uppercase shadow-sm ${level2Selected && !isL1Pending
                           ? 'bg-[#001B69] text-white hover:bg-[#001B69]/90 border border-[#001B69]'
                           : isL2Absent
@@ -171,7 +171,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                     const isL3NotSelected = !isL3Blank && !isL3Absent && !isL1Pending && !isL2Pending && (!level1Selected || !level2Selected || player.level3Data?.status === 'NOT_SELECTED' || player.level3Data?.status === 'NOT SELECTED' || player.level3Data?.status === 'REJECTED');
                     return (
                       <Badge
-                        variant={level3Selected && !isL1Pending && !isL2Pending ? "default" : "secondary"}
+                        variant={level3Selected && !isL1Pending && !isL2Pending ? 'default' : 'secondary'}
                         className={`px-3 py-1 text-xs font-bold tracking-wider uppercase shadow-sm ${level3Selected && !isL1Pending && !isL2Pending
                           ? 'bg-green-600 text-white hover:bg-green-700 border border-green-700'
                           : isL3Absent
@@ -204,7 +204,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
 
                     return (
                       <Badge
-                        variant={level4Selected && !isL1Pending && !isL2Pending && !isL3Pending ? "default" : "secondary"}
+                        variant={level4Selected && !isL1Pending && !isL2Pending && !isL3Pending ? 'default' : 'secondary'}
                         className={`px-3 py-1 text-xs font-bold tracking-wider uppercase shadow-sm ${level4Selected && !isL1Pending && !isL2Pending && !isL3Pending
                           ? 'bg-purple-600 text-white hover:bg-purple-700 border border-purple-700'
                           : isL4Absent
@@ -239,7 +239,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
 
                     return (
                       <Badge
-                        variant={level5Selected && !isL1Pending && !isL2Pending && !isL3Pending && !isL4Pending ? "default" : "secondary"}
+                        variant={level5Selected && !isL1Pending && !isL2Pending && !isL3Pending && !isL4Pending ? 'default' : 'secondary'}
                         className={`px-3 py-1 text-xs font-bold tracking-wider uppercase shadow-sm ${level5Selected && !isL1Pending && !isL2Pending && !isL3Pending && !isL4Pending
                           ? 'bg-[#CCFF00] text-black hover:bg-[#CCFF00]/90 border border-[#CCFF00]'
                           : isL5Absent
@@ -285,7 +285,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                       size="sm"
                       className="w-full border-blue-600 text-blue-700 bg-white hover:bg-blue-50 font-bold shadow-sm"
                       style={{ backgroundColor: '#ffffff', color: '#1d4ed8' }}
-                      onClick={() => handleDownloadCertificate("participation", `${player.name} - Level 1`)}
+                      onClick={() => handleDownloadCertificate('participation', `${player.name} - Level 1`)}
                       disabled={isGeneratingCertificate}
                     >
                       <Download className="w-4 h-4 mr-2" />
@@ -308,7 +308,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                       // L2 ACHIEVEMENT CERT - text is white on blue.
                       // L3 PARTICIPATION CERT - text is dark gray on white border (empty). This is the one that's unreadable.
                       
-                      onClick={() => handleDownloadCertificate("achievement", `${player.name} - Double Eagle`)}
+                      onClick={() => handleDownloadCertificate('achievement', `${player.name} - Double Eagle`)}
                       disabled={isGeneratingCertificate}
                     >
                       <Download className="w-4 h-4 mr-2" />
@@ -325,7 +325,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                           variant="default"
                           size="sm"
                           className="w-full bg-linear-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold shadow-sm"
-                          onClick={() => handleDownloadCertificate("achievement", `${player.name} - Kohinoor`)}
+                          onClick={() => handleDownloadCertificate('achievement', `${player.name} - Kohinoor`)}
                           disabled={isGeneratingCertificate}
                         >
                           <Download className="w-4 h-4 mr-2" />
@@ -339,7 +339,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                           size="sm"
                           className="w-full border-cyan-600 text-cyan-900 bg-white hover:bg-cyan-50 font-bold shadow-sm"
                           style={{ backgroundColor: '#ffffff', color: '#164e63' }}
-                          onClick={() => handleDownloadCertificate("participation", `${player.name} - Level 2`)}
+                          onClick={() => handleDownloadCertificate('participation', `${player.name} - Level 2`)}
                           disabled={isGeneratingCertificate}
                         >
                           <Download className="w-4 h-4 mr-2" />
@@ -358,7 +358,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                           variant="default"
                           size="sm"
                           className="w-full bg-linear-to-r from-slate-500 to-gray-600 hover:from-slate-600 hover:to-gray-700 text-white font-bold shadow-sm"
-                          onClick={() => handleDownloadCertificate("achievement", `${player.name} - Player Platinum`)}
+                          onClick={() => handleDownloadCertificate('achievement', `${player.name} - Player Platinum`)}
                           disabled={isGeneratingCertificate}
                         >
                           <Download className="w-4 h-4 mr-2" />
@@ -370,7 +370,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                           size="sm"
                           className="w-full border-slate-400 text-slate-900 bg-white hover:bg-slate-50 shadow-sm font-bold"
                           style={{ backgroundColor: '#ffffff', color: '#0f172a' }}
-                          onClick={() => handleDownloadCertificate("participation", `${player.name} - Level 3`)}
+                          onClick={() => handleDownloadCertificate('participation', `${player.name} - Level 3`)}
                           disabled={isGeneratingCertificate}
                         >
                           <Download className="w-4 h-4 mr-2" />
@@ -386,7 +386,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                       variant="default"
                       size="sm"
                       className="w-full bg-linear-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-bold shadow-sm"
-                      onClick={() => handleDownloadCertificate("achievement", `${player.name} - Player Paladin`)}
+                      onClick={() => handleDownloadCertificate('achievement', `${player.name} - Player Paladin`)}
                       disabled={isGeneratingCertificate}
                     >
                       <Download className="w-4 h-4 mr-2" />
@@ -400,7 +400,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                       variant="default"
                       size="sm"
                       className="w-full bg-linear-to-r from-[#CCFF00] to-yellow-400 hover:from-[#b3e600] hover:to-yellow-500 text-black font-bold shadow-sm"
-                      onClick={() => handleDownloadCertificate("achievement", `${player.name} - Player Titan`)}
+                      onClick={() => handleDownloadCertificate('achievement', `${player.name} - Player Titan`)}
                       disabled={isGeneratingCertificate}
                     >
                       <Download className="w-4 h-4 mr-2" />
@@ -416,9 +416,9 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
             {/* Mini Tickets Preview Section */}
             {(level1Selected || level2Selected || level3Selected || level4Selected || level5Selected) && (
               <div className="mt-8 pt-6 border-t border-gray-100">
-                <div className={`flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap`}>
+                <div className={'flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap'}>
                   {level1Selected && (
-                    <div className={`flex flex-col items-center w-full max-w-[360px]`}>
+                    <div className={'flex flex-col items-center w-full max-w-[360px]'}>
                       <div className="w-full transform transition-transform hover:scale-105 origin-top">
                         <div className="text-center mb-2">
                           <span className="text-[10px] font-bold text-yellow-600 uppercase tracking-widest bg-yellow-50 px-2 py-1 rounded-full border border-yellow-200">
@@ -440,7 +440,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                   )}
 
                   {level2Selected && (
-                    <div className={`flex flex-col items-center w-full max-w-[360px]`}>
+                    <div className={'flex flex-col items-center w-full max-w-[360px]'}>
                       <div className="w-full transform transition-transform hover:scale-105 origin-top">
                         <div className="text-center mb-2">
                           <span className="text-[10px] font-bold text-cyan-600 uppercase tracking-widest bg-cyan-50 px-2 py-1 rounded-full border border-cyan-200">
@@ -462,7 +462,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                   )}
 
                   {level3Selected && (
-                    <div className={`flex flex-col items-center w-full max-w-[360px]`}>
+                    <div className={'flex flex-col items-center w-full max-w-[360px]'}>
                       <div className="w-full transform transition-transform hover:scale-105 origin-top">
                         <div className="text-center mb-2">
                           <span className="text-[10px] font-bold text-white uppercase tracking-widest bg-green-600 px-2 py-1 rounded-full border border-green-700 shadow-sm transition-colors hover:bg-green-700">
@@ -484,7 +484,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                   )}
 
                   {level4Selected && (
-                    <div className={`flex flex-col items-center w-full max-w-[360px]`}>
+                    <div className={'flex flex-col items-center w-full max-w-[360px]'}>
                       <div className="w-full transform transition-transform hover:scale-105 origin-top">
                         <div className="text-center mb-2">
                           <span className="text-[10px] font-bold text-white uppercase tracking-widest bg-purple-600 px-2 py-1 rounded-full border border-purple-700 shadow-sm transition-colors hover:bg-purple-700">
@@ -506,7 +506,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                   )}
 
                   {level5Selected && (
-                    <div className={`flex flex-col items-center w-full max-w-[360px]`}>
+                    <div className={'flex flex-col items-center w-full max-w-[360px]'}>
                       <div className="w-full transform transition-transform hover:scale-105 origin-top">
                         <div className="text-center mb-2">
                           <span className="text-[10px] font-bold text-black uppercase tracking-widest bg-[#CCFF00] px-2 py-1 rounded-full border border-[#b3e600] shadow-sm transition-colors hover:bg-[#b3e600]">
@@ -543,7 +543,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({ player, className, 
                   )}
 
                   {level1Selected && level2Selected && level3Declared && !level3Selected && (
-                    <div className={`flex flex-col items-center w-full max-w-[360px]`}>
+                    <div className={'flex flex-col items-center w-full max-w-[360px]'}>
                       <div className="w-full transform transition-transform hover:scale-105 origin-top">
                         <div className="text-center mb-2">
                           <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest bg-slate-100 px-2 py-1 rounded-full border border-slate-200 shadow-sm transition-colors hover:bg-slate-50">

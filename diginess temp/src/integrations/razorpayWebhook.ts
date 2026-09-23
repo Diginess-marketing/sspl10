@@ -41,7 +41,7 @@ interface WebhookVerificationResult {
 export function verifyWebhookSignature(
   body: string,
   signature: string,
-  webhookSecret: string
+  webhookSecret: string,
 ): WebhookVerificationResult {
   try {
     if (!webhookSecret) {
@@ -67,7 +67,7 @@ export function verifyWebhookSignature(
     // Compare signatures (constant-time comparison to prevent timing attacks)
     const isValid = crypto.timingSafeEqual(
       Buffer.from(signature),
-      Buffer.from(expectedSignature)
+      Buffer.from(expectedSignature),
     );
 
     return { valid: isValid };
@@ -251,7 +251,7 @@ async function handleOrderPaid(payload: RazorpayWebhookPayload): Promise<void> {
  * Main entry point for webhook handling
  */
 export async function processRazorpayWebhook(
-  payload: RazorpayWebhookPayload
+  payload: RazorpayWebhookPayload,
 ): Promise<{
   success: boolean;
   message: string;
@@ -298,7 +298,7 @@ export async function processRazorpayWebhook(
  * For idempotency - track which webhooks we've already processed
  */
 export async function getWebhookEventStatus(
-  eventId: string
+  eventId: string,
 ): Promise<{
   processed: boolean;
   processedAt?: string;
@@ -339,7 +339,7 @@ export async function getWebhookEventStatus(
 export async function recordWebhookEvent(
   eventId: string,
   eventType: string,
-  result: any
+  result: any,
 ): Promise<void> {
   try {
     const insertResult = await (supabase

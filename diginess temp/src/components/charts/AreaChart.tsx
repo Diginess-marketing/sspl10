@@ -32,7 +32,7 @@ const AreaChart: React.FC<AreaChartProps> = ({
 
   // Create points for the area
   const points = data.length < 2 
-    ? (data.length === 1 ? `0,${100 - ((data[0].value - minValue) / range) * 100} 100,${100 - ((data[0].value - minValue) / range) * 100}` : "0,100 100,100")
+    ? (data.length === 1 ? `0,${100 - ((data[0].value - minValue) / range) * 100} 100,${100 - ((data[0].value - minValue) / range) * 100}` : '0,100 100,100')
     : data.map((item, index) => {
         const x = (index / (data.length - 1)) * 100;
         const y = 100 - ((item.value - minValue) / range) * 100;

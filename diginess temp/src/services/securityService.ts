@@ -1,4 +1,3 @@
-import { supabase } from '@/integrations/supabase/client';
 
 export interface SecurityEvent {
   type: 'qr_access' | 'admin_action' | 'suspicious_activity';

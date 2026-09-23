@@ -20,7 +20,7 @@ import {
   ClipboardCheck,
   Edit,
   AlertCircle,
-  Clock
+  Clock,
 } from 'lucide-react';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
 import { useAuth } from '@/hooks/useAuth';
@@ -51,7 +51,7 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
     getTrialsAllocatedPlayers, 
     markAttendance,
     updateTrialResults,
-    error 
+    error, 
   } = usePlayerWorkflow();
 
   const loadPlayers = useCallback(async () => {
@@ -69,7 +69,7 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
           'waitlisted': 3,
           'not_selected': 4,
           'REJECTED': 4,
-          'NOT_SELECTED': 4
+          'NOT_SELECTED': 4,
         };
         const pA = resPriority[a.selection_status || 'pending'] || 2;
         const pB = resPriority[b.selection_status || 'pending'] || 2;
@@ -82,7 +82,7 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
           'pending': 2, 
           'PENDING': 2,
           'absent': 3,
-          'ABSENT': 3
+          'ABSENT': 3,
         };
         const aA = attPriority[a.attendance_status || 'pending'] || 2;
         const aB = attPriority[b.attendance_status || 'pending'] || 2;
@@ -145,7 +145,7 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
         selectionStatus,
         remarks || undefined,
         evaluatorNotes || undefined,
-        user?.id
+        user?.id,
       );
 
       if (success) {

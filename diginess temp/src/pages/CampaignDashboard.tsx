@@ -8,8 +8,7 @@ import {
   getCampaignAnalytics, 
   getCampaignSummary,
   getUnifiedCampaignAnalytics,
-  compareLocalVsGA4Data,
-  getGA4SyncStatus
+  getGA4SyncStatus,
 } from '@/utils/campaign-analytics';
 import { 
   TrendingUp, 
@@ -21,8 +20,6 @@ import {
   RefreshCw,
   AlertCircle,
   CheckCircle,
-  ArrowUpRight,
-  ArrowDownRight
 } from 'lucide-react';
 import SEO from '@/components/SEO';
 
@@ -105,7 +102,7 @@ const CampaignDashboard = () => {
       // Load local data
       const [campaignsResult, summaryResult] = await Promise.all([
         getCampaignAnalytics(),
-        getCampaignSummary()
+        getCampaignSummary(),
       ]);
       
       if (campaignsResult.success) {
@@ -120,7 +117,7 @@ const CampaignDashboard = () => {
       try {
         const [unifiedResult, syncStatusResult] = await Promise.all([
           getUnifiedCampaignAnalytics({ limit: 50 }),
-          getGA4SyncStatus()
+          getGA4SyncStatus(),
         ]);
 
         if (unifiedResult.success && unifiedResult.data.length > 0) {
@@ -303,7 +300,7 @@ const CampaignDashboard = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue={hasGA4Data ? "unified" : "local"} className="w-full">
+              <Tabs defaultValue={hasGA4Data ? 'unified' : 'local'} className="w-full">
                 <TabsList className="grid w-full grid-cols-2 mb-6">
                   <TabsTrigger value="local" className="flex items-center gap-2">
                     <Target className="w-4 h-4" />

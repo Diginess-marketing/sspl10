@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router-dom';
 import TournamentOrganizerRegistration from '@/components/TournamentOrganizerRegistration';
 import SEO from '@/components/SEO';
 import { Trophy, Gift } from 'lucide-react';

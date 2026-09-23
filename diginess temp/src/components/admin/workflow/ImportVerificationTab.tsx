@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow, 
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { 
   Search, CheckCircle2, AlertCircle, RefreshCw, 
-  ArrowRight, Download, FileSpreadsheet, Loader2 
+  ArrowRight, FileSpreadsheet, Loader2, 
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -63,14 +63,14 @@ export const ImportVerificationTab = () => {
         return { 
           ...r, 
           dbStatus: isConflict ? 'conflict' as const : 'duplicate' as const,
-          existingData: dbRecord
+          existingData: dbRecord,
         };
       });
 
       setRecords(updatedRecords);
       toast.success('Database status check completed');
     } catch (err: any) {
-      toast.error('Failed to check database status: ' + err.message);
+      toast.error(`Failed to check database status: ${  err.message}`);
     } finally {
       setIsChecking(false);
     }
@@ -93,7 +93,7 @@ export const ImportVerificationTab = () => {
         const { data: reg, error: regErr } = await supabase
           .from('player_registrations')
           .insert({
-            full_name, phone, email, date_of_birth, city, state, position, payment_status, status
+            full_name, phone, email, date_of_birth, city, state, position, payment_status, status,
           })
           .select()
           .single();
@@ -113,7 +113,7 @@ export const ImportVerificationTab = () => {
             state,
             city,
             payment_status,
-            workflow_stage: status === 'absentee' ? 'absentee' : 'registered'
+            workflow_stage: status === 'absentee' ? 'absentee' : 'registered',
           });
 
         successCount++;
@@ -123,7 +123,7 @@ export const ImportVerificationTab = () => {
       // Refresh status
       await checkStatus();
     } catch (err: any) {
-      toast.error('Sync failed: ' + err.message);
+      toast.error(`Sync failed: ${  err.message}`);
     } finally {
       setIsSyncing(false);
     }
@@ -132,7 +132,7 @@ export const ImportVerificationTab = () => {
   const filteredRecords = records.filter(r => 
     r.full_name.toLowerCase().includes(searchTerm.toLowerCase()) || 
     r.phone.includes(searchTerm) ||
-    r.import_batch.toLowerCase().includes(searchTerm.toLowerCase())
+    r.import_batch.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const toggleSelect = (phone: string) => {

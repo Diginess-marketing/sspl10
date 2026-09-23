@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Search, Users, Trophy, Download, RotateCcw, ArrowLeft, Sparkles, User } from 'lucide-react';
+import { Search, Users, Trophy, RotateCcw, ArrowLeft, Sparkles, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PlayerSearchForm from './PlayerSearchForm';
 import PlayerResultCard from './PlayerResultCard';
@@ -15,14 +15,11 @@ import {
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
-  SelectValue 
+  SelectValue, 
 } from '@/components/ui/select';
 import { usePlayerResultLookup } from '@/hooks/usePlayerResultLookup';
 import type { PlayerResult } from '@/types/playerData';
-import { LEVEL_3_DATA } from '@/data/level3Data';
-import CelebrationAnimation from '../animations/CelebrationAnimation';
 import DoubleEagleTicketAnimation from '../animations/GoldenTicketAnimation';
-import KohinoorTicketAnimation from '../animations/KohinoorTicketAnimation';
 import PlatinumTicketAnimation from '../animations/PlatinumTicketAnimation';
 import CombinedTicketAnimation from '../animations/CombinedTicketAnimation';
 import TripleTicketAnimation from '../animations/TripleTicketAnimation';
@@ -323,7 +320,7 @@ const PlayerResultLookup: React.FC = () => {
                   Select Player Name
                 </label>
                 <Select
-                  value={selectedPlayerId || ""}
+                  value={selectedPlayerId || ''}
                   onValueChange={(value) => setSelectedPlayerId(value)}
                 >
                   <SelectTrigger className="w-full bg-slate-800 border-slate-700 text-white h-12 text-lg font-medium ring-offset-slate-900 focus:ring-orange-500">
@@ -351,7 +348,7 @@ const PlayerResultLookup: React.FC = () => {
             </div>
             <div className="w-48">
               <Select
-                value={selectedPlayerId || ""}
+                value={selectedPlayerId || ''}
                 onValueChange={(value) => setSelectedPlayerId(value)}
               >
                 <SelectTrigger className="h-8 bg-transparent border-0 text-white text-sm font-medium focus:ring-0">

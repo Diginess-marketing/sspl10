@@ -187,7 +187,7 @@ export async function syncPaymentStatus(paymentId: string, orderId: string): Pro
         currentStatus: newStatus,
         message: statusMessage,
       };
-    } else {
+    } 
       console.log('Status unchanged:', previousStatus);
       return {
         synced: false,
@@ -195,7 +195,7 @@ export async function syncPaymentStatus(paymentId: string, orderId: string): Pro
         currentStatus: newStatus,
         message: 'Status already up-to-date',
       };
-    }
+    
   } catch (error) {
     console.error('Error syncing payment:', error);
     throw error;
@@ -256,7 +256,7 @@ export async function syncAllPendingPayments(): Promise<{
 
         const syncResult = await syncPaymentStatus(
           payment.razorpay_payment_id,
-          payment.razorpay_order_id
+          payment.razorpay_order_id,
         );
 
         if (syncResult.synced) {

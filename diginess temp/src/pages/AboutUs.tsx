@@ -1,4 +1,3 @@
-import React from 'react';
 import { useWebsiteContent } from '@/hooks/useWebsiteContent';
 import { Trophy, Target, User } from 'lucide-react';
 import './AboutUs.css';
@@ -54,65 +53,65 @@ const AboutUs = () => {
 
     // Default content provided by user
     const content = {
-        title: dbContent.title || "One Nation United",
-        tagline: dbContent.tagline || "Together We Play, Together We Rise.",
+        title: dbContent.title || 'One Nation United',
+        tagline: dbContent.tagline || 'Together We Play, Together We Rise.',
         description: dbContent.description || `
             <p class="mb-4">A revolutionary T-10 tennis ball cricket tournament that aims to bring the passion of street cricket to professional stadiums.</p>
             <p>A unique format and emphasis to provide a mega platform to untapped talent and foster future cricketing stars. Revolutionizing tennis ball cricket league using patented technology at the selections.</p>
         `,
-        heroImage: dbContent.heroImage || "/image_30.png",
-        vision: dbContent.vision || "Elevate the potential of street cricket to form the next generation of game-changers. Officially standardize gully cricket and take it to next level.",
-        mission: dbContent.mission || "Scouting street champs. Launching future stars.",
+        heroImage: dbContent.heroImage || '/image_30.png',
+        vision: dbContent.vision || 'Elevate the potential of street cricket to form the next generation of game-changers. Officially standardize gully cricket and take it to next level.',
+        mission: dbContent.mission || 'Scouting street champs. Launching future stars.',
         committee: dbContent.committee || [
             {
-                name: "Nawabzada Mohammed Asif Ali",
-                role: "CHAIRMAN",
-                subRole: "Dewan to the Prince of Arcot",
-                bio: "A philanthropist and a passionate cricketer. Nawabzada sees the league as a platform offering opportunities to cricket enthusiasts across South India and as an evolution of the T10 cricket format.",
-                image: "/Team-Advisors/Nawab.avif"
+                name: 'Nawabzada Mohammed Asif Ali',
+                role: 'CHAIRMAN',
+                subRole: 'Dewan to the Prince of Arcot',
+                bio: 'A philanthropist and a passionate cricketer. Nawabzada sees the league as a platform offering opportunities to cricket enthusiasts across South India and as an evolution of the T10 cricket format.',
+                image: '/Team-Advisors/Nawab.avif',
             },
             {
-                name: "Mr. Ravi Mohan",
-                role: "STAR PATRON",
-                subRole: "Indian Actor / Passionate Cricketer",
+                name: 'Mr. Ravi Mohan',
+                role: 'STAR PATRON',
+                subRole: 'Indian Actor / Passionate Cricketer',
                 bio: "He strengthens the league's vision of merging sports, entertainment, and culture to create a one-of-a-kind cricketing experience.",
-                image: "/Team-Advisors/ravi-mohan.avif"
+                image: '/Team-Advisors/ravi-mohan.avif',
             },
             {
-                name: "Loganathan Thangapazham Anand",
-                role: "MANAGING DIRECTOR",
-                subRole: "",
+                name: 'Loganathan Thangapazham Anand',
+                role: 'MANAGING DIRECTOR',
+                subRole: '',
                 bio: "A core part of the league's leadership, he brings decades of expertise in finance, governance, and strategy. His insight ensures stability, compliance, and sustained growth, making him vital to the league's long-term success.",
-                image: "/Team-Advisors/Lt-anand.avif"
-            }
+                image: '/Team-Advisors/Lt-anand.avif',
+            },
         ],
         advisors: dbContent.advisors || [
             {
-                name: "Dilip Narayanan",
-                role: "Strategic Advisor",
-                bio: "Senior corporate executive with extensive experience in strategic planning, business development, and organizational leadership across diverse industries.",
-                image: "/Team-Advisors/Dilip-Narayanan.avif"
+                name: 'Dilip Narayanan',
+                role: 'Strategic Advisor',
+                bio: 'Senior corporate executive with extensive experience in strategic planning, business development, and organizational leadership across diverse industries.',
+                image: '/Team-Advisors/Dilip-Narayanan.avif',
             },
             {
-                name: "Mr. C.P.Rao",
-                role: "Former Principal Chief Commissioner, GST & Customs",
-                subRole: "Vice Chairman, Settlement Commission (Retd.)",
-                bio: "Veteran IRS officer with leadership roles across key Government of India departments. Expert in public affairs, fiscal policy, and regulatory administration.",
-                image: "/Team-Advisors/cp-rao.avif"
+                name: 'Mr. C.P.Rao',
+                role: 'Former Principal Chief Commissioner, GST & Customs',
+                subRole: 'Vice Chairman, Settlement Commission (Retd.)',
+                bio: 'Veteran IRS officer with leadership roles across key Government of India departments. Expert in public affairs, fiscal policy, and regulatory administration.',
+                image: '/Team-Advisors/cp-rao.avif',
             },
             {
-                name: "Mr.Puhazhendi Kaliyappan",
-                role: "Advisor",
-                bio: "Former Quality Leader, South Asia at GE Healthcare and SVP, Global Operations at Standard Chartered Bank. Brings extensive global experience in business process and program management.",
-                image: "/Team-Advisors/Pugazhendi.avif"
+                name: 'Mr.Puhazhendi Kaliyappan',
+                role: 'Advisor',
+                bio: 'Former Quality Leader, South Asia at GE Healthcare and SVP, Global Operations at Standard Chartered Bank. Brings extensive global experience in business process and program management.',
+                image: '/Team-Advisors/Pugazhendi.avif',
             },
             {
-                name: "Adv Sheela",
-                role: "Legal Advisor",
-                bio: "Experienced legal professional providing strategic legal counsel and ensuring compliance across all league operations and activities.",
-                image: "/Team-Advisors/Adv-Sheela.avif"
-            }
-        ]
+                name: 'Adv Sheela',
+                role: 'Legal Advisor',
+                bio: 'Experienced legal professional providing strategic legal counsel and ensuring compliance across all league operations and activities.',
+                image: '/Team-Advisors/Adv-Sheela.avif',
+            },
+        ],
     };
 
     const titleWords = String(content.title).trim().split(/\s+/);

@@ -30,7 +30,7 @@ const BackgroundWrapper: React.FC<BackgroundWrapperProps> = ({ children }) => {
           backgroundPosition: 'center top',
           backgroundRepeat: 'no-repeat',
           willChange: 'transform',
-          backfaceVisibility: 'hidden'
+          backfaceVisibility: 'hidden',
         }}
       />
 

@@ -1,5 +1,4 @@
-import React from 'react';
-import { Trophy, Package, Smartphone, ShoppingBag, Truck, Download, Play, Star, Zap, Target } from 'lucide-react';
+import { Download, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import './CricketOrganizerDealsSection.css';
 

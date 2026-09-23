@@ -1,6 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Video, ExternalLink, ArrowRight } from "lucide-react";
+import { motion } from 'framer-motion';
+import { Video, ExternalLink, ArrowRight } from 'lucide-react';
 
 const VideoWarContest = () => {
     return (

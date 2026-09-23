@@ -14,7 +14,7 @@ export interface CertificateOptions {
  * @returns Promise<Blob> - The generated certificate as a blob
  */
 export async function generateCertificate(
-    options: CertificateOptions
+    options: CertificateOptions,
 ): Promise<Blob> {
     const { playerName, templatePath = '/certificate-template.jpg' } = options;
 
@@ -47,7 +47,7 @@ export async function generateCertificate(
             // around 45-50% from the top, using an elegant serif font
             // Configure text styling
             const baseFontSize = Math.floor(canvas.width * 0.045);
-            let fontSize = baseFontSize - 5;
+            const fontSize = baseFontSize - 5;
 
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -64,7 +64,7 @@ export async function generateCertificate(
 
             // Check for suffix (e.g. "- Double Eagle" or "- Kohinoor")
             // The separator used in PlayerResultCard is " - "
-            const separator = " - ";
+            const separator = ' - ';
             const hasSuffix = playerName.includes(separator);
 
             if (hasSuffix) {
@@ -110,7 +110,7 @@ export async function generateCertificate(
                     }
                 },
                 'image/png', // Using PNG for better compatibility and quality
-                1.0 // Maximum quality
+                1.0, // Maximum quality
             );
         };
 
@@ -157,13 +157,13 @@ export function downloadCertificate(blob: Blob, playerName: string, type: 'parti
  * @param playerName - The player's name to include on the certificate
  */
 export async function generateAndDownloadCertificate(
-    playerName: string
+    playerName: string,
 ): Promise<void> {
     try {
         const timestamp = Date.now(); // Cache busting
         const blob = await generateCertificate({
             playerName,
-            templatePath: `/certificate-participation-template.png?t=${timestamp}`
+            templatePath: `/certificate-participation-template.png?t=${timestamp}`,
         });
         downloadCertificate(blob, playerName, 'participation');
     } catch (error) {
@@ -177,13 +177,13 @@ export async function generateAndDownloadCertificate(
  * @param playerName - The player's name to include on the certificate
  */
 export async function generateAndDownloadAchievementCertificate(
-    playerName: string
+    playerName: string,
 ): Promise<void> {
     try {
         const timestamp = Date.now(); // Cache busting
         const blob = await generateCertificate({
             playerName,
-            templatePath: `/certificate-achievement-template.png?t=${timestamp}`
+            templatePath: `/certificate-achievement-template.png?t=${timestamp}`,
         });
         downloadCertificate(blob, playerName, 'achievement');
     } catch (error) {

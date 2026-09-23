@@ -8,7 +8,7 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { Info, Phone, BarChart3 } from 'lucide-react';
+import { Info, Phone } from 'lucide-react';
 import { googleAnalytics } from '@/utils/googleAnalytics';
 
 interface NavigationItem {

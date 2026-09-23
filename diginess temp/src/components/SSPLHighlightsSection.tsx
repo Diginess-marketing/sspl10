@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { Camera, Image as ImageIcon, X, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import './SSPLHighlightsSection.css';
@@ -17,15 +17,15 @@ const PREVIEW_HIGHLIGHTS_DATA: Highlight[] = [
   { image: '/image_15.avif', title: '', description: '', category: '' },
   { image: '/image_30.avif', title: '', description: '', category: '', isWide: true },
   { image: '/image_29.avif', title: '', description: '', category: '' },
-  { image: '/news paper cuttings.avif', title: '', description: '', category: '' }
+  { image: '/news paper cuttings.avif', title: '', description: '', category: '' },
 ];
 
 // Generate all 44 highlight images from the highlights folder
 const GENERATED_HIGHLIGHTS = Array.from({ length: 44 }, (_, i) => ({
   image: `/highlights/${i + 1}.avif`,
   title: `SSPL Highlight ${i + 1}`,
-  description: `Exciting moment from SSPL T10 Tournament`,
-  category: 'Tournament Action'
+  description: 'Exciting moment from SSPL T10 Tournament',
+  category: 'Tournament Action',
 }));
 
 // Combine them into a single reliable source of truth
@@ -46,12 +46,12 @@ const SSPLHighlightsSection = () => {
 
   const leftHighlights = [
     ALL_HIGHLIGHTS_DATA[0], // Star Player (Index 0)
-    ALL_HIGHLIGHTS_DATA[1]  // Top Field Action (Index 1)
+    ALL_HIGHLIGHTS_DATA[1],  // Top Field Action (Index 1)
   ];
 
   const rightHighlights = [
     ALL_HIGHLIGHTS_DATA[3], // Victory Celebration (Index 3)
-    ALL_HIGHLIGHTS_DATA[4]  // Media Buzz (Index 4)
+    ALL_HIGHLIGHTS_DATA[4],  // Media Buzz (Index 4)
   ];
 
   // Combined for modal navigation
@@ -224,7 +224,7 @@ const SSPLHighlightsSection = () => {
             </div>
           </div>
         </div>,
-        document.body
+        document.body,
       )}
 
       {/* Image Modal */}
@@ -273,7 +273,7 @@ const SSPLHighlightsSection = () => {
             </div>
           </div>
         </div>,
-        document.body
+        document.body,
       )}
     </section>
   );

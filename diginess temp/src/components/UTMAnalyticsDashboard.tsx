@@ -66,7 +66,7 @@ export default function UTMAnalyticsDashboard() {
     try {
       const response = await ga4DataFetchService.getUTMCampaignReport(
         dateRange.startDate,
-        dateRange.endDate
+        dateRange.endDate,
       );
       console.log('[UTMAnalytics] GA4 data received:', response);
 
@@ -88,7 +88,7 @@ export default function UTMAnalyticsDashboard() {
         totalGA4NewUsers: totalNewUsers,
         totalGA4PageViews: totalPageViews,
         totalGA4Conversions: totalConversions,
-        totalGA4Revenue: totalGA4Revenue,
+        totalGA4Revenue,
         ga4TotalRows: response.totalRows || data.length,
         ga4FetchedRows: response.fetchedRows || data.length,
       }));
@@ -137,7 +137,7 @@ export default function UTMAnalyticsDashboard() {
               status: r.status,
               amount: r.amount,
               payment_id: r.payment_id,
-              order_id: r.order_id
+              order_id: r.order_id,
             });
           }
         });
@@ -160,7 +160,7 @@ export default function UTMAnalyticsDashboard() {
           razorpay_payment_id: payment?.payment_id || p.razorpay_payment_id,
           razorpay_order_id: payment?.order_id || p.razorpay_order_id,
           created_at: p.created_at,
-          updated_at: p.updated_at
+          updated_at: p.updated_at,
         };
       });
 
@@ -169,7 +169,7 @@ export default function UTMAnalyticsDashboard() {
         name: r.full_name,
         payment_status: r.payment_status,
         payment_amount: r.payment_amount,
-        razorpay_payment_id: r.razorpay_payment_id
+        razorpay_payment_id: r.razorpay_payment_id,
       })));
 
       // Log payment status distribution after join

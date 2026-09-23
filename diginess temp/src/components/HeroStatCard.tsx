@@ -24,7 +24,7 @@ const HeroStatCard: React.FC<HeroStatCardProps> = ({ title, value, icon: Icon, g
                 className="absolute inset-0 bg-white/[0.04] backdrop-blur-[14px] -z-10 transition-all duration-500 group-hover:bg-white/[0.08]"
                 style={{
                     border: '1px solid rgba(255, 255, 255, 0.12)',
-                    boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+                    boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
                 }}
             />
 
@@ -35,9 +35,9 @@ const HeroStatCard: React.FC<HeroStatCardProps> = ({ title, value, icon: Icon, g
                         scale: [1, 1.2, 1],
                         rotate: [0, 90, 0],
                         x: [0, 20, 0],
-                        y: [0, -20, 0]
+                        y: [0, -20, 0],
                     }}
-                    transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                    transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
                     className={`absolute -top-1/2 -left-1/2 w-full h-full opacity-30 blur-[40px] rounded-full bg-gradient-to-br ${gradient}`}
                 />
                 <motion.div
@@ -45,9 +45,9 @@ const HeroStatCard: React.FC<HeroStatCardProps> = ({ title, value, icon: Icon, g
                         scale: [1.2, 1, 1.2],
                         rotate: [0, -90, 0],
                         x: [0, -20, 0],
-                        y: [0, 20, 0]
+                        y: [0, 20, 0],
                     }}
-                    transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                    transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
                     className={`absolute -bottom-1/2 -right-1/2 w-full h-full opacity-30 blur-[40px] rounded-full bg-gradient-to-tr ${gradient}`}
                 />
             </div>
@@ -89,7 +89,7 @@ const HeroStatCard: React.FC<HeroStatCardProps> = ({ title, value, icon: Icon, g
                 @keyframes shimmer {
                     100% { transform: translateX(100%); }
                 }
-            `}} />
+            ` }} />
         </motion.div>
     );
 };

@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useEnrichedPlayerData } from '@/hooks/useEnrichedPlayerData';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -27,7 +27,7 @@ const AdminSelectionStatus = () => {
             p.name.toLowerCase().includes(lowerQuery) ||
             p.mobile.includes(lowerQuery) ||
             p.city?.toLowerCase().includes(lowerQuery) ||
-            p.state.toLowerCase().includes(lowerQuery)
+            p.state.toLowerCase().includes(lowerQuery),
         );
     };
 
@@ -38,7 +38,7 @@ const AdminSelectionStatus = () => {
         try {
             await playerExportService.exportPlayerData(data, {
                 format: 'csv',
-                includeFields: ['name', 'mobile', 'state', 'city', 'status', 'proficiency']
+                includeFields: ['name', 'mobile', 'state', 'city', 'status', 'proficiency'],
             });
             toast({ title: 'Export Successful', description: `${data.length} ${label} records exported.` });
         } catch (error) {

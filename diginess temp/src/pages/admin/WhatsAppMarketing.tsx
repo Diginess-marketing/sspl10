@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,7 +13,7 @@ import {
     TableCell,
     TableHead,
     TableHeader,
-    TableRow
+    TableRow,
 } from '@/components/ui/table';
 import {
     Select,
@@ -21,8 +21,8 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
-import { Loader2, Send, Users, FileJson, MessageSquare, Database, Trash2, CheckCircle2, Clock, PlayCircle, PauseCircle } from 'lucide-react';
+} from '@/components/ui/select';
+import { Loader2, Send, MessageSquare, Database, Trash2, CheckCircle2, Clock, PlayCircle, PauseCircle } from 'lucide-react';
 import { LoadingSpinner } from '@/components/ui/enhanced-loading';
 
 interface Campaign {
@@ -82,7 +82,7 @@ const WhatsAppMarketing = () => {
 
                 return {
                     ...c,
-                    recipient_count: recipientCount as number
+                    recipient_count: recipientCount as number,
                 };
             });
 
@@ -113,7 +113,7 @@ const WhatsAppMarketing = () => {
                 .insert([{
                     name: newName,
                     message_template: newTemplate,
-                    status: 'DRAFT'
+                    status: 'DRAFT',
                 }])
                 .select()
                 .single();
@@ -132,7 +132,7 @@ const WhatsAppMarketing = () => {
                     return {
                         campaign_id: campaign.id,
                         name: name?.trim(),
-                        mobile: mobile?.trim()
+                        mobile: mobile?.trim(),
                     };
                 }).filter(r => r.mobile);
             } else if (targetGroup.startsWith('level')) {
@@ -148,7 +148,7 @@ const WhatsAppMarketing = () => {
                 recipients = (players || []).map(p => ({
                     campaign_id: campaign.id,
                     name: p.name,
-                    mobile: p.mobile || (p as any).phone // Fallback to phone if mobile is null
+                    mobile: p.mobile || (p as any).phone, // Fallback to phone if mobile is null
                 }));
             }
 
@@ -234,7 +234,7 @@ const WhatsAppMarketing = () => {
                                 value={newTemplate} 
                                 onChange={e => setNewTemplate(e.target.value)}
                             />
-                            <p className="text-[10px] text-muted-foreground italic">Use {"{name}"} for personalization.</p>
+                            <p className="text-[10px] text-muted-foreground italic">Use {'{name}'} for personalization.</p>
                         </div>
 
                         <div className="space-y-2">

@@ -10,7 +10,7 @@ interface AuthError {
 }
 
 // Retry utility with exponential backoff
-const retryWithBackoff = async function <T>(
+const retryWithBackoff = async function <T> (
   fn: () => Promise<T>,
   maxRetries: number = 3,
   baseDelay: number = 1000,
@@ -130,7 +130,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                   .insert({
                     user_id: userId,
                     role: invite.role,
-                    permissions: invite.permissions || []
+                    permissions: invite.permissions || [],
                   });
 
                 if (insertError) throw insertError;
@@ -473,7 +473,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const signUp = async (
     email: string, 
     password: string, 
-    metadata?: { full_name?: string; mobile_number?: string; referred_by?: string }
+    metadata?: { full_name?: string; mobile_number?: string; referred_by?: string },
   ) => {
     try {
       logger.info('Auth: Attempting sign up', { email });

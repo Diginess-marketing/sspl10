@@ -14,7 +14,7 @@ const StandardSectionHeader: React.FC<StandardSectionHeaderProps> = ({
     accentTitle,
     subtitle,
     align = 'center',
-    className = ''
+    className = '',
 }) => {
     return (
         <div className={`mb-12 ${align === 'center' ? 'text-center' : 'text-left'} ${className}`}>

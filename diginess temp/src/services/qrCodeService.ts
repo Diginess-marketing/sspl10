@@ -406,7 +406,7 @@ export class QRCodeService {
               (col + qrOptions.margin) * cellSize,
               (row + qrOptions.margin) * cellSize,
               cellSize,
-              cellSize
+              cellSize,
             );
           }
         }

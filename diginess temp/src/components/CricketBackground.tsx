@@ -25,29 +25,29 @@ const CricketBackground: React.FC = () => {
         className="absolute top-0 left-0 w-[50%] h-[100%] opacity-20 pointer-events-none"
         style={{
           background: 'radial-gradient(circle at 0% 0%, rgba(91, 192, 190, 0.4) 0%, transparent 70%)',
-          transform: 'skewX(-15deg)'
+          transform: 'skewX(-15deg)',
         }}
       ></div>
       <div
         className="absolute top-0 right-0 w-[50%] h-[100%] opacity-20 pointer-events-none"
         style={{
           background: 'radial-gradient(circle at 100% 0%, rgba(16, 185, 129, 0.3) 0%, transparent 70%)',
-          transform: 'skewX(15deg)'
+          transform: 'skewX(15deg)',
         }}
       ></div>
 
       {/* 4. Fine Pitch-Grain Texture Overlay */}
       <div className="absolute inset-0 opacity-[0.4]" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E")`,
-        backgroundSize: '128px 128px'
+        backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\' opacity=\'0.08\'/%3E%3C/svg%3E")',
+        backgroundSize: '128px 128px',
       }}></div>
 
       {/* 5. Sublte Grid / Tactical Lines */}
       <div
         className="absolute inset-0 opacity-[0.04]"
         style={{
-          backgroundImage: `linear-gradient(#0F172A 1.5px, transparent 1.5px), linear-gradient(90deg, #0F172A 1.5px, transparent 1.5px)`,
-          backgroundSize: '60px 60px'
+          backgroundImage: 'linear-gradient(#0F172A 1.5px, transparent 1.5px), linear-gradient(90deg, #0F172A 1.5px, transparent 1.5px)',
+          backgroundSize: '60px 60px',
         }}
         aria-hidden="true"
       ></div>

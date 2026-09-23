@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Typography, useTheme } from '@mui/material';
 
 interface SectionHeaderProps {
@@ -28,8 +27,8 @@ export const SectionHeader = ({ title, subtitle, align = 'center', dark = false 
                         height: '4px',
                         bgcolor: 'brand.accent.main',
                         mt: 1,
-                        mx: align === 'center' ? 'auto' : 0
-                    }
+                        mx: align === 'center' ? 'auto' : 0,
+                    },
                 }}
             >
                 {title}
@@ -42,7 +41,7 @@ export const SectionHeader = ({ title, subtitle, align = 'center', dark = false 
                         color: dark ? 'grey.400' : 'text.secondary',
                         maxWidth: '700px',
                         mx: align === 'center' ? 'auto' : 0,
-                        fontSize: '1rem'
+                        fontSize: '1rem',
                     }}
                 >
                     {subtitle}

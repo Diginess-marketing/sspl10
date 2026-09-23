@@ -1,47 +1,45 @@
-import * as React from "react"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter, CardGrid } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { FixtureCard, Team } from "@/components/FixtureCard"
-import { TeamCard } from "@/components/TeamCard"
-import { NewsCard } from "@/components/NewsCard"
-import { StatsCard } from "@/components/StatsCard"
-import { CardSkeleton } from "@/components/CardSkeleton"
-import { OptimizedImage } from "@/components/OptimizedImage"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter, CardGrid } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { FixtureCard, Team } from '@/components/FixtureCard';
+import { TeamCard } from '@/components/TeamCard';
+import { NewsCard } from '@/components/NewsCard';
+import { StatsCard } from '@/components/StatsCard';
+import { CardSkeleton } from '@/components/CardSkeleton';
+import { OptimizedImage } from '@/components/OptimizedImage';
 
 const CardSystemExamples = () => {
   // Sample data
   const sampleTeams: Team[] = [
     {
-      name: "Mumbai Indians",
-      logo: "/placeholder.svg",
-      abbreviation: "MI",
+      name: 'Mumbai Indians',
+      logo: '/placeholder.svg',
+      abbreviation: 'MI',
       players: 25,
-      captain: "Rohit Sharma",
-      coach: "Mark Boucher",
-      founded: "2008",
-      achievements: ["5x IPL Champions", "2x CLT20 Winners"]
+      captain: 'Rohit Sharma',
+      coach: 'Mark Boucher',
+      founded: '2008',
+      achievements: ['5x IPL Champions', '2x CLT20 Winners'],
     },
     {
-      name: "Chennai Super Kings",
-      logo: "/placeholder.svg",
-      abbreviation: "CSK",
+      name: 'Chennai Super Kings',
+      logo: '/placeholder.svg',
+      abbreviation: 'CSK',
       players: 24,
-      captain: "MS Dhoni",
-      coach: "Stephen Fleming",
-      founded: "2008",
-      achievements: ["4x IPL Champions", "Most Consistent Team"]
-    }
-  ]
+      captain: 'MS Dhoni',
+      coach: 'Stephen Fleming',
+      founded: '2008',
+      achievements: ['4x IPL Champions', 'Most Consistent Team'],
+    },
+  ];
 
   const sampleFixture = {
     homeTeam: sampleTeams[0],
     awayTeam: sampleTeams[1],
-    date: "2024-04-15",
-    time: "19:30",
-    venue: "Wankhede Stadium, Mumbai",
-    status: "upcoming" as const
-  }
+    date: '2024-04-15',
+    time: '19:30',
+    venue: 'Wankhede Stadium, Mumbai',
+    status: 'upcoming' as const,
+  };
 
   return (
     <div className="p-8 space-y-12 max-w-7xl mx-auto">
@@ -122,7 +120,7 @@ const CardSystemExamples = () => {
                 matches: 14,
                 wins: 8,
                 losses: 6,
-                winRate: 57
+                winRate: 57,
               }}
             />
           ))}
@@ -141,7 +139,7 @@ const CardSystemExamples = () => {
             publishedAt="2024-01-15T10:30:00Z"
             readTime={3}
             category="Breaking News"
-            tags={["Transfer", "Player News", "SSPLT10"]}
+            tags={['Transfer', 'Player News', 'SSPLT10']}
             onReadMore={() => console.log('Read more')}
           />
 
@@ -153,7 +151,7 @@ const CardSystemExamples = () => {
             publishedAt="2024-01-14T15:45:00Z"
             readTime={5}
             category="Match Preview"
-            tags={["Preview", "Mumbai", "Chennai"]}
+            tags={['Preview', 'Mumbai', 'Chennai']}
           />
         </CardGrid>
       </section>
@@ -169,7 +167,7 @@ const CardSystemExamples = () => {
             icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>}
-            trend={{ value: 12, isPositive: true, label: "vs last month" }}
+            trend={{ value: 12, isPositive: true, label: 'vs last month' }}
             format="number"
           />
 
@@ -180,7 +178,7 @@ const CardSystemExamples = () => {
             icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
             </svg>}
-            trend={{ value: 8, isPositive: true, label: "vs last month" }}
+            trend={{ value: 8, isPositive: true, label: 'vs last month' }}
             format="currency"
           />
 
@@ -191,7 +189,7 @@ const CardSystemExamples = () => {
             icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>}
-            trend={{ value: 3.2, isPositive: true, label: "improvement" }}
+            trend={{ value: 3.2, isPositive: true, label: 'improvement' }}
             format="percentage"
           />
 
@@ -202,7 +200,7 @@ const CardSystemExamples = () => {
             icon={<svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
             </svg>}
-            trend={{ value: 15, isPositive: false, label: "vs yesterday" }}
+            trend={{ value: 15, isPositive: false, label: 'vs yesterday' }}
             format="number"
           />
         </CardGrid>
@@ -330,7 +328,7 @@ const CardSystemExamples = () => {
         </CardGrid>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default CardSystemExamples
+export default CardSystemExamples;

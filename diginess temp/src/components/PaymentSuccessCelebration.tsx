@@ -8,13 +8,9 @@ import { googleAnalytics } from '@/utils/googleAnalytics';
 import {
   CheckCircle,
   Trophy,
-  Star,
-  Download,
   Share2,
   Home,
   FileText,
-  Sparkles,
-  PartyPopper,
 } from 'lucide-react';
 import './PaymentSuccessCelebration.css';
 

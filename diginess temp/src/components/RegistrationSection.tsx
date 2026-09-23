@@ -58,7 +58,7 @@ const RegistrationSection = () => {
                 style={{
                   fontSize: 'clamp(5rem, 15vw, 14rem)',
                   color: 'white',
-                  textShadow: '0 4px 30px rgba(0, 0, 0, 0.4)'
+                  textShadow: '0 4px 30px rgba(0, 0, 0, 0.4)',
                 }}
               >
                 <span className="block">READY TO</span>
@@ -68,7 +68,7 @@ const RegistrationSection = () => {
                     background: 'linear-gradient(to right, #00B4D8, #0072ff, #00B4D8)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
+                    backgroundClip: 'text',
                   }}
                 >
                   DOMINATE?
@@ -79,7 +79,7 @@ const RegistrationSection = () => {
                 className="max-w-3xl mx-auto font-medium leading-relaxed tracking-wide !text-white"
                 style={{
                   fontSize: '1.5rem',
-                  textShadow: '0 2px 10px rgba(0,0,0,0.1)'
+                  textShadow: '0 2px 10px rgba(0,0,0,0.1)',
                 }}
               >
                 Join the most prestigious tennis ball cricket league in India.
@@ -111,7 +111,7 @@ const RegistrationSection = () => {
                     '&:hover': { 
                       transform: 'translateY(-4px) scale(1.03)',
                       boxShadow: '0 0 45px rgba(0, 180, 216, 0.8) !important',
-                    }
+                    },
                   }}
                 >
                   Individual Registration <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
@@ -140,8 +140,8 @@ const RegistrationSection = () => {
                     '&:hover': {
                       background: 'rgba(255, 255, 255, 0.18) !important',
                       borderColor: 'rgba(255, 255, 255, 0.6) !important',
-                      transform: 'translateY(-2px)'
-                    }
+                      transform: 'translateY(-2px)',
+                    },
                   }}
                 >
                   Student Registration
@@ -170,8 +170,8 @@ const RegistrationSection = () => {
                     '&:hover': {
                       background: 'rgba(255, 255, 255, 0.18) !important',
                       borderColor: 'rgba(255, 255, 255, 0.6) !important',
-                      transform: 'translateY(-2px)'
-                    }
+                      transform: 'translateY(-2px)',
+                    },
                   }}
                 >
                   Team Registration
@@ -185,11 +185,11 @@ const RegistrationSection = () => {
                 { label: 'Prize Pool', value: '3 Cr+', start: 'var(--color-stat-1-start)', end: 'var(--color-stat-1-end)' },
                 { label: 'Teams', value: '12', start: 'var(--color-stat-2-start)', end: 'var(--color-stat-2-end)' },
                 { label: 'Broadcast', value: 'Live', start: 'var(--color-stat-3-start)', end: 'var(--color-stat-3-end)' },
-                { label: 'Finals At', value: 'Sharjah', start: 'var(--color-stat-4-start)', end: 'var(--color-stat-4-end)' }
+                { label: 'Finals At', value: 'Sharjah', start: 'var(--color-stat-4-start)', end: 'var(--color-stat-4-end)' },
               ].map((stat, i) => (
                 <div key={i} className="group relative">
-                  <div className={`absolute -inset-0.5 opacity-70 blur group-hover:opacity-100 transition duration-500 rounded-xl`} style={{ background: `linear-gradient(to right, ${stat.start}, ${stat.end})` }}></div>
-                  <div className={`relative h-full rounded-xl p-6 flex flex-col items-center justify-center border border-white/20 overflow-hidden shadow-lg`} style={{ background: `linear-gradient(to br, ${stat.start}, ${stat.end})` }}>
+                  <div className={'absolute -inset-0.5 opacity-70 blur group-hover:opacity-100 transition duration-500 rounded-xl'} style={{ background: `linear-gradient(to right, ${stat.start}, ${stat.end})` }}></div>
+                  <div className={'relative h-full rounded-xl p-6 flex flex-col items-center justify-center border border-white/20 overflow-hidden shadow-lg'} style={{ background: `linear-gradient(to br, ${stat.start}, ${stat.end})` }}>
                     {/* Scanline */}
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/10 to-transparent h-[200%] w-full animate-scanline pointer-events-none opacity-0 group-hover:opacity-100"></div>
 

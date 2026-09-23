@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
-import { CheckCircle2, Trophy, Gift, Calendar } from 'lucide-react';
+import { CheckCircle2, Trophy, Gift } from 'lucide-react';
 import TournamentOrganizerRegistration from './TournamentOrganizerRegistration';
 
 const TournamentOrganizersSection = () => {

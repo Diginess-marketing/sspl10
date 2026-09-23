@@ -81,13 +81,13 @@ class ResultLookupService {
           data: response,
           timestamp: new Date().toISOString(),
         };
-      } else {
+      } 
         return {
           success: false,
           error: 'No trial result found for the given mobile number',
           timestamp: new Date().toISOString(),
         };
-      }
+      
 
     } catch (error) {
       console.error('Trial result lookup error:', error);

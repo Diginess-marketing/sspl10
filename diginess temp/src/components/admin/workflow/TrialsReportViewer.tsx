@@ -8,8 +8,7 @@ import {
   CheckCircle,
   XCircle,
   Clock,
-  ChevronDown,
-  MapPin
+  MapPin,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,7 +19,7 @@ import {
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
-  SelectValue 
+  SelectValue, 
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -75,8 +74,8 @@ export const TrialsReportViewer = () => {
             const val = row[h];
             if (val === null || val === undefined) return '""';
             return `"${String(val).replace(/"/g, '""')}"`;
-          }).join(',')
-        )
+          }).join(','),
+        ),
       ].join('\n');
 
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });

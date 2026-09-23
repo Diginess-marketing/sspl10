@@ -1,23 +1,22 @@
-import React from 'react';
 import { ClipboardCheck, CheckCircle, PackageOpen } from 'lucide-react';
 
 const StepsSection = () => {
     const steps = [
         {
             icon: <ClipboardCheck size={48} className="text-[#0B1F3B]" />,
-            title: "Register Tournament",
-            description: "Fill out the registration form with your expected teams and dates."
+            title: 'Register Tournament',
+            description: 'Fill out the registration form with your expected teams and dates.',
         },
         {
             icon: <CheckCircle size={48} className="text-[#0B1F3B]" />,
-            title: "Get Approved",
-            description: "Our team verifies your tournament details usually within 48 hours."
+            title: 'Get Approved',
+            description: 'Our team verifies your tournament details usually within 48 hours.',
         },
         {
             icon: <PackageOpen size={48} className="text-[#0B1F3B]" />,
-            title: "Receive Free Tennis Balls",
-            description: "We dispatch premium tennis balls to your tournament venue."
-        }
+            title: 'Receive Free Tennis Balls',
+            description: 'We dispatch premium tennis balls to your tournament venue.',
+        },
     ];
 
     return (

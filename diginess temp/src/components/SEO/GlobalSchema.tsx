@@ -1,5 +1,4 @@
 
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { ORGANIZATION_SCHEMA, WEBSITE_SCHEMA } from '@/utils/schema-generator';
 

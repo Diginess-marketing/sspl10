@@ -46,7 +46,7 @@ export const PaymentStatusDebugger: React.FC = () => {
     try {
       const result = await testPaymentStatusUpdate(
         registrationId,
-        'completed'
+        'completed',
       );
       setTestResult(result);
     } catch (error) {

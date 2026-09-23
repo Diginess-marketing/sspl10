@@ -56,8 +56,8 @@ const HomePartners = () => {
                                     width: '40px',
                                     height: '1px',
                                     bgcolor: 'brand.accent.main',
-                                    opacity: 0.5
-                                }
+                                    opacity: 0.5,
+                                },
                             }}
                         >
                             An Initiative By
@@ -73,8 +73,8 @@ const HomePartners = () => {
                                 '&:hover': {
                                     transform: 'translateY(-4px)',
                                     boxShadow: `0 12px 24px ${alpha(theme.palette.brand.primary.main, 0.1)}`,
-                                    borderColor: 'brand.accent.main'
-                                }
+                                    borderColor: 'brand.accent.main',
+                                },
                             }}
                         >
                             <img
@@ -105,8 +105,8 @@ const HomePartners = () => {
                                     '&:hover': {
                                         borderColor: 'brand.primary.main',
                                         boxShadow: theme.shadows[2],
-                                        bgcolor: alpha(theme.palette.common.white, 1) // Ensure white bg
-                                    }
+                                        bgcolor: alpha(theme.palette.common.white, 1), // Ensure white bg
+                                    },
                                 }}
                             >
                                 <img
@@ -118,7 +118,7 @@ const HomePartners = () => {
                                         objectFit: 'contain',
                                         filter: 'grayscale(100%)',
                                         opacity: 0.8,
-                                        transition: 'all 0.3s ease'
+                                        transition: 'all 0.3s ease',
                                     }}
                                     onMouseOver={(e) => {
                                         e.currentTarget.style.filter = 'grayscale(0%)';

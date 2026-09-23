@@ -53,10 +53,10 @@ export const prefetchRazorpay = (): void => {
     return;
   }
 
-  if (!document.querySelector("#razorpay-js")) {
-    const s = document.createElement("script");
-    s.id = "razorpay-js";
-    s.src = "https://checkout.razorpay.com/v1/checkout.js";
+  if (!document.querySelector('#razorpay-js')) {
+    const s = document.createElement('script');
+    s.id = 'razorpay-js';
+    s.src = 'https://checkout.razorpay.com/v1/checkout.js';
     s.async = true;
 
     s.onload = () => {
@@ -111,7 +111,7 @@ export const loadRazorpay = (timeout: number = 10000): Promise<void> => {
 
     // Check if script is already in DOM
     // Check if script is already in DOM
-    const existingScript = document.querySelector("#razorpay-js") || document.querySelector('script[src*="checkout.razorpay.com"]');
+    const existingScript = document.querySelector('#razorpay-js') || document.querySelector('script[src*="checkout.razorpay.com"]');
 
     if (existingScript) {
       // Script exists, wait for it to load
@@ -127,7 +127,7 @@ export const loadRazorpay = (timeout: number = 10000): Promise<void> => {
 
     // Create and load script
     const script = document.createElement('script');
-    script.id = "razorpay-js";
+    script.id = 'razorpay-js';
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
     script.async = true;
 

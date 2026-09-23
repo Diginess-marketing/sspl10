@@ -25,7 +25,7 @@ const PlayerResultCard: React.FC<PlayerResultCardProps> = ({
       setShowCelebration(true);
       const timer = setTimeout(() => setShowCelebration(false), 3000);
       return () => clearTimeout(timer);
-    } else if (result.selectionStatus === 'Rejected') {
+    } if (result.selectionStatus === 'Rejected') {
       setShowDisappointment(true);
       const timer = setTimeout(() => setShowDisappointment(false), 2000);
       return () => clearTimeout(timer);

@@ -1,6 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { MapPin, Calendar, Clock, Users } from 'lucide-react';
+import { Calendar, Users } from 'lucide-react';
 
 const TrialsBanner = () => {
   return (

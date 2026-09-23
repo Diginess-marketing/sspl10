@@ -75,7 +75,7 @@ export function useStrapiArticle(slug: string) {
     return useQuery<StrapiSingleResponse<StrapiArticle[]>>({
         queryKey: strapiKeys.article(slug),
         queryFn: () => fetchArticleBySlug(slug),
-        enabled: !!slug,
+        enabled: Boolean(slug),
         staleTime: 5 * 60 * 1000,
         retry: 1,
     });
@@ -88,7 +88,7 @@ export function useStrapiPage(slug: string) {
     return useQuery<StrapiSingleResponse<StrapiPage[]>>({
         queryKey: strapiKeys.page(slug),
         queryFn: () => fetchPageBySlug(slug),
-        enabled: !!slug,
+        enabled: Boolean(slug),
         staleTime: 10 * 60 * 1000,
         retry: 1,
     });

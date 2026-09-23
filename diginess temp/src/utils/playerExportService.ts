@@ -6,7 +6,7 @@ class PlayerExportService {
    */
   async exportPlayerData(
     data: PlayerResult[],
-    options: PlayerExportOptions
+    options: PlayerExportOptions,
   ): Promise<PlayerExportResult> {
     try {
       if (data.length === 0) {
@@ -222,7 +222,7 @@ class PlayerExportService {
     data.forEach(player => {
       html += '<tr>';
       includeFields.forEach(field => {
-        let cellValue = String(player[field] || '');
+        const cellValue = String(player[field] || '');
         let cellClass = '';
         
         if (field === 'marks') {

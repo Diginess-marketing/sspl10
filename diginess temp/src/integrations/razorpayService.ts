@@ -12,7 +12,7 @@ const paymentOverlay = {
       this.element.parentNode.removeChild(this.element);
       this.element = null;
     }
-  }
+  },
 };
 
 // Resolve the base URL for API calls
@@ -82,17 +82,17 @@ class RazorpayService {
   async getConfig() {
     try {
       const response = await fetch(`${BASE_URL}/config`, { method: 'GET' });
-      const contentType = response.headers.get("content-type");
+      const contentType = response.headers.get('content-type');
       if (!response.ok) {
         // silently fail or return null to trigger fallback
         return null;
       }
-      if (contentType && contentType.indexOf("application/json") !== -1) {
+      if (contentType && contentType.indexOf('application/json') !== -1) {
         return await response.json();
-      } else {
+      } 
         // Received HTML or other non-JSON, likely 404/fallback
         return null;
-      }
+      
     } catch (error) {
       console.error('Failed to fetch config:', error);
       throw error;
@@ -134,8 +134,8 @@ class RazorpayService {
           ...formData,
           notes: {
             registration_id: formData.registrationId,
-            ...formData.notes
-          }
+            ...formData.notes,
+          },
         }),
       });
 

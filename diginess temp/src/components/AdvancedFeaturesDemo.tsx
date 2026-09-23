@@ -9,14 +9,10 @@ import {
   Search,
   Bell,
   Heart,
-  Star,
   Trophy,
-  Users,
   Zap,
   CheckCircle,
-  AlertCircle,
   Info,
-  AlertTriangle,
 } from 'lucide-react';
 import LoadingSkeleton from './LoadingSkeleton';
 import {

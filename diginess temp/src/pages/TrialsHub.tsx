@@ -1,12 +1,10 @@
 
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import { MapPin, Calendar, ArrowRight, Trophy, Users } from 'lucide-react';
+import { MapPin, Calendar, ArrowRight, Trophy } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { generateBreadcrumbSchema } from '@/utils/schema-generator';
-import GlobalSchema from '@/components/SEO/GlobalSchema';
 
 const TrialsHub = () => {
     const cities = [
@@ -20,12 +18,12 @@ const TrialsHub = () => {
         { name: 'Pune', slug: 'pune-2026', date: 'Upcoming', venue: 'MCA Stadium' },
         { name: 'Ahmedabad', slug: 'ahmedabad-2026', date: 'Upcoming', venue: 'Narendra Modi Stadium (Annex)' },
         { name: 'Jaipur', slug: 'jaipur-2026', date: 'Upcoming', venue: 'Sawai Mansingh Stadium' },
-        { name: 'Lucknow', slug: 'lucknow-2026', date: 'Upcoming', venue: 'Ekana Stadium' }
+        { name: 'Lucknow', slug: 'lucknow-2026', date: 'Upcoming', venue: 'Ekana Stadium' },
     ];
 
     const breadcrumbSchema = generateBreadcrumbSchema([
         { name: 'Home', item: '/' },
-        { name: 'Trials', item: '/trials' }
+        { name: 'Trials', item: '/trials' },
     ]);
 
     return (
