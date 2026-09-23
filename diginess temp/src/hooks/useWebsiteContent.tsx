@@ -12,10 +12,14 @@ export const useWebsiteContent = () => {
 
   useEffect(() => {
     fetchContent();
-    
+
+    // Channel names must be unique per hook instance: supabase.channel() returns the
+    // existing (already subscribed) channel for a reused name, and .on() then throws.
+    const instanceId = Math.random().toString(36).slice(2);
+
     // Subscribe to real-time updates
     const contentSubscription = supabase
-      .channel('website_content_changes')
+      .channel(`website_content_changes_${instanceId}`)
       .on(
         'postgres_changes',
         {
@@ -30,7 +34,7 @@ export const useWebsiteContent = () => {
       .subscribe();
 
     const themeSubscription = supabase
-      .channel('theme_changes')
+      .channel(`theme_changes_${instanceId}`)
       .on(
         'postgres_changes',
         {
@@ -45,8 +49,8 @@ export const useWebsiteContent = () => {
       .subscribe();
 
     return () => {
-      contentSubscription.unsubscribe();
-      themeSubscription.unsubscribe();
+      supabase.removeChannel(contentSubscription);
+      supabase.removeChannel(themeSubscription);
     };
   }, []);
 
