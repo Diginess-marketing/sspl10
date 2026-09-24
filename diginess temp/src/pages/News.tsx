@@ -2,10 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
 import { NewsCard } from '@/components/NewsCard';
-import news from '@/data/news';
+import builtInNews from '@/data/news';
+import { useCmsCollection } from '@/lib/cms/useCmsCollection';
 import { generateListItemSchema, generateWebPageSchema } from '@/utils/seoOptimization';
 
 const NewsPage: React.FC = () => {
+  const news = useCmsCollection('news', builtInNews);
   const navigate = useNavigate();
   const sorted = [...news].sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 

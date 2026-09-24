@@ -1,10 +1,12 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import SEO from '@/components/SEO';
-import news from '@/data/news';
+import builtInNews from '@/data/news';
+import { useCmsCollection } from '@/lib/cms/useCmsCollection';
 import { generateArticleSchema } from '@/utils/seoOptimization';
 
 const NewsArticlePage: React.FC = () => {
+  const news = useCmsCollection('news', builtInNews);
   const { slug } = useParams<{ slug: string }>();
   const item = news.find((n) => n.slug === slug);
 

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import SEO from '@/components/SEO';
 import LiteYouTube from '@/components/LiteYouTube';
-import fallbackVideos from '@/data/videos';
+import builtInVideos from '@/data/videos';
+import { useCmsCollection } from '@/lib/cms/useCmsCollection';
 import VideoWarContest from '@/components/VideoWarContest';
 import SSPLSocialWallSection from '@/components/SSPLSocialWallSection';
 import SSPLHighlightsSection from '@/components/SSPLHighlightsSection';
@@ -10,27 +11,15 @@ import { fetchAllYouTubeContent, YouTubeVideo } from '@/services/youtubeService'
 import { Skeleton } from '@/components/ui/skeleton';
 
 const VideosPage: React.FC = () => {
-  const [videos, setVideos] = useState<YouTubeVideo[]>([]);
+  const fallbackVideos = useCmsCollection('videos', builtInVideos);
+  const [youtubeVideos, setYoutubeVideos] = useState<YouTubeVideo[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const loadVideos = async () => {
       try {
-        const data = await fetchAllYouTubeContent();
-        if (data && data.length > 0) {
-          setVideos(data);
-        } else {
-          // Fallback to static data if API fails
-          setVideos(fallbackVideos.map(v => ({
-            id: v.youtubeId,
-            title: v.title,
-            description: v.description,
-            thumbnail: `https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg`,
-            publishedAt: v.publishedAt,
-            isShort: false,
-          })));
-        }
+        setYoutubeVideos((await fetchAllYouTubeContent()) || []);
       } catch (error) {
         console.error('Error loading videos:', error);
       } finally {
@@ -40,6 +29,22 @@ const VideosPage: React.FC = () => {
 
     loadVideos();
   }, []);
+
+  // Fall back to the admin-managed video list when YouTube returns nothing
+  const videos = useMemo<YouTubeVideo[]>(
+    () =>
+      youtubeVideos.length > 0
+        ? youtubeVideos
+        : fallbackVideos.map((v) => ({
+          id: v.youtubeId,
+          title: v.title,
+          description: v.description,
+          thumbnail: `https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg`,
+          publishedAt: v.publishedAt,
+          isShort: false,
+        })),
+    [youtubeVideos, fallbackVideos],
+  );
 
   const displayedVideos = showAll ? videos : videos.slice(0, 6);
 

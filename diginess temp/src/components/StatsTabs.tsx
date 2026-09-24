@@ -1,7 +1,8 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import TopPerformers from '@/components/TopPerformers';
-import { topBatting, topBowling } from '@/data/stats';
+import { topBatting as builtInBatting, topBowling as builtInBowling } from '@/data/stats';
+import { useCmsCollection } from '@/lib/cms/useCmsCollection';
 
 const TEAM_NAME: Record<string, string> = {
   tn: 'Tamil Nadu',
@@ -13,6 +14,8 @@ const TEAM_NAME: Record<string, string> = {
 };
 
 const StatsTabs: React.FC = () => {
+  const topBatting = useCmsCollection('batting_leaders', builtInBatting);
+  const topBowling = useCmsCollection('bowling_leaders', builtInBowling);
   const batting = topBatting.map((p) => ({
     id: p.id,
     name: p.name,

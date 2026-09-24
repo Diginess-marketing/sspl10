@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 import SEO from '@/components/SEO';
 import { BlogCard } from '@/components/blog/BlogCard';
-import { blogPosts } from '@/data/blogs';
+import { blogPosts as builtInBlogPosts } from '@/data/blogs';
+import { useCmsCollection } from '@/lib/cms/useCmsCollection';
 import { OptimizedImage } from '@/components/OptimizedImage';
 import { generateListItemSchema, generateWebPageSchema } from '@/utils/seoOptimization';
 import { Search, ArrowRight } from 'lucide-react';
 import '@/styles/blog.css';
 
 const ArticlesAndBlogs: React.FC = () => {
+    const blogPosts = useCmsCollection('blogs', builtInBlogPosts);
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');

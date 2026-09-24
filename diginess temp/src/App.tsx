@@ -77,6 +77,7 @@ const AdminUsers = lazy(() => import('./pages/admin/UserManagement'));
 const AdminTrials = lazy(() => import('./pages/admin/AdminTrialsWorkflow'));
 const AdminAnalytics = lazy(() => import('./pages/admin/AnalyticsViewer'));
 const AdminSettings = lazy(() => import('./pages/admin/SettingsPage'));
+const AdminContent = lazy(() => import('./pages/admin/ContentAdmin'));
 const AdminSelectors = lazy(() => import('./pages/admin/SelectorManagement'));
 const AdminOrganizers = lazy(() => import('./pages/admin/OrganizerManagement'));
 const AdminCertificateLookup = lazy(() => import('./pages/admin/AdminCertificateLookup'));
@@ -428,6 +429,16 @@ const App = () => {
                                 <AdminRoute>
                                   <AdminLayout>
                                     <AdminSettings />
+                                  </AdminLayout>
+                                </AdminRoute>
+                              }
+                            />
+                            <Route
+                              path="/admin/content"
+                              element={
+                                <AdminRoute requiredPermission="manage_content">
+                                  <AdminLayout>
+                                    <AdminContent />
                                   </AdminLayout>
                                 </AdminRoute>
                               }

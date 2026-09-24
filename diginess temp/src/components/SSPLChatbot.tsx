@@ -22,7 +22,7 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/useAuth';
-import { faqData } from '@/data/faqData';
+import { useFaqData } from '@/lib/cms/faq';
 import { supabase } from '@/integrations/supabase/client';
 import type {
   ChatMessage,
@@ -41,6 +41,7 @@ interface SSPLChatbotProps {
 }
 
 const SSPLChatbot: React.FC<SSPLChatbotProps> = ({ isOpen, onToggle, className = '' }) => {
+  const faqData = useFaqData();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -60,7 +61,7 @@ const SSPLChatbot: React.FC<SSPLChatbotProps> = ({ isOpen, onToggle, className =
   const englishFaqs = React.useMemo(() => {
     if (!faqData['en']) return [];
     return faqData['en'].flatMap(cat => cat.items);
-  }, []);
+  }, [faqData]);
 
   // State for real data from database
   const [realData, setRealData] = useState({

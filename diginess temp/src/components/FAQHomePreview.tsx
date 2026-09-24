@@ -3,7 +3,8 @@ import { useState, useMemo, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { faqData, Language } from '@/data/faqData';
+import { Language } from '@/data/faqData';
+import { useFaqData } from '@/lib/cms/faq';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import {
@@ -37,6 +38,7 @@ const langToPlaylistKeywords: Record<string, string[]> = {
 };
 
 const FAQHomePreview = () => {
+    const faqData = useFaqData();
     const [currentLang, setCurrentLang] = useState<Language>('en');
     const [faqPlaylists, setFaqPlaylists] = useState<PlaylistCategory[]>([]);
     const [loadingVideos, setLoadingVideos] = useState(true);
@@ -141,7 +143,7 @@ const FAQHomePreview = () => {
             }
             return { ...item, video: matchedVideo };
         });
-    }, [currentLang, faqPlaylists]);
+    }, [currentLang, faqPlaylists, faqData]);
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     const toggleAccordion = (index: number) => {

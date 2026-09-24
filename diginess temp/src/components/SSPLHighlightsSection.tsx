@@ -1,57 +1,32 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { Camera, Image as ImageIcon, X, ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { highlights as builtInHighlights, MIN_HIGHLIGHTS, type Highlight } from '@/data/highlights';
+import { useCmsCollection } from '@/lib/cms/useCmsCollection';
 import './SSPLHighlightsSection.css';
-
-interface Highlight {
-  image: string;
-  title: string;
-  description: string;
-  category?: string;
-  isWide?: boolean; // New property to handle wide images
-}
-
-// Define Preview Highlights Data
-const PREVIEW_HIGHLIGHTS_DATA: Highlight[] = [
-  { image: '/image_13.avif', title: '', description: '', category: '' },
-  { image: '/image_15.avif', title: '', description: '', category: '' },
-  { image: '/image_30.avif', title: '', description: '', category: '', isWide: true },
-  { image: '/image_29.avif', title: '', description: '', category: '' },
-  { image: '/news paper cuttings.avif', title: '', description: '', category: '' },
-];
-
-// Generate all 44 highlight images from the highlights folder
-const GENERATED_HIGHLIGHTS = Array.from({ length: 44 }, (_, i) => ({
-  image: `/highlights/${i + 1}.avif`,
-  title: `SSPL Highlight ${i + 1}`,
-  description: 'Exciting moment from SSPL T10 Tournament',
-  category: 'Tournament Action',
-}));
-
-// Combine them into a single reliable source of truth
-const ALL_HIGHLIGHTS_DATA = [...PREVIEW_HIGHLIGHTS_DATA, ...GENERATED_HIGHLIGHTS];
 
 const SSPLHighlightsSection = () => {
   const [selectedImage, setSelectedImage] = useState<Highlight | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showGallery, setShowGallery] = useState(false);
 
-  // Use the global constant directly
-  const allHighlightsData = ALL_HIGHLIGHTS_DATA;
+  const cmsHighlights = useCmsCollection<Highlight>('highlights', builtInHighlights);
+  // The preview grid addresses the first five items by index, so it needs at least that many.
+  const allHighlightsData = cmsHighlights.length >= MIN_HIGHLIGHTS ? cmsHighlights : builtInHighlights;
 
   // Redefined Highlights for a Balanced 3-Column Layout
   // Center is Feature. Left/Right are stacked.
   // We strictly access them from the source of truth to guarantee correct indexing
-  const featuredHighlight = ALL_HIGHLIGHTS_DATA[2]; // Season Finale (Index 2)
+  const featuredHighlight = allHighlightsData[2]; // Season Finale (Index 2)
 
   const leftHighlights = [
-    ALL_HIGHLIGHTS_DATA[0], // Star Player (Index 0)
-    ALL_HIGHLIGHTS_DATA[1],  // Top Field Action (Index 1)
+    allHighlightsData[0], // Star Player (Index 0)
+    allHighlightsData[1],  // Top Field Action (Index 1)
   ];
 
   const rightHighlights = [
-    ALL_HIGHLIGHTS_DATA[3], // Victory Celebration (Index 3)
-    ALL_HIGHLIGHTS_DATA[4],  // Media Buzz (Index 4)
+    allHighlightsData[3], // Victory Celebration (Index 3)
+    allHighlightsData[4],  // Media Buzz (Index 4)
   ];
 
   // Combined for modal navigation
@@ -81,7 +56,7 @@ const SSPLHighlightsSection = () => {
   // ... (keeping existing modal handlers) ...
   // Modal Handlers - Always use full gallery for navigation
   const openModal = (index: number) => {
-    // We can directly use the index since our local layouts map 1:1 to the start of the ALL_HIGHLIGHTS_DATA array
+    // We can directly use the index since our local layouts map 1:1 to the start of allHighlightsData
     if (index >= 0 && index < allHighlightsData.length) {
       setSelectedImage(allHighlightsData[index]);
       setCurrentImageIndex(index);

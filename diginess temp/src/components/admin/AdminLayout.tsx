@@ -157,7 +157,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 overflow-auto bg-gray-50/50 relative">
+            <main className="admin-scope flex-1 overflow-auto bg-gray-50/50 relative">
                 {/* Mobile Header */}
                 <div className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white px-4 lg:hidden shadow-sm">
                     <div className="flex items-center gap-2 font-bold text-lg text-slate-900">

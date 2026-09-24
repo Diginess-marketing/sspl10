@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { BlogCard } from '@/components/blog/BlogCard';
-import { blogPosts } from '@/data/blogs';
+import { blogPosts as builtInBlogPosts } from '@/data/blogs';
+import { useCmsCollection } from '@/lib/cms/useCmsCollection';
 
 const BlogPreviewSection = () => {
+    const blogPosts = useCmsCollection('blogs', builtInBlogPosts);
     // Get the latest 3 posts
     const latestPosts = blogPosts.slice(0, 3);
 

@@ -16,7 +16,8 @@ import {
     Globe,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { faqData, Language, FAQItem as FAQItemType } from '@/data/faqData'; // Import data and type
+import { Language, FAQItem as FAQItemType } from '@/data/faqData';
+import { useFaqData } from '@/lib/cms/faq';
 import { fetchCategorizedContent, PlaylistCategory, YouTubeVideo } from '@/services/youtubeService';
 import { VideoCarousel } from '@/components/SSPLSocialWallSection';
 import { LiteYouTube } from '@/components/LiteYouTube';
@@ -155,6 +156,7 @@ const FAQItem = ({ item, video }: { item: FAQItemType, video?: YouTubeVideo }) =
 };
 
 const FAQSection = () => {
+    const faqData = useFaqData();
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState<string>('registration');
     const [language, setLanguage] = useState<Language>(() => {

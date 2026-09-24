@@ -1,10 +1,12 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import SEO from '@/components/SEO';
-import fixtures from '@/data/fixtures';
+import builtInFixtures from '@/data/fixtures';
+import { useCmsCollection } from '@/lib/cms/useCmsCollection';
 import MatchCenter from '@/components/MatchCenter';
 
 const MatchCenterPage: React.FC = () => {
+  const fixtures = useCmsCollection('fixtures', builtInFixtures);
   const { id } = useParams<{ id: string }>();
   const match = fixtures.find((m) => m.id === id);
 

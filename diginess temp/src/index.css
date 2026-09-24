@@ -375,6 +375,17 @@ a {
   color: inherit;
 }
 
+/* The rule above is unlayered, so it beats every Tailwind text-color utility. Admin
+   screens (light UI) opt out: text is dark by default and utilities apply again.
+   Dialogs render in a portal, so they carry the class themselves. */
+.admin-scope {
+  color: #0f172a;
+}
+
+.admin-scope :is(p, span, div, h1, h2, h3, h4, h5, h6, li, a) {
+  color: revert-layer;
+}
+
 /* Specific overrides for muted text */
 .text-muted-foreground,
 .text-gray-500,

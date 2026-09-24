@@ -1,68 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, MapPin, Zap } from 'lucide-react';
-import selectedPlayers from '@/data/selectedPlayers.json';
-import selectedPlayers2 from '@/data/selectedPlayers2.json';
+import { featuredPlayers as builtInFeatured, type FeaturedPlayer, type FeaturedRole } from '@/data/featuredPlayers';
+import { useCmsCollection } from '@/lib/cms/useCmsCollection';
 import './PlayerCarousel.css';
-
-/**
- * Homepage "Featured selected players" strip: a hand-picked set of 12 from the full auction list
- * (spread across states, mixed roles). Everyone else lives on /auction ("Many more talents" card).
- */
-const FEATURED_IMAGES = [
-  '/assets/players/ashish-yadav.webp',
-  '/assets/players/balaji-s-srinivasan.webp',
-  '/assets/players/david.webp',
-  '/assets/players/dharshan-d.webp',
-  '/assets/players/varun-suri.webp',
-  '/assets/players/vijendra-kumar.webp',
-  '/assets/players/pranav-jadav.webp',
-  '/assets/players/sooraj-pk.webp',
-  '/assets/players/kunchapa-narashima.webp',
-  '/assets/players/md-shakir-khan.webp',
-  '/assets/players2/miriyala-ravi-chandra.webp',
-  '/assets/players/vipin-verma.webp',
-];
-
-// A few source rows spell states without a space; show them the way the reference does.
-const STATE_FIX: Record<string, string> = {
-  TAMILNADU: 'TAMIL NADU',
-  MAHARASTRA: 'MAHARASHTRA',
-  UTTARPRADESH: 'UTTAR PRADESH',
-  ANDHRAPRADESH: 'ANDHRA PRADESH',
-  MADHYAPRADESH: 'MADHYA PRADESH',
-};
-
-type Role = 'Bowler' | 'Batting' | 'All-rounder';
-
-const roleOf = (raw: string): Role => {
-  const r = (raw || '').toUpperCase();
-  if (r.startsWith('BOWL')) return 'Bowler';
-  if (r === 'AR') return 'All-rounder';
-  return 'Batting';
-};
-
-const stateOf = (location: string) => {
-  const s = (location || '').split(',').pop()?.trim().toUpperCase() ?? '';
-  return STATE_FIX[s] ?? s;
-};
-
-const byImage = new Map(
-  [...selectedPlayers, ...selectedPlayers2].map((p) => [p.image, p] as const),
-);
-
-const FEATURED = FEATURED_IMAGES.flatMap((image) => {
-  const p = byImage.get(image);
-  if (!p) return [];
-  return [{
-    name: p.name.split('-')[0].trim(),
-    state: stateOf(p.location),
-    role: roleOf(p.role),
-    image,
-    // Balaji stands to the right of frame in his source photo
-    position: p.name.includes('BALAJI') ? 'right top' : '50% 0%',
-  }];
-});
 
 const BallIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -80,7 +21,7 @@ const BatIcon = () => (
   </svg>
 );
 
-const ROLE_ICON: Record<Role, React.ReactNode> = {
+const ROLE_ICON: Record<FeaturedRole, React.ReactNode> = {
   Bowler: <BallIcon />,
   Batting: <BatIcon />,
   'All-rounder': <Zap aria-hidden="true" />,
@@ -89,7 +30,9 @@ const ROLE_ICON: Record<Role, React.ReactNode> = {
 const AUTOPLAY_MS = 3200;
 const RESUME_AFTER_TOUCH_MS = 6000;
 
+/** Homepage "Featured selected players" strip. Cards are editable in /admin/content (Featured players). */
 const PlayerCarousel = () => {
+  const players = useCmsCollection<FeaturedPlayer>('featured_players', builtInFeatured);
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
   const pausedRef = useRef(false);
@@ -122,7 +65,7 @@ const PlayerCarousel = () => {
     updateEdge();
     window.addEventListener('resize', updateEdge);
     return () => window.removeEventListener('resize', updateEdge);
-  }, [updateEdge]);
+  }, [updateEdge, players.length]);
 
   // Gentle auto-scroll: only while visible, paused on hover / focus / touch, off for reduced motion.
   useEffect(() => {
@@ -210,7 +153,7 @@ const PlayerCarousel = () => {
               tabIndex={0}
               aria-label="Featured selected players, scrollable"
             >
-              {FEATURED.map((player, i) => (
+              {players.map((player, i) => (
                 <li className="fps-card" key={player.image}>
                   <div className="fps-card__in">
                     <div className="fps-card__photo">
@@ -222,14 +165,14 @@ const PlayerCarousel = () => {
                         loading={i < 4 ? 'eager' : 'lazy'}
                         decoding="async"
                         draggable={false}
-                        style={{ objectPosition: player.position }}
+                        style={{ objectPosition: player.position || '50% 0%' }}
                       />
                       <span className="fps-card__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                     </div>
                     <div className="fps-card__body">
                       <h3 className="fps-card__name">{player.name}</h3>
                       <p className="fps-card__meta"><MapPin aria-hidden="true" /><span>{player.state}</span></p>
-                      <p className="fps-card__meta">{ROLE_ICON[player.role]}<span>{player.role}</span></p>
+                      <p className="fps-card__meta">{ROLE_ICON[player.role] ?? ROLE_ICON.Batting}<span>{player.role}</span></p>
                     </div>
                   </div>
                 </li>

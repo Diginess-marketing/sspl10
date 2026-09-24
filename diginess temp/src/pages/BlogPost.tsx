@@ -3,7 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 
 import SEO from '@/components/SEO';
 import { BlogCard } from '@/components/blog/BlogCard';
-import { blogPosts } from '@/data/blogs';
+import { blogPosts as builtInBlogPosts } from '@/data/blogs';
+import { useCmsCollection } from '@/lib/cms/useCmsCollection';
 import { OptimizedImage } from '@/components/OptimizedImage';
 import { generateArticleSchema } from '@/utils/seoOptimization';
 import { ArrowLeft, Calendar, Clock, User, Share2, Facebook, Twitter, Instagram } from 'lucide-react';
@@ -15,6 +16,7 @@ import { useToast } from '@/hooks/use-toast';
 // ... (imports remain the same, just adding useToast)
 
 const BlogPost: React.FC = () => {
+    const blogPosts = useCmsCollection('blogs', builtInBlogPosts);
     const { slug } = useParams<{ slug: string }>();
     const { toast } = useToast();
 

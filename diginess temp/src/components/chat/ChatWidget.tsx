@@ -5,7 +5,8 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AnimatePresence, motion } from 'framer-motion';
-import { faqData, Language, FAQItem } from '@/data/faqData'; // Import FAQ data
+import { Language, FAQItem } from '@/data/faqData';
+import { useFaqData } from '@/lib/cms/faq';
 import { supabase } from '@/integrations/supabase/client';
 import VoiceCallAvatar from './VoiceCallAvatar';
 
@@ -34,6 +35,7 @@ const generateSessionId = () => {
 };
 
 const ChatWidget = ({ fullScreen = false }: { fullScreen?: boolean }) => {
+    const faqData = useFaqData();
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(fullScreen ? true : false);
     const [isHovered, setIsHovered] = useState(false);
