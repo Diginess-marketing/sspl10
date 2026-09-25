@@ -74,8 +74,10 @@ const CmsCollectionEditor = ({ collection }: { collection: CmsCollectionKey }) =
     });
     const seed = useMutation({
         mutationFn: () => importItems(collection, BUILT_IN_CONTENT[collection]()),
-        onSuccess: (count) => {
-            toast({ title: 'Imported', description: `${count} built-in items are now editable. Existing items were kept.` });
+        onSuccess: ({ count, failed }) => {
+            toast(failed.length
+                ? { title: `Imported ${count} items, ${failed.length} image(s) not copied`, description: `Still served from the site: ${failed.join(', ')}`, variant: 'destructive' }
+                : { title: 'Imported', description: `${count} built-in items are now editable, with their images stored in the media library. Existing items were kept.` });
             refresh();
         },
         onError,

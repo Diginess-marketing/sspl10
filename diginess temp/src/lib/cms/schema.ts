@@ -45,6 +45,9 @@ const slugify = (value: unknown) =>
     .replace(/^-+|-+$/g, '')
     .slice(0, 80);
 
+/** Slug from an image's file name; the full URL would share one long storage prefix across items. */
+const fileSlug = (value: unknown) => slugify(String(value ?? '').split('/').pop()?.replace(/\.[a-z0-9]+$/i, ''));
+
 const byId = (item: Record<string, unknown>, index: number) =>
   String(item.id || slugify(item.title) || `item-${index + 1}`);
 
@@ -213,7 +216,7 @@ const collections = {
     description: 'Player cards in the homepage "Featured selected players" carousel, in display order.',
     titleField: 'name',
     subtitleField: 'state',
-    slugOf: (item, index) => slugify(item.image) || slugify(item.name) || `player-${index + 1}`,
+    slugOf: (item, index) => fileSlug(item.image) || slugify(item.name) || `player-${index + 1}`,
     fields: [
       { name: 'name', label: 'Player name', type: 'text', required: true },
       { name: 'state', label: 'State', type: 'text', required: true, help: 'Shown in capitals, e.g. TAMIL NADU' },
@@ -227,7 +230,7 @@ const collections = {
     description: 'Photo gallery in the homepage highlights section. The first five are the preview grid.',
     titleField: 'image',
     subtitleField: 'title',
-    slugOf: (item, index) => slugify(item.image) || `highlight-${index + 1}`,
+    slugOf: (item, index) => fileSlug(item.image) || `highlight-${index + 1}`,
     fields: [
       { name: 'image', label: 'Image', type: 'image', required: true },
       { name: 'title', label: 'Title', type: 'text' },

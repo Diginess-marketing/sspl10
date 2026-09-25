@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import TermsAndConditions from './TermsAndConditions';
@@ -17,7 +17,10 @@ import {
   History,
   CreditCard,
   Loader2,
+  Camera,
+  X,
 } from 'lucide-react';
+import { checkPlayerPhoto, uploadPlayerPhoto } from '@/lib/playerPhoto';
 import { getUTMData, storeUTMData } from '@/utils/utm';
 import { visitorLeadService } from '@/services/visitorLeadService';
 import { LoadingSpinner } from '@/components/ui/enhanced-loading';
@@ -103,6 +106,30 @@ const PlayerRegistrationStepper = () => {
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
   const [touchedFields, setTouchedFields] = useState<{ [key: string]: boolean }>({});
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+
+  // Release the preview's object URL when the photo changes or the form unmounts.
+  useEffect(() => () => { if (photoPreview) URL.revokeObjectURL(photoPreview); }, [photoPreview]);
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // allow choosing the same file again after removing it
+    if (!file) return;
+    const problem = checkPlayerPhoto(file);
+    if (problem) {
+      toast({ title: 'Photo not accepted', description: problem, variant: 'destructive' });
+      return;
+    }
+    setPhotoFile(file);
+    setPhotoPreview(URL.createObjectURL(file));
+  };
+
+  const removePhoto = () => {
+    setPhotoFile(null);
+    setPhotoPreview(null);
+  };
 
 
 
@@ -638,6 +665,16 @@ const PlayerRegistrationStepper = () => {
 
       } else {
         // ... EXISTING INDIVIDUAL LOGIC ...
+        let photoPath: string | null = null;
+        if (photoFile) {
+          try {
+            photoPath = await uploadPlayerPhoto(photoFile);
+          } catch (photoError) {
+            console.error('Player photo upload failed:', photoError);
+            throw new Error('Could not upload your photo. Please try again, or remove the photo to continue.');
+          }
+        }
+
         const payload: any = {
           full_name: formData.full_name,
           email: formData.email,
@@ -657,6 +694,8 @@ const PlayerRegistrationStepper = () => {
           utm_content: (utmData as any)?.utm_content || null,
           utm_term: (utmData as any)?.utm_term || null,
           qr_code_id: qrCodeId || null,
+          // Only sent with a photo, so registrations without one never depend on the column.
+          ...(photoPath && { photo_url: photoPath }),
         };
 
         console.log('Sending registration payload:', payload);
@@ -739,7 +778,8 @@ const PlayerRegistrationStepper = () => {
 
               if (newRecord && (newRecord.status === 'captured' || newRecord.status === 'authorized')) {
                 setPaymentData({
-                  paymentId: newRecord.payment_id,
+                  razorpay_payment_id: newRecord.payment_id,
+                  razorpay_order_id: order.id,
                   amount: newRecord.amount,
                   date: new Date().toLocaleDateString(),
                   registrationId,
@@ -790,7 +830,8 @@ const PlayerRegistrationStepper = () => {
 
             // 4. Show Success immediately (Client-side fallback/primary)
             setPaymentData({
-              paymentId: response.razorpay_payment_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id || order.id,
               amount: order.amount / 100,
               date: new Date().toLocaleDateString(),
               registrationId,
@@ -808,7 +849,8 @@ const PlayerRegistrationStepper = () => {
 
             // Still show success modal as per user instruction "Show success modal immediately"
             setPaymentData({
-              paymentId: response.razorpay_payment_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id || order.id,
               amount: order.amount / 100,
               date: new Date().toLocaleDateString(),
               registrationId,
@@ -1053,6 +1095,43 @@ const PlayerRegistrationStepper = () => {
                           placeholder="Enter School or College Name"
                         />
                       </div>
+                    </div>
+                    <div className="mt-4">
+                      <label htmlFor="player_photo" className="block text-sm font-bold !text-black mb-2">Player Photo</label>
+                      <input
+                        ref={photoInputRef}
+                        id="player_photo"
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp"
+                        onChange={handlePhotoChange}
+                        className="sr-only"
+                      />
+                      {photoPreview ? (
+                        <div className="flex items-center gap-4 p-3 bg-white border-2 border-slate-200 rounded-xl">
+                          <img src={photoPreview} alt="Selected player photo" className="w-20 h-20 rounded-lg object-cover object-top shrink-0" />
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-medium !text-black truncate">{photoFile?.name}</p>
+                            <button type="button" onClick={() => photoInputRef.current?.click()} className="mt-1 text-sm font-bold text-blue-600 underline">
+                              Change photo
+                            </button>
+                          </div>
+                          <button type="button" onClick={removePhoto} aria-label="Remove photo" className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-red-600">
+                            <X className="w-5 h-5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => photoInputRef.current?.click()}
+                          className="w-full flex items-center gap-3 px-4 py-4 bg-white border-2 border-dashed border-slate-300 rounded-xl text-left hover:border-[#8B5CF6] focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all"
+                        >
+                          <Camera className="w-6 h-6 text-blue-600 shrink-0" />
+                          <span>
+                            <span className="block text-sm font-bold !text-black">Upload a photo</span>
+                            <span className="block !text-xs !text-slate-500">Clear face photo · JPG, PNG or WEBP</span>
+                          </span>
+                        </button>
+                      )}
                     </div>
                   </div>
 
@@ -1307,8 +1386,11 @@ const PlayerRegistrationStepper = () => {
               position: createdRegistration.position,
               pincode: createdRegistration.pincode,
               preferred_trials: createdRegistration.preferred_trials,
+              school_name: createdRegistration.school_name,
             }}
             paymentData={paymentData}
+            photoUrl={photoPreview}
+            photoFile={photoFile}
           />
         </Suspense>
       )}

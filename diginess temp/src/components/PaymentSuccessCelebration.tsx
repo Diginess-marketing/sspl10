@@ -11,7 +11,9 @@ import {
   Share2,
   Home,
   FileText,
+  Loader2,
 } from 'lucide-react';
+import { downloadRegistrationReceipt } from '@/lib/registrationReceipt';
 import './PaymentSuccessCelebration.css';
 
 interface PlayerDetails {
@@ -24,6 +26,7 @@ interface PlayerDetails {
   position: string;
   pincode: string;
   preferred_trials?: string;
+  school_name?: string;
 }
 
 interface PaymentSuccessCelebrationProps {
@@ -36,6 +39,10 @@ interface PaymentSuccessCelebrationProps {
     amount: number;
     registrationId: string;
   };
+  /** Local preview URL of the photo the player uploaded, if any. */
+  photoUrl?: string | null;
+  /** The photo file itself; the receipt reads this directly, so it never depends on the preview URL. */
+  photoFile?: Blob | null;
 }
 
 interface ConfettiPiece {
@@ -52,6 +59,8 @@ const PaymentSuccessCelebration: React.FC<PaymentSuccessCelebrationProps> = ({
   onClose,
   playerDetails,
   paymentData,
+  photoUrl,
+  photoFile,
 }) => {
   const [showConfetti, setShowConfetti] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
@@ -108,155 +117,34 @@ const PaymentSuccessCelebration: React.FC<PaymentSuccessCelebrationProps> = ({
     }
   }, [isOpen]);
 
-  const downloadReceipt = () => {
-    // Track receipt download
-    googleAnalytics.trackDownload('registration_receipt', `SSPL_Receipt_${playerDetails.full_name}_${paymentData.registrationId}.html`);
+  const [isDownloading, setIsDownloading] = useState(false);
 
-    const receiptData = {
-      playerName: playerDetails.full_name,
-      playerId: paymentData.registrationId,
-      email: playerDetails.email,
-      phone: playerDetails.phone,
-      dateOfBirth: playerDetails.date_of_birth,
-      position: playerDetails.position,
-      state: playerDetails.state,
-      city: playerDetails.city,
-      pincode: playerDetails.pincode,
-      preferredTrials: playerDetails.preferred_trials,
-      paymentAmount: paymentData.amount,
-      paymentId: paymentData.razorpay_payment_id,
-      orderId: paymentData.razorpay_order_id,
-      registrationDate: new Date().toLocaleDateString(),
-    };
-
-    // Sanitize user data to prevent XSS
-    const sanitizeHTML = (str: string | undefined | null): string => {
-      if (!str) return 'N/A';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#x27;')
-        .replace(/\//g, '&#x2F;');
-    };
-
-    const receiptHTML = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>SSPL T10 Registration Receipt</title>
-          <style>
-            body { font-family: Arial, sans-serif; margin: 20px; }
-            .header { text-align: center; border-bottom: 2px solid #0066CC; padding-bottom: 20px; margin-bottom: 30px; }
-            .logo-image { width: 100px; height: auto; margin-bottom: 10px; }
-            .receipt-title { color: #FFD700; font-size: 18px; margin-top: 10px; }
-            .details { margin: 20px 0; }
-            .detail-row { display: flex; margin: 10px 0; }
-            .label { font-weight: bold; width: 200px; }
-            .value { flex: 1; }
-            .footer { margin-top: 40px; text-align: center; font-size: 12px; color: #666; }
-            .status { padding: 5px 10px; border-radius: 4px; display: inline-block; }
-            .status.completed { background: #d4edda; color: #155724; }
-          </style>
-        </head>
-        <body>
-          <div class="header">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" class="logo-image" role="img" aria-label="SSPL T10 Logo">
-              <rect width="200" height="60" rx="8" fill="#0066CC"/>
-              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#FFD700">SSPL T10</text>
-            </svg>
-            <div class="receipt-title">Player Registration Receipt</div>
-          </div>
-
-          <div class="details">
-            <div class="detail-row">
-              <span class="label">Player ID:</span>
-              <span class="value" style="font-weight: bold; color: #0066CC; font-family: monospace;">${sanitizeHTML(receiptData.playerId)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Registration ID:</span>
-              <span class="value">${sanitizeHTML(receiptData.playerId)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Player Name:</span>
-              <span class="value">${sanitizeHTML(receiptData.playerName)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Email:</span>
-              <span class="value">${sanitizeHTML(receiptData.email)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Phone:</span>
-              <span class="value">${sanitizeHTML(receiptData.phone)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Date of Birth:</span>
-              <span class="value">${sanitizeHTML(receiptData.dateOfBirth)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Player Type:</span>
-              <span class="value">${sanitizeHTML(receiptData.position)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">State:</span>
-              <span class="value">${sanitizeHTML(receiptData.state)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">City:</span>
-              <span class="value">${sanitizeHTML(receiptData.city)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">PIN Code:</span>
-              <span class="value">${sanitizeHTML(receiptData.pincode)}</span>
-            </div>
-            ${receiptData.preferredTrials ? `
-            <div class="detail-row">
-              <span class="label">Preferred Trials:</span>
-              <span class="value">${sanitizeHTML(receiptData.preferredTrials)}</span>
-            </div>
-            ` : ''}
-            <div class="detail-row">
-              <span class="label">Payment Amount:</span>
-              <span class="value">₹${sanitizeHTML(String(receiptData.paymentAmount))}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Payment ID:</span>
-              <span class="value" style="font-family: monospace;">${sanitizeHTML(receiptData.paymentId)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Order ID:</span>
-              <span class="value" style="font-family: monospace;">${sanitizeHTML(receiptData.orderId)}</span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Payment Status:</span>
-              <span class="value">
-                <span class="status completed">Completed</span>
-              </span>
-            </div>
-            <div class="detail-row">
-              <span class="label">Registration Date:</span>
-              <span class="value">${sanitizeHTML(receiptData.registrationDate)}</span>
-            </div>
-          </div>
-
-          <div class="footer">
-            <p>Thank you for registering with SSPL T10!</p>
-            <p>This receipt confirms your player registration details.</p>
-          </div>
-        </body>
-      </html>
-    `;
-
-    const blob = new Blob([receiptHTML], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `SSPL_Receipt_${playerDetails.full_name}_${paymentData.registrationId}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+  const downloadReceipt = async () => {
+    googleAnalytics.trackDownload('registration_receipt', `SSPL_Receipt_${paymentData.registrationId}.pdf`);
+    setIsDownloading(true);
+    try {
+      await downloadRegistrationReceipt({
+        registrationId: paymentData.registrationId,
+        fullName: playerDetails.full_name,
+        email: playerDetails.email,
+        phone: playerDetails.phone,
+        dateOfBirth: playerDetails.date_of_birth,
+        position: playerDetails.position,
+        city: playerDetails.city,
+        state: playerDetails.state,
+        pincode: playerDetails.pincode,
+        preferredTrials: playerDetails.preferred_trials,
+        schoolName: playerDetails.school_name,
+        amount: paymentData.amount,
+        paymentId: paymentData.razorpay_payment_id,
+        orderId: paymentData.razorpay_order_id,
+        photo: photoFile ?? photoUrl,
+      });
+    } catch (error) {
+      console.error('Receipt download failed', error);
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   const hasNativeShare = (): boolean => {
@@ -358,27 +246,33 @@ const PaymentSuccessCelebration: React.FC<PaymentSuccessCelebrationProps> = ({
             </div>
 
             {/* Player Details Card */}
-            <Card className="mb-4 border-green-200 bg-green-50">
-              <CardContent className="p-3">
+            {/* Explicit !text-* colours: the site's global styles otherwise turn this text white. */}
+            <Card className="mb-4 border-white/60 !bg-white shadow-lg">
+              <CardContent className="p-4">
                 <div className="flex items-center justify-center gap-2 mb-4">
                   <Trophy className="w-6 h-6 text-yellow-500" />
-                  <h3 className="text-lg font-bold text-green-800">Player Details</h3>
+                  <h3 className="!text-lg font-bold !text-[#0a1240]">Player Details</h3>
                   <Trophy className="w-6 h-6 text-yellow-500" />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 text-left">
-                  <div className="space-y-2">
-                    <p><strong>Player ID:</strong> <span className="font-mono text-blue-600">{paymentData.registrationId}</span></p>
-                    <p><strong>Name:</strong> {playerDetails.full_name}</p>
-                    <p><strong>Email:</strong> {playerDetails.email}</p>
-                    <p><strong>Phone:</strong> {playerDetails.phone}</p>
-                  </div>
-                  <div className="space-y-2">
-                    <p><strong>Position:</strong> <Badge variant="secondary">{playerDetails.position}</Badge></p>
-                    <p><strong>Location:</strong> {playerDetails.city}, {playerDetails.state}</p>
-                    <p><strong>Payment ID:</strong> <span className="font-mono text-sm">{paymentData.razorpay_payment_id}</span></p>
-                    <p><strong>Amount Paid:</strong> <span className="font-bold text-green-600">₹{paymentData.amount}</span></p>
-                  </div>
+                <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start text-left">
+                  {photoUrl ? (
+                    <img src={photoUrl} alt={playerDetails.full_name} className="w-24 h-28 rounded-xl object-cover object-top shrink-0 border-4 border-[#eef5ff]" />
+                  ) : (
+                    <div className="w-24 h-28 rounded-xl bg-[#eef5ff] shrink-0 flex items-center justify-center !text-4xl font-bold !text-[#1f57d6]" aria-hidden="true">
+                      {(playerDetails.full_name?.trim()[0] || '?').toUpperCase()}
+                    </div>
+                  )}
+                  <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 flex-1 min-w-0 !text-sm !text-[#0a1240]">
+                    <div className="sm:col-span-2"><dt className="inline font-bold">Player ID: </dt><dd className="inline font-mono !text-[#1f57d6] break-all">{paymentData.registrationId}</dd></div>
+                    <div><dt className="inline font-bold">Name: </dt><dd className="inline">{playerDetails.full_name}</dd></div>
+                    <div><dt className="inline font-bold">Position: </dt><dd className="inline"><Badge variant="secondary">{playerDetails.position}</Badge></dd></div>
+                    <div className="min-w-0"><dt className="inline font-bold">Email: </dt><dd className="inline break-all">{playerDetails.email}</dd></div>
+                    <div><dt className="inline font-bold">Phone: </dt><dd className="inline">{playerDetails.phone}</dd></div>
+                    <div className="sm:col-span-2"><dt className="inline font-bold">Location: </dt><dd className="inline">{playerDetails.city}, {playerDetails.state}</dd></div>
+                    <div className="min-w-0"><dt className="inline font-bold">Payment ID: </dt><dd className="inline font-mono break-all">{paymentData.razorpay_payment_id || '—'}</dd></div>
+                    <div><dt className="inline font-bold">Amount Paid: </dt><dd className="inline font-bold !text-green-700">₹{paymentData.amount}</dd></div>
+                  </dl>
                 </div>
               </CardContent>
             </Card>
@@ -392,9 +286,10 @@ const PaymentSuccessCelebration: React.FC<PaymentSuccessCelebrationProps> = ({
                 }}
                 variant="outline"
                 className="flex items-center gap-2"
+                disabled={isDownloading}
               >
-                <FileText className="w-4 h-4" />
-                Download Receipt
+                {isDownloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <FileText className="w-4 h-4" />}
+                {isDownloading ? 'Preparing PDF…' : 'Download Receipt'}
               </Button>
 
               <Button

@@ -67,7 +67,8 @@
     "ssg:serve": "npm run ssg:generate && npx serve dist-ssg -p 4175",
     "port:check": "node scripts/port-manager.js",
     "port:clean": "node scripts/port-clean.js",
-    "port:force-clean": "taskkill /f /im node.exe"
+    "port:force-clean": "taskkill /f /im node.exe",
+    "api:local": "node --env-file=.env.server-local server.cjs"
   },
   "dependencies": {
     "@azure/identity": "^4.13.1",

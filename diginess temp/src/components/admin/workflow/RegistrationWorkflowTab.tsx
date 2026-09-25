@@ -121,7 +121,7 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
         // Test with direct REST API call to bypass Supabase client issues
         console.log('📋 Step 2: Testing with direct API call...');
         try {
-          const supabaseUrl = 'https://fazpykekypcktcmniwbj.supabase.co';
+          const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
           const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
           console.log('📋 Making direct fetch to:', `${supabaseUrl}/rest/v1/player_registrations`);
@@ -170,7 +170,7 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
 
         // Use direct fetch since Supabase client is timing out - fetch ALL records
         console.log('📋 Step 3: Fetching ALL data via direct API...');
-        const supabaseUrl = 'https://fazpykekypcktcmniwbj.supabase.co';
+        const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
         const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
         const fields = 'id,full_name,email,phone,payment_status,payment_amount,razorpay_order_id,razorpay_payment_id,created_at,updated_at,position,date_of_birth,city,state,status';
@@ -383,6 +383,12 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
     return true;
   });
 
+  // Defined before first use: readyForTrialsCount below calls it during render.
+  const isEligibleForSelection = (player: PlayerRegistrationWithEmailStatus) => {
+    const status = player.payment_status?.toLowerCase();
+    return status === 'completed' || status === 'paid' || status === 'success' || status === 'captured';
+  };
+
   // Get count of players ready for trials (paid + email sent)
   const readyForTrialsCount = filteredPlayers.filter(
     p => isEligibleForSelection(p) && p.confirmation_email_sent,
@@ -478,11 +484,6 @@ const RegistrationWorkflowTab = ({ onRefresh }: RegistrationWorkflowTabProps) =>
     } finally {
       setSendingEmailFor(null);
     }
-  };
-
-  const isEligibleForSelection = (player: PlayerRegistrationWithEmailStatus) => {
-    const status = player.payment_status?.toLowerCase();
-    return status === 'completed' || status === 'paid' || status === 'success' || status === 'captured';
   };
 
   return (

@@ -20,12 +20,25 @@ import {
   Trash2,
 } from 'lucide-react';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import type { TrialsSectionPlayer } from '@/types/workflow';
 
 interface TrialsSectionTabProps {
   onRefresh: () => void;
 }
+
+const BATCH_PRESETS = ['Morning Batch', 'Afternoon Batch', 'Evening Batch', 'Batch A', 'Batch B'];
+
+/** "Sat, 24 Sep 2026 · 09:00 · Venue · Batch" for the allocation dialog's summary line. */
+const describeAllocation = (date: string, time: string, venue: string, batch: string) => {
+  if (!date) return '';
+  const day = new Date(`${date}T00:00:00`);
+  const dayLabel = Number.isNaN(day.getTime())
+    ? date
+    : day.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+  return [dayLabel, time, venue.trim(), batch.trim()].filter(Boolean).join(' · ');
+};
 
 const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
   const [players, setPlayers] = useState<TrialsSectionPlayer[]>([]);
@@ -42,6 +55,26 @@ const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
   const [allocationVenue, setAllocationVenue] = useState('');
   const [allocationBatch, setAllocationBatch] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [pastVenues, setPastVenues] = useState<string[]>([]);
+
+  const today = new Date().toISOString().split('T')[0];
+  const selectedPlayers = players.filter((p) => selectedIds.has(p.workflow_id));
+  const allocationSummary = describeAllocation(allocationDate, allocationTime, allocationVenue, allocationBatch);
+
+  // Venues used in earlier allocations, offered as suggestions when the dialog opens.
+  useEffect(() => {
+    if (!showAllocationDialog) return;
+    supabase
+      .from('trials_allocations')
+      .select('allocation_venue')
+      .not('allocation_venue', 'is', null)
+      .order('created_at', { ascending: false })
+      .limit(200)
+      .then(({ data }) => {
+        const venues = (data ?? []).map((row) => row.allocation_venue?.trim()).filter((v): v is string => Boolean(v));
+        setPastVenues([...new Set(venues)].slice(0, 20));
+      });
+  }, [showAllocationDialog]);
 
   const { user } = useAuth();
   const {
@@ -378,91 +411,155 @@ const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
 
       {/* Allocation Dialog */}
       <Dialog open={showAllocationDialog} onOpenChange={setShowAllocationDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2 text-purple-700">
-              <CalendarCheck className="w-5 h-5" />
-              Allocate to Trials
-            </DialogTitle>
-            <DialogDescription>
-              Set trial details for {selectedIds.size} selected player(s)
-            </DialogDescription>
+        {/* admin-scope + explicit colours: dialogs render outside the admin layout, where the
+            site's global heading/label styles would otherwise turn this text white. */}
+        <DialogContent className="admin-scope bg-white p-0 gap-0 sm:max-w-lg max-h-[90vh] overflow-hidden flex flex-col">
+          <DialogHeader className="px-6 pt-6 pb-4 border-b border-slate-100 text-left space-y-1">
+            <div className="flex items-center gap-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-purple-700">
+                <CalendarCheck className="w-5 h-5" />
+              </span>
+              <div>
+                <DialogTitle className="!text-xl font-bold !text-slate-900 normal-case tracking-normal">
+                  Allocate to Trials
+                </DialogTitle>
+                <DialogDescription className="!text-sm !text-slate-500">
+                  Set the trial slot for {selectedIds.size} selected player{selectedIds.size === 1 ? '' : 's'}
+                </DialogDescription>
+              </div>
+            </div>
           </DialogHeader>
 
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="date" className="flex items-center gap-2">
-                <Calendar className="w-4 h-4" />
-                Trial Date *
-              </Label>
-              <Input
-                id="date"
-                type="date"
-                value={allocationDate}
-                onChange={(e) => setAllocationDate(e.target.value)}
-                required
-              />
+          <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+            {/* Who is being allocated */}
+            <div className="rounded-xl bg-purple-50/70 border border-purple-100 p-3">
+              <p className="!text-xs font-semibold uppercase tracking-wide !text-purple-700 mb-2">Players</p>
+              <div className="flex flex-wrap gap-1.5">
+                {selectedPlayers.slice(0, 8).map((p) => (
+                  <span key={p.workflow_id} className="rounded-full bg-white border border-purple-200 px-2.5 py-0.5 !text-xs font-medium !text-slate-700">
+                    {p.full_name}
+                  </span>
+                ))}
+                {selectedPlayers.length > 8 && (
+                  <span className="rounded-full bg-purple-600 px-2.5 py-0.5 !text-xs font-semibold !text-white">
+                    +{selectedPlayers.length - 8} more
+                  </span>
+                )}
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="time" className="flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                Trial Time
-              </Label>
-              <Input
-                id="time"
-                type="time"
-                value={allocationTime}
-                onChange={(e) => setAllocationTime(e.target.value)}
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="date" className="!flex items-center gap-1.5 !text-sm font-semibold !text-slate-700">
+                  <Calendar className="inline-block align-[-3px] mr-1.5 w-4 h-4 text-purple-600" />
+                  Trial date <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="date"
+                  type="date"
+                  min={today}
+                  value={allocationDate}
+                  onChange={(e) => setAllocationDate(e.target.value)}
+                  className="h-11 !text-slate-900"
+                  required
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="time" className="!flex items-center gap-1.5 !text-sm font-semibold !text-slate-700">
+                  <Clock className="inline-block align-[-3px] mr-1.5 w-4 h-4 text-purple-600" />
+                  Reporting time
+                </Label>
+                <Input
+                  id="time"
+                  type="time"
+                  value={allocationTime}
+                  onChange={(e) => setAllocationTime(e.target.value)}
+                  className="h-11 !text-slate-900"
+                />
+              </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="venue" className="flex items-center gap-2">
-                <MapPin className="w-4 h-4" />
+            <div className="space-y-1.5">
+              <Label htmlFor="venue" className="!flex items-center gap-1.5 !text-sm font-semibold !text-slate-700">
+                <MapPin className="inline-block align-[-3px] mr-1.5 w-4 h-4 text-purple-600" />
                 Venue
               </Label>
               <Input
                 id="venue"
-                placeholder="Enter trial venue"
+                list="trial-venue-options"
+                placeholder="Ground name and city"
                 value={allocationVenue}
                 onChange={(e) => setAllocationVenue(e.target.value)}
+                className="h-11 !text-slate-900"
               />
+              <datalist id="trial-venue-options">
+                {pastVenues.map((venue) => <option key={venue} value={venue} />)}
+              </datalist>
+              {pastVenues.length > 0 && (
+                <p className="!text-xs !text-slate-500">Start typing to reuse a venue from earlier allocations.</p>
+              )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="batch" className="flex items-center gap-2">
-                <Users className="w-4 h-4" />
+            <div className="space-y-1.5">
+              <Label htmlFor="batch" className="!flex items-center gap-1.5 !text-sm font-semibold !text-slate-700">
+                <Users className="inline-block align-[-3px] mr-1.5 w-4 h-4 text-purple-600" />
                 Batch
               </Label>
               <Input
                 id="batch"
-                placeholder="e.g., Batch A, Morning Batch"
+                placeholder="e.g. Batch A, Morning Batch"
                 value={allocationBatch}
                 onChange={(e) => setAllocationBatch(e.target.value)}
+                className="h-11 !text-slate-900"
               />
+              <div className="flex flex-wrap gap-1.5 pt-1">
+                {BATCH_PRESETS.map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => setAllocationBatch(preset)}
+                    aria-pressed={allocationBatch === preset}
+                    className={`!min-h-0 !min-w-0 rounded-full border px-3 py-1 !text-xs font-medium transition-colors ${allocationBatch === preset
+                      ? 'border-purple-600 bg-purple-600 !text-white'
+                      : 'border-slate-200 bg-white !text-slate-600 hover:border-purple-300 hover:bg-purple-50'}`}
+                  >
+                    {preset}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Live summary of what will be saved */}
+            <div className="flex items-start gap-2.5 rounded-xl border border-slate-200 bg-slate-50 p-3">
+              <CalendarCheck className="w-4 h-4 mt-0.5 shrink-0 text-purple-600" />
+              <p className="!text-sm !text-slate-700">
+                <strong className="!text-slate-900">{selectedIds.size} player{selectedIds.size === 1 ? '' : 's'}</strong>
+                {' → '}
+                {allocationSummary || 'choose a trial date'}
+              </p>
             </div>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="px-6 py-4 border-t border-slate-100 bg-slate-50/60 gap-2 sm:gap-2">
             <Button
               variant="outline"
               onClick={() => setShowAllocationDialog(false)}
               disabled={processing}
+              className="border-slate-300 bg-white !text-slate-700 hover:bg-slate-100"
             >
               Cancel
             </Button>
             <Button
               onClick={handleAllocate}
               disabled={processing || !allocationDate}
-              className="bg-purple-600 hover:bg-purple-700"
+              className="![background-image:none] !bg-purple-600 hover:!bg-purple-700 !text-white normal-case tracking-normal"
             >
               {processing ? (
                 <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
               ) : (
                 <ArrowRight className="w-4 h-4 mr-2" />
               )}
-              Allocate ({selectedIds.size})
+              Allocate {selectedIds.size} player{selectedIds.size === 1 ? '' : 's'}
             </Button>
           </DialogFooter>
         </DialogContent>

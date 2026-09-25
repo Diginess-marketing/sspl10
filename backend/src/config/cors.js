@@ -35,6 +35,10 @@ export const corsOptions = {
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
+    // Any local dev server port (e.g. Vite on 127.0.0.1:5199), outside production only.
+    if (!env.isProduction && /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+      return callback(null, true);
+    }
     return callback(new Error('Not allowed by CORS'), false);
   },
 };
