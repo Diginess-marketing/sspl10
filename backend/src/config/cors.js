@@ -1,6 +1,6 @@
 import env from './env.js';
 
-const allowedOrigins = [
+const baseAllowedOrigins = [
   'https://ssplt10.co.in',
   'https://www.ssplt10.co.in',
   'https://ssplt10.cloud',
@@ -21,6 +21,13 @@ const allowedOrigins = [
   'http://127.0.0.1:5173',
 ];
 
+const envAllowedOrigins = (process.env.ALLOWED_ORIGINS || process.env.FRONTEND_URL || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+const allowedOrigins = [...new Set([...baseAllowedOrigins, ...envAllowedOrigins])];
+
 export const corsOptions = {
   origin(origin, callback) {
     // Requests with no origin (curl, mobile apps, file://) are allowed outside
@@ -35,6 +42,12 @@ export const corsOptions = {
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
+
+    // Allow Vercel preview and production deployments (*.vercel.app)
+    if (/^https:\/\/[a-zA-Z0-9-_.]+\.vercel\.app$/.test(origin)) {
+      return callback(null, true);
+    }
+
     // Any local dev server port (e.g. Vite on 127.0.0.1:5199), outside production only.
     if (!env.isProduction && /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
       return callback(null, true);
