@@ -2,13 +2,13 @@ import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Link2 } from 'lucide-react';
 import './FooterSection.css';
 
-// Same live links as before; icons are the local navy set (no external icon CDNs).
-const SOCIALS = [
-  { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61579163954407', icon: '/assets/img/social-media-F.png' },
-  { label: 'X (Twitter)', href: 'https://x.com/ssplt10/', icon: '/assets/img/social-media-X.png' },
-  { label: 'Instagram', href: 'https://instagram.com/ssplt10', icon: '/assets/img/social-media-inst.png' },
-  { label: 'YouTube', href: 'https://www.youtube.com/@Southernstreetpremierleague', icon: '/assets/img/social-media-you.png' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/ssplt10/posts/?feedView=all', icon: '/assets/img/social-media-in.png' },
+// Same live links as before; icons are each platform's own brand colors (no external icon CDNs).
+export const SOCIALS = [
+  { label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61579163954407', icon: '/assets/img/social-color-facebook.svg' },
+  { label: 'X (Twitter)', href: 'https://x.com/ssplt10/', icon: '/assets/img/social-color-x.svg' },
+  { label: 'Instagram', href: 'https://instagram.com/ssplt10', icon: '/assets/img/social-color-instagram.svg' },
+  { label: 'YouTube', href: 'https://www.youtube.com/@Southernstreetpremierleague', icon: '/assets/img/social-color-youtube.svg' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/company/ssplt10/posts/?feedView=all', icon: '/assets/img/social-color-linkedin.svg' },
   { label: 'ShareChat', href: 'https://sharechat.com/profile/ssplt10?d=n', icon: '/assets/img/social-media-share chat.png' },
   { label: 'Moj', href: 'https://mojapp.in/@ssplt10?referrer=V8q0NIm-1fORME9', icon: '/assets/img/social-media-moj.png' },
 ];

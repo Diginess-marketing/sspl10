@@ -396,7 +396,7 @@ const FAQSection = () => {
                 {/* Header */}
                 <div className="text-center mb-12 relative z-10">
                     {/* Language Toggle Dropdown */}
-                    <div className="flex justify-center md:justify-end mb-6 md:absolute md:top-0 md:right-0 z-20 notranslate" translate="no">
+                    <div className="flex justify-center md:justify-end mb-6 z-20 notranslate" translate="no">
                         <Select
                             value={language}
                             onValueChange={(val) => toggleLanguage(val as Language)}
@@ -417,10 +417,10 @@ const FAQSection = () => {
                         </Select>
                     </div>
 
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight font-heading uppercase">
+                    <h2 className="brand-h2 brand-h2--on-dark mb-4">
                         {t.title}
                     </h2>
-                    <p className="text-lg text-white/70 max-w-2xl mx-auto mb-8 font-medium">
+                    <p className="brand-lead brand-lead--on-dark mx-auto mb-8 text-center">
                         {t.subtitle}
                     </p>
 

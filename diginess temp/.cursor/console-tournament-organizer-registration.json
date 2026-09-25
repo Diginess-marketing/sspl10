@@ -1,0 +1,125 @@
+{
+  "url": "http://127.0.0.1:5199/tournament-organizer-registration",
+  "capturedAt": "2026-09-25T17:01:03.771Z",
+  "browser": "channel:chrome",
+  "navigationError": null,
+  "console": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/admin_settings?select=*&config_key=eq.google_analytics_config:0:0",
+      "ts": 1790355651295
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/website_content?select=*:0:0",
+      "ts": 1790355651828
+    },
+    {
+      "type": "error",
+      "text": "WebSocket connection to 'ws://127.0.0.1:54321/realtime/v1/websocket?apikey=local-dummy-key-not-real&eventsPerSecond=10&vsn=2.0.0' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:5199/node_modules/.vite/deps/@supabase_supabase-js.js?v=af4320ee:6151:0",
+      "ts": 1790355651828
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.faq&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790355652234
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/admin_settings?select=*&config_key=eq.google_analytics_config:0:0",
+      "ts": 1790355652347
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/website_content?select=*:0:0",
+      "ts": 1790355652957
+    },
+    {
+      "type": "error",
+      "text": "WebSocket connection to 'ws://127.0.0.1:54321/realtime/v1/websocket?apikey=local-dummy-key-not-real&eventsPerSecond=10&vsn=2.0.0' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:5199/node_modules/.vite/deps/@supabase_supabase-js.js?v=af4320ee:6151:0",
+      "ts": 1790355652958
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.faq&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790355653243
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/admin_settings?select=*&config_key=eq.google_analytics_config:0:0",
+      "ts": 1790355654349
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/website_content?select=*:0:0",
+      "ts": 1790355654962
+    },
+    {
+      "type": "error",
+      "text": "WebSocket connection to 'ws://127.0.0.1:54321/realtime/v1/websocket?apikey=local-dummy-key-not-real&eventsPerSecond=10&vsn=2.0.0' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:5199/node_modules/.vite/deps/@supabase_supabase-js.js?v=af4320ee:6151:0",
+      "ts": 1790355654963
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.faq&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790355655245
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/admin_settings?select=*&config_key=eq.google_analytics_config:0:0",
+      "ts": 1790355658352
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/website_content?select=*:0:0",
+      "ts": 1790355658964
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.faq&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790355659248
+    },
+    {
+      "type": "error",
+      "text": "WebSocket connection to 'ws://127.0.0.1:54321/realtime/v1/websocket?apikey=local-dummy-key-not-real&eventsPerSecond=10&vsn=2.0.0' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:5199/node_modules/.vite/deps/@supabase_supabase-js.js?v=af4320ee:6151:0",
+      "ts": 1790355659970
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.faq&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790355660258
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.faq&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790355661261
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [],
+  "summary": {
+    "errors": 18,
+    "warnings": 0,
+    "pageErrors": 0,
+    "failedRequests": 0,
+    "ok": false
+  }
+}

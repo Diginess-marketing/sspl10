@@ -1,0 +1,49 @@
+/* Custom glowing tennis-ball cursor — desktop/fine-pointer only, mounted by CricketCursor.tsx */
+body.cricket-cursor-active,
+body.cricket-cursor-active a,
+body.cricket-cursor-active button,
+body.cricket-cursor-active input,
+body.cricket-cursor-active textarea,
+body.cricket-cursor-active select,
+body.cricket-cursor-active [role='button'] {
+  cursor: none;
+}
+
+.cricket-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f3ff8a 0%, var(--brand-lime, #dffc35) 55%, var(--brand-lime-deep, #a6cc00) 100%);
+  box-shadow: 0 0 8px 2px rgba(223, 252, 53, 0.65), 0 0 18px 6px rgba(223, 252, 53, 0.35);
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  animation: cricket-cursor-glow 1.6s ease-in-out infinite;
+}
+
+.cricket-cursor__seam {
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  border: 1px solid rgba(10, 18, 64, 0.35);
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  transform: rotate(35deg);
+}
+
+.cricket-cursor--hit {
+  transform: scale(0.75);
+}
+
+@keyframes cricket-cursor-glow {
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(223, 252, 53, 0.65), 0 0 18px 6px rgba(223, 252, 53, 0.35); }
+  50% { box-shadow: 0 0 12px 4px rgba(223, 252, 53, 0.85), 0 0 26px 10px rgba(223, 252, 53, 0.5); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cricket-cursor { animation: none; }
+}

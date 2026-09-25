@@ -76,13 +76,17 @@ const VideosPage: React.FC = () => {
         ]}
       />
 
-      {/* Hero-like Title Section */}
-      <div className="bg-[#0A1628] py-16 border-b border-white/5">
-        <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold font-display uppercase tracking-wider mb-4 text-white">
-                SSPL T10 <span className="text-[#00B4D8]">Action</span>
+      {/* Hero — stadium crowd photo, dark on the left for the title */}
+      <div
+        className="brand-hero brand-hero--scrim-left py-20 md:py-28"
+        style={{ '--brand-hero-img': "url('/assets/page-heroes/videos-hero.png')" } as React.CSSProperties}
+      >
+        <span className="brand-diagonal-accent" style={{ bottom: 0 }} />
+        <div className="container mx-auto px-4">
+            <h1 className="brand-h2 brand-h2--on-dark mb-4 max-w-2xl">
+                SSPL T10 <span className="brand-accent brand-accent--on-dark">Action</span>
             </h1>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg lowercase tracking-widest">
+            <p className="brand-lead brand-lead--on-dark max-w-xl">
                 All the highlights, viral moments, and social buzz in one place.
             </p>
         </div>
@@ -98,7 +102,7 @@ const VideosPage: React.FC = () => {
       <section className="py-24 bg-[#0A1628]/50">
         <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-12">
-                <h2 className="text-3xl font-bold text-white uppercase font-display tracking-wide">Latest Highlights</h2>
+                <h2 className="brand-h2 brand-h2--on-dark">Latest Highlights</h2>
                 <div className="h-px flex-1 bg-white/10 ml-8 hidden md:block" />
             </div>
             

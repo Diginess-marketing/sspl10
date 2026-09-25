@@ -1,0 +1,179 @@
+{
+  "url": "http://127.0.0.1:5199/videos",
+  "capturedAt": "2026-09-25T17:19:47.081Z",
+  "browser": "channel:chrome",
+  "navigationError": null,
+  "console": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/admin_settings?select=*&config_key=eq.google_analytics_config:0:0",
+      "ts": 1790356774737
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/website_content?select=*:0:0",
+      "ts": 1790356774887
+    },
+    {
+      "type": "error",
+      "text": "WebSocket connection to 'ws://127.0.0.1:54321/realtime/v1/websocket?apikey=local-dummy-key-not-real&eventsPerSecond=10&vsn=2.0.0' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:5199/node_modules/.vite/deps/@supabase_supabase-js.js?v=af4320ee:6151:0",
+      "ts": 1790356774892
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/admin_settings?select=*&config_key=eq.google_analytics_config:0:0",
+      "ts": 1790356775791
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/website_content?select=*:0:0",
+      "ts": 1790356775845
+    },
+    {
+      "type": "error",
+      "text": "WebSocket connection to 'ws://127.0.0.1:54321/realtime/v1/websocket?apikey=local-dummy-key-not-real&eventsPerSecond=10&vsn=2.0.0' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:5199/node_modules/.vite/deps/@supabase_supabase-js.js?v=af4320ee:6151:0",
+      "ts": 1790356775968
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.highlights&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356778082
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.videos&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356778083
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.faq&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356778083
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/admin_settings?select=*&config_key=eq.google_analytics_config:0:0",
+      "ts": 1790356778096
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/website_content?select=*:0:0",
+      "ts": 1790356778097
+    },
+    {
+      "type": "error",
+      "text": "WebSocket connection to 'ws://127.0.0.1:54321/realtime/v1/websocket?apikey=local-dummy-key-not-real&eventsPerSecond=10&vsn=2.0.0' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:5199/node_modules/.vite/deps/@supabase_supabase-js.js?v=af4320ee:6151:0",
+      "ts": 1790356778101
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.highlights&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356779086
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.videos&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356779086
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.faq&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356779086
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.highlights&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356781094
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.faq&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356781094
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.videos&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356781095
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/admin_settings?select=*&config_key=eq.google_analytics_config:0:0",
+      "ts": 1790356782111
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/website_content?select=*:0:0",
+      "ts": 1790356782112
+    },
+    {
+      "type": "error",
+      "text": "WebSocket connection to 'ws://127.0.0.1:54321/realtime/v1/websocket?apikey=local-dummy-key-not-real&eventsPerSecond=10&vsn=2.0.0' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:5199/node_modules/.vite/deps/@supabase_supabase-js.js?v=af4320ee:6151:0",
+      "ts": 1790356783103
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.highlights&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356785098
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.faq&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356785099
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.videos&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356785099
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.highlights&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356786101
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.faq&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356786101
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "location": "http://127.0.0.1:54321/rest/v1/cms_items?select=data&collection=eq.videos&is_published=eq.true&order=sort_order.asc:0:0",
+      "ts": 1790356786102
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [],
+  "summary": {
+    "errors": 27,
+    "warnings": 0,
+    "pageErrors": 0,
+    "failedRequests": 0,
+    "ok": false
+  }
+}

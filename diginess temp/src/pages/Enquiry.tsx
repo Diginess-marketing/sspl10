@@ -86,8 +86,15 @@ const Enquiry = () => {
             <Grid item xs={12} lg={7}>
               <Card sx={{ p: { xs: 3, md: 5 }, borderRadius: 4, boxShadow: theme.shadows[10], position: 'relative', overflow: 'visible', bgcolor: '#ffffff' }}>
                 <Box sx={{ mb: 4, textAlign: 'center' }}>
-                  <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: '#001b69' }}>Send an Enquiry</Typography>
-                  <Typography variant="body2" sx={{ color: '#4b5563' }}>Fill out the form below and our team will get back to you.</Typography>
+                  <Box
+                    component="img"
+                    src="/assets/enquiry/send-an-enquiry-title.png"
+                    alt="Send an Enquiry"
+                    sx={{ height: { xs: 44, md: 64 }, width: 'auto', mx: 'auto', display: 'block', mb: 1.5 }}
+                  />
+                  <Typography className="brand-lead" sx={{ textAlign: 'center', mx: 'auto' }}>
+                    Fill out the form below and our team will get back to you.
+                  </Typography>
                 </Box>
                 <EnquiryForm />
               </Card>

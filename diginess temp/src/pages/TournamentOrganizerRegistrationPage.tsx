@@ -51,11 +51,11 @@ const TournamentOrganizerRegistrationPage: React.FC = () => {
                                         <span className="text-gray-900 text-xs font-bold uppercase tracking-[0.2em]">Partner Program</span>
                                     </div>
 
-                                    <h1 className="text-4xl md:text-6xl font-black !text-gray-900 uppercase tracking-tight mb-6 leading-[1.1]">
-                                        Tournament <br /><span className="text-blue-700">Organizers</span>
+                                    <h1 className="brand-h2 mb-6">
+                                        Tournament <br /><span className="brand-accent">Organizers</span>
                                     </h1>
-                                    <p className="text-xl text-gray-700 mb-10 leading-relaxed">
-                                        Power your tournament with SSPL T10. Register now for our **Free Tennis Ball Campaign** and get exclusive sponsorship support across India.
+                                    <p className="brand-lead mb-10">
+                                        Power your tournament with SSPL T10. Register now for our Free Tennis Ball Campaign and get exclusive sponsorship support across India.
                                     </p>
 
                                     <div className="w-full bg-blue-50 border-2 border-blue-200 px-8 py-6 rounded-3xl backdrop-blur-md shadow-xl">

@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { useWebsiteContent } from '@/hooks/useWebsiteContent';
 import { CheckCircle2, Trophy, Users, Star, Shield, Zap, Target, Award } from 'lucide-react';
 import MatchFixtures from '@/components/MatchFixtures';
@@ -32,6 +33,22 @@ const HowItWorks = () => {
         <div className="min-h-screen bg-[#001b69] relative z-10">
             <main className="pt-0">
 
+                {/* Hero — sunlit pitch photo, dark on the right for the title */}
+                <div
+                    className="brand-hero brand-hero--scrim-right py-20 md:py-28"
+                    style={{ '--brand-hero-img': "url('/assets/page-heroes/how-it-works-hero.png')" } as CSSProperties}
+                >
+                    <span className="brand-diagonal-accent" style={{ bottom: 0 }} />
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-right">
+                        <h1 className="brand-h2 brand-h2--on-dark mb-4 ml-auto">
+                            {content.title}
+                        </h1>
+                        <p className="brand-lead brand-lead--on-dark ml-auto max-w-xl">
+                            {content.tagline}
+                        </p>
+                    </div>
+                </div>
+
                 {/* Format Section with Side-by-Side Layout */}
                 <section className="py-16 md:py-24">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,10 +68,10 @@ const HowItWorks = () => {
                             {/* Format Details Cards on Left (LG) */}
                             <div className="flex-1 w-full lg:w-auto text-left">
                                 <div className="mb-10">
-                                    <h2 className="text-3xl md:text-4xl font-bold !text-white uppercase tracking-wider mb-4 border-l-4 border-sspl-orange pl-4">
+                                    <h2 className="brand-h2 brand-h2--on-dark mb-4 border-l-4 border-sspl-orange pl-4">
                                         {content.formatHeading}
                                     </h2>
-                                    <p className="text-white/70 text-lg leading-relaxed max-w-xl">
+                                    <p className="brand-lead brand-lead--on-dark max-w-xl">
                                         Understanding our unique tournament structure designed to maximize player exposure and competition.
                                     </p>
                                 </div>
@@ -82,8 +99,8 @@ const HowItWorks = () => {
                     
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                         <div className="text-center mb-20">
-                            <h2 className="text-4xl md:text-7xl font-black !text-white uppercase tracking-tighter mb-4 italic italic drop-shadow-2xl">
-                                PLAYER <span className="text-[#CCFF00]">JOURNEY</span>
+                            <h2 className="brand-h2 brand-h2--on-dark mb-4 drop-shadow-2xl">
+                                PLAYER <span className="brand-accent brand-accent--on-dark">JOURNEY</span>
                             </h2>
                             <div className="h-2 w-48 bg-linear-to-r from-[#CCFF00] to-green-500 mx-auto rounded-full mb-6"></div>
                         </div>
@@ -228,7 +245,7 @@ const HowItWorks = () => {
                 <section className="py-16 bg-white/5">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="text-center mb-12">
-                            <h2 className="text-3xl font-bold !text-white uppercase tracking-wider">{content.highlightsHeading}</h2>
+                            <h2 className="brand-h2 brand-h2--on-dark">{content.highlightsHeading}</h2>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             {content.highlights.map((item, index) => (
@@ -244,7 +261,7 @@ const HowItWorks = () => {
                 {/* CTA Section */}
                 <section className="py-20 bg-brand-primary text-white text-center">
                     <div className="max-w-4xl mx-auto px-4">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-6 font-display uppercase !text-white">Ready to Play?</h2>
+                        <h2 className="brand-h2 brand-h2--on-dark mb-6">Ready to Play?</h2>
                         <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
                             Join thousands of players who are already part of the SSPL revolution.
                         </p>

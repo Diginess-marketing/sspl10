@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { googleAnalytics } from '@/utils/googleAnalytics';
 import LanguageSelector from '@/components/LanguageSelector';
 import { useAuth } from '@/hooks/useAuth';
+import NavCricketIcon from '@/components/NavCricketIcon';
 import './Header.css';
 
 interface NavChild {
@@ -150,6 +151,7 @@ const Header = () => {
               {nav.map((item) => (
                 <li key={item.label} className={`site-nav__item${item.children ? ' has-menu' : ''}`}>
                   <Link to={item.to} className={`site-nav__link${isActive(item) ? ' is-active' : ''}`} aria-current={isActive(item) ? 'page' : undefined}>
+                    <NavCricketIcon />
                     {item.label}
                     {item.children && <span className="site-nav__chevron" aria-hidden="true" />}
                   </Link>
@@ -189,7 +191,7 @@ const Header = () => {
           <div className="site-header__actions">
             <a className="site-header__youtube" href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" aria-label="SSPL on YouTube">
               <svg viewBox="0 0 32 24" aria-hidden="true" focusable="false">
-                <rect width="32" height="24" rx="7" fill="currentColor" />
+                <rect width="32" height="24" rx="7" fill="#FF0000" />
                 <path d="M13 7.2v9.6l8.4-4.8z" fill="#fff" />
               </svg>
             </a>
@@ -209,6 +211,15 @@ const Header = () => {
               <span className="site-btn__long">Registration</span>
               <span className="site-btn__short">Register</span>
             </Link>
+
+            <img
+              className="site-header__partner-logo"
+              src="/Our-Sponsors/Royal-Peacocks-.png"
+              alt="Royal Peacocks League"
+              width={40}
+              height={40}
+              loading="lazy"
+            />
 
             <button
               ref={menuButtonRef}
@@ -241,6 +252,7 @@ const Header = () => {
               {nav.map((item) => (
                 <li key={item.label}>
                   <Link to={item.to} className={isActive(item) ? 'is-active' : ''} onClick={closeMenu} tabIndex={menuOpen ? 0 : -1}>
+                    <NavCricketIcon />
                     {item.label}
                   </Link>
                   {item.children && (

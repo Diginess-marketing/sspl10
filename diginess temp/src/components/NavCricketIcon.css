@@ -1,0 +1,57 @@
+.nav-cricket-icon {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-right: 7px;
+  vertical-align: -4px;
+}
+
+.nav-cricket-icon__bat,
+.nav-cricket-icon__ball {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: currentColor;
+  transition: transform 0.35s ease;
+}
+
+.nav-cricket-icon__bat {
+  transform-origin: 80% 80%;
+}
+
+.nav-cricket-icon__ball {
+  transform-origin: center;
+  opacity: 0.9;
+}
+
+/* Parent nav link triggers the swing + hop on hover/focus */
+.site-nav__link:hover .nav-cricket-icon__bat,
+.site-nav__link:focus-visible .nav-cricket-icon__bat,
+.site-drawer__nav a:hover .nav-cricket-icon__bat,
+.site-drawer__nav a:focus-visible .nav-cricket-icon__bat {
+  transform: rotate(-28deg);
+}
+
+.site-nav__link:hover .nav-cricket-icon__ball,
+.site-nav__link:focus-visible .nav-cricket-icon__ball,
+.site-drawer__nav a:hover .nav-cricket-icon__ball,
+.site-drawer__nav a:focus-visible .nav-cricket-icon__ball {
+  animation: nav-cricket-ball-hop 0.6s ease-in-out;
+}
+
+@keyframes nav-cricket-ball-hop {
+  0% { transform: translate(0, 0); }
+  35% { transform: translate(3px, -4px); }
+  70% { transform: translate(6px, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-cricket-icon__bat,
+  .nav-cricket-icon__ball {
+    transition: none;
+    animation: none !important;
+  }
+}

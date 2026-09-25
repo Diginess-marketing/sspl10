@@ -66,6 +66,8 @@ const PlayerProfile = lazy(() => import('./pages/PlayerProfile'));
 
 import FloatingWhatsAppButton from './components/FloatingWhatsAppButton';
 import FloatingRegistrationButton from './components/FloatingRegistrationButton';
+import CricketCursor from './components/CricketCursor';
+import SocialKneePadWidget from './components/SocialKneePadWidget';
 import SSPLChatbot from './components/SSPLChatbot';
 
 import ScrollToTop from './components/ScrollToTop';
@@ -486,6 +488,12 @@ const App = () => {
                           </Routes>
 
                           {/* Bottom Navigation for Android PWA - Removed to avoid conflicts with native bottom nav and to remove About Us */}
+
+                          {/* Custom cricket-ball cursor (desktop/fine-pointer only) */}
+                          <CricketCursor />
+
+                          {/* Right-edge social rail on a cricket knee-pad background */}
+                          <SocialKneePadWidget />
 
                           {/* Floating WhatsApp Button */}
                           <FloatingWhatsAppButton />

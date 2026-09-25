@@ -133,6 +133,8 @@
 .site-header__youtube svg { display: block; width: 34px; height: 26px; }
 .site-header__youtube:hover { color: #d92d20; transform: translateY(-1px); }
 
+.site-header__partner-logo { display: inline-block; width: 40px; height: 40px; object-fit: contain; border-radius: 50%; }
+
 .site-btn {
   display: inline-flex;
   align-items: center;
@@ -261,6 +263,10 @@
 @media (max-width: 1099px) {
   .site-header__nav { display: none; }
   .site-header__youtube { display: none; }
+}
+
+@media (max-width: 480px) {
+  .site-header__partner-logo { display: none; }
 }
 
 @media (max-width: 767px) {

@@ -1,0 +1,75 @@
+/* Right-edge social rail on the generated knee-pad background. The site's hero/section
+   copy runs flush to the left edge on most pages but leaves clear space on the right
+   (photography/illustration fills that side instead), so a persistently visible rail
+   sits safely here without a hide/peek trick. */
+.knee-widget {
+  position: fixed;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 60;
+  display: none;
+}
+
+/* Desktop/tablet only — keeps mobile viewports clear for content + the WhatsApp/registration FABs */
+@media (min-width: 900px) {
+  .knee-widget { display: block; }
+}
+
+.knee-widget__pad {
+  position: relative;
+  width: 118px;
+  height: 270px;
+  background: url('/assets/widgets/knee-pad-bg-white.png') center / contain no-repeat;
+  filter: drop-shadow(0 6px 14px rgba(10, 18, 64, 0.3));
+  transition: transform 0.25s ease;
+}
+
+.knee-widget__pad:hover {
+  transform: translateX(-4px);
+}
+
+/* Icon image is cropped tight to the pad's drawn shape, so the list's padding is tuned
+   to the pad's own rounded cap (top) and tapered point (bottom) — keeps every icon on
+   the padded body of the glove rather than spilling past its silhouette. */
+.knee-widget__list {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 30px 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.knee-widget__list a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(10, 18, 64, 0.45);
+  transition: transform 0.2s ease;
+}
+
+.knee-widget__list a:hover,
+.knee-widget__list a:focus-visible {
+  transform: scale(1.18);
+}
+
+.knee-widget__list img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .knee-widget__pad,
+  .knee-widget__list a {
+    transition: none;
+  }
+}

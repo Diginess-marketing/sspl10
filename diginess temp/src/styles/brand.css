@@ -64,6 +64,12 @@
 .brand-body { font-family: var(--brand-font-body); font-size: var(--brand-fs-body); font-weight: 400; line-height: var(--brand-lh-body); color: var(--brand-muted); }
 .brand-small { font-family: var(--brand-font-body); font-size: var(--brand-fs-small); font-weight: 400; line-height: 1.5; color: var(--brand-muted); }
 
+/* on-dark surface modifiers (brand rule: white headings, white 80% body, lime for one label — never lime text on white) */
+.brand-h2--on-dark, .brand-h3--on-dark { color: var(--brand-white); }
+.brand-lead--on-dark, .brand-body--on-dark { color: rgba(255, 255, 255, 0.8); }
+.brand-eyebrow--on-dark, .brand-label--on-dark { color: var(--brand-lime); }
+.brand-accent--on-dark { color: var(--brand-lime); }
+
 /* buttons */
 .brand-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; height: 48px; padding: 0 28px; border-radius: var(--brand-radius-pill); border: 2px solid var(--brand-navy); font-family: var(--brand-font-display); font-size: var(--brand-fs-btn); font-weight: 700; letter-spacing: var(--brand-ls-btn); text-transform: uppercase; text-decoration: none; cursor: pointer; transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s; }
 .brand-btn--primary { border-color: transparent; color: var(--brand-navy); background: linear-gradient(180deg, var(--brand-lime), var(--brand-lime-deep)); box-shadow: 0 6px 20px rgba(166, 204, 0, 0.45); }
@@ -77,3 +83,37 @@
 .brand-icon { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: var(--brand-sky-2); color: var(--brand-blue); }
 
 @media (prefers-reduced-motion: reduce) { .brand-btn { transition: none; } }
+
+/* photographic hero band: full-bleed image + gradient scrim so overlaid text/brand-h2 stays legible.
+   Pass --brand-hero-img and use .brand-hero-scrim--left or --right depending on which side is empty
+   in the source photo. Echoes the homepage's photo+diagonal-brush hero without reusing its asset. */
+.brand-hero {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--brand-navy-deep);
+  background-image: var(--brand-hero-img);
+  background-size: cover;
+  background-position: center;
+}
+.brand-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.brand-hero--scrim-left::before { background: linear-gradient(90deg, var(--brand-navy-deep) 0%, rgba(2, 20, 71, 0.85) 28%, rgba(2, 20, 71, 0.15) 60%, transparent 100%); }
+.brand-hero--scrim-right::before { background: linear-gradient(270deg, var(--brand-navy-deep) 0%, rgba(2, 20, 71, 0.85) 28%, rgba(2, 20, 71, 0.15) 60%, transparent 100%); }
+.brand-hero--scrim-full::before { background: rgba(2, 20, 71, 0.72); }
+.brand-hero > * { position: relative; z-index: 1; }
+
+/* diagonal blue-to-lime sweep — a thin CSS echo of the homepage's painted brush stroke */
+.brand-diagonal-accent {
+  position: absolute;
+  height: 10px;
+  width: 140%;
+  left: -20%;
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-lime));
+  transform: rotate(-3deg);
+  opacity: 0.85;
+  pointer-events: none;
+}

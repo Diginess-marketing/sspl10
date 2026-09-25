@@ -58,19 +58,17 @@ const ArticlesAndBlogs: React.FC = () => {
             />
 
             {/* Hero Section - Compact */}
-            <section className="relative overflow-hidden py-12 md:py-16 bg-[#001b69]">
+            <section
+                className="brand-hero brand-hero--scrim-full relative overflow-hidden py-12 md:py-16"
+                style={{ '--brand-hero-img': "url('/assets/page-heroes/articles-hero.png')" } as React.CSSProperties}
+            >
+                <span className="brand-diagonal-accent" style={{ bottom: 0 }} />
                 <div className="container relative z-10 mx-auto px-4">
                     <div className="mx-auto max-w-3xl text-center">
-                        <h1
-                            className="mb-4 text-4xl font-bold uppercase tracking-tighter md:text-6xl text-white"
-                            style={{ fontFamily: "'Russo One', sans-serif" }}
-                        >
+                        <h1 className="brand-h2 brand-h2--on-dark mb-4">
                             Inside The Game
                         </h1>
-                        <p
-                            className="mb-6 text-base !text-white/80 md:text-lg"
-                            style={{ fontFamily: "'IBM Plex Sans Condensed', 'Roboto Condensed', sans-serif" }}
-                        >
+                        <p className="brand-lead brand-lead--on-dark mb-6 text-center">
                             Expert insights, training drills, and exclusive stories from the world of SSPLT10 tennis ball cricket.
                         </p>
 
@@ -119,11 +117,10 @@ const ArticlesAndBlogs: React.FC = () => {
                             <div className="flex flex-col justify-center p-8 md:p-12">
                                 <div className="mb-4 flex items-center gap-2">
                                     <span
-                                        className="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wider"
+                                        className="brand-label rounded-full px-3 py-1"
                                         style={{
                                             background: 'rgba(0, 255, 127, 0.1)',
                                             color: '#00FF7F',
-                                            fontFamily: "'Russo One', sans-serif",
                                         }}
                                     >
                                         Featured
@@ -135,10 +132,7 @@ const ArticlesAndBlogs: React.FC = () => {
                                         {featuredPost.date}
                                     </span>
                                 </div>
-                                <h2
-                                    className="mb-4 text-3xl font-bold leading-tight md:text-4xl text-white group-hover:text-[#00FF7F] transition-colors"
-                                    style={{ fontFamily: "'Russo One', sans-serif" }}
-                                >
+                                <h2 className="brand-h3 brand-h3--on-dark mb-4 leading-tight group-hover:!text-[#00FF7F] transition-colors">
                                     {featuredPost.title}
                                 </h2>
                                 <p
@@ -148,11 +142,8 @@ const ArticlesAndBlogs: React.FC = () => {
                                     {featuredPost.excerpt}
                                 </p>
                                 <button
-                                    className="inline-flex items-center gap-2 font-bold uppercase tracking-wider transition-gap hover:gap-3"
-                                    style={{
-                                        color: '#00FF7F',
-                                        fontFamily: "'Russo One', sans-serif",
-                                    }}
+                                    className="brand-btn inline-flex items-center gap-2 transition-gap hover:gap-3"
+                                    style={{ color: '#00FF7F' }}
                                 >
                                     Read Full Story <ArrowRight className="h-4 w-4" />
                                 </button>
@@ -206,11 +197,8 @@ const ArticlesAndBlogs: React.FC = () => {
                         </p>
                         <button
                             onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
-                            className="mt-4 hover:underline"
-                            style={{
-                                color: '#00A040',
-                                fontFamily: "'Russo One', sans-serif",
-                            }}
+                            className="brand-btn mt-4 hover:underline"
+                            style={{ color: '#00A040' }}
                         >
                             Clear filters
                         </button>
