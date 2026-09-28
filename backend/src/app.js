@@ -22,6 +22,19 @@ app.use(
 
 app.use(cors(corsOptions));
 
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    service: 'SSPL Backend API',
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.get('/health', (req, res) => {
+  res.json({ status: 'healthy', uptime: process.uptime() });
+});
+
 app.use('/api', routes);
 
 app.use(notFound);
