@@ -30,12 +30,9 @@ const allowedOrigins = [...new Set([...baseAllowedOrigins, ...envAllowedOrigins]
 
 export const corsOptions = {
   origin(origin, callback) {
-    // Requests with no origin (curl, mobile apps, file://) are allowed outside
-    // of production only.
+    // Requests with no origin (Render healthcheck, curl, webhooks, direct browser navigation)
+    // are allowed. CORS only restricts cross-origin browser fetch requests.
     if (!origin) {
-      if (env.isProduction) {
-        return callback(new Error('Not allowed by CORS'), false);
-      }
       return callback(null, true);
     }
 
