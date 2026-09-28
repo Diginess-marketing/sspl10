@@ -1,14 +1,18 @@
 import { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import './CricketCursor.css';
 
 /**
  * Replaces the OS cursor with a small glowing tennis-ball dot on desktop/fine-pointer
  * devices only. Never mounts its tracking on touch devices, so mobile is untouched.
+ * The admin panel keeps the normal system cursor.
  */
 const CricketCursor = () => {
   const dotRef = useRef<HTMLDivElement>(null);
+  const isAdmin = useLocation().pathname.startsWith('/admin');
 
   useEffect(() => {
+    if (isAdmin) return;
     const isFinePointer = window.matchMedia('(pointer: fine)').matches;
     if (!isFinePointer) return;
 
@@ -38,7 +42,9 @@ const CricketCursor = () => {
       window.removeEventListener('mouseup', handleUp);
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [isAdmin]);
+
+  if (isAdmin) return null;
 
   return (
     <div ref={dotRef} className="cricket-cursor" aria-hidden="true">

@@ -1,194 +1,272 @@
-import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
-    LayoutDashboard,
-    Users,
-    Trophy,
-    ChartBar,
-    Settings,
-    LogOut,
-    Menu,
-    X,
-    ChevronRight,
-    Shield,
-    FileText,
-    ClipboardList,
-    Building2,
-    Award,
-    CheckCircle,
+    LayoutDashboard, Users, Trophy, ChartBar, Settings, LogOut, Menu, FileText, ClipboardList, Building2, Award,
+    CheckCircle, MessageCircle, UserCheck, Search, PanelLeftClose, PanelLeftOpen, ExternalLink, ChevronRight, Home,
+    type LucideIcon,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useAuth } from '@/hooks/useAuth';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+    DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {
+    CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList,
+} from '@/components/ui/command';
+import '@/styles/admin.css';
 
-interface AdminLayoutProps {
-    children: React.ReactNode;
+interface NavItem { label: string; path: string; icon: LucideIcon; permission?: string }
+interface NavGroup { title: string; items: NavItem[] }
+
+const NAV_GROUPS: NavGroup[] = [
+    { title: 'Overview', items: [
+        { label: 'Dashboard', path: '/admin', icon: LayoutDashboard },
+    ] },
+    { title: 'Players & Trials', items: [
+        { label: 'Trials', path: '/admin/trials', icon: ClipboardList, permission: 'manage_trials' },
+        { label: 'Selection Status', path: '/admin/selection-status', icon: CheckCircle },
+        { label: 'Certificates', path: '/admin/certificates', icon: Award },
+        { label: 'Selectors', path: '/admin/selectors', icon: UserCheck, permission: 'manage_users' },
+        { label: 'Organizers', path: '/admin/organizers', icon: Building2, permission: 'manage_users' },
+    ] },
+    { title: 'Growth', items: [
+        { label: 'Payments', path: '/admin/razorpay', icon: ChartBar, permission: 'manage_trials' },
+        { label: 'Reports', path: '/admin/reports', icon: FileText, permission: 'manage_trials' },
+        { label: 'WhatsApp', path: '/admin/whatsapp', icon: MessageCircle },
+    ] },
+    { title: 'Content', items: [
+        { label: 'Content', path: '/admin/content', icon: FileText },
+        { label: 'Rewards', path: '/admin/rewards', icon: Trophy, permission: 'manage_rewards' },
+    ] },
+    { title: 'System', items: [
+        { label: 'Users', path: '/admin/users', icon: Users },
+        { label: 'Settings', path: '/admin/settings', icon: Settings },
+    ] },
+];
+
+const isActivePath = (current: string, path: string) =>
+    path === '/admin' ? current === '/admin' : current === path || current.startsWith(`${path}/`);
+
+interface SidebarContentProps {
+    groups: NavGroup[];
+    pathname: string;
+    collapsed?: boolean;
+    onNavigate?: () => void;
 }
 
-const AdminLayout = ({ children }: AdminLayoutProps) => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const location = useLocation();
+const SidebarContent = ({ groups, pathname, collapsed = false, onNavigate }: SidebarContentProps) => (
+    <nav className="flex-1 overflow-y-auto px-3 pb-4" aria-label="Admin">
+        {groups.map((group) => (
+            <div key={group.title}>
+                {collapsed
+                    ? <div className="mx-3 my-3 h-px bg-[var(--admin-line)]" />
+                    : <p className="admin-nav-group">{group.title}</p>}
+                <div className="space-y-1">
+                    {group.items.map((item) => {
+                        const active = isActivePath(pathname, item.path);
+                        const link = (
+                            <Link
+                                key={item.path}
+                                to={item.path}
+                                onClick={onNavigate}
+                                data-active={active}
+                                aria-current={active ? 'page' : undefined}
+                                className={`admin-nav-item ${collapsed ? 'justify-center !px-0' : ''}`}
+                            >
+                                <item.icon className="h-5 w-5 shrink-0" />
+                                {!collapsed && <span className="truncate">{item.label}</span>}
+                                {active && !collapsed && <ChevronRight className="ml-auto h-4 w-4 opacity-70" />}
+                            </Link>
+                        );
+                        return collapsed ? (
+                            <Tooltip key={item.path}>
+                                <TooltipTrigger asChild>{link}</TooltipTrigger>
+                                <TooltipContent side="right">{item.label}</TooltipContent>
+                            </Tooltip>
+                        ) : link;
+                    })}
+                </div>
+            </div>
+        ))}
+    </nav>
+);
 
-    // Dialogs, dropdowns and popovers render in portals outside <main>; this body class
-    // lets index.css give them the dark admin text colour too.
+const Brand = ({ collapsed = false }: { collapsed?: boolean }) => (
+    <Link to="/admin" className="flex h-[72px] items-center gap-3 px-5" aria-label="SSPL Admin home">
+        <img src="/assets/img/sspl-logo-color.png" alt="" className="h-10 w-10 shrink-0 object-contain" />
+        {!collapsed && (
+            <span className="leading-none">
+                <span className="block font-[family-name:var(--brand-font-display)] text-[length:var(--brand-fs-h3)] font-bold uppercase italic text-[var(--brand-navy)]">SSPL</span>
+                <span className="admin-eyebrow !mb-0">Admin console</span>
+            </span>
+        )}
+    </Link>
+);
+
+interface AdminLayoutProps { children?: ReactNode }
+
+const AdminLayout = ({ children }: AdminLayoutProps) => {
+    const [collapsed, setCollapsed] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [paletteOpen, setPaletteOpen] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { user, signOut, hasPermission, userRole } = useAuth();
+
+    // Dialogs, dropdowns and popovers render in portals outside the shell; this body class
+    // keeps the legacy admin text-colour fix in index.css working for pages not yet redesigned.
     useEffect(() => {
         document.body.classList.add('admin-mode');
         return () => document.body.classList.remove('admin-mode');
     }, []);
-    const navigate = useNavigate();
-    const { user, signOut, hasPermission, userRole } = useAuth();
 
-    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+    // Cmd/Ctrl+K opens the command palette
+    useEffect(() => {
+        const onKey = (e: KeyboardEvent) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                setPaletteOpen((o) => !o);
+            }
+        };
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, []);
+
+    useEffect(() => { setMobileOpen(false); }, [location.pathname]);
+
+    const groups = useMemo(
+        () => NAV_GROUPS
+            .map((g) => ({ ...g, items: g.items.filter((i) => !i.permission || hasPermission(i.permission)) }))
+            .filter((g) => g.items.length > 0),
+        [hasPermission],
+    );
+    const flatItems = useMemo(() => groups.flatMap((g) => g.items), [groups]);
+    const current = flatItems.find((i) => isActivePath(location.pathname, i.path));
+    const currentGroup = groups.find((g) => g.items.some((i) => i === current));
 
     const handleSignOut = async () => {
         await signOut();
         navigate('/auth');
     };
 
-    const navItems = [
-        { label: 'Dashboard', path: '/admin', icon: LayoutDashboard },
-        { label: 'Users', path: '/admin/users', icon: Users },
-        { label: 'Selectors', path: '/admin/selectors', icon: Users, permission: 'manage_users' },
-        { label: 'Organizers', path: '/admin/organizers', icon: Building2, permission: 'manage_users' },
-        { label: 'Rewards', path: '/admin/rewards', icon: Trophy, permission: 'manage_rewards' },
-        { label: 'Trials', path: '/admin/trials', icon: ClipboardList, permission: 'manage_trials' },
-        { label: 'Reports', path: '/admin/reports', icon: FileText, permission: 'manage_trials' },
-        { label: 'Payments', path: '/admin/razorpay', icon: ChartBar, permission: 'manage_trials' },
-        { label: 'WhatsApp', path: '/admin/whatsapp', icon: Shield },
-        { label: 'Selection Status', path: '/admin/selection-status', icon: CheckCircle },
-        { label: 'Certificates', path: '/admin/certificates', icon: Award },
-        { label: 'Content', path: '/admin/content', icon: FileText },
-        { label: 'Settings', path: '/admin/settings', icon: Settings },
-    ];
+    const go = (path: string) => { setPaletteOpen(false); navigate(path); };
+    const initials = (user?.email || 'AD').slice(0, 2).toUpperCase();
 
     return (
-        // Fixed to the viewport so only <main> scrolls and the sidebar stays in place
-        <div className="h-screen overflow-hidden bg-gray-100 flex font-sans">
-            {/* Sidebar */}
+        <div className="admin-shell flex h-screen overflow-hidden">
+            {/* Desktop sidebar */}
             <aside
-                className={`fixed inset-y-0 left-0 z-50 bg-slate-900 text-white transition-all duration-300 ease-in-out ${isSidebarOpen ? 'w-64' : 'w-20'
-                    } lg:relative`}
+                className={`hidden shrink-0 flex-col border-r border-[var(--admin-line)] bg-white transition-[width] duration-300 lg:flex ${collapsed ? 'w-[84px]' : 'w-[272px]'}`}
             >
-                <div className="flex h-full flex-col">
-                    {/* Sidebar Header */}
-                    <div className="flex h-16 items-center justify-between px-4 mt-6">
-                        {isSidebarOpen ? (
-                            <div className="flex items-center gap-2 font-bold text-xl text-ssp-400">
-                                <Shield className="h-6 w-6 text-sport-yellow" />
-                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-sport-yellow to-white">
-                                    SSPL Admin
-                                </span>
-                            </div>
-                        ) : (
-                            <div className="mx-auto">
-                                <Shield className="h-8 w-8 text-sport-yellow" />
-                            </div>
-                        )}
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={toggleSidebar}
-                            className="text-gray-400 hover:text-white hidden lg:flex"
-                        >
-                            {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                        </Button>
-                    </div>
-
-                    {/* Navigation */}
-                    <nav className="flex-1 space-y-2 px-3 py-6 overflow-y-auto scrollbar-thin scrollbar-thumb-slate-700 scrollbar-track-transparent">
-                        {navItems.filter(item => !item.permission || hasPermission(item.permission)).map((item) => {
-                            const isActive = location.pathname === item.path;
-                            return (
-                                <Link
-                                    key={item.path}
-                                    to={item.path}
-                                    className={`flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200 group relative ${isActive
-                                        ? 'bg-sport-blue/20 text-sport-yellow shadow-lg shadow-sport-blue/5'
-                                        : 'text-gray-400 hover:bg-white/5 hover:text-white'
-                                        }`}
-                                >
-                                    <item.icon
-                                        className={`h-5 w-5 transition-colors ${isActive ? 'text-sport-yellow' : 'text-gray-400 group-hover:text-white'
-                                            }`}
-                                    />
-                                    {isSidebarOpen && (
-                                        <span className="font-medium tracking-wide">{item.label}</span>
-                                    )}
-                                    {!isSidebarOpen && (
-                                        <div className="absolute left-full ml-3 rounded-md bg-slate-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100 whitespace-nowrap z-50">
-                                            {item.label}
-                                        </div>
-                                    )}
-                                    {isActive && isSidebarOpen && (
-                                        <ChevronRight className="ml-auto h-4 w-4 opacity-50" />
-                                    )}
-                                </Link>
-                            );
-                        })}
-                    </nav>
-
-                    {/* User Profile & Logout */}
-                    <div className="border-t border-white/10 p-4 bg-black/20">
-                        <div className={`flex items-center gap-3 ${!isSidebarOpen && 'justify-center'}`}>
-                            <Avatar className="h-9 w-9 border border-white/10">
-                                <AvatarImage src="" />
-                                <AvatarFallback className="bg-sport-blue text-xs font-bold text-white">
-                                    AD
-                                </AvatarFallback>
-                            </Avatar>
-                            {isSidebarOpen && (
-                                <div className="flex-1 overflow-hidden">
-                                    <p className="truncate text-sm font-medium text-white">
-                                        {user?.email || 'Admin User'}
-                                    </p>
-                                    <div className="flex flex-col">
-                                        <p className="truncate text-xs text-gray-500">Administrator</p>
-                                        <p className="text-[10px] text-yellow-500 truncate">
-                                            Role: {userRole || 'None'}
-                                        </p>
-                                    </div>
-                                </div>
-                            )}
-                            {isSidebarOpen && (
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="text-gray-400 hover:text-red-400 -mr-2"
-                                    onClick={handleSignOut}
-                                >
-                                    <LogOut className="h-4 w-4" />
-                                </Button>
-                            )}
-                        </div>
-                    </div>
+                <Brand collapsed={collapsed} />
+                <SidebarContent groups={groups} pathname={location.pathname} collapsed={collapsed} />
+                <div className="border-t border-[var(--admin-line)] p-3">
+                    <a href="/" target="_blank" rel="noreferrer" className={`admin-nav-item ${collapsed ? 'justify-center !px-0' : ''}`}>
+                        <ExternalLink className="h-5 w-5 shrink-0" />
+                        {!collapsed && <span>View website</span>}
+                    </a>
                 </div>
             </aside>
 
-            {/* Main Content */}
-            <main className="admin-scope flex-1 overflow-auto bg-gray-50/50 relative">
-                {/* Mobile Header */}
-                <div className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-white px-4 lg:hidden shadow-sm">
-                    <div className="flex items-center gap-2 font-bold text-lg text-slate-900">
-                        <Shield className="h-5 w-5 text-sport-blue" />
-                        SSPL Admin
+            {/* Mobile drawer */}
+            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+                <SheetContent side="left" className="admin-shell flex w-[300px] flex-col gap-0 border-r border-[var(--admin-line)] bg-white p-0">
+                    <SheetTitle className="sr-only">Admin navigation</SheetTitle>
+                    <Brand />
+                    <SidebarContent groups={groups} pathname={location.pathname} onNavigate={() => setMobileOpen(false)} />
+                </SheetContent>
+            </Sheet>
+
+            <div className="flex min-w-0 flex-1 flex-col">
+                {/* Top bar */}
+                <header className="flex h-[72px] shrink-0 items-center gap-3 border-b border-[var(--admin-line)] bg-white/85 px-4 backdrop-blur lg:px-8">
+                    <button type="button" className="admin-btn admin-btn--ghost admin-btn--icon lg:hidden" onClick={() => setMobileOpen(true)} aria-label="Open menu">
+                        <Menu className="h-5 w-5" />
+                    </button>
+                    <button
+                        type="button"
+                        className="admin-btn admin-btn--ghost admin-btn--icon hidden lg:inline-flex"
+                        onClick={() => setCollapsed((c) => !c)}
+                        aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                    >
+                        {collapsed ? <PanelLeftOpen className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
+                    </button>
+
+                    <nav aria-label="Breadcrumb" className="hidden min-w-0 items-center gap-2 sm:flex">
+                        <Link to="/admin" className="admin-muted inline-flex items-center gap-1 hover:text-[var(--admin-accent)]"><Home className="h-4 w-4" />Admin</Link>
+                        {currentGroup && current && current.path !== '/admin' && (
+                            <>
+                                <ChevronRight className="h-4 w-4 text-[var(--admin-ink-soft)]" />
+                                <span className="admin-muted">{currentGroup.title}</span>
+                                <ChevronRight className="h-4 w-4 text-[var(--admin-ink-soft)]" />
+                                <span className="truncate font-semibold text-[var(--admin-ink)]">{current.label}</span>
+                            </>
+                        )}
+                    </nav>
+
+                    <div className="ml-auto flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={() => setPaletteOpen(true)}
+                            className="admin-input !flex !w-auto items-center gap-3 !pl-4 pr-3 text-left text-[var(--admin-ink-soft)] sm:!w-64"
+                            aria-label="Search pages and actions"
+                        >
+                            <Search className="h-4 w-4" />
+                            <span className="hidden flex-1 sm:inline">Search or jump to…</span>
+                            <kbd className="hidden rounded-md border border-[var(--admin-line)] bg-[var(--admin-bg)] px-1.5 text-sm sm:inline">⌘K</kbd>
+                        </button>
+
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <button type="button" className="rounded-full focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[var(--brand-blue)]/30" aria-label="Account menu">
+                                    <Avatar className="h-10 w-10 border-2 border-[var(--brand-lime)]">
+                                        <AvatarFallback className="bg-[var(--brand-navy)] font-[family-name:var(--brand-font-display)] font-bold text-white">{initials}</AvatarFallback>
+                                    </Avatar>
+                                </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="admin-shell w-64 rounded-2xl border-[var(--admin-line)] bg-white p-2">
+                                <DropdownMenuLabel className="space-y-1">
+                                    <p className="truncate font-semibold text-[var(--admin-ink)]">{user?.email || 'Admin'}</p>
+                                    <span className="admin-badge admin-badge--info">{userRole || 'no role'}</span>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="cursor-pointer rounded-xl" onClick={() => navigate('/admin/settings')}><Settings className="mr-2 h-4 w-4" />Settings</DropdownMenuItem>
+                                <DropdownMenuItem className="cursor-pointer rounded-xl" onClick={() => window.open('/', '_blank')}><ExternalLink className="mr-2 h-4 w-4" />View website</DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem className="cursor-pointer rounded-xl text-[var(--admin-bad)] focus:text-[var(--admin-bad)]" onClick={handleSignOut}><LogOut className="mr-2 h-4 w-4" />Sign out</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </div>
-                    <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-                        <Menu className="h-6 w-6 text-slate-600" />
-                    </Button>
-                </div>
+                </header>
 
-                {/* Mobile Sidebar Overlay */}
-                {!isSidebarOpen && (
-                    <div
-                        className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-                        onClick={() => setIsSidebarOpen(true)}
-                    />
-                )}
+                <main className="admin-scope flex-1 overflow-auto">
+                    <div className="mx-auto w-full max-w-[1480px] p-4 sm:p-6 lg:p-8 animate-in fade-in duration-300">
+                        {children ?? <Outlet />}
+                    </div>
+                </main>
+            </div>
 
-                <div className="container mx-auto max-w-7xl p-6 lg:p-8 animate-in fade-in duration-500">
-                    {children}
-                </div>
-            </main>
+            {/* Command palette */}
+            <CommandDialog open={paletteOpen} onOpenChange={setPaletteOpen}>
+                <CommandInput placeholder="Jump to a page or action…" />
+                <CommandList>
+                    <CommandEmpty>No results found.</CommandEmpty>
+                    <CommandGroup heading="Pages">
+                        {flatItems.map((item) => (
+                            <CommandItem key={item.path} value={item.label} onSelect={() => go(item.path)} className="cursor-pointer">
+                                <item.icon className="mr-2 h-4 w-4" />{item.label}
+                            </CommandItem>
+                        ))}
+                    </CommandGroup>
+                    <CommandGroup heading="Actions">
+                        <CommandItem value="move players to trials" onSelect={() => go('/admin/trials')} className="cursor-pointer"><ClipboardList className="mr-2 h-4 w-4" />Move players to trials</CommandItem>
+                        <CommandItem value="add reward" onSelect={() => go('/admin/rewards')} className="cursor-pointer"><Trophy className="mr-2 h-4 w-4" />Add a reward</CommandItem>
+                        <CommandItem value="sign out" onSelect={handleSignOut} className="cursor-pointer"><LogOut className="mr-2 h-4 w-4" />Sign out</CommandItem>
+                    </CommandGroup>
+                </CommandList>
+            </CommandDialog>
         </div>
     );
 };

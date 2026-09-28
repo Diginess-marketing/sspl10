@@ -9,6 +9,7 @@ import type {
   SelectionStatus,
   PlayerRegistrationWithEmailStatus,
   WorkflowStage,
+  TrialViewRecord,
 } from '@/types/workflow';
 
 // Hook for managing the player workflow system
@@ -593,9 +594,236 @@ export function usePlayerWorkflow() {
     }
   }, []);
 
+  // ---- L1-L3 trial tracker (trial_candidates + trial_progress) ----
+
+  // Candidates who reached this level: everyone for L1, only those selected at the previous level after that.
+  const getTrialLevelPlayers = useCallback(async (level: number): Promise<TrialViewRecord[]> => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data, error: qErr } = await (supabase as any)
+        .from('trial_candidates')
+        .select('*, trial_progress(*)');
+      if (qErr) throw qErr;
+
+      const rows = (data || []).map((c: any): TrialViewRecord => {
+        const p = Array.isArray(c.trial_progress) ? c.trial_progress[0] : c.trial_progress;
+        return {
+          id: c.id,
+          name: c.name || '',
+          phone: c.mobile || c.phone || '',
+          email: c.email,
+          city: c.city,
+          state: c.state,
+          proficiency: c.proficiency,
+          current_level: p?.current_level ?? 1,
+          remarks: p?.[`l${level}_remarks`] ?? null,
+          l1_called: p?.l1_called ?? false, l1_attendance: p?.l1_attendance ?? null, l1_result: p?.l1_result ?? null,
+          l2_called: p?.l2_called ?? false, l2_attendance: p?.l2_attendance ?? null, l2_result: p?.l2_result ?? null,
+          l3_called: p?.l3_called ?? false, l3_attendance: p?.l3_attendance ?? null, l3_result: p?.l3_result ?? null,
+          final_status: p?.final_status ?? null,
+        };
+      });
+      if (level === 1) return rows;
+      return rows.filter((r: TrialViewRecord) => level === 2 ? r.l1_result === 'SELECTED' : r.l2_result === 'SELECTED');
+    } catch (err: any) {
+      setError(err.message);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Writes one level's fields for a candidate (creates the progress row if missing).
+  const updateCandidateLevel = useCallback(async (candidateId: string, patch: Record<string, unknown>): Promise<boolean> => {
+    try {
+      setError(null);
+      const { error: upErr } = await (supabase as any)
+        .from('trial_progress')
+        .upsert({ candidate_id: candidateId, ...patch, updated_at: new Date().toISOString() }, { onConflict: 'candidate_id' });
+      if (upErr) throw upErr;
+      return true;
+    } catch (err: any) {
+      setError(err.message);
+      return false;
+    }
+  }, []);
+
+  // Toggles "called" for a level. Un-calling clears attendance and result for that level.
+  const markCandidateCalled = useCallback(async (candidateId: string, level: number): Promise<boolean> => {
+    const { data } = await (supabase as any).from('trial_progress').select('*').eq('candidate_id', candidateId).maybeSingle();
+    const called = !(data as any)?.[`l${level}_called`];
+    return updateCandidateLevel(candidateId, {
+      [`l${level}_called`]: called,
+      ...(called ? {} : { [`l${level}_attendance`]: null, [`l${level}_result`]: null }),
+    });
+  }, [updateCandidateLevel]);
+
+  const markCandidateAttendance = useCallback(async (candidateId: string, level: number, status: string): Promise<boolean> => {
+    return updateCandidateLevel(candidateId, { [`l${level}_attendance`]: status.toUpperCase() });
+  }, [updateCandidateLevel]);
+
+  // Selected at L1/L2 moves the candidate up a level; selected at L3 is final; rejected is final.
+  const markCandidateResult = useCallback(async (candidateId: string, level: number, result: string): Promise<boolean> => {
+    const r = result.toUpperCase();
+    const patch: Record<string, unknown> = { [`l${level}_result`]: r === 'PENDING' ? null : r };
+    if (r === 'SELECTED') {
+      patch.current_level = Math.min(level + 1, 3);
+      patch.final_status = level === 3 ? 'SELECTED' : null;
+    } else if (r === 'REJECTED') {
+      patch.final_status = 'REJECTED';
+    } else {
+      patch.final_status = null;
+    }
+    return updateCandidateLevel(candidateId, patch);
+  }, [updateCandidateLevel]);
+
+  // Adds a candidate for every paid registration that has none yet. Returns how many were added.
+  const syncTrialCandidates = useCallback(async (): Promise<number> => {
+    try {
+      setError(null);
+      const { data, error: rpcErr } = await (supabase as any).rpc('sync_trial_candidates');
+      if (rpcErr) throw rpcErr;
+      return Number(data) || 0;
+    } catch (err: any) {
+      setError(err.message);
+      return 0;
+    }
+  }, []);
+
+  // ---- Reports & analytics ----
+
+  const PAID = ['captured', 'paid', 'completed', 'success'];
+  const isPaid = (s: unknown) => PAID.includes(String(s || '').toLowerCase());
+  const fmtDate = (v: unknown) => (v ? new Date(String(v)).toISOString().slice(0, 10) : '');
+
+  // Rows for the Reporting Hub. reportType matches REPORT_TYPES in TrialsReportViewer.
+  const getReportData = useCallback(async (
+    reportType: string,
+    params: { level?: number; location?: string } = {},
+  ): Promise<Record<string, any>[]> => {
+    try {
+      setLoading(true);
+      setError(null);
+      const db = supabase as any;
+
+      if (['total_registrations', 'net_failed', 'finance'].includes(reportType)) {
+        const { data, error: qErr } = await db
+          .from('player_registrations')
+          .select('*')
+          .order('created_at', { ascending: false });
+        if (qErr) throw qErr;
+        let rows: any[] = data || [];
+        if (reportType === 'net_failed') rows = rows.filter((r) => !isPaid(r.payment_status));
+        if (reportType === 'finance') rows = rows.filter((r) => isPaid(r.payment_status));
+        return rows.map((r) => ({
+          full_name: r.full_name,
+          email: r.email,
+          phone: r.phone,
+          state: r.state,
+          city: r.city,
+          position: r.position,
+          payment_status: r.payment_status,
+          ...(reportType === 'finance'
+            ? { amount: Number(r.payment_amount ?? r.amount ?? 0), payment_id: r.payment_id ?? r.razorpay_payment_id ?? '' }
+            : {}),
+          registered_at: r.created_at,
+        }));
+      }
+
+      const { data, error: qErr } = await db.from('trial_view').select('*');
+      if (qErr) throw qErr;
+      const rows: any[] = data || [];
+
+      if (reportType === 'call_for_trials' || reportType === 'selection_sheet') {
+        const level = params.level || 1;
+        const pool = rows.filter((r) => level === 1
+          || (level === 2 ? r.l1_result === 'SELECTED' : r.l2_result === 'SELECTED'));
+        return pool
+          .filter((r) => reportType === 'call_for_trials' || r[`l${level}_result`] || r[`l${level}_attendance`])
+          .map((r) => ({
+            name: r.name,
+            phone: r.mobile || r.phone,
+            city: r.city,
+            state: r.state,
+            proficiency: r.proficiency,
+            called: Boolean(r[`l${level}_called`]),
+            attendance: r[`l${level}_attendance`],
+            ...(reportType === 'selection_sheet'
+              ? { marks: r[`l${level}_marks`], result: r[`l${level}_result`], remarks: r[`l${level}_remarks`] }
+              : {}),
+          }));
+      }
+
+      if (reportType === 'trial_assessment') {
+        const q = (params.location || '').trim().toLowerCase();
+        return rows
+          .filter((r) => !q || `${r.city || ''} ${r.state || ''}`.toLowerCase().includes(q))
+          .map((r) => ({
+            name: r.name,
+            phone: r.mobile || r.phone,
+            city: r.city,
+            state: r.state,
+            proficiency: r.proficiency,
+            current_level: r.current_level ?? 1,
+            l1_result: r.l1_result,
+            l2_result: r.l2_result,
+            l3_result: r.l3_result,
+            final_status: r.final_status,
+            updated_at: fmtDate(r.updated_at),
+          }));
+      }
+      return [];
+    } catch (err: any) {
+      console.error('Exception building report:', err);
+      setError(err.message);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Funnel + attrition counts for the analytics dashboard, from trial_view.
+  const getTrialOverallStats = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data, error: qErr } = await (supabase as any).from('trial_view').select('*');
+      if (qErr) throw qErr;
+      const rows: any[] = data || [];
+      const n = (fn: (r: any) => boolean) => rows.filter(fn).length;
+      const att = (r: any, l: number) => ['ATTENDED', 'PRESENT'].includes(String(r[`l${l}_attendance`] || '').toUpperCase());
+      return {
+        funnel: {
+          l1_pool: rows.length,
+          l1_called: n((r) => r.l1_called),
+          l1_attended: n((r) => att(r, 1)),
+          l1_selected: n((r) => r.l1_result === 'SELECTED'),
+          l2_attended: n((r) => att(r, 2)),
+          l2_selected: n((r) => r.l2_result === 'SELECTED'),
+          l3_attended: n((r) => att(r, 3)),
+          l3_selected: n((r) => r.l3_result === 'SELECTED'),
+          net_finalists: n((r) => r.final_status === 'SELECTED'),
+        },
+        attrition: {
+          rejected: n((r) => r.final_status === 'REJECTED'),
+          absent: n((r) => [1, 2, 3].some((l) => String(r[`l${l}_attendance`] || '').toUpperCase() === 'ABSENT')),
+        },
+      };
+    } catch (err: any) {
+      console.error('Exception fetching trial stats:', err);
+      setError(err.message);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return {
     loading,
     error,
+    getReportData,
+    getTrialOverallStats,
     getDashboardStats,
     getRegistrationsWithWorkflowStatus,
     getTrialsSectionPlayers,
@@ -607,5 +835,10 @@ export function usePlayerWorkflow() {
     sendConfirmationEmail,
     initializeWorkflow,
     revertToRegistration,
+    getTrialLevelPlayers,
+    markCandidateCalled,
+    markCandidateAttendance,
+    markCandidateResult,
+    syncTrialCandidates,
   };
 }

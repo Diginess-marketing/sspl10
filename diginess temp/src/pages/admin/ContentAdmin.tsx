@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ContentManagement from '@/components/ContentManagement';
 import CmsCollectionEditor from '@/components/admin/cms/CmsCollectionEditor';
 import { CMS_COLLECTIONS, CMS_COLLECTION_KEYS } from '@/lib/cms/schema';
-import { FileText } from 'lucide-react';
+import { PageHeader } from '@/components/admin/ui';
 
 const PAGE_TEXT_TAB = 'page-text';
 
@@ -12,35 +11,28 @@ const ContentAdmin = () => {
     const [tab, setTab] = useState<string>(CMS_COLLECTION_KEYS[0]);
 
     return (
-        <div className="space-y-6 text-slate-900">
-            <div>
-                <h1 className="flex items-center gap-2 text-3xl font-bold tracking-tight text-slate-900">
-                    <FileText className="h-6 w-6" /> Website content
-                </h1>
-                <p className="text-muted-foreground mt-1">
-                    Changes go live on the website as soon as you save. Draft items stay hidden until published.
-                </p>
+        <div className="space-y-6">
+            <PageHeader
+                eyebrow="Content management"
+                title={<>Website <em>content</em></>}
+                description="Changes go live on the website as soon as you save. Draft items stay hidden until published."
+            />
+
+            <div className="flex flex-wrap gap-2" role="tablist" aria-label="Content collections">
+                {CMS_COLLECTION_KEYS.map((key) => (
+                    <button key={key} type="button" role="tab" aria-selected={tab === key} className="admin-chip" data-active={tab === key} onClick={() => setTab(key)}>
+                        {CMS_COLLECTIONS[key].label}
+                    </button>
+                ))}
+                <button type="button" role="tab" aria-selected={tab === PAGE_TEXT_TAB} className="admin-chip" data-active={tab === PAGE_TEXT_TAB} onClick={() => setTab(PAGE_TEXT_TAB)}>
+                    Page text
+                </button>
             </div>
 
-            <Tabs value={tab} onValueChange={setTab}>
-                <TabsList className="flex h-auto flex-wrap justify-start gap-1">
-                    {CMS_COLLECTION_KEYS.map((key) => (
-                        <TabsTrigger key={key} value={key}>
-                            {CMS_COLLECTIONS[key].label}
-                        </TabsTrigger>
-                    ))}
-                    <TabsTrigger value={PAGE_TEXT_TAB}>Page text</TabsTrigger>
-                </TabsList>
-
-                {CMS_COLLECTION_KEYS.map((key) => (
-                    <TabsContent key={key} value={key} className="mt-4">
-                        {tab === key && <CmsCollectionEditor collection={key} />}
-                    </TabsContent>
-                ))}
-                <TabsContent value={PAGE_TEXT_TAB} className="mt-4">
-                    {tab === PAGE_TEXT_TAB && <ContentManagement />}
-                </TabsContent>
-            </Tabs>
+            <div className="min-w-0">
+                {CMS_COLLECTION_KEYS.map((key) => tab === key && <CmsCollectionEditor key={key} collection={key} />)}
+                {tab === PAGE_TEXT_TAB && <div className="admin-card p-5"><ContentManagement /></div>}
+            </div>
         </div>
     );
 };

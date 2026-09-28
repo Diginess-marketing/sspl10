@@ -11,7 +11,6 @@ import DynamicThemeProvider from './components/DynamicThemeProvider';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import ErrorBoundary from './components/ErrorBoundary';
 import BackgroundWrapper from './components/BackgroundWrapper';
-import CricketPageLoader from './components/CricketPageLoader';
 import NotificationSystem from './components/NotificationSystem';
 import GullyToGloryAnnouncement from './components/GullyToGloryAnnouncement';
 import ExitIntentPopup from './components/ExitIntentPopup';
@@ -92,14 +91,8 @@ const AdminRazorpay = lazy(() => import('./pages/admin/RazorpayDashboard'));
 const AdminRewards = lazy(() => import('./pages/admin/RewardsManager'));
 const AdminRoute = lazy(() => import('./components/admin/AdminRoute'));
 
-// Enhanced loading component for Suspense fallback
-const PageLoader = () => (
-  <CricketPageLoader
-    message="Loading cricket action..."
-    size="lg"
-    showStadium={true}
-  />
-);
+// Suspense fallback: render nothing while lazy pages load
+const PageLoader = () => null;
 
 // Error fallback component for lazy loading errors
 const LazyErrorFallback = ({ error, retry }: { error: Error; retry: () => void }) => (
@@ -372,137 +365,23 @@ const App = () => {
                             {/* Campaign Analytics Dashboard */}
                             <Route path="/campaign-analytics" element={<CampaignDashboard />} />
 
-                            {/* Admin Panel Routes */}
-                            <Route
-                              path="/admin"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminDashboard />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/users"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminUsers />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/selectors"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminSelectors />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/organizers"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminOrganizers />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/trials"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminTrials />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/rewards"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminRewards />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/analytics"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminAnalytics />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/settings"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminSettings />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/content"
-                              element={
-                                <AdminRoute requiredPermission="manage_content">
-                                  <AdminLayout>
-                                    <AdminContent />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/selection-status"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminSelectionStatus />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/reports"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminReports />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/whatsapp"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminWhatsApp />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
-                            <Route
-                              path="/admin/razorpay"
-                              element={
-                                <AdminRoute>
-                                  <AdminLayout>
-                                    <AdminRazorpay />
-                                  </AdminLayout>
-                                </AdminRoute>
-                              }
-                            />
+                            {/* Admin Panel Routes: one guarded layout, pages render in its <Outlet /> */}
+                            <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+                              <Route index element={<AdminDashboard />} />
+                              <Route path="users" element={<AdminUsers />} />
+                              <Route path="selectors" element={<AdminSelectors />} />
+                              <Route path="organizers" element={<AdminOrganizers />} />
+                              <Route path="trials" element={<AdminTrials />} />
+                              <Route path="rewards" element={<AdminRewards />} />
+                              <Route path="analytics" element={<AdminAnalytics />} />
+                              <Route path="settings" element={<AdminSettings />} />
+                              <Route path="content" element={<AdminContent />} />
+                              <Route path="selection-status" element={<AdminSelectionStatus />} />
+                              <Route path="reports" element={<AdminReports />} />
+                              <Route path="whatsapp" element={<AdminWhatsApp />} />
+                              <Route path="razorpay" element={<AdminRazorpay />} />
+                              <Route path="certificates" element={<AdminCertificateLookup />} />
+                            </Route>
                           </Routes>
 
                           {/* Bottom Navigation for Android PWA - Removed to avoid conflicts with native bottom nav and to remove About Us */}

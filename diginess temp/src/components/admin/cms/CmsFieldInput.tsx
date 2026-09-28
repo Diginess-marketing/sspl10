@@ -1,13 +1,18 @@
 import { useRef, useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { Button } from '@/components/ui/button';
+import { ActionButton } from '@/components/admin/ui';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { uploadMedia } from '@/lib/cms/api';
 import type { CmsField } from '@/lib/cms/schema';
-import { Loader2, Upload } from 'lucide-react';
+import { Upload } from 'lucide-react';
+
+const FIELD = 'admin-field';
+const AREA = 'admin-field !h-auto py-3 leading-relaxed';
+
+type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
+const Input = ({ className = '', ...p }: InputProps) => <input className={`${FIELD} ${className}`} {...p} />;
+const Textarea = ({ className = '', ...p }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) => <textarea className={`${AREA} ${className}`} {...p} />;
 
 interface CmsFieldInputProps {
     field: CmsField;
@@ -27,7 +32,6 @@ const toLocalInput = (iso: unknown) => {
 const ImageInput = ({ field, value, onChange }: CmsFieldInputProps) => {
     const fileRef = useRef<HTMLInputElement>(null);
     const [uploading, setUploading] = useState(false);
-    const { toast } = useToast();
     const url = typeof value === 'string' ? value : '';
 
     const handleFile = async (file: File | undefined) => {
@@ -38,7 +42,7 @@ const ImageInput = ({ field, value, onChange }: CmsFieldInputProps) => {
             setUploading(true);
             onChange(await uploadMedia(file));
         } catch (error) {
-            toast({ title: 'Upload failed', description: (error as Error).message, variant: 'destructive' });
+            toast.error('Upload failed', { description: (error as Error).message });
         } finally {
             setUploading(false);
             if (fileRef.current) {
@@ -49,16 +53,15 @@ const ImageInput = ({ field, value, onChange }: CmsFieldInputProps) => {
 
     return (
         <div className="flex items-start gap-3">
-            <div className="h-16 w-16 shrink-0 overflow-hidden rounded-md border bg-muted">
+            <div className="h-16 w-16 shrink-0 overflow-hidden rounded-[14px] border border-[var(--admin-line)] bg-[var(--brand-sky)]">
                 {url && <img src={url} alt="" className="h-full w-full object-contain" />}
             </div>
             <div className="flex-1 space-y-2">
                 <Input id={field.name} value={url} placeholder="/path/in/public.avif or https://…" onChange={(e) => onChange(e.target.value)} />
                 <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => handleFile(e.target.files?.[0])} />
-                <Button type="button" variant="outline" size="sm" className="border-slate-300 bg-white text-slate-900 hover:bg-slate-50" disabled={uploading} onClick={() => fileRef.current?.click()}>
-                    {uploading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Upload className="mr-2 h-4 w-4" />}
+                <ActionButton variant="outline" size="sm" icon={Upload} loading={uploading} onClick={() => fileRef.current?.click()}>
                     Upload image
-                </Button>
+                </ActionButton>
             </div>
         </div>
     );
@@ -85,7 +88,7 @@ const CmsFieldInput = ({ field, value, onChange }: CmsFieldInputProps) => {
     case 'textarea':
         return <Textarea id={field.name} rows={3} value={text} onChange={(e) => onChange(e.target.value)} />;
     case 'markdown':
-        return <Textarea id={field.name} rows={14} className="font-mono text-sm" value={text} onChange={(e) => onChange(e.target.value)} />;
+        return <Textarea id={field.name} rows={14} className="font-mono" value={text} onChange={(e) => onChange(e.target.value)} />;
     case 'number':
         return (
             <Input
@@ -108,11 +111,11 @@ const CmsFieldInput = ({ field, value, onChange }: CmsFieldInputProps) => {
             />
         );
     case 'boolean':
-        return <Switch id={field.name} className="data-[state=checked]:bg-emerald-600 data-[state=unchecked]:bg-slate-300" checked={Boolean(value)} onCheckedChange={onChange} />;
+        return <Switch id={field.name} className="data-[state=checked]:bg-[var(--brand-blue)] data-[state=unchecked]:bg-[var(--brand-sky-2)]" checked={Boolean(value)} onCheckedChange={onChange} />;
     case 'select':
         return (
             <Select value={text} onValueChange={onChange}>
-                <SelectTrigger id={field.name}>
+                <SelectTrigger id={field.name} className="admin-field">
                     <SelectValue placeholder="Select…" />
                 </SelectTrigger>
                 <SelectContent>

@@ -4,7 +4,7 @@ import { googleAnalytics } from '@/utils/googleAnalytics';
 import LanguageSelector from '@/components/LanguageSelector';
 import { useAuth } from '@/hooks/useAuth';
 import NavCricketIcon from '@/components/NavCricketIcon';
-import { SITE_NAV, type SiteNavSection } from '@/config/siteNav';
+import { SITE_NAV, type SiteNavLink, type SiteNavSection } from '@/config/siteNav';
 import './Header.css';
 
 const YOUTUBE_URL = 'https://www.youtube.com/@Southernstreetpremierleague';
@@ -18,6 +18,17 @@ const SOCIALS = [
   { label: 'ShareChat', href: 'https://sharechat.com/profile/ssplt10?d=n', icon: '/assets/img/social-media-share chat.png' },
   { label: 'Moj', href: 'https://mojapp.in/@ssplsouthern?referrer=V7hedHR-1fORME9', icon: '/assets/img/social-media-moj.png' },
 ];
+
+// Splits a section's links into headed groups (links without a group share one unheaded list)
+const groupLinks = (links: SiteNavLink[]) => {
+  const groups: { title?: string; links: SiteNavLink[] }[] = [];
+  links.forEach((link) => {
+    const last = groups[groups.length - 1];
+    if (last && last.title === link.group) last.links.push(link);
+    else groups.push({ title: link.group, links: [link] });
+  });
+  return groups;
+};
 
 const Header = () => {
   const location = useLocation();
@@ -99,7 +110,6 @@ const Header = () => {
       : path === item.to || path.startsWith(`${item.to  }/`) || Boolean(item.children?.some((c) => path === c.to || path.startsWith(`${c.to  }/`)));
   const moreActive = moreNav.some(isActive);
 
-  const resultsActive = path === '/trial-results';
   const registerActive = path === '/register';
 
   return (
@@ -120,15 +130,34 @@ const Header = () => {
                     {item.children && <span className="site-nav__chevron" aria-hidden="true" />}
                   </Link>
                   {item.children && (
-                    <ul className="site-nav__menu">
-                      {item.children.map((child) => (
-                        <li key={child.to + child.label}>
-                          <Link to={child.to} aria-current={path === child.to ? 'page' : undefined}>
-                            {child.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                    item.children.some((c) => c.group) ? (
+                      <div className="site-nav__menu site-nav__menu--grouped">
+                        {groupLinks(item.children).map((g) => (
+                          <div key={g.title} className="site-nav__mega-col">
+                            {g.title && <span className="site-nav__group-title">{g.title}</span>}
+                            <ul>
+                              {g.links.map((child) => (
+                                <li key={child.to + child.label}>
+                                  <Link to={child.to} aria-current={path === child.to ? 'page' : undefined}>
+                                    {child.label}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <ul className="site-nav__menu">
+                        {item.children.map((child) => (
+                          <li key={child.to + child.label}>
+                            <Link to={child.to} aria-current={path === child.to ? 'page' : undefined}>
+                              {child.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )
                   )}
                 </li>
               ))}
@@ -178,20 +207,6 @@ const Header = () => {
           </nav>
 
           <div className="site-header__actions">
-            <a className="site-header__youtube" href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" aria-label="SSPL on YouTube">
-              <svg viewBox="0 0 32 24" aria-hidden="true" focusable="false">
-                <rect width="32" height="24" rx="7" fill="#FF0000" />
-                <path d="M13 7.2v9.6l8.4-4.8z" fill="#fff" />
-              </svg>
-            </a>
-
-            <Link
-              to="/trial-results"
-              className={`site-btn site-btn--outline${resultsActive ? ' is-active' : ''}`}
-              onClick={() => googleAnalytics.trackButtonClick('results', 'header')}
-            >
-              Results
-            </Link>
             <Link
               to="/register"
               className={`site-btn site-btn--primary${registerActive ? ' is-active' : ''}`}
@@ -200,15 +215,6 @@ const Header = () => {
               <span className="site-btn__long">Registration</span>
               <span className="site-btn__short">Register</span>
             </Link>
-
-            <img
-              className="site-header__partner-logo"
-              src="/Our-Sponsors/Royal-Peacocks-.png"
-              alt="Royal Peacocks League"
-              width={40}
-              height={40}
-              loading="lazy"
-            />
 
             <button
               ref={menuButtonRef}
@@ -249,8 +255,11 @@ const Header = () => {
                         <span className="site-nav__chevron" aria-hidden="true" />
                       </summary>
                       <ul className="site-drawer__sub">
-                        {item.children.map((child) => (
+                        {item.children.map((child, i, all) => (
                           <li key={child.to + child.label}>
+                            {child.group && child.group !== all[i - 1]?.group && (
+                              <span className="site-drawer__group-title">{child.group}</span>
+                            )}
                             <Link
                               to={child.to}
                               onClick={closeMenu}

@@ -1,4 +1,4 @@
-/* Custom glowing tennis-ball cursor — desktop/fine-pointer only, mounted by CricketCursor.tsx */
+/* Custom glowing blue cricket-ball cursor — desktop/fine-pointer only, mounted by CricketCursor.tsx */
 body.cricket-cursor-active,
 body.cricket-cursor-active a,
 body.cricket-cursor-active button,
@@ -17,8 +17,8 @@ body.cricket-cursor-active [role='button'] {
   height: 18px;
   margin: -9px 0 0 -9px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, #f3ff8a 0%, var(--brand-lime, #dffc35) 55%, var(--brand-lime-deep, #a6cc00) 100%);
-  box-shadow: 0 0 8px 2px rgba(223, 252, 53, 0.65), 0 0 18px 6px rgba(223, 252, 53, 0.35);
+  background: radial-gradient(circle at 35% 30%, #8fb4ff 0%, var(--brand-blue, #1f57d6) 55%, #0d2a78 100%);
+  box-shadow: 0 0 8px 2px rgba(31, 87, 214, 0.6), 0 0 18px 6px rgba(31, 87, 214, 0.3);
   pointer-events: none;
   z-index: 9999;
   will-change: transform;
@@ -29,7 +29,7 @@ body.cricket-cursor-active [role='button'] {
   position: absolute;
   inset: 2px;
   border-radius: 50%;
-  border: 1px solid rgba(10, 18, 64, 0.35);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
   border-top-color: transparent;
   border-bottom-color: transparent;
   transform: rotate(35deg);
@@ -40,8 +40,8 @@ body.cricket-cursor-active [role='button'] {
 }
 
 @keyframes cricket-cursor-glow {
-  0%, 100% { box-shadow: 0 0 8px 2px rgba(223, 252, 53, 0.65), 0 0 18px 6px rgba(223, 252, 53, 0.35); }
-  50% { box-shadow: 0 0 12px 4px rgba(223, 252, 53, 0.85), 0 0 26px 10px rgba(223, 252, 53, 0.5); }
+  0%, 100% { box-shadow: 0 0 8px 2px rgba(31, 87, 214, 0.6), 0 0 18px 6px rgba(31, 87, 214, 0.3); }
+  50% { box-shadow: 0 0 12px 4px rgba(31, 87, 214, 0.8), 0 0 26px 10px rgba(31, 87, 214, 0.45); }
 }
 
 @media (prefers-reduced-motion: reduce) {

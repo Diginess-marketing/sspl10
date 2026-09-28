@@ -6,6 +6,8 @@ export interface SiteNavLink {
   label: string;
   to: string;
   comingSoon?: boolean;
+  // Optional heading: links that share a group are listed together under it in menus
+  group?: string;
 }
 
 export interface SiteNavSection {
@@ -32,50 +34,35 @@ export const SITE_NAV: SiteNavSection[] = [
     ],
   },
   {
-    label: 'Players',
+    label: 'Players & Trials',
     to: '/register',
     children: [
-      { label: 'Player Registration', to: '/register' },
-      { label: 'Eligibility', to: '/players/eligibility', comingSoon: true },
-      { label: 'Selection Process', to: '/players/selection-process', comingSoon: true },
-      { label: 'Trial Schedule', to: '/trials/schedule', comingSoon: true },
-      { label: 'Selected Players', to: '/players/selected', comingSoon: true },
-      { label: 'Auction Players', to: '/auction' },
-      { label: 'Player Profiles', to: '/players/profiles', comingSoon: true },
+      { group: 'Players', label: 'Player Registration', to: '/register' },
+      { group: 'Players', label: 'Eligibility', to: '/players/eligibility', comingSoon: true },
+      { group: 'Players', label: 'Selection Process', to: '/players/selection-process', comingSoon: true },
+      { group: 'Players', label: 'Player Profiles', to: '/players/profiles', comingSoon: true },
+      { group: 'Trials', label: 'Trial Schedule', to: '/trials/schedule', comingSoon: true },
+      { group: 'Trials', label: 'Trial Locations', to: '/trials/locations', comingSoon: true },
+      { group: 'Trials', label: 'Selection Results', to: '/trial-results' },
+      { group: 'Trials', label: 'Selected Players', to: '/players/selected', comingSoon: true },
     ],
   },
   {
-    label: 'Teams',
+    label: 'Teams & Matches',
     to: '/teams',
     children: [
-      { label: 'Teams', to: '/teams' },
-      { label: 'Team Profiles', to: '/teams/profiles', comingSoon: true },
-      { label: 'Owners', to: '/teams/owners', comingSoon: true },
-      { label: 'Captains', to: '/teams/captains', comingSoon: true },
-      { label: 'Squads', to: '/teams/squads', comingSoon: true },
-    ],
-  },
-  {
-    label: 'Matches',
-    to: '/matches',
-    children: [
-      { label: 'Fixtures', to: '/matches' },
-      { label: 'Live Matches', to: '/matches/live', comingSoon: true },
-      { label: 'Results', to: '/matches/results', comingSoon: true },
-      { label: 'Match Centre', to: '/matches/centre', comingSoon: true },
-      { label: 'Scorecard', to: '/matches/scorecard', comingSoon: true },
-      { label: 'Commentary', to: '/matches/commentary', comingSoon: true },
-      { label: 'Points Table', to: '/points-table' },
-    ],
-  },
-  {
-    label: 'Trials',
-    to: '/trial-results',
-    children: [
-      { label: 'Trial Locations', to: '/trials/locations', comingSoon: true },
-      { label: 'Trial Schedule', to: '/trials/schedule', comingSoon: true },
-      { label: 'Registration', to: '/register' },
-      { label: 'Selection Results', to: '/trial-results' },
+      { group: 'Teams', label: 'Teams', to: '/teams' },
+      { group: 'Teams', label: 'Team Profiles', to: '/teams/profiles', comingSoon: true },
+      { group: 'Teams', label: 'Owners', to: '/teams/owners', comingSoon: true },
+      { group: 'Teams', label: 'Captains', to: '/teams/captains', comingSoon: true },
+      { group: 'Teams', label: 'Squads', to: '/teams/squads', comingSoon: true },
+      { group: 'Matches', label: 'Fixtures', to: '/matches' },
+      { group: 'Matches', label: 'Points Table', to: '/points-table' },
+      { group: 'Matches', label: 'Live Matches', to: '/matches/live', comingSoon: true },
+      { group: 'Matches', label: 'Results', to: '/matches/results', comingSoon: true },
+      { group: 'Matches', label: 'Match Centre', to: '/matches/centre', comingSoon: true },
+      { group: 'Matches', label: 'Scorecard', to: '/matches/scorecard', comingSoon: true },
+      { group: 'Matches', label: 'Commentary', to: '/matches/commentary', comingSoon: true },
     ],
   },
   {
@@ -105,7 +92,7 @@ export const SITE_NAV: SiteNavSection[] = [
     to: '/auction',
     inMore: true,
     children: [
-      { label: 'Auction', to: '/auction' },
+      { label: 'Auction Players', to: '/auction' },
       { label: 'Auction Results', to: '/auction/results', comingSoon: true },
       { label: 'Sold Players', to: '/auction/sold', comingSoon: true },
       { label: 'Unsold Players', to: '/auction/unsold', comingSoon: true },
