@@ -14,7 +14,7 @@ dotenv.config({ path: path.join(rootDir, '.env') });
 const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
   isProduction: process.env.NODE_ENV === 'production',
-  port: Number(process.env.PORT) || 3003,
+  port: Number(process.env.PORT) || (process.env.NODE_ENV === 'production' ? 10000 : 3003),
   rootDir,
 
   supabase: {

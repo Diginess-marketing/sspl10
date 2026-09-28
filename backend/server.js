@@ -14,8 +14,13 @@ if (process.env.DISABLE_JOBS === 'true') {
   jobs.startAll();
 }
 
-app.listen(env.port, () => {
-  logger.info(`🚀 API server running on port ${env.port} (${env.nodeEnv})`);
+const HOST = '0.0.0.0';
+const server = app.listen(env.port, HOST, () => {
+  logger.info(`🚀 API server running on http://${HOST}:${env.port} (${env.nodeEnv})`);
+});
+
+server.on('error', (err) => {
+  logger.error('Failed to bind server port:', err);
 });
 
 process.on('unhandledRejection', (reason) => {
