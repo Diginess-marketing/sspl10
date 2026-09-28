@@ -44,6 +44,12 @@ export function getUTMData(): UTMData | null;
 export function clearUTMData(): void;
 
 /**
+ * Remove contact details (name/email/phone) saved in the browser by older versions,
+ * keeping UTM attribution
+ */
+export function clearStoredVisitorContact(): void;
+
+/**
  * Check if UTM tracking should be enabled (utm_id exists)
  */
 export function isUTMTrackingEnabled(): boolean;

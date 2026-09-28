@@ -4,20 +4,8 @@ import { googleAnalytics } from '@/utils/googleAnalytics';
 import LanguageSelector from '@/components/LanguageSelector';
 import { useAuth } from '@/hooks/useAuth';
 import NavCricketIcon from '@/components/NavCricketIcon';
+import { SITE_NAV, type SiteNavSection } from '@/config/siteNav';
 import './Header.css';
-
-interface NavChild {
-  label: string;
-  to: string;
-  onClick?: () => void;
-}
-
-interface NavItem {
-  label: string;
-  to: string;
-  end?: boolean;
-  children?: NavChild[];
-}
 
 const YOUTUBE_URL = 'https://www.youtube.com/@Southernstreetpremierleague';
 
@@ -99,41 +87,17 @@ const Header = () => {
     });
   };
 
-  // Same pages the live site's header already links to
-  const nav: NavItem[] = [
-    { label: 'Home', to: '/', end: true },
-    {
-      label: 'About Us',
-      to: '/about-us',
-      children: [
-        { label: 'About Us', to: '/about-us' },
-        { label: 'How It Works', to: '/how-it-works' },
-        { label: 'Blogs', to: '/articles-blogs' },
-        { label: 'Videos', to: '/videos' },
-        { label: 'Enquiry', to: '/enquiry' },
-        { label: 'FAQs', to: '/faqs' },
-      ],
-    },
-    {
-      label: 'Associates',
-      to: '/register-selector',
-      children: [
-        { label: 'Selectors Registration', to: '/register-selector' },
-        {
-          label: 'Tournament Organizers',
-          to: '/tournament-organizer-registration',
-          onClick: () => googleAnalytics.trackButtonClick('header_tournament_organizer', 'header'),
-        },
-      ],
-    },
-    { label: 'Contact Us', to: '/enquiry' },
-  ];
+  // Full site map lives in src/config/siteNav.ts; desktop shows the main sections plus "More"
+  const nav = SITE_NAV;
+  const primaryNav = SITE_NAV.filter((section) => !section.inMore);
+  const moreNav = SITE_NAV.filter((section) => section.inMore);
 
   const path = location.pathname;
-  const isActive = (item: NavItem) =>
+  const isActive = (item: SiteNavSection) =>
     item.end
       ? path === item.to
       : path === item.to || path.startsWith(`${item.to  }/`) || Boolean(item.children?.some((c) => path === c.to || path.startsWith(`${c.to  }/`)));
+  const moreActive = moreNav.some(isActive);
 
   const resultsActive = path === '/trial-results';
   const registerActive = path === '/register';
@@ -148,7 +112,7 @@ const Header = () => {
 
           <nav className="site-header__nav" aria-label="Primary">
             <ul className="site-nav">
-              {nav.map((item) => (
+              {primaryNav.map((item) => (
                 <li key={item.label} className={`site-nav__item${item.children ? ' has-menu' : ''}`}>
                   <Link to={item.to} className={`site-nav__link${isActive(item) ? ' is-active' : ''}`} aria-current={isActive(item) ? 'page' : undefined}>
                     <NavCricketIcon />
@@ -159,7 +123,7 @@ const Header = () => {
                     <ul className="site-nav__menu">
                       {item.children.map((child) => (
                         <li key={child.to + child.label}>
-                          <Link to={child.to} onClick={child.onClick} aria-current={path === child.to ? 'page' : undefined}>
+                          <Link to={child.to} aria-current={path === child.to ? 'page' : undefined}>
                             {child.label}
                           </Link>
                         </li>
@@ -168,6 +132,31 @@ const Header = () => {
                   )}
                 </li>
               ))}
+              {moreNav.length > 0 && (
+                <li className="site-nav__item has-menu site-nav__item--more">
+                  <button type="button" className={`site-nav__link site-nav__more-btn${moreActive ? ' is-active' : ''}`} aria-haspopup="true">
+                    <NavCricketIcon />
+                    More
+                    <span className="site-nav__chevron" aria-hidden="true" />
+                  </button>
+                  <div className="site-nav__menu site-nav__mega">
+                    {moreNav.map((section) => (
+                      <div key={section.label} className="site-nav__mega-col">
+                        <Link to={section.to} className="site-nav__mega-title">{section.label}</Link>
+                        <ul>
+                          {(section.children ?? []).map((child) => (
+                            <li key={child.to + child.label}>
+                              <Link to={child.to} aria-current={path === child.to ? 'page' : undefined}>
+                                {child.label}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
+                  </div>
+                </li>
+              )}
               {isAndroidApp &&
                 (user ? (
                   <li className="site-nav__item has-menu">
@@ -251,20 +240,34 @@ const Header = () => {
             <ul>
               {nav.map((item) => (
                 <li key={item.label}>
-                  <Link to={item.to} className={isActive(item) ? 'is-active' : ''} onClick={closeMenu} tabIndex={menuOpen ? 0 : -1}>
-                    <NavCricketIcon />
-                    {item.label}
-                  </Link>
-                  {item.children && (
-                    <ul className="site-drawer__sub">
-                      {item.children.map((child) => (
-                        <li key={child.to + child.label}>
-                          <Link to={child.to} onClick={() => { child.onClick?.(); closeMenu(); }} tabIndex={menuOpen ? 0 : -1}>
-                            {child.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                  {item.children ? (
+                    // Accordion: 11 sections with ~60 links would be too long fully expanded
+                    <details className="site-drawer__group" open={isActive(item)}>
+                      <summary className={isActive(item) ? 'is-active' : ''} tabIndex={menuOpen ? 0 : -1}>
+                        <NavCricketIcon />
+                        {item.label}
+                        <span className="site-nav__chevron" aria-hidden="true" />
+                      </summary>
+                      <ul className="site-drawer__sub">
+                        {item.children.map((child) => (
+                          <li key={child.to + child.label}>
+                            <Link
+                              to={child.to}
+                              onClick={closeMenu}
+                              className={path === child.to ? 'is-current' : ''}
+                              tabIndex={menuOpen ? 0 : -1}
+                            >
+                              {child.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  ) : (
+                    <Link to={item.to} className={isActive(item) ? 'is-active' : ''} onClick={closeMenu} tabIndex={menuOpen ? 0 : -1}>
+                      <NavCricketIcon />
+                      {item.label}
+                    </Link>
                   )}
                 </li>
               ))}

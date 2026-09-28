@@ -107,6 +107,9 @@ export const createOrder = async (req, res) => {
     order_id: order.id,
     amount: order.amount,
     currency: order.currency,
+    // Shape of the pre-restructure server, which the frontend destructures: { order, registrationId }
+    order,
+    registrationId: notes.registration_id || notes.registrationId || null,
   });
 };
 

@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { playerExportService } from '@/utils/playerExportService';
 import { supabase } from '@/integrations/supabase/client';
+import { mapTrialRowToPlayerResult } from '@/lib/trialResults';
 import type {
   PlayerResult,
   PlayerSearchCriteria,
@@ -11,8 +12,6 @@ import type {
   PlayerExportOptions,
   PlayerExportResult,
 } from '@/types/playerData';
-
-import level45Data from '@/data/level45Data.json';
 
 export const usePlayerResultLookup = () => {
   const [state, setState] = useState<PlayerLookupState>({
@@ -38,111 +37,6 @@ export const usePlayerResultLookup = () => {
   });
 
   const { toast } = useToast();
-
-  // Helper to map DB row to PlayerResult
-  const mapDbRowToPlayerResult = (row: any): PlayerResult => {
-    const mobileNumber = String(row.mobile || row.phone || '').trim().replace(/\D/g, '').slice(-10);
-    const l45Info = (level45Data as any)[mobileNumber] || { l4: 'PENDING', l5: 'PENDING' };
-
-    const l1 = row.l1_result?.toUpperCase() || 'PENDING';
-    const l2 = row.l2_result?.toUpperCase() || 'PENDING';
-    const l3 = row.l3_result?.toUpperCase() || 'PENDING';
-
-    const l1_att = row.l1_attendance?.toUpperCase();
-    const l2_att = row.l2_attendance?.toUpperCase();
-    const l3_att = row.l3_attendance?.toUpperCase();
-
-    const isCompletelyAbsent = 
-      l1_att === 'ABSENT' && 
-      (l2_att === 'ABSENT' || !l2_att) && 
-      (l3_att === 'ABSENT' || !l3_att);
-
-    let l1Status = l1;
-    if (l1Status === 'REJECTED') l1Status = 'NOT_SELECTED';
-    else if (l1Status === 'PENDING' && l1_att === 'ABSENT') l1Status = 'ABSENT';
-
-    let l2Status = l2;
-    if (l2Status === 'REJECTED') l2Status = 'NOT_SELECTED';
-    else if (l2Status === 'PENDING' && l2_att === 'ABSENT') l2Status = 'ABSENT';
-
-    let l3Status = l3;
-    if (l3Status === 'REJECTED') l3Status = 'NOT_SELECTED';
-    else if (l3Status === 'PENDING' && l3_att === 'ABSENT') l3Status = 'ABSENT';
-
-    let l4Status = l45Info.l4 ? l45Info.l4.toUpperCase() : 'PENDING';
-    if (l4Status === 'REJECTED' || l4Status === 'NOT SELECTED') l4Status = 'NOT_SELECTED';
-
-    let l5Status = l45Info.l5 ? l45Info.l5.toUpperCase() : 'PENDING';
-    if (l5Status === 'REJECTED' || l5Status === 'NOT SELECTED') l5Status = 'NOT_SELECTED';
-
-    // Cascading logic
-    if (l1Status === 'ABSENT') {
-      l2Status = 'ABSENT'; l3Status = 'ABSENT'; l4Status = 'ABSENT'; l5Status = 'ABSENT';
-    } else if (l1Status === 'NOT_SELECTED') {
-      l2Status = 'NOT_SELECTED'; l3Status = 'NOT_SELECTED'; l4Status = 'NOT_SELECTED'; l5Status = 'NOT_SELECTED';
-    } else if (l1Status === 'PENDING') {
-      l2Status = 'PENDING'; l3Status = 'PENDING';
-    } else if (l1Status === 'SELECTED') {
-      if (l2Status === 'ABSENT') {
-        l3Status = 'ABSENT'; l4Status = 'ABSENT'; l5Status = 'ABSENT';
-      } else if (l2Status === 'NOT_SELECTED') {
-        l3Status = 'NOT_SELECTED'; l4Status = 'NOT_SELECTED'; l5Status = 'NOT_SELECTED';
-      } else if (l2Status === 'PENDING') {
-        l3Status = 'PENDING';
-      } else if (l2Status === 'SELECTED') {
-        if (l3Status === 'ABSENT') {
-          l4Status = 'ABSENT'; l5Status = 'ABSENT';
-        } else if (l3Status === 'NOT_SELECTED') {
-          l4Status = 'NOT_SELECTED'; l5Status = 'NOT_SELECTED';
-        } else if (l3Status === 'SELECTED') {
-          if (l4Status === 'ABSENT') {
-            l5Status = 'ABSENT';
-          } else if (l4Status === 'NOT_SELECTED') {
-            l5Status = 'NOT_SELECTED';
-          }
-        }
-      }
-    }
-
-    return {
-      id: row.candidate_id || row.mobile,
-      mobile: row.mobile || row.phone || '',
-      state: row.state || '',
-      city: row.city || '',
-      name: row.name || '',
-      proficiency: row.proficiency || '',
-      status: l1Status, // maps to level 1 status
-      marks: row.l1_marks || 0,
-      createdAt: row.created_at || new Date().toISOString(),
-      updatedAt: row.updated_at || new Date().toISOString(),
-      level: 'Both',
-      level2Data: {
-        status: l2Status,
-        score: row.l2_marks ? String(row.l2_marks) : '',
-        remarks: row.l2_remarks || '',
-        listName: 'Level 2',
-      },
-      level3Data: {
-        status: l3Status,
-        score: row.l3_marks ? String(row.l3_marks) : '',
-        remarks: row.l3_remarks || '',
-        listName: 'Level 3',
-      },
-      level4Data: {
-        status: l4Status,
-        score: '',
-        remarks: '',
-        listName: 'Level 4',
-      },
-      level5Data: {
-        status: l5Status,
-        score: '',
-        remarks: '',
-        listName: 'Level 5',
-      },
-      isCompletelyAbsent,
-    };
-  };
 
   // Search players based on form data
   const searchPlayers = useCallback(async (criteria?: PlayerSearchCriteria) => {
@@ -192,7 +86,7 @@ export const usePlayerResultLookup = () => {
 
       if (error) throw error;
 
-      const finalResults = (data || []).map(mapDbRowToPlayerResult);
+      const finalResults = (data || []).map(mapTrialRowToPlayerResult);
 
       setState(prev => ({
         ...prev,
@@ -328,7 +222,7 @@ export const usePlayerResultLookup = () => {
 
       let player: PlayerResult | null = null;
       if (data) {
-        player = mapDbRowToPlayerResult(data);
+        player = mapTrialRowToPlayerResult(data);
       }
 
       setState(prev => ({

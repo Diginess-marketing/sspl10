@@ -92,6 +92,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             'group', // For enhanced hover effects
           )}
           ref={ref}
+          data-variant={variant ?? 'default'}
           disabled={isDisabled}
           aria-disabled={isDisabled}
           aria-busy={loading}
@@ -111,6 +112,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           'group', // For enhanced hover effects
         )}
         ref={ref}
+        data-variant={variant ?? 'default'}
         disabled={isDisabled}
         aria-disabled={isDisabled}
         aria-busy={loading}

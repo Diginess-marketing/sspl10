@@ -62,21 +62,30 @@ export const getCookie = (name) => {
 export const storeUTMData = (utmData) => {
   if (utmData && Object.values(utmData).some((v) => v !== null)) {
     // 1. Store in LocalStorage (existing behavior)
-    localStorage.setItem('utm_data', JSON.stringify(utmData));
+    // Contact details (name/email/phone) are never kept in the browser: they would refill
+    // the registration form for whoever uses the device next. Leads are saved server-side
+    // by visitorLeadService instead.
+    const { name, email, phone, ...attribution } = utmData;
+    localStorage.setItem('utm_data', JSON.stringify(attribution));
+  }
+};
 
-    // 2. Store specific contact info in Cookies (User Request)
-    if (utmData.phone) setCookie('visitor_phone', utmData.phone);
-    if (utmData.email) setCookie('visitor_email', utmData.email);
-    if (utmData.name) setCookie('visitor_name', utmData.name);
-
-    // Also store the full object in a single cookie for easier access if header size allows
-    // We limit this to essential fields to avoid cookie bloat
-    const compactData = {
-      utm_id: utmData.utm_id,
-      utm_source: utmData.utm_source,
-      phone: utmData.phone
-    };
-    setCookie('visitor_data_compact', JSON.stringify(compactData));
+/**
+ * Removes contact details saved in the browser by older versions of storeUTMData
+ * (visitor_* cookies and name/email/phone in localStorage), keeping UTM attribution.
+ */
+export const clearStoredVisitorContact = () => {
+  setCookie('visitor_phone', '', -1);
+  setCookie('visitor_email', '', -1);
+  setCookie('visitor_name', '', -1);
+  setCookie('visitor_data_compact', '', -1);
+  try {
+    const stored = localStorage.getItem('utm_data');
+    if (!stored) return;
+    const { name, email, phone, ...attribution } = JSON.parse(stored);
+    localStorage.setItem('utm_data', JSON.stringify(attribution));
+  } catch {
+    localStorage.removeItem('utm_data');
   }
 };
 
@@ -88,18 +97,6 @@ export const getUTMData = () => {
   // Try LocalStorage first
   const stored = localStorage.getItem('utm_data');
   if (stored) return JSON.parse(stored);
-
-  // Fallback to cookies if LS is empty (e.g. cross-subdomain or cleared LS)
-  const cookiePhone = getCookie('visitor_phone');
-  if (cookiePhone) {
-    return {
-      phone: cookiePhone,
-      email: getCookie('visitor_email'),
-      name: getCookie('visitor_name'),
-      // Partial data reconstruction
-      utm_source: 'cookie_recovery'
-    };
-  }
 
   return null;
 };
