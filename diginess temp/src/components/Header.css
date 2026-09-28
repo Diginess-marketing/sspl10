@@ -41,8 +41,8 @@
 .site-header__logo img { display: block; height: 60px; width: auto; }
 
 /* ---------- primary nav (desktop) ---------- */
-.site-header__nav { flex: 1; min-width: 0; }
-.site-nav { display: flex; align-items: center; gap: clamp(22px, 3vw, 44px); margin: 0; padding: 0; list-style: none; }
+.site-header__nav { flex: 1; min-width: 0; position: relative; }
+.site-nav { display: flex; align-items: center; gap: clamp(16px, 1.7vw, 32px); margin: 0; padding: 0; list-style: none; }
 .site-nav__item { position: relative; }
 
 .site-nav__link {
@@ -259,8 +259,8 @@
 .site-drawer__section:last-of-type { padding-bottom: 20px; }
 
 /* ---------- breakpoints ---------- */
-/* below 1100px the primary nav moves into the slide-in menu */
-@media (max-width: 1099px) {
+/* below 1280px the primary nav (7 sections + More) moves into the slide-in menu */
+@media (max-width: 1279px) {
   .site-header__nav { display: none; }
   .site-header__youtube { display: none; }
 }
@@ -291,3 +291,49 @@
   .site-header, .site-nav__link::after, .site-nav__menu, .site-drawer, .site-drawer__backdrop, .site-drawer__panel,
   .site-btn, .site-header__youtube { transition: none; }
 }
+
+/* Outline button for dark backgrounds (e.g. the Coming Soon page) */
+.site-btn--light { background: transparent; border-color: rgba(255, 255, 255, 0.45); color: #fff; }
+.site-btn--light:hover { background: #fff; border-color: #fff; color: var(--sh-navy); }
+
+/* ---------- "More" mega menu (Tournament, Auction, Partners, Information, Contact) ---------- */
+.site-nav__item--more { position: static; }
+.site-nav__more-btn { background: none; border: 0; cursor: pointer; font: inherit; font-family: var(--brand-font-display); }
+.site-nav__mega {
+  left: 0;
+  right: 0;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px 16px;
+  padding: 18px;
+}
+.site-nav__mega ul { margin: 0; padding: 0; list-style: none; }
+.site-nav__mega a { padding: 7px 10px; white-space: normal; }
+.site-nav__mega .site-nav__mega-title {
+  margin-bottom: 4px;
+  color: var(--sh-blue);
+  border-bottom: 2px solid var(--sh-lime);
+  border-radius: 0;
+}
+.site-nav__mega .site-nav__mega-title:hover { background: none; color: var(--sh-navy); }
+
+/* ---------- slide-in menu accordion ---------- */
+.site-drawer__group > summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 0;
+  color: #0a1240;
+  font-size: var(--brand-fs-h3);
+  font-weight: 700;
+  letter-spacing: var(--brand-ls-h3);
+  text-transform: uppercase;
+  cursor: pointer;
+  list-style: none;
+}
+.site-drawer__group > summary::-webkit-details-marker { display: none; }
+.site-drawer__group > summary .site-nav__chevron { margin-left: auto; }
+.site-drawer__group[open] > summary .site-nav__chevron { transform: rotate(225deg); margin-top: 3px; }
+.site-drawer__group > summary.is-active { color: var(--sh-blue, #1f57d6); box-shadow: inset 3px 0 0 #dffc35; padding-left: 12px; }
+.site-drawer__sub a.is-current { color: #1f57d6; }

@@ -12,7 +12,7 @@ export const useEnrichedPlayerData = () => {
     const loadAndEnrichData = useCallback(async () => {
         setIsLoading(true);
         try {
-            // 1. Load basic JSON data
+            // 1. Load registered trial candidates from the database
             await playerDataService.loadPlayerData();
             const rawData = playerDataService.getRawData();
 

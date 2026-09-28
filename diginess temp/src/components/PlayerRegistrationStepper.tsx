@@ -19,9 +19,16 @@ import {
   Loader2,
   Camera,
   X,
+  AlertCircle,
 } from 'lucide-react';
-import { checkPlayerPhoto, uploadPlayerPhoto } from '@/lib/playerPhoto';
-import { getUTMData, storeUTMData } from '@/utils/utm';
+import { checkPlayerPhoto, PLAYER_PHOTO_UPLOAD_ENABLED, uploadPlayerPhoto } from '@/lib/playerPhoto';
+import {
+  INDIVIDUAL_REGISTRATION_FIELDS,
+  validateIndividualField,
+  validateIndividualRegistration,
+  type IndividualRegistrationField,
+} from '@/lib/validation/playerRegistration';
+import { clearStoredVisitorContact, getUTMData } from '@/utils/utm';
 import { visitorLeadService } from '@/services/visitorLeadService';
 import { LoadingSpinner } from '@/components/ui/enhanced-loading';
 import { getAllStatesAsync, getCitiesAndDistrictsForStateAsync } from '@/data/indiaLocationsLazy';
@@ -47,6 +54,19 @@ const CustomChevronRight = ({ className }: { className?: string }) => (
     <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
   </svg>
 );
+
+/**
+ * Red validation message under a form field; renders nothing when the field is valid.
+ * `!` is required: index.css sets an unlayered `p, span { color: inherit }` that beats
+ * plain Tailwind color utilities (same reason the labels use `!text-black`).
+ */
+const FieldError = ({ id, message }: { id: string; message?: string }) =>
+  message ? (
+    <p id={id} role="alert" className="mt-1.5 flex items-start gap-1 !text-xs font-semibold !text-red-600">
+      <AlertCircle className="w-3.5 h-3.5 mt-px shrink-0" aria-hidden="true" />
+      <span className="!text-red-600">{message}</span>
+    </p>
+  ) : null;
 
 const PlayerRegistrationStepper = () => {
   const [searchParams] = useSearchParams();
@@ -103,7 +123,8 @@ const PlayerRegistrationStepper = () => {
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
   const [razorpayModalOpen, setRazorpayModalOpen] = useState(false);
   const [scriptLoadError, setScriptLoadError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: boolean }>({});
+  /** field name -> error message shown under the field ('' or missing = valid) */
+  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
   const [touchedFields, setTouchedFields] = useState<{ [key: string]: boolean }>({});
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -119,9 +140,10 @@ const PlayerRegistrationStepper = () => {
     if (!file) return;
     const problem = checkPlayerPhoto(file);
     if (problem) {
-      toast({ title: 'Photo not accepted', description: problem, variant: 'destructive' });
+      setFieldErrors(prev => ({ ...prev, photo: problem }));
       return;
     }
+    setFieldErrors(prev => ({ ...prev, photo: '' }));
     setPhotoFile(file);
     setPhotoPreview(URL.createObjectURL(file));
   };
@@ -207,25 +229,16 @@ const PlayerRegistrationStepper = () => {
     loadStates();
   }, []);
 
-  // Pre-fill form with user data if logged in OR from cookies (Only for individual or first player in team)
+  // The form starts empty; contact details typed on an earlier visit are not restored from
+  // the browser. Remove any that older versions of the site saved there.
   useEffect(() => {
-    // 1. Try logged in user first
+    clearStoredVisitorContact();
+  }, []);
+
+  // Signed-in users get their account email pre-filled.
+  useEffect(() => {
     if (user?.email && !formData.email) {
-      setFormData(prev => ({
-        ...prev,
-        email: user.email || '',
-      }));
-    } else {
-      // 2. Try cookies (Visitor Lead Recovery)
-      const utmData = getUTMData();
-      if (utmData && !formData.email && !formData.phone) {
-        setFormData(prev => ({
-          ...prev,
-          full_name: prev.full_name || utmData.name || '',
-          email: prev.email || utmData.email || '',
-          phone: prev.phone || utmData.phone || '',
-        }));
-      }
+      setFormData(prev => ({ ...prev, email: user.email || '' }));
     }
   }, [user]);
 
@@ -358,8 +371,15 @@ const PlayerRegistrationStepper = () => {
 
     // Handle Individual / Primary Contact Input
     setTouchedFields((prev: Record<string, boolean>) => ({ ...prev, [name]: true }));
-    if (fieldErrors[name]) {
-      setFieldErrors(prev => ({ ...prev, [name]: false }));
+
+    // A field already showing an error is re-checked on every change, so the message
+    // updates (or disappears) as the user fixes it.
+    if (fieldErrors[name] && registrationType === 'individual') {
+      const nextValue = name === 'phone' ? value.replace(/\D/g, '').slice(0, 10) : value;
+      const nextValues = { ...formData, [name]: nextValue, ...(name === 'state' && { cityDistrict: '' }) };
+      setFieldErrors(prev => ({ ...prev, [name]: validateIndividualField(name as IndividualRegistrationField, nextValues) }));
+    } else if (fieldErrors[name]) {
+      setFieldErrors(prev => ({ ...prev, [name]: '' }));
     }
 
     if (name === 'phone') {
@@ -380,26 +400,24 @@ const PlayerRegistrationStepper = () => {
       setFormData(prev => ({ ...prev, [name]: value }));
     }
 
-    // Visitor Lead Capture: Sync to Cookies & DB
+    // Visitor Lead Capture: sync to DB (not to the browser, see clearStoredVisitorContact)
     if (['full_name', 'email', 'phone'].includes(name)) {
       const updatedData = { ...formData, [name]: name === 'phone' ? value.replace(/\D/g, '').slice(0, 10) : value };
 
-      // 1. Update Cookies
-      const currentUTM = getUTMData() || { utm_id: null, utm_source: null, utm_medium: null, utm_campaign: null };
-      storeUTMData({
-        ...currentUTM,
-        name: updatedData.full_name,
-        email: updatedData.email,
-        phone: updatedData.phone,
-      });
-
-      // 2. Sync to DB (Debounced)
+      // Debounced
       visitorLeadService.syncVisitorLead({
         full_name: updatedData.full_name,
         email: updatedData.email,
         phone: updatedData.phone,
       });
     }
+  };
+
+  /** Show a field's message as soon as the user leaves it (only once they have typed in it). */
+  const handleFieldBlur = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const name = e.target.name as IndividualRegistrationField;
+    if (!touchedFields[name] || !INDIVIDUAL_REGISTRATION_FIELDS.includes(name)) return;
+    setFieldErrors(prev => ({ ...prev, [name]: validateIndividualField(name, formData) }));
   };
 
   const handleTeamDetailsChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -418,6 +436,9 @@ const PlayerRegistrationStepper = () => {
     } else {
       setTeamDetails(prev => ({ ...prev, [name]: value }));
     }
+    if (fieldErrors[name]) {
+      setFieldErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
   const validatePlayer = (player: PlayerDetails): boolean => {
@@ -428,28 +449,22 @@ const PlayerRegistrationStepper = () => {
   };
 
   const validateForm = () => {
-    const errors: { [key: string]: boolean } = {};
+    let errors: { [key: string]: string } = {};
     let isValid = true;
 
     if (registrationType === 'individual') {
-      if (!formData.full_name.trim()) { errors.full_name = true; isValid = false; }
-      if (!formData.date_of_birth) { errors.date_of_birth = true; isValid = false; }
-      if (!formData.email.trim() || !formData.email.includes('@')) { errors.email = true; isValid = false; }
-      if (!formData.phone || formData.phone.length !== 10) { errors.phone = true; isValid = false; }
-      if (!formData.state) { errors.state = true; isValid = false; }
-      if (!formData.cityDistrict) { errors.cityDistrict = true; isValid = false; }
-      if (!formData.pincode || formData.pincode.length !== 6) { errors.pincode = true; isValid = false; }
-      if (!formData.position) { errors.position = true; isValid = false; }
-      if (!formData.school_name.trim()) { errors.school_name = true; isValid = false; }
+      errors = validateIndividualRegistration(formData);
+      if (!photoFile) errors.photo = 'Please upload your photo';
+      if (Object.keys(errors).length > 0) isValid = false;
       if (!acceptTerms) {
         toast({ title: 'Notice', description: 'Please accept terms & conditions to proceed', variant: 'destructive' });
         isValid = false;
       }
     } else if (registrationType === 'team' || registrationType === 'students') {
-      if (!teamDetails.teamName.trim()) { errors.teamName = true; isValid = false; }
-      if (!teamDetails.playerCount || (registrationType === 'team' ? teamDetails.playerCount < 2 : teamDetails.playerCount < 1)) { errors.playerCount = true; isValid = false; }
-      if (!teamDetails.state) { errors.state = true; isValid = false; }
-      if (!teamDetails.cityDistrict) { errors.cityDistrict = true; isValid = false; }
+      if (!teamDetails.teamName.trim()) { errors.teamName = registrationType === 'students' ? 'School / organization name is required' : 'Team name is required'; isValid = false; }
+      if (!teamDetails.playerCount || (registrationType === 'team' ? teamDetails.playerCount < 2 : teamDetails.playerCount < 1)) { errors.playerCount = registrationType === 'team' ? 'A team needs at least 2 players' : 'Enter at least 1 player'; isValid = false; }
+      if (!teamDetails.state) { errors.state = 'Please select a state'; isValid = false; }
+      if (!teamDetails.cityDistrict) { errors.cityDistrict = 'Please select a city / district'; isValid = false; }
 
       teamDetails.players.forEach((p, i) => {
         if (!p.full_name.trim() || !p.email.trim() || !p.email.includes('@') || !p.phone || p.phone.length !== 10 || !p.date_of_birth || !p.position) {
@@ -666,12 +681,15 @@ const PlayerRegistrationStepper = () => {
       } else {
         // ... EXISTING INDIVIDUAL LOGIC ...
         let photoPath: string | null = null;
-        if (photoFile) {
+        if (photoFile && !PLAYER_PHOTO_UPLOAD_ENABLED) {
+          console.warn('Player photo upload skipped: VITE_PLAYER_PHOTO_UPLOAD_ENABLED=false');
+        } else if (photoFile) {
           try {
             photoPath = await uploadPlayerPhoto(photoFile);
           } catch (photoError) {
             console.error('Player photo upload failed:', photoError);
-            throw new Error('Could not upload your photo. Please try again, or remove the photo to continue.');
+            setFieldErrors(prev => ({ ...prev, photo: 'Could not upload your photo. Please try again.' }));
+            throw new Error('Could not upload your photo. Please try again.');
           }
         }
 
@@ -967,8 +985,11 @@ const PlayerRegistrationStepper = () => {
                           onChange={handleInputChange}
                           className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.full_name ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
                           placeholder="Enter your full name"
-                          aria-invalid={fieldErrors.full_name || undefined}
+                          onBlur={handleFieldBlur}
+                          aria-invalid={Boolean(fieldErrors.full_name) || undefined}
+                          aria-describedby={fieldErrors.full_name ? 'full_name-error' : undefined}
                         />
+                        <FieldError id="full_name-error" message={fieldErrors.full_name} />
                       </div>
                       <div>
                         <label className="block text-sm font-bold !text-black mb-2">
@@ -981,8 +1002,11 @@ const PlayerRegistrationStepper = () => {
                           onChange={handleInputChange}
                           max={todayYMD()}
                           className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.date_of_birth ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
-                          aria-invalid={fieldErrors.date_of_birth || undefined}
+                          onBlur={handleFieldBlur}
+                          aria-invalid={Boolean(fieldErrors.date_of_birth) || undefined}
+                          aria-describedby={fieldErrors.date_of_birth ? 'date_of_birth-error' : undefined}
                         />
+                        <FieldError id="date_of_birth-error" message={fieldErrors.date_of_birth} />
                       </div>
                     </div>
                     <div className="grid md:grid-cols-2 gap-4">
@@ -997,8 +1021,11 @@ const PlayerRegistrationStepper = () => {
                           onChange={handleInputChange}
                           className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.email ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
                           placeholder="email@example.com"
-                          aria-invalid={fieldErrors.email || undefined}
+                          onBlur={handleFieldBlur}
+                          aria-invalid={Boolean(fieldErrors.email) || undefined}
+                          aria-describedby={fieldErrors.email ? 'email-error' : undefined}
                         />
+                        <FieldError id="email-error" message={fieldErrors.email} />
                       </div>
                       <div>
                         <label className="block text-sm font-bold !text-black mb-2">
@@ -1016,9 +1043,12 @@ const PlayerRegistrationStepper = () => {
                             className={`w-full pl-14 pr-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.phone ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
                             placeholder="10-digit number"
                             maxLength={10}
-                            aria-invalid={fieldErrors.phone || undefined}
+                            onBlur={handleFieldBlur}
+                            aria-invalid={Boolean(fieldErrors.phone) || undefined}
+                            aria-describedby={fieldErrors.phone ? 'phone-error' : undefined}
                           />
                         </div>
+                        <FieldError id="phone-error" message={fieldErrors.phone} />
                       </div>
                     </div>
                   </div>
@@ -1035,11 +1065,15 @@ const PlayerRegistrationStepper = () => {
                           name="state"
                           value={formData.state}
                           onChange={handleInputChange}
+                          onBlur={handleFieldBlur}
+                          aria-invalid={Boolean(fieldErrors.state) || undefined}
+                          aria-describedby={fieldErrors.state ? 'state-error' : undefined}
                           className={`w-full px-4 py-3 bg-white border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.state ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
                         >
                           <option value="">Select State</option>
                           {availableStates.map(s => <option key={s} value={s}>{s}</option>)}
                         </select>
+                        <FieldError id="state-error" message={fieldErrors.state} />
                       </div>
                       <div>
                         <label className="block text-sm font-bold !text-black mb-2">City / District *</label>
@@ -1048,11 +1082,15 @@ const PlayerRegistrationStepper = () => {
                           value={formData.cityDistrict}
                           onChange={handleInputChange}
                           disabled={!formData.state}
+                          onBlur={handleFieldBlur}
+                          aria-invalid={Boolean(fieldErrors.cityDistrict) || undefined}
+                          aria-describedby={fieldErrors.cityDistrict ? 'cityDistrict-error' : undefined}
                           className={`w-full px-4 py-3 bg-slate-50 border-2 rounded-xl focus:ring-4 focus:ring-blue-100 transition-all disabled:opacity-50 !text-black font-medium ${fieldErrors.cityDistrict ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
                         >
                           <option value="">Select City</option>
                           {availableCitiesDistricts.map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
+                        <FieldError id="cityDistrict-error" message={fieldErrors.cityDistrict} />
                       </div>
                     </div>
                     <div className="grid md:grid-cols-2 gap-4">
@@ -1064,9 +1102,14 @@ const PlayerRegistrationStepper = () => {
                           value={formData.pincode}
                           onChange={handleInputChange}
                           maxLength={6}
+                          inputMode="numeric"
                           className={`w-full px-4 py-3 bg-white border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.pincode ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
                           placeholder="Enter Pincode"
+                          onBlur={handleFieldBlur}
+                          aria-invalid={Boolean(fieldErrors.pincode) || undefined}
+                          aria-describedby={fieldErrors.pincode ? 'pincode-error' : undefined}
                         />
+                        <FieldError id="pincode-error" message={fieldErrors.pincode} />
                       </div>
                       <div>
                         <label className="block text-sm font-bold !text-black mb-2">Player Type *</label>
@@ -1074,6 +1117,9 @@ const PlayerRegistrationStepper = () => {
                           name="position"
                           value={formData.position}
                           onChange={handleInputChange}
+                          onBlur={handleFieldBlur}
+                          aria-invalid={Boolean(fieldErrors.position) || undefined}
+                          aria-describedby={fieldErrors.position ? 'position-error' : undefined}
                           className={`w-full px-4 py-3 bg-white border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.position ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
                         >
                           <option value="">Select Position</option>
@@ -1081,6 +1127,7 @@ const PlayerRegistrationStepper = () => {
                           <option value="Bowling">⚡ Bowling</option>
                           <option value="All-Rounder">⭐ All-Rounder</option>
                         </select>
+                        <FieldError id="position-error" message={fieldErrors.position} />
                       </div>
                     </div>
                     <div className="grid md:grid-cols-1 gap-4 mt-4">
@@ -1093,11 +1140,17 @@ const PlayerRegistrationStepper = () => {
                           onChange={handleInputChange}
                           className={`w-full px-4 py-3 bg-white border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.school_name ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
                           placeholder="Enter School or College Name"
+                          onBlur={handleFieldBlur}
+                          aria-invalid={Boolean(fieldErrors.school_name) || undefined}
+                          aria-describedby={fieldErrors.school_name ? 'school_name-error' : undefined}
                         />
+                        <FieldError id="school_name-error" message={fieldErrors.school_name} />
                       </div>
                     </div>
                     <div className="mt-4">
-                      <label htmlFor="player_photo" className="block text-sm font-bold !text-black mb-2">Player Photo</label>
+                      <label htmlFor="player_photo" className="block text-sm font-bold !text-black mb-2">
+                        Player Photo<span className="text-red-500"> *</span>
+                      </label>
                       <input
                         ref={photoInputRef}
                         id="player_photo"
@@ -1105,6 +1158,8 @@ const PlayerRegistrationStepper = () => {
                         accept="image/jpeg,image/png,image/webp"
                         onChange={handlePhotoChange}
                         className="sr-only"
+                        aria-invalid={Boolean(fieldErrors.photo) || undefined}
+                        aria-describedby={fieldErrors.photo ? 'photo-error' : undefined}
                       />
                       {photoPreview ? (
                         <div className="flex items-center gap-4 p-3 bg-white border-2 border-slate-200 rounded-xl">
@@ -1123,27 +1178,29 @@ const PlayerRegistrationStepper = () => {
                         <button
                           type="button"
                           onClick={() => photoInputRef.current?.click()}
-                          className="w-full flex items-center gap-3 px-4 py-4 bg-white border-2 border-dashed border-slate-300 rounded-xl text-left hover:border-[#8B5CF6] focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all"
+                          aria-describedby={fieldErrors.photo ? 'photo-error' : undefined}
+                          className={`w-full flex items-center gap-3 px-4 py-4 bg-white border-2 border-dashed rounded-xl text-left hover:border-[#8B5CF6] focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all ${fieldErrors.photo ? 'border-red-400' : 'border-slate-300'}`}
                         >
                           <Camera className="w-6 h-6 text-blue-600 shrink-0" />
                           <span>
                             <span className="block text-sm font-bold !text-black">Upload a photo</span>
-                            <span className="block !text-xs !text-slate-500">Clear face photo · JPG, PNG or WEBP</span>
+                            <span className="block !text-xs !text-slate-500">Clear face photo · JPG, PNG or WEBP · max 15 MB</span>
                           </span>
                         </button>
                       )}
+                      <FieldError id="photo-error" message={fieldErrors.photo} />
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
+                  <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                     <input
                       type="checkbox"
                       id="acceptTerms"
                       checked={acceptTerms}
                       onChange={e => setAcceptTerms(e.target.checked)}
-                      className="mt-1 w-5 h-5 rounded border-blue-300 text-blue-600 focus:ring-blue-500"
+                      className="m-0 w-5 h-5 shrink-0 rounded border-blue-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                     />
-                    <label htmlFor="acceptTerms" className="text-sm font-medium !text-black leading-relaxed cursor-pointer">
+                    <label htmlFor="acceptTerms" className="m-0 text-sm font-medium !text-black leading-5 cursor-pointer">
                       I agree to the <TermsAndConditions trigger={<span className="text-blue-600 underline font-bold">Terms & Conditions</span>} asLink={true} />
                     </label>
                   </div>
@@ -1194,7 +1251,9 @@ const PlayerRegistrationStepper = () => {
                           onChange={handleTeamDetailsChange}
                           className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.teamName ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
                           placeholder={`Enter ${registrationType === 'students' ? 'School/College/Organization' : 'Team'} Name`}
+                          aria-invalid={Boolean(fieldErrors.teamName) || undefined}
                         />
+                        <FieldError id="teamName-error" message={fieldErrors.teamName} />
                       </div>
                       <div>
                         <label className="block text-sm font-bold !text-black mb-2">Number of Players *</label>
@@ -1206,7 +1265,9 @@ const PlayerRegistrationStepper = () => {
                           onChange={handleTeamDetailsChange}
                           className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.playerCount ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
                           placeholder={registrationType === 'students' ? 'Ex: 1' : 'Ex: 11'}
+                          aria-invalid={Boolean(fieldErrors.playerCount) || undefined}
                         />
+                        <FieldError id="playerCount-error" message={fieldErrors.playerCount} />
                       </div>
                     </div>
                   </div>
@@ -1223,11 +1284,13 @@ const PlayerRegistrationStepper = () => {
                           name="state"
                           value={teamDetails.state}
                           onChange={handleTeamDetailsChange}
+                          aria-invalid={Boolean(fieldErrors.state) || undefined}
                           className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.state ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
                         >
                           <option value="">Select State</option>
                           {availableStates.map(s => <option key={s} value={s}>{s}</option>)}
                         </select>
+                        <FieldError id="team-state-error" message={fieldErrors.state} />
                       </div>
                       <div>
                         <label className="block text-sm font-bold !text-black mb-2">City / District *</label>
@@ -1241,6 +1304,7 @@ const PlayerRegistrationStepper = () => {
                           <option value="">Select City</option>
                           {teamAvailableCities.map(c => <option key={c} value={c}>{c}</option>)}
                         </select>
+                        <FieldError id="team-cityDistrict-error" message={fieldErrors.cityDistrict} />
                       </div>
                     </div>
                   </div>
@@ -1291,15 +1355,15 @@ const PlayerRegistrationStepper = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
+                  <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                     <input
                       type="checkbox"
                       id="acceptTerms"
                       checked={acceptTerms}
                       onChange={e => setAcceptTerms(e.target.checked)}
-                      className="mt-1 w-5 h-5 rounded border-blue-300 text-blue-600 focus:ring-blue-500"
+                      className="m-0 w-5 h-5 shrink-0 rounded border-blue-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
                     />
-                    <label htmlFor="acceptTerms" className="text-sm font-medium !text-black leading-relaxed cursor-pointer">
+                    <label htmlFor="acceptTerms" className="m-0 text-sm font-medium !text-black leading-5 cursor-pointer">
                       I agree to the <TermsAndConditions trigger={<span className="text-blue-600 underline font-bold">Terms & Conditions</span>} asLink={true} />
                     </label>
                   </div>

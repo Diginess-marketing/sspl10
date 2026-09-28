@@ -377,13 +377,40 @@ a {
 
 /* The rule above is unlayered, so it beats every Tailwind text-color utility. Admin
    screens (light UI) opt out: text is dark by default and utilities apply again.
-   Dialogs render in a portal, so they carry the class themselves. */
-.admin-scope {
+   Dialogs render in a portal, so on admin pages (body.admin-mode, set by AdminLayout)
+   every dialog, dropdown and popover gets the same treatment. */
+.admin-scope,
+body.admin-mode :is([role="dialog"], [role="alertdialog"], [data-radix-popper-content-wrapper]) {
   color: #0f172a;
 }
 
-.admin-scope :is(p, span, div, h1, h2, h3, h4, h5, h6, li, a) {
+.admin-scope :is(p, span, div, h1, h2, h3, h4, h5, h6, li, a, label),
+body.admin-mode :is([role="dialog"], [role="alertdialog"], [data-radix-popper-content-wrapper]) :is(p, span, div, h1, h2, h3, h4, h5, h6, li, a, label) {
   color: revert-layer;
+}
+
+/* Button variants built for the dark site use white text; on light admin surfaces they
+   would vanish. `.text-white` only survives when the caller set no colour of its own. */
+:is(.admin-scope, body.admin-mode [role="dialog"], body.admin-mode [role="alertdialog"])
+  [data-variant]:is([data-variant="outline"], [data-variant="secondary"], [data-variant="ghost"], [data-variant="tertiary"], [data-variant="link"]).text-white {
+  color: #0f172a;
+}
+
+:is(.admin-scope, body.admin-mode [role="dialog"], body.admin-mode [role="alertdialog"])
+  [data-variant]:is([data-variant="outline"], [data-variant="secondary"]).text-white {
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.06);
+}
+
+:is(.admin-scope, body.admin-mode [role="dialog"], body.admin-mode [role="alertdialog"])
+  [data-variant]:is([data-variant="outline"], [data-variant="secondary"]).text-white:hover:not(:disabled) {
+  background-color: #00B4D8;
+  color: #ffffff;
+}
+
+:is(.admin-scope, body.admin-mode [role="dialog"], body.admin-mode [role="alertdialog"])
+  [data-variant]:is([data-variant="ghost"], [data-variant="tertiary"]).text-white:hover:not(:disabled) {
+  background-color: #f1f5f9;
 }
 
 /* Specific overrides for muted text */

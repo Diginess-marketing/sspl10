@@ -3,6 +3,13 @@ import { supabase } from '@/integrations/supabase/client';
 /** Private bucket: registrants may upload, only admins may read (see the player_photos migration). */
 export const PLAYER_PHOTO_BUCKET = 'player-photos';
 
+/**
+ * Set VITE_PLAYER_PHOTO_UPLOAD_ENABLED=false while the database in use has no player-photos
+ * bucket (e.g. local dev before the player_photos migration is applied). The form still
+ * requires and checks a photo, but the upload is skipped and no photo_url is stored.
+ */
+export const PLAYER_PHOTO_UPLOAD_ENABLED = import.meta.env.VITE_PLAYER_PHOTO_UPLOAD_ENABLED !== 'false';
+
 export const PLAYER_PHOTO_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 /** Largest file accepted from the device, before it is downscaled. */
 export const PLAYER_PHOTO_MAX_INPUT_BYTES = 15 * 1024 * 1024;

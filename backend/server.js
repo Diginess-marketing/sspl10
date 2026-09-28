@@ -7,7 +7,12 @@ if (env.missingKeys.length > 0) {
   logger.warn(`Missing environment variables: ${env.missingKeys.join(', ')}`);
 }
 
-jobs.startAll();
+// Local dev points at the live database, where these jobs would email real registrants.
+if (process.env.DISABLE_JOBS === 'true') {
+  logger.warn('Background jobs disabled (DISABLE_JOBS=true)');
+} else {
+  jobs.startAll();
+}
 
 app.listen(env.port, () => {
   logger.info(`🚀 API server running on port ${env.port} (${env.nodeEnv})`);

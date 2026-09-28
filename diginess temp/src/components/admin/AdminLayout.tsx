@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import {
@@ -28,6 +28,13 @@ interface AdminLayoutProps {
 const AdminLayout = ({ children }: AdminLayoutProps) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const location = useLocation();
+
+    // Dialogs, dropdowns and popovers render in portals outside <main>; this body class
+    // lets index.css give them the dark admin text colour too.
+    useEffect(() => {
+        document.body.classList.add('admin-mode');
+        return () => document.body.classList.remove('admin-mode');
+    }, []);
     const navigate = useNavigate();
     const { user, signOut, hasPermission, userRole } = useAuth();
 
@@ -55,7 +62,8 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     ];
 
     return (
-        <div className="min-h-screen bg-gray-100 flex font-sans">
+        // Fixed to the viewport so only <main> scrolls and the sidebar stays in place
+        <div className="h-screen overflow-hidden bg-gray-100 flex font-sans">
             {/* Sidebar */}
             <aside
                 className={`fixed inset-y-0 left-0 z-50 bg-slate-900 text-white transition-all duration-300 ease-in-out ${isSidebarOpen ? 'w-64' : 'w-20'

@@ -7,9 +7,11 @@ const router = express.Router();
 // --- Public ---
 router.get('/health', controller.health);
 router.get('/config', asyncHandler(controller.getConfig));
-router.post('/create-order', asyncHandler(controller.createOrder));
+// The frontend (src/integrations/razorpayService.ts) still calls the /razorpay/* paths of
+// the pre-restructure server, so both paths are served.
+router.post(['/create-order', '/razorpay/create-order'], asyncHandler(controller.createOrder));
 router.get('/sse/:registrationId', controller.subscribe);
-router.post('/verify-payment', asyncHandler(controller.verifyPayment));
+router.post(['/verify-payment', '/razorpay/verify-payment'], asyncHandler(controller.verifyPayment));
 
 // --- Razorpay callback ---
 router.post('/webhooks/razorpay', asyncHandler(controller.handleWebhook));

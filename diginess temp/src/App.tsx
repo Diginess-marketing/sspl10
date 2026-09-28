@@ -33,6 +33,7 @@ const QRScan = lazy(() => import('./pages/QRScan'));
 const ErrorHandlingTest = lazy(() => import('./components/ErrorHandlingTest'));
 const RegistrationSuccess = lazy(() => import('./pages/RegistrationSuccess'));
 const AboutUs = lazy(() => import('./pages/AboutUs'));
+const ComingSoon = lazy(() => import('./pages/ComingSoon'));
 const HowItWorks = lazy(() => import('./pages/HowItWorks'));
 const Enquiry = lazy(() => import('./pages/Enquiry'));
 const TermsAndConditions = lazy(() => import('./pages/terms-and-conditions'));
@@ -71,6 +72,7 @@ import SocialKneePadWidget from './components/SocialKneePadWidget';
 import SSPLChatbot from './components/SSPLChatbot';
 
 import ScrollToTop from './components/ScrollToTop';
+import { COMING_SOON_PAGES } from './config/siteNav';
 
 // Admin Panel Components (Lazy Loaded)
 const AdminLayout = lazy(() => import('./components/admin/AdminLayout'));
@@ -87,6 +89,7 @@ const AdminSelectionStatus = lazy(() => import('./pages/admin/AdminSelectionStat
 const AdminReports = lazy(() => import('./pages/admin/AdminReports'));
 const AdminWhatsApp = lazy(() => import('./pages/admin/WhatsAppMarketing'));
 const AdminRazorpay = lazy(() => import('./pages/admin/RazorpayDashboard'));
+const AdminRewards = lazy(() => import('./pages/admin/RewardsManager'));
 const AdminRoute = lazy(() => import('./components/admin/AdminRoute'));
 
 // Enhanced loading component for Suspense fallback
@@ -338,6 +341,11 @@ const App = () => {
 {/* <Route path="/chat" element={<ChatPage />} /> */}
 
 
+                              {/* Menu links whose page isn't built yet (src/config/siteNav.ts) */}
+                              {COMING_SOON_PAGES.map((page) => (
+                                <Route key={page.to} path={page.to} element={<ComingSoon />} />
+                              ))}
+
                               <Route path="/auction" element={<AuctionPage />} />
                               <Route path="/players/:playerId" element={<PlayerProfile />} />
                               <Route path="/dashboard" element={<UserDashboard />} />
@@ -411,6 +419,16 @@ const App = () => {
                                 <AdminRoute>
                                   <AdminLayout>
                                     <AdminTrials />
+                                  </AdminLayout>
+                                </AdminRoute>
+                              }
+                            />
+                            <Route
+                              path="/admin/rewards"
+                              element={
+                                <AdminRoute>
+                                  <AdminLayout>
+                                    <AdminRewards />
                                   </AdminLayout>
                                 </AdminRoute>
                               }
