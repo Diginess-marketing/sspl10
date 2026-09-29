@@ -1,5 +1,6 @@
 import { logger } from './logger';
 import type { Alert, AlertChannel, AlertRule } from './monitoringTypes';
+import { API_BASE_URL } from '@/config/api';
 
 export type { Alert, AlertChannel, AlertRule };
 
@@ -268,7 +269,7 @@ ${alert.metadata ? `*Details:* ${JSON.stringify(alert.metadata, null, 2)}` : ''}
       html: message.replace(/\n/g, '<br>')
     };
 
-    await fetch('/api/send-email', {
+    await fetch(`${API_BASE_URL}/send-email`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(emailData)
