@@ -1,3 +1,5 @@
+import { API_BASE_URL } from '@/config/api';
+
 // Payment overlay utility to show/hide overlay during payment
 const paymentOverlay = {
   element: null as HTMLDivElement | null,
@@ -15,24 +17,8 @@ const paymentOverlay = {
   },
 };
 
-// Resolve the base URL for API calls
-function resolveBaseUrl(): string {
-  // Production API URL - always use ssplt10.co.in
-  const PRODUCTION_API = 'https://ssplt10.co.in/api';
-
-  // Only use local backend during actual dev mode (npm run dev), not production builds/previews
-  if (import.meta.env.DEV && typeof window !== 'undefined') {
-    const { hostname } = window.location;
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return 'http://127.0.0.1:3003/api';
-    }
-  }
-
-  // For ALL production builds (including vite preview), use the production API
-  return PRODUCTION_API;
-}
-const BASE_URL: string = resolveBaseUrl();
-console.log('[RazorpayService] Resolved API Base URL:', BASE_URL);
+// Backend address comes from VITE_API_URL (src/config/api.ts)
+const BASE_URL: string = API_BASE_URL;
 
 export interface RazorpayPaymentSuccessResponse {
   razorpay_payment_id: string;

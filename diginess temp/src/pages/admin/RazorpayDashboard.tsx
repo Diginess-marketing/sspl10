@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Download, Search, RefreshCw, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
 import { useAuth } from '@/hooks/useAuth';
+import { API_BASE_URL } from '@/config/api';
 
 export default function RazorpayDashboard() {
   const [transactions, setTransactions] = useState([]);
@@ -19,7 +20,7 @@ export default function RazorpayDashboard() {
   const { session } = useAuth();
   
   const limit = 50;
-  const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:3003/api';
+  const apiBase = API_BASE_URL;
 
   const fetchTransactions = async () => {
     try {

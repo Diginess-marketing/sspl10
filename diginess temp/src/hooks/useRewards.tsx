@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from './useAuth';
+import { API_ORIGIN } from '@/config/api';
 
 // Helper function to safely get error message
 const getErrorMessage = (error: unknown): string => {
@@ -22,7 +23,7 @@ export const useRewards = () => {
   const [tier, setTier] = useState(null);
   const [achievements, setAchievements] = useState([]);
 
-  const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3002';
+  const API_BASE = API_ORIGIN;
 
   const getAuthHeaders = useCallback((): Record<string, string> => {
     if (!session?.access_token) return {};

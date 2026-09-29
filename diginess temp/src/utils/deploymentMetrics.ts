@@ -1,5 +1,6 @@
 import { logger } from './logger';
 import type { DeploymentMetrics, BuildMetrics, DeploymentAlertRule } from './monitoringTypes';
+import { API_BASE_URL } from '@/config/api';
 
 export type { DeploymentMetrics, BuildMetrics };
 
@@ -101,7 +102,7 @@ class DeploymentMetricsCollector {
     // Get health data from backend
     let backendHealth = null;
     try {
-      const response = await fetch('/api/health/detailed');
+      const response = await fetch(`${API_BASE_URL}/health/detailed`);
       if (response.ok) {
         backendHealth = await response.json();
       }

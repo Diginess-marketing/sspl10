@@ -40,6 +40,7 @@ const subDays = (date: Date, days: number) => {
   return result;
 };
 import { useToast } from '@/hooks/use-toast';
+import { API_BASE_URL } from '@/config/api';
 
 interface ReportType {
   id: string;
@@ -109,10 +110,10 @@ const GoogleAnalyticsReportDownload: React.FC = () => {
 
       // Load report types, date presets, and export formats from backend
       const [reportTypesRes, datePresetsRes, exportFormatsRes, gaConfigRes] = await Promise.all([
-        fetch('/api/ga/report-types'),
-        fetch('/api/ga/date-presets'),
-        fetch('/api/ga/export-formats'),
-        fetch('/api/ga/config'),
+        fetch(`${API_BASE_URL}/ga/report-types`),
+        fetch(`${API_BASE_URL}/ga/date-presets`),
+        fetch(`${API_BASE_URL}/ga/export-formats`),
+        fetch(`${API_BASE_URL}/ga/config`),
       ]);
 
       if (reportTypesRes.ok) {
@@ -211,7 +212,7 @@ const GoogleAnalyticsReportDownload: React.FC = () => {
         });
       }, 200);
 
-      const response = await fetch('/api/ga/generate-and-export', {
+      const response = await fetch(`${API_BASE_URL}/ga/generate-and-export`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
