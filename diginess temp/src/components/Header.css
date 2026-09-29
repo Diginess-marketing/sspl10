@@ -337,3 +337,13 @@
 .site-drawer__group[open] > summary .site-nav__chevron { transform: rotate(225deg); margin-top: 3px; }
 .site-drawer__group > summary.is-active { color: var(--sh-blue, #1f57d6); box-shadow: inset 3px 0 0 #dffc35; padding-left: 12px; }
 .site-drawer__sub a.is-current { color: #1f57d6; }
+
+/* Desktop menu wider than the free space (narrow window, zoom, long labels): hide it rather than
+   letting it slide under the buttons; the ☰ slide-in menu has every link. Header.tsx measures this. */
+.site-header.is-nav-overflowing .site-header__nav { visibility: hidden; }
+
+/* Keep the 8 top-level labels compact so the desktop menu fits on common laptop widths:
+   the cricket icon stays on the active link and in the slide-in menu only. */
+.site-nav { gap: clamp(14px, 1.3vw, 28px); }
+.site-nav__link .nav-cricket-icon { display: none; }
+.site-nav__link.is-active .nav-cricket-icon { display: inline-flex; }

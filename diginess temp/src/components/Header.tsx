@@ -26,6 +26,22 @@ const Header = () => {
   const { user, clearAuthState } = useAuth();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const navListRef = useRef<HTMLUListElement>(null);
+  // True when the desktop menu is wider than the space left beside the logo and buttons
+  // (depends on screen width, zoom and font), so it hides and the slide-in menu is used.
+  const [navOverflows, setNavOverflows] = useState(false);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    const list = navListRef.current;
+    if (!nav || !list || typeof ResizeObserver === 'undefined') return;
+    const measure = () => setNavOverflows(list.scrollWidth > nav.clientWidth + 1);
+    const observer = new ResizeObserver(measure);
+    observer.observe(nav);
+    observer.observe(list);
+    return () => observer.disconnect();
+  }, []);
 
   // Only show auth options if running inside the Android App WebView
   const isAndroidApp = navigator.userAgent.includes('SSPL-Android-App');
@@ -104,14 +120,14 @@ const Header = () => {
 
   return (
     <>
-      <header className={`site-header${scrolled ? ' is-scrolled' : ''}`}>
+      <header className={`site-header${scrolled ? ' is-scrolled' : ''}${navOverflows ? ' is-nav-overflowing' : ''}`}>
         <div className="site-header__bar">
           <Link to="/" className="site-header__logo" aria-label="SSPL T10 – go to homepage">
             <img src="/assets/img/sspl-logo-color.png" alt="SSPL – Southern Street Premier League" width={188} height={200} />
           </Link>
 
-          <nav className="site-header__nav" aria-label="Primary">
-            <ul className="site-nav">
+          <nav ref={navRef} className="site-header__nav" aria-label="Primary" aria-hidden={navOverflows || undefined}>
+            <ul ref={navListRef} className="site-nav">
               {primaryNav.map((item) => (
                 <li key={item.label} className={`site-nav__item${item.children ? ' has-menu' : ''}`}>
                   <Link to={item.to} className={`site-nav__link${isActive(item) ? ' is-active' : ''}`} aria-current={isActive(item) ? 'page' : undefined}>
