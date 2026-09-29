@@ -6,3 +6,9 @@ android-pwa/.gradle/
 *.apk
 *.aab
 scratch/
+
+# Local env files hold per-machine values and must never reach a build server.
+# .env.production (public values only) IS committed on purpose.
+.env.local
+.env.*.local
+.env.local.dummy-backup
