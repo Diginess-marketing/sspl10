@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "dev:local": "node --env-file=.env.local-dev --watch server.js"
+    "dev:local": "node --env-file=.env.local-dev --watch server.js",
+    "test": "node --test \"src/**/*.test.js\""
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
@@ -17,6 +18,7 @@
     "express": "^4.21.2",
     "node-cron": "^4.2.1",
     "node-fetch": "^2.7.0",
+    "pdf-lib": "^1.17.1",
     "razorpay": "^2.9.6"
   }
 }

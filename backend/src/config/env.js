@@ -16,6 +16,8 @@ const env = {
   isProduction: process.env.NODE_ENV === 'production',
   port: Number(process.env.PORT) || (process.env.NODE_ENV === 'production' ? 10000 : 3003),
   rootDir,
+  // Public website, used for links and the logo in player emails
+  siteUrl: (process.env.SITE_URL || 'https://ssplt10.co.in').replace(/\/+$/, ''),
 
   supabase: {
     url: process.env.VITE_SUPABASE_URL,

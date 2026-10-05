@@ -5,9 +5,9 @@ import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
 import { ActionButton } from '@/components/admin/ui';
 import { TrialLevelView } from './TrialLevelView';
 
-const LEVELS = [1, 2, 3];
+const LEVELS = [1, 2, 3, 4, 5];
 
-// L1-L3 tracker: candidates are called, marked attended and selected level by level.
+// L1-L5 tracker: candidates are called, marked attended and selected level by level.
 export const TrialLevelsTab = () => {
   const [level, setLevel] = useState(1);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -33,7 +33,7 @@ export const TrialLevelsTab = () => {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="admin-muted max-w-[62ch]">
-          Level 1 lists every candidate. Selecting a candidate moves them to the next level.
+          Level 1 lists every candidate. Selecting a candidate moves them to the next level; every result or absence emails the player (with their certificate).
         </p>
         <ActionButton variant="soft" size="sm" icon={RefreshCw} loading={syncing} onClick={handleSync}>
           Sync paid players

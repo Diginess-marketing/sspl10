@@ -11,7 +11,7 @@ const normalizeStatus = (value: unknown): string => {
 };
 
 // Maps a trial_view row to the result shape the lookup UI renders.
-// Levels 1-3 come from trial_progress columns, levels 4-5 from trial_progress.metadata.
+// Levels 1-5 come from trial_progress columns (levels 4-5 fall back to metadata for older rows).
 export const mapTrialRowToPlayerResult = (row: any): PlayerResult => {
   const meta = row.metadata || {};
 
@@ -33,8 +33,13 @@ export const mapTrialRowToPlayerResult = (row: any): PlayerResult => {
   let l3Status = normalizeStatus(row.l3_result);
   if (l3Status === 'PENDING' && l3_att === 'ABSENT') l3Status = 'ABSENT';
 
-  let l4Status = normalizeStatus(meta.l4_result);
-  let l5Status = normalizeStatus(meta.l5_result);
+  // Levels 4-5: columns since the 2026-10 migration; older rows only have metadata
+  const l4_att = row.l4_attendance?.toUpperCase();
+  const l5_att = row.l5_attendance?.toUpperCase();
+  let l4Status = normalizeStatus(row.l4_result ?? meta.l4_result);
+  if (l4Status === 'PENDING' && l4_att === 'ABSENT') l4Status = 'ABSENT';
+  let l5Status = normalizeStatus(row.l5_result ?? meta.l5_result);
+  if (l5Status === 'PENDING' && l5_att === 'ABSENT') l5Status = 'ABSENT';
 
   // Cascading logic
   if (l1Status === 'ABSENT') {
@@ -91,14 +96,14 @@ export const mapTrialRowToPlayerResult = (row: any): PlayerResult => {
     },
     level4Data: {
       status: l4Status,
-      score: meta.l4_score || '',
-      remarks: meta.l4_remarks || '',
+      score: row.l4_marks != null ? String(row.l4_marks) : meta.l4_score || '',
+      remarks: row.l4_remarks || meta.l4_remarks || '',
       listName: 'Level 4',
     },
     level5Data: {
       status: l5Status,
-      score: meta.l5_score || '',
-      remarks: meta.l5_remarks || '',
+      score: row.l5_marks != null ? String(row.l5_marks) : meta.l5_score || '',
+      remarks: row.l5_remarks || meta.l5_remarks || '',
       listName: 'Level 5',
     },
     isCompletelyAbsent,

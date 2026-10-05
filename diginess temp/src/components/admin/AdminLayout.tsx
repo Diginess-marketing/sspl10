@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard, Users, Trophy, ChartBar, Settings, LogOut, Menu, FileText, ClipboardList, Building2, Award,
-    CheckCircle, MessageCircle, UserCheck, Search, PanelLeftClose, PanelLeftOpen, ExternalLink, ChevronRight, Home,
+    CheckCircle, MessageCircle, Mail, UserCheck, Search, PanelLeftClose, PanelLeftOpen, ExternalLink, ChevronRight, Home,
     type LucideIcon,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -35,6 +35,7 @@ const NAV_GROUPS: NavGroup[] = [
         { label: 'Payments', path: '/admin/razorpay', icon: ChartBar, permission: 'manage_trials' },
         { label: 'Reports', path: '/admin/reports', icon: FileText, permission: 'manage_trials' },
         { label: 'WhatsApp', path: '/admin/whatsapp', icon: MessageCircle },
+        { label: 'Emails', path: '/admin/emails', icon: Mail },
     ] },
     { title: 'Content', items: [
         { label: 'Content', path: '/admin/content', icon: FileText },

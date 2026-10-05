@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { adminApi } from '@/lib/adminApi';
 import type {
   TrialsSectionPlayer,
   TrialsAllocatedPlayer,
@@ -10,6 +11,9 @@ import type {
   PlayerRegistrationWithEmailStatus,
   WorkflowStage,
   TrialViewRecord,
+  TrialLevelState,
+  TrialLevelEmail,
+  TrialLevelChangeResponse,
 } from '@/types/workflow';
 
 // Hook for managing the player workflow system
@@ -594,38 +598,52 @@ export function usePlayerWorkflow() {
     }
   }, []);
 
-  // ---- L1-L3 trial tracker (trial_candidates + trial_progress) ----
+  // ---- L1-L5 trial tracker ----
+  // Reads trial_view (candidate + progress + registration city). Changes go through the
+  // backend, which applies the level rules and emails the player (with certificate).
+
+  const TRIAL_PAGE_SIZE = 1000;
+  const toLevelState = (row: any, level: number): TrialLevelState => ({
+    called: Boolean(row[`l${level}_called`]),
+    attendance: row[`l${level}_attendance`] ?? null,
+    result: row[`l${level}_result`] ?? null,
+    marks: row[`l${level}_marks`] ?? null,
+    remarks: row[`l${level}_remarks`] ?? null,
+  });
 
   // Candidates who reached this level: everyone for L1, only those selected at the previous level after that.
   const getTrialLevelPlayers = useCallback(async (level: number): Promise<TrialViewRecord[]> => {
     try {
       setLoading(true);
       setError(null);
-      const { data, error: qErr } = await (supabase as any)
-        .from('trial_candidates')
-        .select('*, trial_progress(*)');
-      if (qErr) throw qErr;
+      const rows: any[] = [];
+      // Paged: a single query stops at 1,000 rows
+      for (let from = 0; ; from += TRIAL_PAGE_SIZE) {
+        let query = (supabase as any)
+          .from('trial_view')
+          .select('*')
+          .order('candidate_id', { ascending: true })
+          .range(from, from + TRIAL_PAGE_SIZE - 1);
+        if (level > 1) query = query.eq(`l${level - 1}_result`, 'SELECTED');
+        const { data, error: qErr } = await query;
+        if (qErr) throw qErr;
+        rows.push(...(data || []));
+        if (!data || data.length < TRIAL_PAGE_SIZE) break;
+      }
 
-      const rows = (data || []).map((c: any): TrialViewRecord => {
-        const p = Array.isArray(c.trial_progress) ? c.trial_progress[0] : c.trial_progress;
-        return {
-          id: c.id,
-          name: c.name || '',
-          phone: c.mobile || c.phone || '',
-          email: c.email,
-          city: c.city,
-          state: c.state,
-          proficiency: c.proficiency,
-          current_level: p?.current_level ?? 1,
-          remarks: p?.[`l${level}_remarks`] ?? null,
-          l1_called: p?.l1_called ?? false, l1_attendance: p?.l1_attendance ?? null, l1_result: p?.l1_result ?? null,
-          l2_called: p?.l2_called ?? false, l2_attendance: p?.l2_attendance ?? null, l2_result: p?.l2_result ?? null,
-          l3_called: p?.l3_called ?? false, l3_attendance: p?.l3_attendance ?? null, l3_result: p?.l3_result ?? null,
-          final_status: p?.final_status ?? null,
-        };
-      });
-      if (level === 1) return rows;
-      return rows.filter((r: TrialViewRecord) => level === 2 ? r.l1_result === 'SELECTED' : r.l2_result === 'SELECTED');
+      return rows.map((r): TrialViewRecord => ({
+        id: r.candidate_id,
+        name: r.name || '',
+        phone: r.mobile || r.phone || '',
+        email: r.email,
+        city: r.city,
+        state: r.state,
+        proficiency: r.proficiency,
+        current_level: r.current_level ?? 1,
+        final_status: r.final_status ?? null,
+        metadata: r.metadata,
+        levels: Object.fromEntries([1, 2, 3, 4, 5].map((l) => [l, toLevelState(r, l)])),
+      }));
     } catch (err: any) {
       setError(err.message);
       return [];
@@ -634,49 +652,58 @@ export function usePlayerWorkflow() {
     }
   }, []);
 
-  // Writes one level's fields for a candidate (creates the progress row if missing).
-  const updateCandidateLevel = useCallback(async (candidateId: string, patch: Record<string, unknown>): Promise<boolean> => {
-    try {
-      setError(null);
-      const { error: upErr } = await (supabase as any)
-        .from('trial_progress')
-        .upsert({ candidate_id: candidateId, ...patch, updated_at: new Date().toISOString() }, { onConflict: 'candidate_id' });
-      if (upErr) throw upErr;
-      return true;
-    } catch (err: any) {
-      setError(err.message);
-      return false;
+  /** Change one level for a candidate. Throws with the backend's message when a rule blocks it. */
+  const updateCandidateLevel = useCallback(
+    (candidateId: string, level: number, change: Partial<Record<'called' | 'attendance' | 'result' | 'marks' | 'remarks', unknown>>) =>
+      adminApi.patch<TrialLevelChangeResponse>(`/admin/trials/candidates/${candidateId}/levels/${level}`, change),
+    [],
+  );
+
+  const markCandidateCalled = useCallback(
+    (candidateId: string, level: number, called: boolean) => updateCandidateLevel(candidateId, level, { called }),
+    [updateCandidateLevel],
+  );
+
+  const markCandidateAttendance = useCallback(
+    (candidateId: string, level: number, attendance: string) => updateCandidateLevel(candidateId, level, { attendance: attendance.toUpperCase() }),
+    [updateCandidateLevel],
+  );
+
+  const markCandidateResult = useCallback(
+    (candidateId: string, level: number, result: string) => updateCandidateLevel(candidateId, level, { result: result.toUpperCase() }),
+    [updateCandidateLevel],
+  );
+
+  /** Email status rows for a level (admins can read trial_level_emails). */
+  const getLevelEmails = useCallback(async (level: number): Promise<TrialLevelEmail[]> => {
+    const rows: TrialLevelEmail[] = [];
+    for (let from = 0; ; from += TRIAL_PAGE_SIZE) {
+      const { data, error: qErr } = await (supabase as any)
+        .from('trial_level_emails')
+        .select('*')
+        .eq('level', level)
+        .range(from, from + TRIAL_PAGE_SIZE - 1);
+      if (qErr) throw qErr;
+      rows.push(...(data || []));
+      if (!data || data.length < TRIAL_PAGE_SIZE) break;
     }
+    return rows;
   }, []);
 
-  // Toggles "called" for a level. Un-calling clears attendance and result for that level.
-  const markCandidateCalled = useCallback(async (candidateId: string, level: number): Promise<boolean> => {
-    const { data } = await (supabase as any).from('trial_progress').select('*').eq('candidate_id', candidateId).maybeSingle();
-    const called = !(data as any)?.[`l${level}_called`];
-    return updateCandidateLevel(candidateId, {
-      [`l${level}_called`]: called,
-      ...(called ? {} : { [`l${level}_attendance`]: null, [`l${level}_result`]: null }),
-    });
-  }, [updateCandidateLevel]);
+  const resendLevelEmail = useCallback(
+    (candidateId: string, level: number) =>
+      adminApi.post<{ status: string; reason?: string }>(`/admin/trials/candidates/${candidateId}/levels/${level}/notify`),
+    [],
+  );
 
-  const markCandidateAttendance = useCallback(async (candidateId: string, level: number, status: string): Promise<boolean> => {
-    return updateCandidateLevel(candidateId, { [`l${level}_attendance`]: status.toUpperCase() });
-  }, [updateCandidateLevel]);
-
-  // Selected at L1/L2 moves the candidate up a level; selected at L3 is final; rejected is final.
-  const markCandidateResult = useCallback(async (candidateId: string, level: number, result: string): Promise<boolean> => {
-    const r = result.toUpperCase();
-    const patch: Record<string, unknown> = { [`l${level}_result`]: r === 'PENDING' ? null : r };
-    if (r === 'SELECTED') {
-      patch.current_level = Math.min(level + 1, 3);
-      patch.final_status = level === 3 ? 'SELECTED' : null;
-    } else if (r === 'REJECTED') {
-      patch.final_status = 'REJECTED';
-    } else {
-      patch.final_status = null;
-    }
-    return updateCandidateLevel(candidateId, patch);
-  }, [updateCandidateLevel]);
+  const downloadLevelCertificate = useCallback(
+    (candidateId: string, level: number, playerName: string) =>
+      adminApi.download(
+        `/admin/trials/candidates/${candidateId}/levels/${level}/certificate`,
+        `SSPL-L${level}-${playerName.replace(/[^a-z0-9]+/gi, '-')}.pdf`,
+      ),
+    [],
+  );
 
   // Adds a candidate for every paid registration that has none yet. Returns how many were added.
   const syncTrialCandidates = useCallback(async (): Promise<number> => {
@@ -839,6 +866,9 @@ export function usePlayerWorkflow() {
     markCandidateCalled,
     markCandidateAttendance,
     markCandidateResult,
+    getLevelEmails,
+    resendLevelEmail,
+    downloadLevelCertificate,
     syncTrialCandidates,
   };
 }

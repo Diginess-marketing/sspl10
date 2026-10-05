@@ -47,17 +47,33 @@ export async function optionalAuth(req, res, next) {
   return next();
 }
 
+/** True when the public.user_roles table marks this user as an admin (the admin panel's source). */
+async function hasAdminRoleRow(userId) {
+  const { data, error } = await supabase
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', userId)
+    .eq('role', 'admin')
+    .maybeSingle();
+  if (error) {
+    logger.error('Admin role lookup failed:', error);
+    return false;
+  }
+  return Boolean(data);
+}
+
 /**
  * Require an authenticated user carrying the `admin` role.
- * The role is read from Supabase app metadata (set it server-side, never from
- * user metadata, which the client can edit).
+ * The role is read from Supabase app metadata (set server-side, never from
+ * user metadata, which the client can edit) or from the user_roles table.
  */
 export async function requireAdmin(req, res, next) {
   const user = await resolveUser(req);
   if (!user) return next(ApiError.unauthorized('Invalid or missing access token'));
 
   const role = user.app_metadata?.role || user.app_metadata?.claims_admin;
-  if (role !== 'admin' && role !== true) {
+  const isAdmin = role === 'admin' || role === true || (await hasAdminRoleRow(user.id));
+  if (!isAdmin) {
     return next(ApiError.forbidden('Admin access required'));
   }
 

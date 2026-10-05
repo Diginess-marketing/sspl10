@@ -87,6 +87,7 @@ const AdminCertificateLookup = lazy(() => import('./pages/admin/AdminCertificate
 const AdminSelectionStatus = lazy(() => import('./pages/admin/AdminSelectionStatus'));
 const AdminReports = lazy(() => import('./pages/admin/AdminReports'));
 const AdminWhatsApp = lazy(() => import('./pages/admin/WhatsAppMarketing'));
+const AdminEmailCenter = lazy(() => import('./pages/admin/EmailCenter'));
 const AdminRazorpay = lazy(() => import('./pages/admin/RazorpayDashboard'));
 const AdminRewards = lazy(() => import('./pages/admin/RewardsManager'));
 const AdminRoute = lazy(() => import('./components/admin/AdminRoute'));
@@ -379,6 +380,7 @@ const App = () => {
                               <Route path="selection-status" element={<AdminSelectionStatus />} />
                               <Route path="reports" element={<AdminReports />} />
                               <Route path="whatsapp" element={<AdminWhatsApp />} />
+                              <Route path="emails" element={<AdminEmailCenter />} />
                               <Route path="razorpay" element={<AdminRazorpay />} />
                               <Route path="certificates" element={<AdminCertificateLookup />} />
                             </Route>
