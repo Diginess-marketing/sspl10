@@ -229,3 +229,27 @@ export interface PlayerRegistrationWithEmailStatus {
   confirmation_email_sent?: boolean;
   confirmation_email_sent_at?: string;
 }
+
+// One candidate row in the L1-L3 trial tracker (trial_candidates + trial_progress)
+export interface TrialViewRecord {
+  id: string;
+  name: string;
+  phone: string;
+  email?: string | null;
+  city?: string | null;
+  state?: string | null;
+  proficiency?: string | null;
+  current_level: number;
+  remarks?: string | null;
+  metadata?: { excel_remarks?: string } | null;
+  l1_called: boolean;
+  l1_attendance: string | null;
+  l1_result: string | null;
+  l2_called: boolean;
+  l2_attendance: string | null;
+  l2_result: string | null;
+  l3_called: boolean;
+  l3_attendance: string | null;
+  l3_result: string | null;
+  final_status: string | null;
+}

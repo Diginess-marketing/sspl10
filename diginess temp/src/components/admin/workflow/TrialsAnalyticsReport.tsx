@@ -1,24 +1,26 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell,
 } from 'recharts';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, TrendingUp, Users, CreditCard, MapPin, XCircle, Trophy } from 'lucide-react';
-import stagingData from '@/data/registration_import_staging.json';
+import { Users, CreditCard, MapPin, XCircle, Trophy } from 'lucide-react';
+import { StatCard } from '@/components/admin/ui';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
+const COLORS = ['var(--brand-blue)', 'var(--admin-ok)', 'var(--admin-warn)', 'var(--brand-navy)', 'var(--brand-lime-deep)'];
+const TICK = { fontSize: 'var(--brand-fs-small)', fill: 'var(--brand-navy)' } as const;
+const TIP = { borderRadius: 12, border: '1px solid var(--brand-line)', fontSize: 'var(--brand-fs-small)' } as const;
 
 export const TrialsAnalyticsReport = () => {
   const { data: analyticsData, isLoading } = useQuery({
     queryKey: ['admin-trials-analytics'],
     queryFn: async () => {
+      const db = supabase as any;
       const [regsResponse, progressResponse] = await Promise.all([
-        supabase
+        db
           .from('player_registrations')
           .select('payment_status, city, state, position, status, created_at, phone'),
-        supabase
+        db
           .from('trial_progress')
           .select('l1_result, l2_result, l3_result, l1_attendance, l2_attendance, l3_attendance, l1_called, l2_called, l3_called, final_status'),
       ]);
@@ -38,20 +40,20 @@ export const TrialsAnalyticsReport = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center p-12">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-        <span className="ml-2">Loading analytics...</span>
+      <div className="space-y-4" aria-busy="true">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
+          {[...Array(5)].map((_, i) => <div key={i} className="h-28 animate-pulse rounded-[18px] bg-[var(--brand-sky)]" />)}
+        </div>
+        <div className="h-80 animate-pulse rounded-[18px] bg-[var(--brand-sky)]" />
       </div>
     );
   }
 
   // Combine DB and Staging data for overview
   const totalDb = dbPlayers?.length || 0;
-  const totalStaging = stagingData.length;
-  const totalPotential = totalDb + totalStaging;
 
   // Process transactions and unique player attempts
-  const playerGroups = dbPlayers?.reduce((acc: any, p) => {
+  const playerGroups = dbPlayers?.reduce((acc: any, p: any) => {
     const key = p.phone || 'unknown';
     if (!acc[key]) acc[key] = [];
     acc[key].push(p.payment_status?.toLowerCase());
@@ -59,7 +61,7 @@ export const TrialsAnalyticsReport = () => {
   }, {});
 
   const totalTransactions = totalDb;
-  const capturedTransactionsCount = dbPlayers?.filter(p => 
+  const capturedTransactionsCount = dbPlayers?.filter((p: any) => 
     ['captured', 'completed', 'paid', 'success'].includes(p.payment_status?.toLowerCase() || ''),
   ).length || 0;
   const failedTransactionsCount = totalTransactions - capturedTransactionsCount;
@@ -71,7 +73,7 @@ export const TrialsAnalyticsReport = () => {
   const netFailedPlayers = totalUniquePlayers - capturedPlayersCount;
 
   // Process Location data (Top 5 States)
-  const stateCounts = dbPlayers?.reduce((acc: any, p) => {
+  const stateCounts = dbPlayers?.reduce((acc: any, p: any) => {
     acc[p.state] = (acc[p.state] || 0) + 1;
     return acc;
   }, {});
@@ -82,152 +84,70 @@ export const TrialsAnalyticsReport = () => {
     .slice(0, 5);
 
   // Process Category data
-  const categoryCounts = dbPlayers?.reduce((acc: any, p) => {
+  const categoryCounts = dbPlayers?.reduce((acc: any, p: any) => {
     acc[p.position] = (acc[p.position] || 0) + 1;
     return acc;
   }, {});
   const categoryData = Object.entries(categoryCounts || {}).map(([name, value]) => ({ name, value }));
 
   // Process Payment status
-  const paymentCounts = dbPlayers?.reduce((acc: any, p) => {
-    acc[p.payment_status] = (acc[p.payment_status] || 0) + 1;
-    return acc;
-  }, {});
-  const paymentData = Object.entries(paymentCounts || {}).map(([name, value]) => ({ name, value }));
 
   // Process Trial Funnel Data
   const funnelData = [
-    { name: 'L1 Pool', count: trialProgress?.length || 0, color: '#3b82f6' },
-    { name: 'L1 Selected', count: trialProgress?.filter(p => p.l1_result === 'SELECTED' || p.l3_result === 'SELECTED').length || 0, color: '#6366f1' },
-    { name: 'L2 Selected', count: trialProgress?.filter(p => p.l2_result === 'SELECTED' || p.l3_result === 'SELECTED').length || 0, color: '#8b5cf6' },
-    { name: 'L3 Selected', count: trialProgress?.filter(p => p.l3_result === 'SELECTED').length || 0, color: '#10b981' },
+    { name: 'L1 Pool', count: trialProgress?.length || 0, color: 'var(--brand-blue)' },
+    { name: 'L1 Selected', count: trialProgress?.filter((p: any) => p.l1_result === 'SELECTED' || p.l3_result === 'SELECTED').length || 0, color: 'var(--brand-blue)' },
+    { name: 'L2 Selected', count: trialProgress?.filter((p: any) => p.l2_result === 'SELECTED' || p.l3_result === 'SELECTED').length || 0, color: 'var(--brand-blue)' },
+    { name: 'L3 Selected', count: trialProgress?.filter((p: any) => p.l3_result === 'SELECTED').length || 0, color: 'var(--admin-ok)' },
   ];
 
+  const chartCard = 'admin-card p-5';
   return (
-    <div className="space-y-6 container mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-        <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">Total Attempts</CardTitle>
-            <Users className="h-4 w-4 text-blue-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalTransactions}</div>
-            <p className="text-xs text-muted-foreground mt-1">All registration records</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-amber-500/10 to-amber-600/5 border-amber-500/20 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">Failed Trans.</CardTitle>
-            <CreditCard className="h-4 w-4 text-amber-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{failedTransactionsCount}</div>
-            <p className="text-xs text-muted-foreground mt-1">Non-captured attempts</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-red-500/10 to-red-600/5 border-red-500/20 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">Net Failed</CardTitle>
-            <XCircle className="h-4 w-4 text-red-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{netFailedPlayers}</div>
-            <p className="text-xs text-muted-foreground mt-1">Unique users lost</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">Successful</CardTitle>
-            <Trophy className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {capturedPlayersCount}
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">Unique paid players</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20 shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-slate-600">Trial Selection</CardTitle>
-            <MapPin className="h-4 w-4 text-purple-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{funnelData[3].count}</div>
-            <p className="text-xs text-muted-foreground mt-1">Final selected candidates</p>
-          </CardContent>
-        </Card>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-5">
+        <StatCard label="Total attempts" value={totalTransactions} hint="All registration records" icon={Users} tone="blue" />
+        <StatCard label="Failed transactions" value={failedTransactionsCount} hint="Non-captured attempts" icon={CreditCard} tone="amber" />
+        <StatCard label="Net failed" value={netFailedPlayers} hint="Unique users lost" icon={XCircle} tone="amber" />
+        <StatCard label="Successful" value={capturedPlayersCount} hint="Unique paid players" icon={Trophy} tone="green" />
+        <StatCard label="Trial selection" value={funnelData[3].count} hint="Final selected candidates" icon={MapPin} tone="lime" />
       </div>
 
-      {/* Trial Funnel Chart */}
-      <Card className="shadow-lg border-none bg-white/50 backdrop-blur-sm">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle className="text-xl font-bold text-slate-800">Trial Progression Funnel</CardTitle>
-            <p className="text-sm text-slate-500">Sequential drop-off analysis across trial levels</p>
-          </div>
-          <TrendingUp className="h-6 w-6 text-blue-500 opacity-50" />
-        </CardHeader>
-        <CardContent className="h-[350px] pt-4">
+      <section className={chartCard}>
+        <h3 className="admin-h3">Trial progression funnel</h3>
+        <p className="admin-muted mb-4 mt-1">Sequential drop-off analysis across trial levels</p>
+        <div className="h-[350px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={funnelData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.1} />
-              <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} />
-              <YAxis fontSize={12} tickLine={false} axisLine={false} />
-              <Tooltip 
-                contentStyle={{ backgroundColor: '#fff', borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-                cursor={{ fill: '#f1f5f9', opacity: 0.4 }}
-              />
+              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--brand-line)" />
+              <XAxis dataKey="name" tick={TICK} tickLine={false} axisLine={false} />
+              <YAxis tick={TICK} tickLine={false} axisLine={false} />
+              <Tooltip contentStyle={TIP} cursor={{ fill: 'var(--brand-sky)' }} />
               <Bar dataKey="count" radius={[6, 6, 0, 0]} barSize={60}>
-                {funnelData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
+                {funnelData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* State Distribution */}
-        <Card className="shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <CardHeader>
-            <CardTitle>Top 5 States - Distribution</CardTitle>
-          </CardHeader>
-          <CardContent className="h-[300px]">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <section className={chartCard}>
+          <h3 className="admin-h3 mb-4">Top 5 states</h3>
+          <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={stateData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} strokeOpacity={0.1} />
-                <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} />
-                <YAxis fontSize={12} tickLine={false} axisLine={false} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                  cursor={{ fill: '#f1f5f9' }}
-                />
-                <Bar dataKey="value" fill="url(#blueGradient)" radius={[4, 4, 0, 0]}>
-                  <defs>
-                    <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#3b82f6" />
-                      <stop offset="100%" stopColor="#1d4ed8" />
-                    </linearGradient>
-                  </defs>
-                </Bar>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--brand-line)" />
+                <XAxis dataKey="name" tick={TICK} tickLine={false} axisLine={false} />
+                <YAxis tick={TICK} tickLine={false} axisLine={false} />
+                <Tooltip contentStyle={TIP} cursor={{ fill: 'var(--brand-sky)' }} />
+                <Bar dataKey="value" fill="var(--brand-blue)" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
-          </CardContent>
-        </Card>
+          </div>
+        </section>
 
-        {/* Category Distribution */}
-        <Card className="shadow-lg animate-in fade-in slide-in-from-bottom-4 duration-500 delay-150">
-          <CardHeader>
-            <CardTitle>Category Breakdown</CardTitle>
-          </CardHeader>
-          <CardContent className="h-[300px]">
+        <section className={chartCard}>
+          <h3 className="admin-h3 mb-4">Category breakdown</h3>
+          <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -237,19 +157,16 @@ export const TrialsAnalyticsReport = () => {
                   labelLine={false}
                   label={({ name, percent }) => `${name} ${((percent || 0) * 100).toFixed(0)}%`}
                   outerRadius={80}
-                  fill="#8884d8"
                   dataKey="value"
+                  style={{ fontSize: 'var(--brand-fs-small)' }}
                 >
-                  {categoryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
+                  {categoryData.map((_, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)}
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle={TIP} />
               </PieChart>
             </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
+          </div>
+        </section>
       </div>
     </div>
   );

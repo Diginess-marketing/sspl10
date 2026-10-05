@@ -47,3 +47,16 @@ export async function findSentSince(email, type, sinceIso) {
   if (error) throw error;
   return data || [];
 }
+
+/** True when a successful send of `type` already exists for a registration. */
+export async function hasSuccessForRegistration(registrationId, type) {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select('id')
+    .eq('registration_id', registrationId)
+    .eq('email_type', type)
+    .eq('status', 'success')
+    .limit(1);
+  if (error) throw error;
+  return (data || []).length > 0;
+}

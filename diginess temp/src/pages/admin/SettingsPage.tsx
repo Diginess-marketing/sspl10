@@ -1,20 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Separator } from '@/components/ui/separator';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 import { adminService } from '@/services/adminService';
-import { LoadingSpinner } from '@/components/ui/enhanced-loading';
-import { Save, Settings, RefreshCw } from 'lucide-react';
+import { Save, Settings, RefreshCw, Database, Power, Wrench } from 'lucide-react';
 import DataInsertionTool from '@/components/admin/DataInsertionTool';
+import { ActionButton, ConfirmDialog, PageHeader } from '@/components/admin/ui';
+
+const SWITCH_CLS = 'data-[state=checked]:bg-[var(--brand-blue)] data-[state=unchecked]:bg-[var(--brand-sky-2)]';
 
 const SettingsPage = () => {
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const { toast } = useToast();
+    const [confirmMaintenance, setConfirmMaintenance] = useState(false);
 
     const [generalSettings, setGeneralSettings] = useState({
         registration_fee: 499,
@@ -47,148 +44,124 @@ const SettingsPage = () => {
         try {
             setSaving(true);
             await adminService.updateSettings('general_settings', generalSettings);
-            toast({
-                title: 'Settings Saved',
-                description: 'System configuration has been updated successfully.',
-            });
+            toast.success('Settings saved', { description: 'System configuration has been updated successfully.' });
         } catch (error) {
             console.error('Failed to save settings', error);
-            toast({
-                title: 'Error',
-                description: 'Failed to save settings. Please try again.',
-                variant: 'destructive',
-            });
+            toast.error('Failed to save settings', { description: 'Please try again.' });
         } finally {
             setSaving(false);
+            setConfirmMaintenance(false);
         }
+    };
+
+    // Turning maintenance mode on locks the public site, so saving with it on needs a confirmation.
+    const requestSave = () => {
+        if (generalSettings.maintenance_mode) setConfirmMaintenance(true);
+        else handleSave();
     };
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-slate-900">System Settings</h1>
-                    <p className="text-muted-foreground mt-1">Configure global application parameters.</p>
-                </div>
-                <div className="flex gap-2">
-                    <Button variant="outline" size="icon" onClick={loadSettings} disabled={loading || saving}>
-                        <RefreshCw className={`h - 4 w - 4 ${loading ? 'animate-spin' : ''} `} />
-                    </Button>
-                    <Button onClick={handleSave} disabled={loading || saving} className="bg-sport-blue hover:bg-sport-blue/90">
-                        {saving ? (
-                            <LoadingSpinner size="sm" className="mr-2" />
-                        ) : (
-                            <Save className="mr-2 h-4 w-4" />
-                        )}
-                        Save Changes
-                    </Button>
-                </div>
-            </div>
+            <PageHeader
+                eyebrow="Configuration"
+                title={<>System <em>settings</em></>}
+                description="Configure global application parameters."
+                actions={
+                    <>
+                        <ActionButton variant="outline" icon={RefreshCw} onClick={loadSettings} disabled={loading || saving} aria-label="Reload settings" />
+                        <ActionButton variant="primary" icon={Save} loading={saving} disabled={loading} onClick={requestSave}>Save changes</ActionButton>
+                    </>
+                }
+            />
 
             {loading ? (
-                <div className="p-12 flex justify-center">
-                    <LoadingSpinner text="Loading settings..." />
+                <div className="space-y-4" aria-busy="true">
+                    {[...Array(2)].map((_, i) => <div key={i} className="h-56 animate-pulse rounded-[18px] bg-[var(--brand-sky)]" />)}
                 </div>
             ) : (
                 <div className="grid gap-6">
-                    <Card className="border-none shadow-sm">
-                        <CardHeader>
-                            <div className="flex items-center gap-2">
-                                <div className="p-2 bg-slate-100 rounded-full">
-                                    <Settings className="h-5 w-5 text-slate-600" />
-                                </div>
-                                <div>
-                                    <CardTitle>General Configuration</CardTitle>
-                                    <CardDescription>Core platform settings and toggles.</CardDescription>
-                                </div>
+                    <section className="admin-card p-5 md:p-6">
+                        <div className="flex items-center gap-3">
+                            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[var(--brand-sky-2)] text-[var(--brand-blue)]"><Settings className="h-5 w-5" /></span>
+                            <div>
+                                <h2 className="admin-h3">General configuration</h2>
+                                <p className="admin-muted">Core platform settings and toggles.</p>
                             </div>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="reg_fee">Registration Fee (₹)</Label>
-                                        <Input
-                                            id="reg_fee"
-                                            type="number"
-                                            value={generalSettings.registration_fee}
-                                            onChange={(e) => setGeneralSettings({ ...generalSettings, registration_fee: parseInt(e.target.value) || 0 })}
-                                        />
-                                        <p className="text-xs text-muted-foreground">Amount charged per player registration.</p>
-                                    </div>
+                        </div>
 
-                                    <div className="space-y-2">
-                                        <Label htmlFor="max_regs">Max Registrations</Label>
-                                        <Input
-                                            id="max_regs"
-                                            type="number"
-                                            value={generalSettings.max_registrations}
-                                            onChange={(e) => setGeneralSettings({ ...generalSettings, max_registrations: parseInt(e.target.value) || 0 })}
-                                        />
-                                        <p className="text-xs text-muted-foreground">Limit total number of player registrations.</p>
+                        <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+                            <div>
+                                <label htmlFor="reg_fee" className="admin-label">Registration fee (₹)</label>
+                                <input id="reg_fee" type="number" className="admin-field" value={generalSettings.registration_fee}
+                                    onChange={(e) => setGeneralSettings({ ...generalSettings, registration_fee: parseInt(e.target.value) || 0 })} />
+                                <p className="admin-muted mt-1.5">Amount charged per player registration.</p>
+                            </div>
+                            <div>
+                                <label htmlFor="max_regs" className="admin-label">Max registrations</label>
+                                <input id="max_regs" type="number" className="admin-field" value={generalSettings.max_registrations}
+                                    onChange={(e) => setGeneralSettings({ ...generalSettings, max_registrations: parseInt(e.target.value) || 0 })} />
+                                <p className="admin-muted mt-1.5">Limit total number of player registrations.</p>
+                            </div>
+                            <div className="md:col-span-2 md:max-w-[calc(50%-10px)]">
+                                <label htmlFor="support_email" className="admin-label">Support email</label>
+                                <input id="support_email" type="email" className="admin-field" value={generalSettings.support_email}
+                                    onChange={(e) => setGeneralSettings({ ...generalSettings, support_email: e.target.value })} />
+                            </div>
+                        </div>
+
+                        <h3 className="admin-label mt-8">Feature toggles</h3>
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between gap-4 rounded-2xl border border-[var(--admin-line)] bg-[var(--brand-sky)] p-4">
+                                <div className="flex min-w-0 items-start gap-3">
+                                    <Power className="mt-0.5 h-5 w-5 shrink-0 text-[var(--admin-accent)]" />
+                                    <div>
+                                        <p className="font-semibold text-[var(--admin-ink)]">Enable registrations</p>
+                                        <p className="admin-muted">Allow new users to register for the tournament.</p>
                                     </div>
                                 </div>
-
-                                <div className="space-y-4">
-                                    <div className="space-y-2">
-                                        <Label htmlFor="support_email">Support Email</Label>
-                                        <Input
-                                            id="support_email"
-                                            type="email"
-                                            value={generalSettings.support_email}
-                                            onChange={(e) => setGeneralSettings({ ...generalSettings, support_email: e.target.value })}
-                                        />
-                                    </div>
-                                </div>
+                                <Switch className={SWITCH_CLS} aria-label="Enable registrations" checked={generalSettings.enable_registrations}
+                                    onCheckedChange={(c) => setGeneralSettings({ ...generalSettings, enable_registrations: c })} />
                             </div>
 
-                            <Separator />
-
-                            <div className="space-y-4">
-                                <h3 className="text-sm font-medium">Feature Toggles</h3>
-                                <div className="flex items-center justify-between p-4 border rounded-lg bg-slate-50">
-                                    <div className="space-y-0.5">
-                                        <Label className="text-base">Enable Registrations</Label>
-                                        <p className="text-sm text-muted-foreground">
-                                            Allow new users to register for the tournament.
-                                        </p>
+                            <div className="flex items-center justify-between gap-4 rounded-2xl border border-[var(--admin-bad)]/25 bg-[var(--admin-bad-bg)] p-4">
+                                <div className="flex min-w-0 items-start gap-3">
+                                    <Wrench className="mt-0.5 h-5 w-5 shrink-0 text-[var(--admin-bad)]" />
+                                    <div>
+                                        <p className="font-semibold text-[var(--admin-bad)]">Maintenance mode</p>
+                                        <p className="admin-muted">Restrict access to the site for all users except admins.</p>
                                     </div>
-                                    <Switch
-                                        checked={generalSettings.enable_registrations}
-                                        onCheckedChange={(c) => setGeneralSettings({ ...generalSettings, enable_registrations: c })}
-                                    />
                                 </div>
-
-                                <div className="flex items-center justify-between p-4 border rounded-lg bg-slate-50">
-                                    <div className="space-y-0.5">
-                                        <Label className="text-base text-red-600">Maintenance Mode</Label>
-                                        <p className="text-sm text-muted-foreground">
-                                            Restrict access to the site for all users except admins.
-                                        </p>
-                                    </div>
-                                    <Switch
-                                        checked={generalSettings.maintenance_mode}
-                                        onCheckedChange={(c) => setGeneralSettings({ ...generalSettings, maintenance_mode: c })}
-                                    />
-                                </div>
+                                <Switch className={SWITCH_CLS} aria-label="Maintenance mode" checked={generalSettings.maintenance_mode}
+                                    onCheckedChange={(c) => setGeneralSettings({ ...generalSettings, maintenance_mode: c })} />
                             </div>
-                        </CardContent>
-                    </Card>
+                        </div>
+                    </section>
 
-                    <Card className="border-none shadow-sm">
-                        <CardHeader>
-                            <CardTitle>Data Management</CardTitle>
-                            <CardDescription>Tools for managing system data.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <DataInsertionTool />
-                        </CardContent>
-                    </Card>
+                    <section className="admin-card min-w-0 p-5 md:p-6">
+                        <div className="mb-5 flex items-center gap-3">
+                            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[var(--brand-sky-2)] text-[var(--brand-blue)]"><Database className="h-5 w-5" /></span>
+                            <div>
+                                <h2 className="admin-h3">Data management</h2>
+                                <p className="admin-muted">Tools for managing system data.</p>
+                            </div>
+                        </div>
+                        <div className="max-w-full overflow-x-auto"><DataInsertionTool /></div>
+                    </section>
                 </div>
             )}
+
+            <ConfirmDialog
+                open={confirmMaintenance}
+                onOpenChange={setConfirmMaintenance}
+                tone="danger"
+                title="Save with maintenance mode on?"
+                description="The public site will be restricted for everyone except admins until you turn this off."
+                confirmLabel="Save and lock site"
+                loading={saving}
+                onConfirm={handleSave}
+            />
         </div>
     );
 };
 
 export default SettingsPage;
-

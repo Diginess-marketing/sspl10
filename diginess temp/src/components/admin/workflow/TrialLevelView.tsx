@@ -1,19 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { 
-  Phone, 
-  MapPin, 
-  RefreshCw,
-  Search,
-  Filter,
-  Download,
-} from 'lucide-react';
-import { Input } from '@/components/ui/input';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { toast } from 'sonner';
+import { Phone, MapPin, RefreshCw, Download, Users, PhoneCall, CheckCircle, Trophy } from 'lucide-react';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
+import { ActionButton, ConfirmDialog, DataTableShell, StatCard, StatusBadge } from '@/components/admin/ui';
 import type { TrialViewRecord } from '@/types/workflow';
 
 interface TrialLevelViewProps {
@@ -21,11 +10,15 @@ interface TrialLevelViewProps {
   onRefresh?: () => void;
 }
 
+type Pending = { player: TrialViewRecord; result: 'selected' | 'rejected' };
+
 export const TrialLevelView = ({ level, onRefresh }: TrialLevelViewProps) => {
   const [players, setPlayers] = useState<TrialViewRecord[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCity, setFilterCity] = useState('all');
+  const [filter, setFilter] = useState('all');
   const [processingId, setProcessingId] = useState<string | null>(null);
+  const [pending, setPending] = useState<Pending | null>(null);
 
   const { getTrialLevelPlayers, markCandidateCalled, markCandidateAttendance, markCandidateResult, loading } = usePlayerWorkflow();
 
@@ -38,85 +31,49 @@ export const TrialLevelView = ({ level, onRefresh }: TrialLevelViewProps) => {
     loadPlayers();
   }, [loadPlayers]);
 
-  const handleToggleCalled = async (candidateId: string) => {
+  const run = async (candidateId: string, action: () => Promise<boolean>, okMsg: string) => {
     setProcessingId(candidateId);
     try {
-      const success = await markCandidateCalled(candidateId, level);
+      const success = await action();
       if (success) {
+        toast.success(okMsg);
+        // A result can move the player to the next level and out of this view.
         await loadPlayers();
         onRefresh?.();
+      } else {
+        toast.error('Update failed');
       }
+    } catch (err: any) {
+      toast.error('Update failed', { description: err?.message });
     } finally {
       setProcessingId(null);
     }
   };
 
-  const handleAttendanceChange = async (candidateId: string, status: string) => {
-    setProcessingId(candidateId);
-    try {
-      const success = await markCandidateAttendance(candidateId, level, status);
-      if (success) {
-        await loadPlayers();
-        onRefresh?.();
-      }
-    } finally {
-      setProcessingId(null);
+  const handleToggleCalled = (p: TrialViewRecord) =>
+    run(p.id, () => markCandidateCalled(p.id, level), `${p.name} call status updated`);
+
+  const handleAttendanceChange = (p: TrialViewRecord, status: string) =>
+    run(p.id, () => markCandidateAttendance(p.id, level, status), `${p.name} marked ${status}`);
+
+  const handleResultChange = (p: TrialViewRecord, result: string) => {
+    if (result === 'selected' || result === 'rejected') {
+      setPending({ player: p, result });
+      return;
     }
+    run(p.id, () => markCandidateResult(p.id, level, result), `${p.name} result reset`);
   };
 
-  const handleResultChange = async (candidateId: string, result: string) => {
-    setProcessingId(candidateId);
-    try {
-      const success = await markCandidateResult(candidateId, level, result);
-      if (success) {
-        // If result changed, player might move to next level and leave this view
-        await loadPlayers();
-        onRefresh?.();
-      }
-    } finally {
-      setProcessingId(null);
-    }
+  const confirmResult = async () => {
+    if (!pending) return;
+    const { player, result } = pending;
+    await run(player.id, () => markCandidateResult(player.id, level, result), `${player.name} ${result}`);
+    setPending(null);
   };
 
-  const filteredPlayers = players
-    .filter(p => {
-      const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            p.phone.includes(searchQuery);
-      const matchesCity = filterCity === 'all' || p.city === filterCity;
-      return matchesSearch && matchesCity;
-    })
-    .sort((a, b) => {
-      // 1. Selection Result Priority (Selected > Pending > Rejected)
-      const resA = (getResultStatus(a) || 'pending').toLowerCase();
-      const resB = (getResultStatus(b) || 'pending').toLowerCase();
-      const resPriority: Record<string, number> = { 'selected': 1, 'pending': 2, 'rejected': 3, 'not_selected': 3 };
-      const pA = resPriority[resA] || 2;
-      const pB = resPriority[resB] || 2;
-      if (pA !== pB) return pA - pB;
 
-      // 2. Attendance Priority (Attended > Pending > Absent)
-      const attA = (getAttendanceStatus(a) || 'pending').toLowerCase();
-      const attB = (getAttendanceStatus(b) || 'pending').toLowerCase();
-      const attPriority: Record<string, number> = { 'attended': 1, 'pending': 2, 'absent': 3 };
-      const aA = attPriority[attA] || 2;
-      const aB = attPriority[attB] || 2;
-      if (aA !== aB) return aA - aB;
-
-      // 3. Called Status Priority (Called > Not Called)
-      const callA = getCalledStatus(a) ? 1 : 2;
-      const callB = getCalledStatus(b) ? 1 : 2;
-      if (callA !== callB) return callA - callB;
-
-      // 4. Name Alphabetical
-      return a.name.localeCompare(b.name);
-    });
-
-  const uniqueCities = Array.from(new Set(players.map(p => p.city).filter(Boolean))).sort() as string[];
-
-  const getCalledStatus = (p: TrialViewRecord) => {
-    const called = level === 1 ? p.l1_called : level === 2 ? p.l2_called : p.l3_called;
-    return called;
-  };
+  const getCalledStatus = (p: TrialViewRecord) =>
+    level === 1 ? p.l1_called : level === 2 ? p.l2_called : p.l3_called;
 
   const getAttendanceStatus = (p: TrialViewRecord) => {
     const status = level === 1 ? p.l1_attendance : level === 2 ? p.l2_attendance : p.l3_attendance;
@@ -138,23 +95,61 @@ export const TrialLevelView = ({ level, onRefresh }: TrialLevelViewProps) => {
     return status || 'pending';
   };
 
+  const att = (p: TrialViewRecord) => getAttendanceStatus(p).toLowerCase();
+  const res = (p: TrialViewRecord) => getResultStatus(p).toLowerCase();
+
+  const stats = useMemo(() => ({
+    total: players.length,
+    called: players.filter(p => getCalledStatus(p)).length,
+    attended: players.filter(p => att(p) === 'attended').length,
+    selected: players.filter(p => res(p) === 'selected').length,
+    rejected: players.filter(p => res(p) === 'rejected').length,
+  }), [players, level]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const chips = [
+    { value: 'all', label: 'All', count: stats.total },
+    { value: 'called', label: 'Called', count: stats.called },
+    { value: 'attended', label: 'Attended', count: stats.attended },
+    { value: 'selected', label: 'Selected', count: stats.selected },
+    { value: 'rejected', label: 'Rejected', count: stats.rejected },
+  ];
+
+  const filteredPlayers = players
+    .filter(p => {
+      const q = searchQuery.toLowerCase();
+      const matchesSearch = (p.name || '').toLowerCase().includes(q) || (p.phone || '').includes(searchQuery);
+      const matchesCity = filterCity === 'all' || p.city === filterCity;
+      const matchesChip =
+        filter === 'all' ||
+        (filter === 'called' && getCalledStatus(p)) ||
+        (filter === 'attended' && att(p) === 'attended') ||
+        (filter === 'selected' && res(p) === 'selected') ||
+        (filter === 'rejected' && res(p) === 'rejected');
+      return matchesSearch && matchesCity && matchesChip;
+    })
+    .sort((a, b) => {
+      // 1. Result (Selected > Pending > Rejected)
+      const resPriority: Record<string, number> = { selected: 1, pending: 2, rejected: 3, not_selected: 3 };
+      const d1 = (resPriority[res(a)] || 2) - (resPriority[res(b)] || 2);
+      if (d1) return d1;
+      // 2. Attendance (Attended > Pending > Absent)
+      const attPriority: Record<string, number> = { attended: 1, pending: 2, absent: 3 };
+      const d2 = (attPriority[att(a)] || 2) - (attPriority[att(b)] || 2);
+      if (d2) return d2;
+      // 3. Called first, then name
+      const d3 = (getCalledStatus(a) ? 1 : 2) - (getCalledStatus(b) ? 1 : 2);
+      if (d3) return d3;
+      return a.name.localeCompare(b.name);
+    });
+
+  const uniqueCities = Array.from(new Set(players.map(p => p.city).filter(Boolean))).sort() as string[];
+
   const exportToCSV = () => {
     const headers = ['Name', 'Phone', 'Email', 'City', 'Called', 'Attendance', 'Result'];
     const rows = filteredPlayers.map(p => [
-      p.name,
-      p.phone,
-      p.email,
-      p.city || '',
-      getCalledStatus(p) ? 'Yes' : 'No',
-      getAttendanceStatus(p),
-      getResultStatus(p),
+      p.name, p.phone, p.email, p.city || '', getCalledStatus(p) ? 'Yes' : 'No', getAttendanceStatus(p), getResultStatus(p),
     ]);
-
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(r => r.map(cell => `"${cell}"`).join(',')),
-    ].join('\n');
-
+    const csvContent = [headers.join(','), ...rows.map(r => r.map(cell => `"${cell}"`).join(','))].join('\n');
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -164,171 +159,138 @@ export const TrialLevelView = ({ level, onRefresh }: TrialLevelViewProps) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
-    <Card className="shadow-elegant border-cricket-blue/10">
-      <CardHeader className="border-b border-cricket-blue/10 bg-linear-to-r from-slate-700 to-slate-800 text-white rounded-t-lg">
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-          <div>
-            <CardTitle>Level {level} Management</CardTitle>
-            <p className="text-sm opacity-80 mt-1">Track attendance and results for trial level {level}</p>
-          </div>
-          <div className="flex gap-2 w-full lg:w-auto">
-            <div className="relative flex-1 lg:w-64">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
-              <Input
-                placeholder="Search name or phone..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-slate-400 h-9"
-              />
-            </div>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={exportToCSV}
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 h-9"
-              title="Export to CSV"
-            >
-              <Download className="h-4 w-4" />
-            </Button>
-            <Button 
-              size="sm" 
-              variant="outline" 
-              onClick={loadPlayers} 
-              disabled={loading}
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 h-9"
-            >
-              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-            </Button>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="p-0">
-        <div className="p-4 border-b border-cricket-blue/10 bg-slate-50 flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-slate-500" />
-            <Select value={filterCity} onValueChange={setFilterCity}>
-              <SelectTrigger className="w-40 h-8 text-xs bg-white">
-                <SelectValue placeholder="All Cities" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Cities</SelectItem>
-                {uniqueCities.map(city => (
-                  <SelectItem key={city} value={city}>{city}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="text-sm text-slate-500 ml-auto">
-            Showing {filteredPlayers.length} of {players.length} candidates
-          </div>
-        </div>
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <StatCard label={`Level ${level} candidates`} value={stats.total} icon={Users} tone="blue" loading={loading && players.length === 0} />
+        <StatCard label="Called" value={stats.called} icon={PhoneCall} tone="lime" loading={loading && players.length === 0} />
+        <StatCard label="Attended" value={stats.attended} icon={CheckCircle} tone="green" loading={loading && players.length === 0} />
+        <StatCard label="Selected" value={stats.selected} icon={Trophy} tone="amber" loading={loading && players.length === 0} />
+      </div>
 
-        <div className="overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-slate-100">
-                <TableHead className="font-semibold">Candidate</TableHead>
-                <TableHead className="font-semibold">Contact</TableHead>
-                <TableHead className="font-semibold">Location</TableHead>
-                <TableHead className="font-semibold">Remarks</TableHead>
-                <TableHead className="font-semibold text-center">Called</TableHead>
-                <TableHead className="font-semibold">Attendance</TableHead>
-                <TableHead className="font-semibold">Result</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredPlayers.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center py-12 text-slate-400">
-                    {loading ? 'Loading...' : 'No candidates found for this level'}
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filteredPlayers.map((player, idx) => {
-                  const isCalled = getCalledStatus(player);
-                  const attendance = (getAttendanceStatus(player) || 'pending').toLowerCase();
-                  const result = (getResultStatus(player) || 'pending').toLowerCase();
+      <DataTableShell
+        title={`Level ${level} management`}
+        description={`Track calls, attendance and results for trial level ${level}.`}
+        search={searchQuery}
+        onSearchChange={setSearchQuery}
+        searchPlaceholder="Search name or phone"
+        filters={chips}
+        activeFilter={filter}
+        onFilterChange={setFilter}
+        actions={(
+          <>
+            <select className="admin-select" aria-label="Filter by city" value={filterCity} onChange={e => setFilterCity(e.target.value)}>
+              <option value="all">All cities</option>
+              {uniqueCities.map(city => <option key={city} value={city}>{city}</option>)}
+            </select>
+            <ActionButton variant="soft" size="sm" icon={Download} onClick={exportToCSV}>Export</ActionButton>
+            <ActionButton variant="ghost" size="sm" icon={RefreshCw} onClick={loadPlayers} loading={loading} aria-label="Refresh" />
+          </>
+        )}
+        loading={loading && players.length === 0}
+        isEmpty={filteredPlayers.length === 0}
+        emptyTitle={players.length === 0 ? 'No candidates at this level' : 'No candidates match'}
+        emptyDescription={players.length === 0 ? 'Sync paid players or select candidates at the previous level.' : 'Try a different filter.'}
+      >
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Candidate</th>
+              <th>Contact</th>
+              <th>Location</th>
+              <th>Remarks</th>
+              <th className="text-center">Called</th>
+              <th>Attendance</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredPlayers.map(player => {
+              const isCalled = !!getCalledStatus(player);
+              const attendance = att(player);
+              const result = res(player);
+              const busy = processingId === player.id;
+              return (
+                <tr key={player.id}>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <span className="admin-avatar">{(player.name || '?').slice(0, 1).toUpperCase()}</span>
+                      <span>
+                        <span className="block font-semibold text-[var(--admin-ink)]">{player.name}</span>
+                        <span className="admin-muted">{player.id.split('-')[0]}</span>
+                      </span>
+                    </div>
+                  </td>
+                  <td>
+                    <span className="flex items-center gap-1.5 text-[var(--admin-ink)]"><Phone className="h-4 w-4" />{player.phone}</span>
+                    <span className="admin-muted block max-w-48 truncate">{player.email}</span>
+                  </td>
+                  <td><span className="admin-muted flex items-center gap-1.5"><MapPin className="h-4 w-4" />{player.city || 'N/A'}</span></td>
+                  <td><span className="admin-muted block max-w-40 truncate">{player.metadata?.excel_remarks || player.remarks || '-'}</span></td>
+                  <td className="text-center">
+                    <input
+                      type="checkbox"
+                      className="h-5 w-5 accent-[var(--brand-blue)]"
+                      aria-label={`Called: ${player.name}`}
+                      checked={isCalled}
+                      disabled={busy}
+                      onChange={() => handleToggleCalled(player)}
+                    />
+                  </td>
+                  <td>
+                    <div className="flex flex-col items-start gap-1.5">
+                      <StatusBadge status={attendance} />
+                      <select
+                        className="admin-select"
+                        aria-label={`Attendance: ${player.name}`}
+                        value={attendance}
+                        disabled={!isCalled || busy}
+                        onChange={e => handleAttendanceChange(player, e.target.value)}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="attended">Attended</option>
+                        <option value="absent">Absent</option>
+                      </select>
+                    </div>
+                  </td>
+                  <td>
+                    <div className="flex flex-col items-start gap-1.5">
+                      <StatusBadge status={result} />
+                      <select
+                        className="admin-select"
+                        aria-label={`Result: ${player.name}`}
+                        value={result === 'not_selected' ? 'rejected' : result}
+                        disabled={attendance !== 'attended' || busy}
+                        onChange={e => handleResultChange(player, e.target.value)}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="selected">Selected</option>
+                        <option value="rejected">Rejected</option>
+                      </select>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </DataTableShell>
 
-                  return (
-                    <TableRow key={player.id} className={idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'}>
-                      <TableCell>
-                        <div className="font-semibold text-slate-800">{player.name}</div>
-                        <div className="text-[10px] text-slate-400 uppercase font-mono">{player.id.split('-')[0]}</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1.5 text-sm">
-                          <Phone className="w-3 h-3 text-slate-400" />
-                          {player.phone}
-                        </div>
-                        <div className="text-xs text-slate-500 truncate max-w-40">{player.email}</div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-1 text-sm">
-                          <MapPin className="w-3 h-3 text-slate-400" />
-                          {player.city || 'N/A'}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="text-xs text-slate-500 italic max-w-40 truncate">
-                          {player.metadata?.excel_remarks || player.remarks || '---'}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-center">
-                        <Checkbox 
-                          checked={isCalled} 
-                          onCheckedChange={() => handleToggleCalled(player.id)}
-                          disabled={processingId === player.id}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Select 
-                          value={attendance.toLowerCase()} 
-                          onValueChange={(val) => handleAttendanceChange(player.id, val)}
-                          disabled={!isCalled || processingId === player.id}
-                        >
-                          <SelectTrigger className={`w-32 h-8 text-xs ${
-                            attendance === 'attended' ? 'text-green-600 bg-green-50 border-green-200' :
-                            attendance === 'absent' ? 'text-red-600 bg-red-50 border-red-200' : ''
-                          }`}>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="attended">Attended</SelectItem>
-                            <SelectItem value="absent">Absent</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                      <TableCell>
-                        <Select 
-                          value={result.toLowerCase()} 
-                          onValueChange={(val) => handleResultChange(player.id, val)}
-                          disabled={attendance.toLowerCase() !== 'attended' || processingId === player.id}
-                        >
-                          <SelectTrigger className={`w-32 h-8 text-xs ${
-                            result === 'selected' ? 'text-blue-600 bg-blue-50 border-blue-200' :
-                            result === 'rejected' ? 'text-slate-600 bg-slate-100 border-slate-200' : ''
-                          }`}>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="selected">Selected</SelectItem>
-                            <SelectItem value="rejected">Rejected</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      </CardContent>
-    </Card>
+      <ConfirmDialog
+        open={pending !== null}
+        onOpenChange={open => { if (!open) setPending(null); }}
+        tone={pending?.result === 'rejected' ? 'danger' : 'default'}
+        title={pending?.result === 'selected' ? 'Select this candidate?' : 'Reject this candidate?'}
+        description={pending?.result === 'selected'
+          ? `${pending?.player.name ?? 'This candidate'} will be selected${level < 3 ? ` and moved to Level ${level + 1}` : ' as a final selection'}.`
+          : `${pending?.player.name ?? 'This candidate'} will be rejected at Level ${level}.`}
+        confirmLabel={pending?.result === 'selected' ? 'Select' : 'Reject'}
+        loading={processingId !== null && processingId === pending?.player.id}
+        onConfirm={confirmResult}
+      />
+    </div>
   );
 };

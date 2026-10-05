@@ -347,3 +347,37 @@
 .site-nav { gap: clamp(14px, 1.3vw, 28px); }
 .site-nav__link .nav-cricket-icon { display: none; }
 .site-nav__link.is-active .nav-cricket-icon { display: inline-flex; }
+
+/* ---------- grouped dropdowns (Players & Trials, Teams & Matches) ---------- */
+.site-nav__menu--grouped {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(200px, 1fr);
+  gap: 4px 20px;
+  min-width: 0;
+  padding: 16px;
+}
+.site-nav__menu--grouped ul { margin: 0; padding: 0; list-style: none; }
+.site-nav__menu--grouped a { padding: 8px 10px; }
+.site-nav__group-title {
+  display: block;
+  margin-bottom: 6px;
+  padding: 0 10px 6px;
+  border-bottom: 2px solid var(--sh-lime);
+  font-family: var(--brand-font-display);
+  font-size: var(--brand-fs-label);
+  font-weight: 700;
+  letter-spacing: var(--brand-ls-label);
+  text-transform: uppercase;
+  color: var(--sh-blue);
+}
+.site-drawer__group-title {
+  display: block;
+  margin: 10px 0 2px;
+  font-family: var(--brand-font-display);
+  font-size: var(--brand-fs-label);
+  font-weight: 700;
+  letter-spacing: var(--brand-ls-label);
+  text-transform: uppercase;
+  color: var(--sh-blue);
+}

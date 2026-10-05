@@ -1,30 +1,8 @@
-import { useState, useMemo } from 'react';
-import { 
-  FileText, 
-  Download, 
-  RefreshCw, 
-  BarChart, 
-  Filter,
-  CheckCircle,
-  XCircle,
-  Clock,
-  MapPin,
-} from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { useState, useMemo, type ReactNode } from 'react';
+import { FileText, Download, BarChart3, MapPin, Lightbulb } from 'lucide-react';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue, 
-} from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
-import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import { StatusBadge, ActionButton, DataTableShell, StatCard } from '@/components/admin/ui';
 
 const REPORT_TYPES = [
   { id: 'total_registrations', name: 'Total Registrations (Pool)', category: 'General' },
@@ -35,28 +13,45 @@ const REPORT_TYPES = [
   { id: 'trial_assessment', name: 'Trials Assessment Sheet', category: 'Trials' },
 ];
 
+const STATUS_WORDS = ['captured', 'success', 'paid', 'completed', 'selected', 'attended', 'present', 'failed', 'rejected', 'absent', 'pending', 'in_progress', 'not_selected'];
+
+const renderCell = (key: string, value: unknown): ReactNode => {
+  if (value === null || value === undefined || value === '') return '-';
+  if (typeof value === 'boolean') return <StatusBadge status={value ? 'active' : 'neutral'} label={value ? 'Yes' : 'No'} />;
+
+  const v = String(value).toLowerCase();
+  if (STATUS_WORDS.includes(v)) return <StatusBadge status={v === 'in_progress' ? 'pending' : v} />;
+
+  if (key === 'amount' && typeof value === 'number') return `₹${value.toLocaleString('en-IN')}`;
+
+  if (key.endsWith('_at') || key.endsWith('_date')) {
+    const d = new Date(String(value));
+    return Number.isNaN(d.getTime()) ? String(value) : d.toLocaleDateString('en-IN');
+  }
+  return String(value);
+};
+
 export const TrialsReportViewer = () => {
   const [selectedReport, setSelectedReport] = useState<string>('trial_assessment');
   const [level, setLevel] = useState<string>('1');
   const [location, setLocation] = useState<string>('Bangalore');
   const [reportData, setReportData] = useState<any[]>([]);
+  const [generated, setGenerated] = useState(false);
   const { getReportData, loading } = usePlayerWorkflow();
 
   const isLevelRequired = selectedReport === 'call_for_trials' || selectedReport === 'selection_sheet';
   const isLocationRequired = selectedReport === 'trial_assessment';
 
   const loadReport = async () => {
-    const params: any = {};
-    if (isLevelRequired) params.level = parseInt(level);
+    const params: { level?: number; location?: string } = {};
+    if (isLevelRequired) params.level = parseInt(level, 10);
     if (isLocationRequired) params.location = location;
-    
+
     const data = await getReportData(selectedReport, params);
     setReportData(data || []);
-    if (data?.length > 0) {
-      toast.success(`Generated ${data.length} records`);
-    } else {
-      toast.info('No records found for the selected criteria');
-    }
+    setGenerated(true);
+    if (data && data.length > 0) toast.success(`Generated ${data.length} records`);
+    else toast.info('No records found for the selected criteria');
   };
 
   const handleExport = () => {
@@ -64,13 +59,12 @@ export const TrialsReportViewer = () => {
       toast.error('No data to export');
       return;
     }
-
     try {
       const headers = Object.keys(reportData[0]);
       const csvContent = [
         headers.join(','),
-        ...reportData.map(row => 
-          headers.map(h => {
+        ...reportData.map((row) =>
+          headers.map((h) => {
             const val = row[h];
             if (val === null || val === undefined) return '""';
             return `"${String(val).replace(/"/g, '""')}"`;
@@ -82,242 +76,119 @@ export const TrialsReportViewer = () => {
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.setAttribute('href', url);
-      link.setAttribute('download', `sspl_report_${selectedReport}_lvl${level}_${new Date().toISOString().split('T')[0]}.csv`);
+      link.setAttribute('download', `sspl_report_${selectedReport}${isLevelRequired ? `_lvl${level}` : ''}_${new Date().toISOString().split('T')[0]}.csv`);
       link.click();
+      URL.revokeObjectURL(url);
       toast.success('Report downloaded successfully');
-    } catch (err) {
+    } catch {
       toast.error('Export failed');
     }
   };
 
-  const currentReportName = useMemo(() => 
-    REPORT_TYPES.find(r => r.id === selectedReport)?.name || 'Report'
-  , [selectedReport]);
+  const currentReport = useMemo(() => REPORT_TYPES.find((r) => r.id === selectedReport), [selectedReport]);
+  const columns = reportData.length > 0 ? Object.keys(reportData[0]) : [];
 
   return (
     <div className="space-y-6">
-      <Card className="border-slate-200 shadow-sm overflow-hidden">
-        <CardHeader className="bg-slate-50/50 border-b border-slate-100">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <CardTitle className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-cricket-blue" />
-                Reporting Hub
-              </CardTitle>
-              <CardDescription>Select and generate operational reports</CardDescription>
-            </div>
-            
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-slate-400 uppercase">Type:</span>
-                <Select value={selectedReport} onValueChange={setSelectedReport}>
-                  <SelectTrigger className="w-[240px] bg-white">
-                    <SelectValue placeholder="Select Report Type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                  {REPORT_TYPES.map(type => (
-                    <SelectItem key={type.id} value={type.id}>
-                      <span className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-[10px] px-1 py-0 h-4 uppercase opacity-60">
-                          {type.category}
-                        </Badge>
-                        {type.name}
-                      </span>
-                    </SelectItem>
-                  ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {isLevelRequired && (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-slate-400 uppercase">Level:</span>
-                  <Select value={level} onValueChange={setLevel}>
-                    <SelectTrigger className="w-[110px] bg-white">
-                      <SelectValue placeholder="Level" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">Level 1</SelectItem>
-                      <SelectItem value="2">Level 2</SelectItem>
-                      <SelectItem value="3">Level 3</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-
-              {isLocationRequired && (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-slate-400 uppercase">Search:</span>
-                  <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                    <Input 
-                      value={location} 
-                      onChange={(e) => setLocation(e.target.value)}
-                      placeholder="Location (e.g. Bangalore)"
-                      className="pl-9 w-[200px] bg-white"
-                    />
-                  </div>
-                </div>
-              )}
-
-              <Button onClick={loadReport} disabled={loading} className="bg-cricket-blue hover:bg-cricket-dark-blue min-w-[120px]">
-                {loading ? <RefreshCw className="w-4 h-4 animate-spin mr-2" /> : <BarChart className="w-4 h-4 mr-2" />}
-                Generate
-              </Button>
-            </div>
+      <section className="admin-card p-5">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="min-w-0">
+            <p className="admin-eyebrow">Reporting hub</p>
+            <h2 className="admin-h3">Select and generate operational reports</h2>
           </div>
-        </CardHeader>
+          <div className="flex flex-wrap items-end gap-3">
+            <div>
+              <label className="admin-label" htmlFor="report-type">Type</label>
+              <select id="report-type" className="admin-select" value={selectedReport} onChange={(e) => setSelectedReport(e.target.value)}>
+                {REPORT_TYPES.map((t) => <option key={t.id} value={t.id}>{t.category} - {t.name}</option>)}
+              </select>
+            </div>
 
-        <CardContent className="p-0">
-          <AnimatePresence mode="wait">
-            {loading ? (
-              <motion.div 
-                initial={{ opacity: 0 }} 
-                animate={{ opacity: 1 }} 
-                exit={{ opacity: 0 }}
-                className="p-12"
-              >
-                <div className="space-y-3">
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-[90%]" />
-                  <Skeleton className="h-4 w-full" />
-                  <Skeleton className="h-4 w-[95%]" />
-                </div>
-                <div className="text-center mt-6 text-slate-400 animate-pulse">
-                  Aggregating data points...
-                </div>
-              </motion.div>
-            ) : reportData.length > 0 ? (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="overflow-x-auto"
-              >
-                <div className="p-4 bg-blue-50/50 border-b border-blue-100 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm font-medium text-blue-800">
-                      Showing preview for <strong>{currentReportName}</strong>
-                    </span>
-                    <Badge variant="secondary" className="bg-blue-100 text-blue-700">
-                      {reportData.length} records
-                    </Badge>
-                  </div>
-                  <Button size="sm" onClick={handleExport} variant="outline" className="border-green-600 text-green-700 hover:bg-green-50">
-                    <Download className="w-4 h-4 mr-2" />
-                    Export Full CSV
-                  </Button>
-                </div>
-                
-                <div className="max-h-[500px] overflow-auto">
-                  <table className="w-full text-sm text-left border-collapse">
-                    <thead className="sticky top-0 bg-slate-100 border-b border-slate-200">
-                      <tr>
-                        {Object.keys(reportData[0]).map(header => (
-                          <th key={header} className="px-4 py-3 font-semibold text-slate-700 capitalize">
-                            {header.replace(/_/g, ' ')}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {reportData.slice(0, 50).map((row, idx) => (
-                        <tr key={idx} className="border-b border-slate-50 hover:bg-slate-50/80 transition-colors">
-                          {Object.keys(reportData[0]).map(col => (
-                            <td key={col} className="px-4 py-3 text-slate-600 whitespace-nowrap">
-                              {renderCell(col, row[col])}
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {reportData.length > 50 && (
-                    <div className="p-4 text-center bg-slate-50 text-slate-500 italic text-xs">
-                      Viewing first 50 records. Download CSV to see all {reportData.length} records.
-                    </div>
-                  )}
-                </div>
-              </motion.div>
-            ) : (
-              <div className="p-20 text-center space-y-4">
-                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto">
-                  <Filter className="w-8 h-8 text-slate-300" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-slate-900">No data generated yet</h4>
-                  <p className="text-sm text-slate-500">Pick a report type and click "Generate" to preview results</p>
+            {isLevelRequired && (
+              <div>
+                <label className="admin-label" htmlFor="report-level">Level</label>
+                <select id="report-level" className="admin-select" value={level} onChange={(e) => setLevel(e.target.value)}>
+                  <option value="1">Level 1</option>
+                  <option value="2">Level 2</option>
+                  <option value="3">Level 3</option>
+                </select>
+              </div>
+            )}
+
+            {isLocationRequired && (
+              <div>
+                <label className="admin-label" htmlFor="report-location">Location</label>
+                <div className="relative">
+                  <MapPin className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--admin-ink-soft)]" />
+                  <input
+                    id="report-location"
+                    className="admin-input !pl-10"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="City or state"
+                  />
                 </div>
               </div>
             )}
-          </AnimatePresence>
-        </CardContent>
-      </Card>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="border-dashed border-slate-200 shadow-none">
-          <CardHeader className="py-3 px-4">
-            <CardTitle className="text-xs text-slate-400 uppercase tracking-wider">Report Descriptions</CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 pb-4 space-y-2 text-xs text-slate-500 italic">
-            <p>• <strong>Total Registrations</strong>: Full list of players who initiated registration on the platform.</p>
-            <p>• <strong>Call for Trials</strong>: Unified list of candidates eligible for Level 1, 2, or 3 calling.</p>
-            <p>• <strong>Selection Sheet</strong>: Results and evaluations for specific trial levels.</p>
-            <p>• <strong>Assessment Sheet</strong>: Location-based view of all candidates (Karnataka/Bangalore), mapping their current status from registration to selection.</p>
-          </CardContent>
-        </Card>
-        
-        <Card className="border-slate-100 bg-slate-900 text-slate-400 shadow-none">
-          <CardContent className="p-6 flex items-center justify-center text-center">
-            <div className="space-y-1">
-              <div className="text-2xl font-bold text-white mb-2">💡 Quick Tip</div>
-              <p className="text-xs">
-                Selection sheets include <strong>Proficiency</strong> and <strong>State</strong> by default
-                to help selectors build balanced teams from the trial pool.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+
+            <ActionButton variant="primary" icon={BarChart3} loading={loading} onClick={loadReport}>Generate</ActionButton>
+          </div>
+        </div>
+      </section>
+
+      {generated && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <StatCard label="Report" value={<span className="!text-[length:var(--brand-fs-h3)]">{currentReport?.name}</span>} icon={FileText} hint={currentReport?.category} />
+          <StatCard label="Records" value={reportData.length.toLocaleString('en-IN')} icon={BarChart3} tone="lime" hint={reportData.length > 50 ? 'Preview shows the first 50' : 'All records shown'} />
+        </div>
+      )}
+
+      <DataTableShell
+        title={generated ? currentReport?.name : 'Report preview'}
+        description={generated ? undefined : 'Pick a report type and press Generate to preview results.'}
+        loading={loading}
+        isEmpty={!generated || reportData.length === 0}
+        emptyTitle={generated ? 'No records found' : 'No data generated yet'}
+        emptyDescription={generated ? 'Nothing matches the selected criteria.' : 'Choose a report type above, then press Generate.'}
+        actions={reportData.length > 0 ? <ActionButton variant="outline" icon={Download} onClick={handleExport}>Export full CSV</ActionButton> : undefined}
+      >
+        <table className="admin-table">
+          <thead>
+            <tr>{columns.map((h) => <th key={h} className="capitalize">{h.replace(/_/g, ' ')}</th>)}</tr>
+          </thead>
+          <tbody>
+            {reportData.slice(0, 50).map((row, idx) => (
+              <tr key={idx}>
+                {columns.map((col) => <td key={col} className="whitespace-nowrap">{renderCell(col, row[col])}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {reportData.length > 50 && (
+          <p className="admin-muted p-4 text-center">Viewing first 50 records. Download the CSV to see all {reportData.length}.</p>
+        )}
+      </DataTableShell>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <section className="admin-card p-5">
+          <p className="admin-eyebrow">Report descriptions</p>
+          <ul className="admin-muted space-y-2">
+            <li><strong>Total Registrations</strong>: every player who started registration on the platform.</li>
+            <li><strong>Call for Trials</strong>: candidates eligible for Level 1, 2 or 3 calling.</li>
+            <li><strong>Selection Sheet</strong>: results and evaluations for a trial level.</li>
+            <li><strong>Assessment Sheet</strong>: location-based view of all candidates and their status from registration to selection.</li>
+          </ul>
+        </section>
+        <section className="admin-hero flex items-center gap-4 p-5">
+          <Lightbulb className="h-6 w-6 shrink-0" />
+          <div>
+            <p className="admin-h3 !text-inherit">Quick tip</p>
+            <p className="admin-muted !text-inherit mt-1">
+              Selection sheets include proficiency and state by default, so selectors can build balanced teams from the trial pool.
+            </p>
+          </div>
+        </section>
       </div>
     </div>
   );
-};
-
-// Helper to render cell value with specific styling if needed
-const renderCell = (key: string, value: any) => {
-  if (value === null || value === undefined) return '-';
-  if (typeof value === 'boolean') {
-    return value ? (
-      <Badge className="bg-blue-100 text-blue-700 border-none">YES</Badge>
-    ) : (
-      <Badge className="bg-slate-100 text-slate-400 border-none">NO</Badge>
-    );
-  }
-
-  const v = String(value).toLowerCase();
-
-  if (v === 'captured' || v === 'success' || v === 'selected' || v === 'attended') {
-    return <span className="flex items-center gap-1.5 text-green-600 font-medium saturate-150"><CheckCircle className="w-3.5 h-3.5" /> {String(value)}</span>;
-  }
-  if (v === 'failed' || v === 'rejected' || v === 'absent') {
-    return <span className="flex items-center gap-1.5 text-red-500 font-medium"><XCircle className="w-3.5 h-3.5" /> {String(value)}</span>;
-  }
-  if (v === 'pending' || v === 'in_progress') {
-    return <span className="flex items-center gap-1.5 text-amber-500 font-medium"><Clock className="w-3.5 h-3.5 animate-pulse" /> {String(value)}</span>;
-  }
-
-  // Formatting for amount
-  if (key === 'amount' && typeof value === 'number') {
-    return `₹${value.toLocaleString()}`;
-  }
-
-  // Formatting for dates
-  if (key.includes('_at') || key.includes('_date')) {
-    try {
-      return new Date(value).toLocaleDateString('en-IN', { hour: '2-digit', minute: '2-digit' });
-    } catch {
-      return String(value);
-    }
-  }
-
-  return String(value);
 };
