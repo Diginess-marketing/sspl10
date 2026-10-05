@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DataTableShell, ActionButton } from '@/components/admin/ui';
 import DrillDownModal from './DrillDownModal';
 
 const PAID_STATUSES = ['captured', 'paid', 'success', 'completed'];
@@ -120,74 +120,51 @@ export default function CampaignPerformanceWidget({ refreshKey = 0 }: { refreshK
   const visible = showAll ? campaigns : campaigns.slice(0, TOP_LIMIT);
 
   return (
-    <Card className="border-none shadow-sm">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle>Campaign Performance</CardTitle>
-        {!loading && !error && (
-          <span className="text-xs text-muted-foreground">{campaigns.length} campaigns</span>
-        )}
-      </CardHeader>
-      <CardContent>
-        {loading ? (
-          <div className="space-y-3 animate-pulse">
-            {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-9 bg-gray-100 rounded-lg" />
-            ))}
-          </div>
-        ) : error ? (
-          <div className="flex h-[120px] items-center justify-center text-sm text-red-600 border-2 border-dashed rounded-lg">
-            {error}
-          </div>
-        ) : campaigns.length === 0 ? (
-          <div className="flex h-[120px] items-center justify-center text-muted-foreground text-sm border-2 border-dashed rounded-lg">
-            No campaign registrations yet
-          </div>
-        ) : (
-          <>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-left text-xs text-muted-foreground border-b">
-                    <th className="py-2 pr-4 font-medium">Source / Campaign</th>
-                    <th className="py-2 px-2 font-medium text-right">Registrations</th>
-                    <th className="py-2 px-2 font-medium text-right text-green-700">Paid</th>
-                    <th className="py-2 px-2 font-medium text-right text-amber-700">Pending</th>
-                    <th className="py-2 px-2 font-medium text-right text-red-700">Failed</th>
-                    <th className="py-2 pl-2 font-medium text-right">Conversion</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {visible.map((row) => (
-                    <tr
-                      key={`${row.source}|${row.campaign}`}
-                      onClick={() => openDrillDown(row)}
-                      className="cursor-pointer hover:bg-gray-50 transition-colors"
-                    >
-                      <td className="py-2.5 pr-4 font-medium text-slate-900 break-all">{campaignLabel(row)}</td>
-                      <td className="py-2.5 px-2 text-right tabular-nums">{row.total}</td>
-                      <td className="py-2.5 px-2 text-right tabular-nums">{row.paid}</td>
-                      <td className="py-2.5 px-2 text-right tabular-nums">{row.pending}</td>
-                      <td className="py-2.5 px-2 text-right tabular-nums">{row.failed}</td>
-                      <td className="py-2.5 pl-2 text-right tabular-nums">
-                        {Math.round((row.paid / row.total) * 100)}%
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            {campaigns.length > TOP_LIMIT && (
-              <button
-                type="button"
-                onClick={() => setShowAll((v) => !v)}
-                className="mt-4 text-xs font-medium text-slate-600 hover:text-slate-900"
+    <>
+      <DataTableShell
+        title="Campaign performance"
+        description={!loading && !error ? `${campaigns.length} campaigns` : undefined}
+        loading={loading}
+        isEmpty={Boolean(error) || campaigns.length === 0}
+        emptyTitle={error ?? 'No campaign registrations yet'}
+        emptyDescription={error ? 'Refresh the dashboard to try again.' : 'Registrations with UTM tags will appear here.'}
+      >
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Source / campaign</th>
+              <th className="text-right">Registrations</th>
+              <th className="text-right">Paid</th>
+              <th className="text-right">Pending</th>
+              <th className="text-right">Failed</th>
+              <th className="text-right">Conversion</th>
+            </tr>
+          </thead>
+          <tbody>
+            {visible.map((row) => (
+              <tr
+                key={`${row.source}|${row.campaign}`}
+                onClick={() => openDrillDown(row)}
+                className="cursor-pointer"
               >
-                {showAll ? 'Show top campaigns' : `Show all ${campaigns.length} campaigns`}
-              </button>
-            )}
-          </>
+                <td className="break-all font-semibold">{campaignLabel(row)}</td>
+                <td className="text-right tabular-nums">{row.total}</td>
+                <td className="text-right tabular-nums text-[var(--admin-ok)]">{row.paid}</td>
+                <td className="text-right tabular-nums text-[var(--admin-warn)]">{row.pending}</td>
+                <td className="text-right tabular-nums text-[var(--admin-bad)]">{row.failed}</td>
+                <td className="text-right tabular-nums">{Math.round((row.paid / row.total) * 100)}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {campaigns.length > TOP_LIMIT && (
+          <div className="border-t border-[var(--admin-line)] p-4">
+            <ActionButton variant="soft" size="sm" onClick={() => setShowAll((v) => !v)}>
+              {showAll ? 'Show top campaigns' : `Show all ${campaigns.length} campaigns`}
+            </ActionButton>
+          </div>
         )}
-      </CardContent>
+      </DataTableShell>
 
       <DrillDownModal
         isOpen={drillDown.isOpen}
@@ -196,6 +173,6 @@ export default function CampaignPerformanceWidget({ refreshKey = 0 }: { refreshK
         players={drillDown.players}
         loading={drillDown.loading}
       />
-    </Card>
+    </>
   );
 }

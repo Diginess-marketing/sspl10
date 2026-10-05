@@ -110,3 +110,14 @@ export async function findSuccessfulSince(email, sinceIso) {
   if (error) throw error;
   return data || [];
 }
+
+/** A single ledger row by Razorpay payment id, or null. */
+export async function findByPaymentId(paymentId) {
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select('payment_id, amount')
+    .eq('payment_id', paymentId)
+    .maybeSingle();
+  if (error) throw error;
+  return data || null;
+}

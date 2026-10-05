@@ -25,6 +25,13 @@ export function fromRegistration(registration, paymentId) {
 /** Insert or update candidates, keyed on id. */
 export async function upsertMany(candidates) {
   if (!candidates.length) return;
-  const { error } = await supabase.from(TABLE).upsert(candidates, { onConflict: 'id' });
+  let { error } = await supabase.from(TABLE).upsert(candidates, { onConflict: 'id' });
+  if (error && /column|schema cache/i.test(error.message || '')) {
+    // Older schema without the payment columns: retry with the core columns only.
+    const core = candidates.map(({ id, name, mobile, state, proficiency }) => ({
+      id, name, mobile, state, proficiency,
+    }));
+    ({ error } = await supabase.from(TABLE).upsert(core, { onConflict: 'id' }));
+  }
   if (error) throw error;
 }

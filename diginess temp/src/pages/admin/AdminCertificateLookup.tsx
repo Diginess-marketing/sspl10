@@ -1,114 +1,101 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { RefreshCw, FileDown, Loader2, Search, Award } from 'lucide-react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { RefreshCw, FileDown, Award, Users, Trophy, MapPin, ChevronLeft, ChevronRight, Copy } from 'lucide-react';
+import { toast } from 'sonner';
 import { playerDataService } from '@/services/playerDataService';
 import { playerExportService } from '@/utils/playerExportService';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
 import type { PlayerResult } from '@/types/playerData';
 import { generateAndDownloadCertificate, generateAndDownloadAchievementCertificate } from '@/utils/certificateGenerator';
+import { PageHeader, StatCard, StatusBadge, ActionButton, DataTableShell, DetailDrawer } from '@/components/admin/ui';
+
+const PAGE_SIZE = 10;
+const isSelected = (p: PlayerResult) => p.status?.toUpperCase() === 'SELECTED';
 
 const AdminCertificateLookup = () => {
     const [players, setPlayers] = useState<PlayerResult[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+    const [filter, setFilter] = useState('all');
     const [isExporting, setIsExporting] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const { toast } = useToast();
+    const [active, setActive] = useState<PlayerResult | null>(null);
+    const [downloading, setDownloading] = useState<string | null>(null);
 
-    // Pagination
-    const PAGE_SIZE = 10;
+    // Load and enrich data
+    const loadAndEnrichData = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            await playerDataService.loadPlayerData();
+            const rawData = playerDataService.getRawData();
 
-    // Load and Enrich Data on Mount
-    useEffect(() => {
-        const loadAndEnrichData = async () => {
-            setIsLoading(true);
-            try {
-                // 1. Load basic JSON data
-                await playerDataService.loadPlayerData();
-                const rawData = playerDataService.getRawData();
-
-                if (rawData.length === 0) {
-                    setPlayers([]);
-                    setIsLoading(false);
-                    return;
-                }
-
-                // 2. Enrich with Supabase Data (State/City)
-                const mobileNumbers = rawData.map((p: PlayerResult) => p.mobile);
-                const chunkSize = 500;
-                const dbPlayersMap = new Map();
-
-                // Fetch in chunks
-                for (let i = 0; i < mobileNumbers.length; i += chunkSize) {
-                    const chunk = mobileNumbers.slice(i, i + chunkSize);
-                    const { data: dbPlayers, error } = await supabase
-                        .from('player_registrations')
-                        .select('phone, city, state')
-                        .in('phone', chunk);
-
-                    if (error) console.error('Supabase fetch error:', error);
-
-                    if (dbPlayers) {
-                        dbPlayers.forEach((p: any) => dbPlayersMap.set(p.phone, p));
-                    }
-                }
-
-                // 3. Merge Data
-                const enriched = rawData.map((player: PlayerResult) => {
-                    const dbPlayer = dbPlayersMap.get(player.mobile);
-                    return {
-                        ...player,
-                        city: dbPlayer?.city || player.city || 'N/A',
-                        state: (player.state && player.state.trim() !== '') ? player.state : (dbPlayer?.state || 'N/A'),
-                    };
-                });
-
-                setPlayers(enriched);
-            } catch (error) {
-                console.error('Failed to load data:', error);
-                toast({
-                    title: 'Error',
-                    description: 'Failed to load player data.',
-                    variant: 'destructive',
-                });
-            } finally {
-                setIsLoading(false);
+            if (rawData.length === 0) {
+                setPlayers([]);
+                return;
             }
-        };
 
-        loadAndEnrichData();
-    }, [toast]);
+            // Enrich with Supabase data (state/city)
+            const mobileNumbers = rawData.map((p: PlayerResult) => p.mobile);
+            const chunkSize = 500;
+            const dbPlayersMap = new Map();
 
-    // Filtering
+            for (let i = 0; i < mobileNumbers.length; i += chunkSize) {
+                const chunk = mobileNumbers.slice(i, i + chunkSize);
+                const { data: dbPlayers, error } = await supabase
+                    .from('player_registrations')
+                    .select('phone, city, state')
+                    .in('phone', chunk);
+
+                if (error) console.error('Supabase fetch error:', error);
+                if (dbPlayers) {
+                    dbPlayers.forEach((p: any) => dbPlayersMap.set(p.phone, p));
+                }
+            }
+
+            const enriched = rawData.map((player: PlayerResult) => {
+                const dbPlayer = dbPlayersMap.get(player.mobile);
+                return {
+                    ...player,
+                    city: dbPlayer?.city || player.city || 'N/A',
+                    state: (player.state && player.state.trim() !== '') ? player.state : (dbPlayer?.state || 'N/A'),
+                };
+            });
+
+            setPlayers(enriched);
+        } catch (error) {
+            console.error('Failed to load data:', error);
+            toast.error('Failed to load player data');
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+    useEffect(() => { loadAndEnrichData(); }, [loadAndEnrichData]);
+
+    const counts = useMemo(() => {
+        const sel = players.filter(isSelected).length;
+        return { all: players.length, selected: sel, other: players.length - sel };
+    }, [players]);
+
     const filteredPlayers = useMemo(() => {
-        if (!searchQuery) return players;
         const lowerQuery = searchQuery.toLowerCase();
-        return players.filter(p =>
-            p.name.toLowerCase().includes(lowerQuery) ||
-            p.mobile.includes(lowerQuery) ||
-            p.city?.toLowerCase().includes(lowerQuery) ||
-            p.state.toLowerCase().includes(lowerQuery),
-        );
-    }, [players, searchQuery]);
+        return players.filter(p => {
+            if (filter === 'selected' && !isSelected(p)) return false;
+            if (filter === 'other' && isSelected(p)) return false;
+            if (!lowerQuery) return true;
+            return (
+                p.name.toLowerCase().includes(lowerQuery) ||
+                p.mobile.includes(lowerQuery) ||
+                p.city?.toLowerCase().includes(lowerQuery) ||
+                p.state.toLowerCase().includes(lowerQuery)
+            );
+        });
+    }, [players, searchQuery, filter]);
 
-    // Pagination Logic
     const totalPages = Math.ceil(filteredPlayers.length / PAGE_SIZE);
-    const displayedPlayers = filteredPlayers.slice(
-        (currentPage - 1) * PAGE_SIZE,
-        currentPage * PAGE_SIZE,
-    );
+    const displayedPlayers = filteredPlayers.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
-    // Reset page when search changes
-    useEffect(() => {
-        setCurrentPage(1);
-    }, [searchQuery]);
+    useEffect(() => { setCurrentPage(1); }, [searchQuery, filter]);
 
-    // Actions
     const handleExport = async () => {
         setIsExporting(true);
         try {
@@ -116,181 +103,159 @@ const AdminCertificateLookup = () => {
                 format: 'csv',
                 includeFields: ['name', 'mobile', 'state', 'city', 'status', 'proficiency', 'timing', 'marks', 'remarks'],
             });
-            toast({ title: 'Export Successful', description: `${filteredPlayers.length} records exported.` });
+            toast.success(`${filteredPlayers.length} records exported`);
         } catch (error) {
             console.error(error);
-            toast({ title: 'Export Failed', variant: 'destructive' });
+            toast.error('Export failed');
         } finally {
             setIsExporting(false);
         }
     };
 
     const handleDownloadCertificate = async (player: PlayerResult) => {
-        const isSelected = player.status?.toUpperCase() === 'SELECTED';
-        const type = isSelected ? 'achievement' : 'participation';
-
-        toast({
-            title: 'Generating Certificate',
-            description: `Please wait while we generate the ${type} certificate for ${player.name}...`,
-        });
-
+        const type = isSelected(player) ? 'achievement' : 'participation';
+        const key = player.id || player.mobile;
+        setDownloading(String(key));
+        const tid = toast.loading(`Generating ${type} certificate for ${player.name}`);
         try {
-            if (isSelected) {
+            if (isSelected(player)) {
                 await generateAndDownloadAchievementCertificate(player.name);
             } else {
                 await generateAndDownloadCertificate(player.name);
             }
-
-            toast({
-                title: 'Download Complete',
-                description: `${player.name}'s certificate has been downloaded.`,
-                className: 'bg-green-600 text-white border-green-700',
-            });
+            toast.success(`${player.name}'s certificate downloaded`, { id: tid });
         } catch (error) {
             console.error('Certificate generation failed:', error);
-            toast({
-                title: 'Download Failed',
-                description: 'There was an error generating the certificate. Please try again.',
-                variant: 'destructive',
-            });
+            toast.error('Certificate generation failed. Please try again.', { id: tid });
+        } finally {
+            setDownloading(null);
         }
     };
 
+    const copyMobile = async (mobile: string) => {
+        try { await navigator.clipboard.writeText(mobile); toast.success('Mobile number copied'); } catch { toast.error('Could not copy'); }
+    };
+
     return (
-        <div className="space-y-6 animate-in fade-in duration-500">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-slate-900">Certificate Management</h1>
-                    <p className="text-muted-foreground mt-2">
-                        View, search, and export player certificate details.
-                    </p>
-                </div>
-                <div className="flex items-center gap-3">
-                    <Button
-                        onClick={() => window.location.reload()}
-                        variant="outline"
-                        size="sm"
-                    >
-                        <RefreshCw className="h-4 w-4 mr-2" /> Refresh
-                    </Button>
-                    <Button
-                        onClick={handleExport}
-                        disabled={isExporting || players.length === 0}
-                        className="bg-green-600 hover:bg-green-700 text-white"
-                    >
-                        {isExporting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <FileDown className="h-4 w-4 mr-2" />}
-                        Export {searchQuery ? 'Results' : 'All'} CSV
-                    </Button>
-                </div>
+        <div className="space-y-6">
+            <PageHeader
+                eyebrow="Certificates"
+                title={<>Certificate <em>management</em></>}
+                description="View, search, and export player certificate details."
+                actions={
+                    <>
+                        <ActionButton variant="outline" icon={RefreshCw} onClick={loadAndEnrichData} disabled={isLoading}>Refresh</ActionButton>
+                        <ActionButton variant="primary" icon={FileDown} loading={isExporting} onClick={handleExport} disabled={players.length === 0}>
+                            Export {searchQuery || filter !== 'all' ? 'results' : 'all'} CSV
+                        </ActionButton>
+                    </>
+                }
+            />
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <StatCard label="Players" value={counts.all.toLocaleString('en-IN')} hint="In the results registry" icon={Users} loading={isLoading} />
+                <StatCard label="Achievement" value={counts.selected.toLocaleString('en-IN')} hint="Selected players" icon={Trophy} tone="lime" loading={isLoading} />
+                <StatCard label="Participation" value={counts.other.toLocaleString('en-IN')} hint="All other players" icon={Award} tone="green" loading={isLoading} />
             </div>
 
-            <Card className="border-slate-200 shadow-sm">
-                <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                        <CardTitle className="text-xl">Player Registry ({filteredPlayers.length})</CardTitle>
-                        <div className="relative w-64">
-                            <Search className="absolute left-2 top-2.5 h-4 w-4 text-slate-400" />
-                            <Input
-                                placeholder="Search Name, Phone, City..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="pl-8"
-                            />
+            <DataTableShell
+                title="Player registry"
+                description={`${filteredPlayers.length} players`}
+                search={searchQuery}
+                onSearchChange={setSearchQuery}
+                searchPlaceholder="Search name, phone, city"
+                filters={[
+                    { value: 'all', label: 'All', count: counts.all },
+                    { value: 'selected', label: 'Selected', count: counts.selected },
+                    { value: 'other', label: 'Others', count: counts.other },
+                ]}
+                activeFilter={filter}
+                onFilterChange={setFilter}
+                loading={isLoading}
+                isEmpty={displayedPlayers.length === 0}
+                emptyTitle="No players found"
+                emptyDescription="Try a different search or filter."
+            >
+                <table className="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th><th>Mobile</th><th>Location</th><th>Status</th><th>Proficiency</th>
+                            <th className="text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {displayedPlayers.map((player, idx) => (
+                            <tr key={player.id || idx} className="cursor-pointer" onClick={() => setActive(player)}>
+                                <td>
+                                    <div className="flex items-center gap-3">
+                                        <span className="admin-avatar">{(player.name || '?').slice(0, 1).toUpperCase()}</span>
+                                        <span className="font-semibold text-[var(--admin-ink)]">{player.name}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button type="button" title="Copy mobile" onClick={(e) => { e.stopPropagation(); copyMobile(player.mobile); }} className="inline-flex items-center gap-1.5 hover:text-[var(--admin-accent)]">
+                                        {player.mobile}<Copy className="h-3.5 w-3.5" />
+                                    </button>
+                                </td>
+                                <td>
+                                    <span className="block font-semibold text-[var(--admin-ink)]">{player.city}</span>
+                                    <span className="admin-muted">{player.state}</span>
+                                </td>
+                                <td><StatusBadge status={isSelected(player) ? 'selected' : player.status} /></td>
+                                <td><span className="block max-w-[180px] truncate" title={player.proficiency}>{player.proficiency}</span></td>
+                                <td className="text-right" onClick={(e) => e.stopPropagation()}>
+                                    <ActionButton
+                                        variant="soft"
+                                        size="sm"
+                                        icon={Award}
+                                        loading={downloading === String(player.id || player.mobile)}
+                                        onClick={() => handleDownloadCertificate(player)}
+                                    >
+                                        <span className="hidden sm:inline">Certificate</span>
+                                    </ActionButton>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                {totalPages > 1 && (
+                    <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--admin-line)] px-5 py-3">
+                        <p className="admin-muted">Page {currentPage} of {totalPages}</p>
+                        <div className="flex items-center gap-2">
+                            <ActionButton variant="outline" size="sm" icon={ChevronLeft} aria-label="Previous page" onClick={() => setCurrentPage(p => Math.max(p - 1, 1))} disabled={currentPage === 1} />
+                            <ActionButton variant="outline" size="sm" icon={ChevronRight} aria-label="Next page" onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))} disabled={currentPage === totalPages} />
                         </div>
                     </div>
-                </CardHeader>
-                <CardContent className="p-0">
-                    <div className="overflow-x-auto rounded-md border text-sm">
-                        <Table>
-                            <TableHeader className="bg-slate-50">
-                                <TableRow>
-                                    <TableHead className="font-semibold">Name</TableHead>
-                                    <TableHead className="font-semibold">Mobile</TableHead>
-                                    <TableHead className="font-semibold">Location</TableHead>
-                                    <TableHead className="font-semibold">Status</TableHead>
-                                    <TableHead className="font-semibold">Proficiency</TableHead>
-                                    <TableHead className="text-right font-semibold">Actions</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {isLoading ? (
-                                    <TableRow>
-                                        <TableCell colSpan={6} className="h-32 text-center">
-                                            <div className="flex flex-col items-center justify-center text-slate-500">
-                                                <Loader2 className="h-8 w-8 animate-spin mb-2 text-primary" />
-                                                Loading and Enriching Data... (This may take a moment)
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
-                                ) : displayedPlayers.length === 0 ? (
-                                    <TableRow>
-                                        <TableCell colSpan={6} className="h-24 text-center text-slate-500">
-                                            No players found.
-                                        </TableCell>
-                                    </TableRow>
-                                ) : (
-                                    displayedPlayers.map((player, idx) => (
-                                        <TableRow key={player.id || idx} className="hover:bg-slate-50/50">
-                                            <TableCell className="font-medium text-slate-900">{player.name}</TableCell>
-                                            <TableCell className="text-slate-600">{player.mobile}</TableCell>
-                                            <TableCell>
-                                                <div className="flex flex-col text-xs text-slate-600">
-                                                    <span className="font-medium text-slate-900">{player.city}</span>
-                                                    <span>{player.state}</span>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Badge variant={player.status === 'SELECTED' ? 'default' : 'secondary'} className={player.status === 'SELECTED' ? 'bg-green-100 text-green-700 hover:bg-green-200' : ''}>
-                                                    {player.status}
-                                                </Badge>
-                                            </TableCell>
-                                            <TableCell className="text-slate-600 max-w-[150px] truncate" title={player.proficiency}>
-                                                {player.proficiency}
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <Button
-                                                    size="sm"
-                                                    variant="outline"
-                                                    className="h-8 gap-2 text-blue-600 border-blue-200 bg-white hover:bg-blue-50"
-                                                    style={{ backgroundColor: '#ffffff' }}
-                                                    onClick={() => handleDownloadCertificate(player)}
-                                                >
-                                                    <Award className="h-4 w-4" />
-                                                    <span className="hidden sm:inline">Download Cert</span>
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))
-                                )}
-                            </TableBody>
-                        </Table>
+                )}
+            </DataTableShell>
+
+            <DetailDrawer
+                open={!!active}
+                onOpenChange={(o) => { if (!o) setActive(null); }}
+                eyebrow="Player"
+                title={active?.name || ''}
+                description={active ? `${active.city}, ${active.state}` : undefined}
+                footer={active && (
+                    <ActionButton variant="primary" icon={Award} loading={downloading === String(active.id || active.mobile)} onClick={() => handleDownloadCertificate(active)}>
+                        Download {isSelected(active) ? 'achievement' : 'participation'} certificate
+                    </ActionButton>
+                )}
+            >
+                {active && (
+                    <div className="space-y-5">
+                        <StatusBadge status={isSelected(active) ? 'selected' : active.status} />
+                        <dl className="admin-kv">
+                            <dt>Mobile</dt><dd>{active.mobile}</dd>
+                            <dt><MapPin className="inline h-4 w-4" /> City</dt><dd>{active.city}</dd>
+                            <dt>State</dt><dd>{active.state}</dd>
+                            <dt>Proficiency</dt><dd>{active.proficiency || '-'}</dd>
+                            <dt>Timing</dt><dd>{active.timing || '-'}</dd>
+                            <dt>Marks</dt><dd>{active.marks ?? '-'}</dd>
+                            <dt>Remarks</dt><dd>{active.remarks || '-'}</dd>
+                        </dl>
                     </div>
-                    {/* Pagination */}
-                    {!isLoading && totalPages > 1 && (
-                        <div className="flex items-center justify-end space-x-2 p-4">
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                                disabled={currentPage === 1}
-                            >
-                                Previous
-                            </Button>
-                            <div className="text-sm font-medium">
-                                Page {currentPage} of {totalPages}
-                            </div>
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                                disabled={currentPage === totalPages}
-                            >
-                                Next
-                            </Button>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
+                )}
+            </DetailDrawer>
         </div>
     );
 };

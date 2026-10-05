@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
+import { DetailDrawer, ActionButton } from '@/components/admin/ui';
 import { Switch } from '@/components/ui/switch';
 import { CMS_COLLECTIONS, getPath, setPath, type CmsCollectionKey } from '@/lib/cms/schema';
 import type { CmsData } from '@/lib/cms/api';
 import CmsFieldInput from './CmsFieldInput';
-import { Loader2 } from 'lucide-react';
+import { Save } from 'lucide-react';
 
 export interface CmsItemDraft {
     id?: string;
@@ -41,55 +39,50 @@ const CmsItemDialog = ({ collection, item, saving, onClose, onSave }: CmsItemDia
     };
 
     return (
-        <Dialog open onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto admin-scope bg-white">
-                <DialogHeader>
-                    <DialogTitle className="text-slate-900">{draft.id ? 'Edit' : 'Add'} {def.label.toLowerCase()} item</DialogTitle>
-                    <DialogDescription>{def.description}</DialogDescription>
-                </DialogHeader>
-
-                <div className="space-y-4 py-2">
-                    {def.fields.map((field) => (
-                        <div key={field.name} className="space-y-1.5">
-                            <Label htmlFor={field.name} className="text-slate-900">
-                                {field.label}
-                                {field.required && <span className="text-destructive"> *</span>}
-                            </Label>
-                            <CmsFieldInput
-                                field={field}
-                                value={getPath(draft.data, field.name)}
-                                onChange={(value) => setDraft({ ...draft, data: setPath(draft.data, field.name, value) })}
-                            />
-                            {field.help && <p className="text-xs text-muted-foreground">{field.help}</p>}
-                        </div>
-                    ))}
-
-                    <div className="flex items-center gap-3 rounded-md border p-3">
-                        <Switch
-                            id="cms-published"
-                            className="data-[state=checked]:bg-emerald-600 data-[state=unchecked]:bg-slate-300"
-                            checked={draft.is_published}
-                            onCheckedChange={(checked) => setDraft({ ...draft, is_published: checked })}
+        <DetailDrawer
+            open
+            onOpenChange={(open) => !open && onClose()}
+            eyebrow={def.label}
+            title={`${draft.id ? 'Edit' : 'Add'} item`}
+            description={def.description}
+            footer={
+                <>
+                    <ActionButton variant="ghost" onClick={onClose} disabled={saving}>Cancel</ActionButton>
+                    <ActionButton variant="primary" icon={Save} loading={saving} onClick={handleSave}>Save</ActionButton>
+                </>
+            }
+        >
+            <div className="space-y-5">
+                {def.fields.map((field) => (
+                    <div key={field.name}>
+                        <label htmlFor={field.name} className="admin-label">
+                            {field.label}
+                            {field.required && <span className="text-[var(--admin-bad)]">*</span>}
+                        </label>
+                        <CmsFieldInput
+                            field={field}
+                            value={getPath(draft.data, field.name)}
+                            onChange={(value) => setDraft({ ...draft, data: setPath(draft.data, field.name, value) })}
                         />
-                        <Label htmlFor="cms-published" className="text-slate-900">Published (visible on the website)</Label>
+                        {field.help && <p className="admin-muted mt-1.5">{field.help}</p>}
                     </div>
+                ))}
 
-                    {missing.length > 0 && (
-                        <p className="text-sm text-destructive">Please fill in: {missing.join(', ')}</p>
-                    )}
+                <div className="admin-summary items-center justify-between">
+                    <label htmlFor="cms-published" className="admin-label !mb-0">Published (visible on the website)</label>
+                    <Switch
+                        id="cms-published"
+                        className="data-[state=checked]:bg-[var(--brand-blue)] data-[state=unchecked]:bg-[var(--brand-sky-2)]"
+                        checked={draft.is_published}
+                        onCheckedChange={(checked) => setDraft({ ...draft, is_published: checked })}
+                    />
                 </div>
 
-                <DialogFooter>
-                    <Button variant="outline" className="border-slate-300 bg-white text-slate-900 hover:bg-slate-50" onClick={onClose} disabled={saving}>
-                        Cancel
-                    </Button>
-                    <Button onClick={handleSave} disabled={saving}>
-                        {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        Save
-                    </Button>
-                </DialogFooter>
-            </DialogContent>
-        </Dialog>
+                {missing.length > 0 && (
+                    <p className="admin-muted !text-[var(--admin-bad)]">Please fill in: {missing.join(', ')}</p>
+                )}
+            </div>
+        </DetailDrawer>
     );
 };
 

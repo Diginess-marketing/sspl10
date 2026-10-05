@@ -9,6 +9,7 @@ const COMPARE_CHUNK_SIZE = 100;
 
 /** Razorpay statuses we expect to have a matching SSPL registration. */
 const SETTLED_STATUSES = new Set(['captured', 'authorized']);
+const PAID_SSPL_STATUSES = new Set(['captured', 'paid', 'completed', 'success']);
 
 const toUnixSeconds = (value) =>
   value ? Math.floor(new Date(value).getTime() / 1000) : undefined;
@@ -86,7 +87,7 @@ export async function reconcile(from, to) {
 
         const ssplStatus = registration.payment_status;
         const mismatch =
-          (payment.status === 'captured' && ssplStatus !== 'completed') ||
+          (payment.status === 'captured' && !PAID_SSPL_STATUSES.has(String(ssplStatus || '').toLowerCase())) ||
           (payment.status === 'failed' && ssplStatus !== 'failed');
 
         if (mismatch) {

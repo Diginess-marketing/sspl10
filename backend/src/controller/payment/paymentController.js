@@ -4,6 +4,7 @@ import * as razorpayService from '../../service/razorpayService.js';
 import * as reconciliationService from '../../service/reconciliationService.js';
 import * as registrationModel from '../../model/registrationModel.js';
 import * as teamModel from '../../model/teamModel.js';
+import { sendConfirmationAsync } from '../../service/confirmationMailService.js';
 import * as trialCandidateModel from '../../model/trialCandidateModel.js';
 import * as paymentLedgerModel from '../../model/paymentLedgerModel.js';
 import * as sseManager from '../../utils/sseManager.js';
@@ -32,6 +33,15 @@ const EXPORT_HEADERS = [
  * Settlement — shared by the checkout callback and the webhook.
  * ------------------------------------------------------------------ */
 
+/** Candidate creation is secondary: a failure here must never fail settlement. */
+async function createCandidates(candidates) {
+  try {
+    await trialCandidateModel.upsertMany(candidates);
+  } catch (err) {
+    logger.error('Trial candidate creation failed (settlement kept):', err?.message || err);
+  }
+}
+
 /**
  * Mark every registration in a team as paid and promote them to trial
  * candidates.
@@ -53,9 +63,12 @@ async function settleTeam(teamId, payment, { skipIfSettled = false } = {}) {
   }
 
   await registrationModel.markTeamPaid(teamId, payment);
-  await trialCandidateModel.upsertMany(
+  await createCandidates(
     players.map((player) => trialCandidateModel.fromRegistration(player, payment.paymentId))
   );
+
+  // Captain-only confirmation mail; fire-and-forget and idempotent.
+  sendConfirmationAsync({ teamId }, payment);
 
   return true;
 }
@@ -68,9 +81,8 @@ async function settleTeam(teamId, payment, { skipIfSettled = false } = {}) {
  */
 async function settleIndividual(registration, payment) {
   await registrationModel.markPaid(registration.id, payment);
-  await trialCandidateModel.upsertMany([
-    trialCandidateModel.fromRegistration(registration, payment.paymentId),
-  ]);
+  await createCandidates([trialCandidateModel.fromRegistration(registration, payment.paymentId)]);
+  sendConfirmationAsync({ registrationId: registration.id }, payment);
 }
 
 /* ------------------------------------------------------------------ *

@@ -4,7 +4,7 @@
    sits safely here without a hide/peek trick. */
 .knee-widget {
   position: fixed;
-  right: 10px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 60;
@@ -18,8 +18,8 @@
 
 .knee-widget__pad {
   position: relative;
-  width: 118px;
-  height: 270px;
+  width: 76px;
+  height: 174px;
   background: url('/assets/widgets/knee-pad-bg-white.png') center / contain no-repeat;
   filter: drop-shadow(0 6px 14px rgba(10, 18, 64, 0.3));
   transition: transform 0.25s ease;
@@ -36,21 +36,21 @@
   position: absolute;
   inset: 0;
   margin: 0;
-  padding: 30px 0;
+  padding: 16px 0;
   list-style: none;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 7px;
 }
 
 .knee-widget__list a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   box-shadow: 0 1px 4px rgba(10, 18, 64, 0.45);
   transition: transform 0.2s ease;
@@ -62,8 +62,8 @@
 }
 
 .knee-widget__list img {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
 }
 

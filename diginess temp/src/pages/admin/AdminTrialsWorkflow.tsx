@@ -1,22 +1,34 @@
-import { useState, useCallback } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, UserCheck, CalendarCheck, BarChart3, UploadCloud, FileText } from 'lucide-react';
+import { useState, useCallback, useEffect } from 'react';
+import { Users, UserCheck, CalendarCheck, BarChart3, UploadCloud, FileText, Layers, RefreshCw } from 'lucide-react';
 import { RegistrationWorkflowTab, TrialsSectionTab, TrialsAllocatedTab } from '@/components/admin/workflow';
+import { TrialLevelsTab } from '@/components/admin/workflow/TrialLevelsTab';
 import { TrialsAnalyticsReport } from '@/components/admin/workflow/TrialsAnalyticsReport';
 import { ImportVerificationTab } from '@/components/admin/workflow/ImportVerificationTab';
 import { TrialsReportViewer } from '@/components/admin/workflow/TrialsReportViewer';
-import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
+import { PageHeader, ActionButton } from '@/components/admin/ui';
+import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
+import type { WorkflowDashboardStats } from '@/types/workflow';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+
+const STEPS = [
+    { value: 'analytics', label: 'Analytics', icon: BarChart3 },
+    { value: 'registrations', label: 'Registrations', icon: Users, count: 'total_registrations' as const },
+    { value: 'trials-section', label: 'Trials section', icon: UserCheck, count: 'in_trials_section' as const },
+    { value: 'allocated', label: 'Allocated', icon: CalendarCheck, count: 'trials_allocated' as const },
+    { value: 'levels', label: 'Levels L1-L3', icon: Layers },
+    { value: 'import', label: 'Import data', icon: UploadCloud },
+];
 
 const AdminTrialsWorkflow = () => {
-    const [activeTab, setActiveTab] = useState('analytics');
+    const [activeTab, setActiveTab] = useState('registrations');
     const [refreshKey, setRefreshKey] = useState(0);
+    const [reportOpen, setReportOpen] = useState(false);
+    const [stats, setStats] = useState<WorkflowDashboardStats | null>(null);
+    const { getDashboardStats } = usePlayerWorkflow();
+
+    useEffect(() => {
+        getDashboardStats().then(setStats);
+    }, [getDashboardStats, refreshKey]);
 
     const handleRefresh = useCallback(() => {
         setRefreshKey(prev => prev + 1);
@@ -24,98 +36,62 @@ const AdminTrialsWorkflow = () => {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-slate-900">Trials Workflow</h1>
-                    <p className="text-muted-foreground mt-1">Manage player registrations and trial process.</p>
-                </div>
+            <PageHeader
+                eyebrow="Players & trials"
+                title={<>Trials <em>workflow</em></>}
+                description="Move players from registration to trials, record attendance and results."
+                actions={(
+                    <>
+                        <ActionButton variant="ghost" icon={RefreshCw} onClick={handleRefresh}>Refresh</ActionButton>
+                        <ActionButton variant="primary" icon={FileText} onClick={() => setReportOpen(true)}>Reports viewer</ActionButton>
+                    </>
+                )}
+            />
 
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button className="bg-amber-600 hover:bg-amber-700 text-white gap-2 shadow-lg shadow-amber-600/20">
-                            <FileText className="w-4 h-4" />
-                            <span>Reports Viewer</span>
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-[95vw] w-[1200px] h-[90vh] overflow-y-auto">
-                        <DialogHeader>
-                            <DialogTitle className="text-2xl font-bold flex items-center gap-2">
-                                <FileText className="w-6 h-6 text-amber-600" />
-                                Trials Assessment & Reporting
-                            </DialogTitle>
-                        </DialogHeader>
-                        <div className="py-4">
-                            <TrialsReportViewer />
-                        </div>
-                    </DialogContent>
-                </Dialog>
+            {/* Stage stepper: acts as the tab bar and shows live counts */}
+            <div className="admin-stepper" role="tablist" aria-label="Workflow stages">
+                {STEPS.map((step, i) => {
+                    const count = step.count && stats ? Number(stats[step.count]) : null;
+                    return (
+                        <button
+                            key={step.value}
+                            type="button"
+                            role="tab"
+                            aria-selected={activeTab === step.value}
+                            data-active={activeTab === step.value}
+                            className="admin-step"
+                            onClick={() => setActiveTab(step.value)}
+                        >
+                            <span className="admin-step__dot"><step.icon className="h-4 w-4" /></span>
+                            <span className="min-w-0">
+                                <span className="admin-eyebrow !mb-0 block !text-inherit opacity-70">Step {i + 1}</span>
+                                <span className="block truncate font-[family-name:var(--brand-font-display)] font-bold uppercase tracking-[var(--brand-ls-btn)]">{step.label}</span>
+                            </span>
+                            {count !== null && <span className="admin-badge admin-badge--info ml-auto !p-0 !px-2.5 before:hidden">{count}</span>}
+                        </button>
+                    );
+                })}
             </div>
 
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-1">
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                    <div className="border-b border-slate-100 px-4 pt-2">
-                        <TabsList className="bg-transparent h-auto p-0 gap-6">
-                            <TabsTrigger
-                                value="analytics"
-                                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600 rounded-none px-2 py-3 gap-2 text-slate-500 hover:text-slate-700 transition-colors"
-                            >
-                                <BarChart3 className="w-4 h-4" />
-                                <span>Analytics</span>
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="registrations"
-                                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-blue-600 data-[state=active]:text-blue-600 rounded-none px-2 py-3 gap-2 text-slate-500 hover:text-slate-700 transition-colors"
-                            >
-                                <Users className="w-4 h-4" />
-                                <span>Registrations</span>
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="trials-section"
-                                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-purple-600 data-[state=active]:text-purple-600 rounded-none px-2 py-3 gap-2 text-slate-500 hover:text-slate-700 transition-colors"
-                            >
-                                <UserCheck className="w-4 h-4" />
-                                <span>Trials Section</span>
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="allocated"
-                                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-sport-orange data-[state=active]:text-lime-700 rounded-none px-2 py-3 gap-2 text-slate-500 hover:text-slate-700 transition-colors"
-                            >
-                                <CalendarCheck className="w-4 h-4" />
-                                <span>Trials Allocated</span>
-                            </TabsTrigger>
-                            <TabsTrigger
-                                value="import"
-                                className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-green-600 data-[state=active]:text-green-600 rounded-none px-2 py-3 gap-2 text-slate-500 hover:text-slate-700 transition-colors"
-                            >
-                                <UploadCloud className="w-4 h-4" />
-                                <span>Import Data</span>
-                            </TabsTrigger>
-                        </TabsList>
-                    </div>
-
-                    <div className="p-6 bg-slate-50/30 min-h-[500px]">
-                        <TabsContent value="analytics" className="mt-0 focus-visible:outline-none focus-visible:ring-0">
-                            <TrialsAnalyticsReport key={`analytics-${refreshKey}`} />
-                        </TabsContent>
-
-                        <TabsContent value="registrations" className="mt-0 focus-visible:outline-none focus-visible:ring-0">
-                            <RegistrationWorkflowTab key={`reg-${refreshKey}`} onRefresh={handleRefresh} />
-                        </TabsContent>
-
-                        <TabsContent value="trials-section" className="mt-0 focus-visible:outline-none focus-visible:ring-0">
-                            <TrialsSectionTab key={`trials-${refreshKey}`} onRefresh={handleRefresh} />
-                        </TabsContent>
-
-                        <TabsContent value="allocated" className="mt-0 focus-visible:outline-none focus-visible:ring-0">
-                            <TrialsAllocatedTab key={`alloc-${refreshKey}`} onRefresh={handleRefresh} />
-                        </TabsContent>
-
-                        <TabsContent value="import" className="mt-0 focus-visible:outline-none focus-visible:ring-0">
-                            <ImportVerificationTab key={`import-${refreshKey}`} />
-                        </TabsContent>
-                    </div>
-                </Tabs>
+            <div role="tabpanel" className="min-h-[480px]">
+                {activeTab === 'analytics' && <TrialsAnalyticsReport key={`analytics-${refreshKey}`} />}
+                {activeTab === 'registrations' && <RegistrationWorkflowTab key={`reg-${refreshKey}`} onRefresh={handleRefresh} />}
+                {activeTab === 'trials-section' && <TrialsSectionTab key={`trials-${refreshKey}`} onRefresh={handleRefresh} />}
+                {activeTab === 'allocated' && <TrialsAllocatedTab key={`alloc-${refreshKey}`} onRefresh={handleRefresh} />}
+                {activeTab === 'levels' && <TrialLevelsTab key={`levels-${refreshKey}`} />}
+                {activeTab === 'import' && <ImportVerificationTab key={`import-${refreshKey}`} />}
             </div>
+
+            <Dialog open={reportOpen} onOpenChange={setReportOpen}>
+                <DialogContent className="admin-shell h-[90vh] w-[1200px] max-w-[95vw] overflow-y-auto rounded-[18px] border-[var(--admin-line)] bg-white">
+                    <DialogHeader>
+                        <DialogTitle className="admin-title !text-[length:var(--brand-fs-h3)]">Trials assessment &amp; reporting</DialogTitle>
+                    </DialogHeader>
+                    <div className="py-2">
+                        <TrialsReportViewer />
+                    </div>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };

@@ -1,20 +1,9 @@
 import { useState, useEffect } from 'react';
-import { 
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow, 
-} from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { 
-  Search, CheckCircle2, AlertCircle, RefreshCw, 
-  ArrowRight, FileSpreadsheet, Loader2, 
-} from 'lucide-react';
+import { RefreshCw, ArrowRight, FileSpreadsheet, CheckSquare } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import stagingData from '@/data/registration_import_staging.json';
+import { PageHeader, StatCard, ActionButton, DataTableShell, StatusBadge, ConfirmDialog } from '@/components/admin/ui';
 
 interface StagingRecord {
   full_name: string;
@@ -34,6 +23,7 @@ export const ImportVerificationTab = () => {
   const [selectedPhones, setSelectedPhones] = useState<Set<string>>(new Set());
   const [isChecking, setIsChecking] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   useEffect(() => {
     // Initialize records from staging JSON
@@ -52,14 +42,14 @@ export const ImportVerificationTab = () => {
 
       if (error) throw error;
 
-      const existingMap = new Map(existing.map(e => [e.phone, e]));
+      const existingMap = new Map((existing || []).map((e: any) => [e.phone, e]));
 
       const updatedRecords = records.map(r => {
         const dbRecord = existingMap.get(r.phone);
         if (!dbRecord) return { ...r, dbStatus: 'new' as const };
         
         // Check for conflicts (e.g. name mismatch)
-        const isConflict = dbRecord.full_name.toLowerCase() !== r.full_name.toLowerCase();
+        const isConflict = (dbRecord.full_name || '').toLowerCase() !== (r.full_name || '').toLowerCase();
         return { 
           ...r, 
           dbStatus: isConflict ? 'conflict' as const : 'duplicate' as const,
@@ -70,10 +60,19 @@ export const ImportVerificationTab = () => {
       setRecords(updatedRecords);
       toast.success('Database status check completed');
     } catch (err: any) {
-      toast.error(`Failed to check database status: ${  err.message}`);
+      toast.error(`Failed to check database status: ${err.message}`);
     } finally {
       setIsChecking(false);
     }
+  };
+
+  const requestSync = () => {
+    const n = records.filter(r => selectedPhones.has(r.phone) && r.dbStatus === 'new').length;
+    if (n === 0) {
+      toast.error('No new records selected for sync');
+      return;
+    }
+    setConfirmOpen(true);
   };
 
   const handleSync = async () => {
@@ -83,6 +82,7 @@ export const ImportVerificationTab = () => {
       return;
     }
 
+    setConfirmOpen(false);
     setIsSyncing(true);
     try {
       let successCount = 0;
@@ -123,16 +123,16 @@ export const ImportVerificationTab = () => {
       // Refresh status
       await checkStatus();
     } catch (err: any) {
-      toast.error(`Sync failed: ${  err.message}`);
+      toast.error(`Sync failed: ${err.message}`);
     } finally {
       setIsSyncing(false);
     }
   };
 
-  const filteredRecords = records.filter(r => 
-    r.full_name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    r.phone.includes(searchTerm) ||
-    r.import_batch.toLowerCase().includes(searchTerm.toLowerCase()),
+  const filteredRecords = records.filter(r =>
+    (r.full_name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (r.phone || '').includes(searchTerm) ||
+    (r.import_batch || '').toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const toggleSelect = (phone: string) => {
@@ -150,138 +150,107 @@ export const ImportVerificationTab = () => {
     setSelectedPhones(next);
   };
 
-  return (
-    <div className="space-y-4">
-      <Card className="border-none shadow-none bg-transparent">
-        <CardHeader className="px-0 pt-0">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <CardTitle className="text-xl font-bold flex items-center gap-2">
-                <FileSpreadsheet className="h-5 w-5 text-green-600" />
-                Import Verification Hall
-              </CardTitle>
-              <CardDescription>
-                Compare staging Excel data with current database before syncing.
-              </CardDescription>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button 
-                variant="outline" 
-                onClick={checkStatus} 
-                disabled={isChecking}
-                className="gap-2"
-              >
-                {isChecking ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-                Check DB Status
-              </Button>
-              <Button 
-                onClick={handleSync} 
-                disabled={isSyncing || selectedPhones.size === 0}
-                className="gap-2 bg-primary hover:bg-primary/90"
-              >
-                {isSyncing ? <Loader2 className="h-4 w-4 animate-spin" /> : <ArrowRight className="h-4 w-4" />}
-                Sync Selected ({selectedPhones.size})
-              </Button>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="px-0">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                placeholder="Search by name, phone, or batch..." 
-                className="pl-9"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <Button variant="ghost" size="sm" onClick={selectAllNew}>
-              Select All New
-            </Button>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Badge variant="outline" className="bg-green-500/10 text-green-700 border-green-200">New</Badge>
-              <Badge variant="outline" className="bg-amber-500/10 text-amber-700 border-amber-200">Duplicate</Badge>
-              <Badge variant="outline" className="bg-red-500/10 text-red-700 border-red-200">Conflict</Badge>
-            </div>
-          </div>
+  const countOf = (st: 'new' | 'duplicate' | 'conflict') => records.filter(r => r.dbStatus === st).length;
+  const newSelected = records.filter(r => selectedPhones.has(r.phone) && r.dbStatus === 'new').length;
 
-          <ScrollArea className="h-[600px] border rounded-lg bg-card">
-            <Table>
-              <TableHeader className="bg-muted/50 sticky top-0 z-10">
-                <TableRow>
-                  <TableHead className="w-10"></TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Player Name</TableHead>
-                  <TableHead>Phone</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Excel Status</TableHead>
-                  <TableHead>Batch File</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredRecords.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={7} className="h-32 text-center text-muted-foreground">
-                      No records found in staging. Run the extraction script first.
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredRecords.map((record) => (
-                    <TableRow key={record.phone} className={selectedPhones.has(record.phone) ? 'bg-primary/5' : ''}>
-                      <TableCell>
-                        <Checkbox 
-                          checked={selectedPhones.has(record.phone)}
-                          onCheckedChange={() => toggleSelect(record.phone)}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        {!record.dbStatus ? (
-                          <div className="w-2 h-2 rounded-full bg-slate-300 animate-pulse" />
-                        ) : record.dbStatus === 'new' ? (
-                          <Badge className="bg-green-500 hover:bg-green-600 gap-1">
-                            <CheckCircle2 className="h-3 w-3" /> New
-                          </Badge>
-                        ) : record.dbStatus === 'conflict' ? (
-                          <Badge variant="destructive" className="gap-1">
-                            <AlertCircle className="h-3 w-3" /> Conflict
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary" className="gap-1 text-amber-700 bg-amber-100 border-amber-200">
-                            Duplicate
-                          </Badge>
-                        )}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {record.full_name}
-                        {record.dbStatus === 'conflict' && (
-                          <div className="text-[10px] text-red-500 mt-0.5">DB: {record.existingData?.full_name}</div>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">{record.phone}</TableCell>
-                      <TableCell>{record.city}, {record.state}</TableCell>
-                      <TableCell>
-                        <div className="flex flex-col gap-1">
-                          <span className="text-[10px] uppercase font-bold text-muted-foreground">{record.payment_status}</span>
-                          <span className="text-[10px] uppercase font-bold text-muted-foreground">{record.status}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="max-w-[150px] truncate text-xs text-muted-foreground">
-                        {record.import_batch}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </ScrollArea>
-          
-          <div className="mt-4 flex items-center justify-between text-sm text-muted-foreground">
-            <div>Showing {filteredRecords.length} records in staging</div>
-            <div>{selectedPhones.size} selected for sync</div>
-          </div>
-        </CardContent>
-      </Card>
+  const dbBadge = (st?: 'new' | 'duplicate' | 'conflict') =>
+    !st ? <span className="admin-badge admin-badge--neutral">Not checked</span>
+      : st === 'new' ? <span className="admin-badge admin-badge--ok">New</span>
+      : st === 'conflict' ? <span className="admin-badge admin-badge--bad">Conflict</span>
+      : <span className="admin-badge admin-badge--warn">Duplicate</span>;
+
+  return (
+    <div className="space-y-6">
+      <PageHeader
+        eyebrow="Import"
+        title={<>Verification <em>hall</em></>}
+        description="Compare staging Excel data with the current database before syncing."
+      />
+
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <StatCard label="In staging" value={records.length} icon={FileSpreadsheet} tone="blue" />
+        <StatCard label="New" value={countOf('new')} icon={CheckSquare} tone="green" />
+        <StatCard label="Duplicate" value={countOf('duplicate')} icon={CheckSquare} tone="amber" />
+        <StatCard label="Conflict" value={countOf('conflict')} icon={CheckSquare} tone="amber" />
+      </div>
+
+      <DataTableShell
+        title="Staging records"
+        search={searchTerm}
+        onSearchChange={setSearchTerm}
+        searchPlaceholder="Search by name, phone or batch"
+        isEmpty={filteredRecords.length === 0}
+        emptyTitle="No records found in staging"
+        emptyDescription="Run the extraction script first, or adjust your search."
+        selectedCount={selectedPhones.size}
+        onClearSelection={() => setSelectedPhones(new Set())}
+        actions={
+          <>
+            <ActionButton variant="ghost" onClick={selectAllNew}>Select all new</ActionButton>
+            <ActionButton variant="outline" icon={RefreshCw} loading={isChecking} onClick={checkStatus}>Check DB status</ActionButton>
+            <ActionButton variant="primary" icon={ArrowRight} loading={isSyncing} disabled={selectedPhones.size === 0} onClick={requestSync}>
+              Sync selected ({selectedPhones.size})
+            </ActionButton>
+          </>
+        }
+      >
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th className="w-10"><span className="sr-only">Select</span></th>
+              <th>Status</th>
+              <th>Player name</th>
+              <th>Phone</th>
+              <th>Location</th>
+              <th>Excel status</th>
+              <th>Batch file</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredRecords.map((record) => (
+              <tr key={record.phone} data-selected={selectedPhones.has(record.phone)}>
+                <td>
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 accent-[var(--brand-blue)]"
+                    aria-label={`Select ${record.full_name}`}
+                    checked={selectedPhones.has(record.phone)}
+                    onChange={() => toggleSelect(record.phone)}
+                  />
+                </td>
+                <td>{dbBadge(record.dbStatus)}</td>
+                <td>
+                  <span className="font-semibold">{record.full_name}</span>
+                  {record.dbStatus === 'conflict' && (
+                    <div className="admin-muted !text-[var(--admin-bad)]">DB: {record.existingData?.full_name}</div>
+                  )}
+                </td>
+                <td className="whitespace-nowrap">{record.phone}</td>
+                <td>{record.city}, {record.state}</td>
+                <td>
+                  <div className="flex flex-wrap gap-1">
+                    <StatusBadge status={record.payment_status} />
+                    <StatusBadge status={record.status} />
+                  </div>
+                </td>
+                <td className="admin-muted max-w-[180px] truncate">{record.import_batch}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </DataTableShell>
+
+      <p className="admin-muted">Showing {filteredRecords.length} records in staging - {selectedPhones.size} selected for sync.</p>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        title="Sync selected players?"
+        description={`${newSelected} new player${newSelected === 1 ? '' : 's'} will be written to registrations and the trials workflow.`}
+        confirmLabel="Sync players"
+        loading={isSyncing}
+        onConfirm={handleSync}
+      />
     </div>
   );
 };

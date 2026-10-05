@@ -1,47 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/hooks/use-toast';
+import { useState, useEffect, useMemo } from 'react';
+import { toast } from 'sonner';
 import { adminService, AdminUser, AdminInvite } from '@/services/adminService';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Loader2, MoreHorizontal, Trash2, Mail } from 'lucide-react';
-import { LoadingSpinner } from '@/components/ui/enhanced-loading';
+import { Mail, Trash2, RefreshCw, Users, ShieldCheck, Clock, Pencil, Copy, ChevronLeft, ChevronRight, Send } from 'lucide-react';
+import { PageHeader, StatCard, StatusBadge, ActionButton, DataTableShell, DetailDrawer, ConfirmDialog } from '@/components/admin/ui';
 
 // Available permissions
 const AVAILABLE_PERMISSIONS = [
@@ -52,6 +13,39 @@ const AVAILABLE_PERMISSIONS = [
     { id: 'view_financials', label: 'View Financials' },
 ];
 
+const permLabel = (id: string) => AVAILABLE_PERMISSIONS.find(p => p.id === id)?.label || id;
+const fmtDate = (d?: string | null) => (d ? new Date(d).toLocaleDateString() : 'N/A');
+const copy = async (text: string, what: string) => {
+    try { await navigator.clipboard.writeText(text); toast.success(`${what} copied`); } catch { toast.error('Could not copy'); }
+};
+
+const PermissionPicker = ({ idPrefix, value, onChange }: { idPrefix: string; value: string[]; onChange: (v: string[]) => void }) => (
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {AVAILABLE_PERMISSIONS.map((perm) => {
+            const on = value.includes(perm.id);
+            return (
+                <label key={perm.id} htmlFor={`${idPrefix}-${perm.id}`} className={`flex cursor-pointer items-center gap-3 rounded-2xl border px-4 py-3 transition-colors ${on ? 'border-[var(--admin-accent)] bg-[var(--admin-accent-soft)]' : 'border-[var(--admin-line)] bg-white hover:border-[var(--admin-accent)]'}`}>
+                    <input
+                        id={`${idPrefix}-${perm.id}`}
+                        type="checkbox"
+                        checked={on}
+                        onChange={() => onChange(on ? value.filter(p => p !== perm.id) : [...value, perm.id])}
+                        className="h-4 w-4 accent-[var(--brand-blue)]"
+                    />
+                    <span className="font-semibold text-[var(--admin-ink)]">{perm.label}</span>
+                </label>
+            );
+        })}
+    </div>
+);
+
+const RoleSelect = ({ id, value, onChange }: { id: string; value: string; onChange: (v: string) => void }) => (
+    <select id={id} value={value} onChange={(e) => onChange(e.target.value)} className="admin-field">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+    </select>
+);
+
 const UserManagement = () => {
     const [users, setUsers] = useState<AdminUser[]>([]);
     const [invites, setInvites] = useState<AdminInvite[]>([]);
@@ -59,34 +53,40 @@ const UserManagement = () => {
     const [invitesLoading, setInvitesLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const { toast } = useToast();
+    const [totalUsers, setTotalUsers] = useState(0);
     const PAGE_SIZE = 10;
 
-    // Invite Modal State
+    const [view, setView] = useState<'users' | 'invites'>('users');
+    const [search, setSearch] = useState('');
+    const [roleFilter, setRoleFilter] = useState('all');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Invite drawer
     const [isInviteOpen, setIsInviteOpen] = useState(false);
     const [inviteEmail, setInviteEmail] = useState('');
     const [inviteRole, setInviteRole] = useState('user');
     const [invitePermissions, setInvitePermissions] = useState<string[]>([]);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [confirmInvite, setConfirmInvite] = useState(false);
 
-    // Edit Modal State
+    // Edit drawer
     const [editingUser, setEditingUser] = useState<AdminUser | null>(null);
     const [editRole, setEditRole] = useState('user');
     const [editPermissions, setEditPermissions] = useState<string[]>([]);
+    const [confirmEdit, setConfirmEdit] = useState(false);
+
+    // Revoke invite
+    const [revoking, setRevoking] = useState<AdminInvite | null>(null);
 
     const loadUsers = async () => {
         try {
             setLoading(true);
             const { data, count } = await adminService.getUsers(page, PAGE_SIZE);
             setUsers(data);
-            setTotalPages(Math.ceil(count / PAGE_SIZE));
+            setTotalUsers(count);
+            setTotalPages(Math.max(1, Math.ceil(count / PAGE_SIZE)));
         } catch (error) {
             console.error('Failed to load users', error);
-            toast({
-                title: 'Error',
-                description: 'Failed to load users list',
-                variant: 'destructive',
-            });
+            toast.error('Failed to load users list');
         } finally {
             setLoading(false);
         }
@@ -95,8 +95,7 @@ const UserManagement = () => {
     const loadInvites = async () => {
         try {
             setInvitesLoading(true);
-            const data = await adminService.getInvites();
-            setInvites(data);
+            setInvites(await adminService.getInvites());
         } catch (error) {
             console.error('Failed to load invites', error);
         } finally {
@@ -107,406 +106,327 @@ const UserManagement = () => {
     useEffect(() => {
         loadUsers();
         loadInvites();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page]);
 
     const handleInviteUser = async () => {
-        if (!inviteEmail) {
-            toast({ title: 'Error', description: 'Email is required', variant: 'destructive' });
-            return;
-        }
-
         try {
             setIsSubmitting(true);
             await adminService.inviteUser(inviteEmail, inviteRole, invitePermissions);
-            toast({ title: 'Success', description: `Invitation sent to ${inviteEmail}` });
+            toast.success(`Invitation sent to ${inviteEmail}`);
+            setConfirmInvite(false);
             setIsInviteOpen(false);
             setInviteEmail('');
             setInvitePermissions([]);
             loadInvites();
         } catch (error) {
-            toast({ title: 'Error', description: 'Failed to create invite', variant: 'destructive' });
+            toast.error('Failed to create invite');
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    const handleDeleteInvite = async (email: string) => {
+    const startInvite = () => {
+        if (!inviteEmail.trim()) { toast.error('Email is required'); return; }
+        setConfirmInvite(true);
+    };
+
+    const handleDeleteInvite = async () => {
+        if (!revoking) return;
         try {
-            await adminService.deleteInvite(email);
-            toast({ title: 'Success', description: 'Invite revoked' });
+            setIsSubmitting(true);
+            await adminService.deleteInvite(revoking.email);
+            toast.success('Invite revoked');
+            setRevoking(null);
             loadInvites();
         } catch (error) {
-            toast({ title: 'Error', description: 'Failed to delete invite', variant: 'destructive' });
+            toast.error('Failed to delete invite');
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     const handleUpdateUser = async () => {
         if (!editingUser) return;
-
         try {
             setIsSubmitting(true);
             await adminService.updateUserRole(editingUser.id, editRole, editPermissions);
-            toast({ title: 'Success', description: 'User updated successfully' });
+            toast.success('User updated successfully');
+            setConfirmEdit(false);
             setEditingUser(null);
             loadUsers();
         } catch (error) {
-            toast({ title: 'Error', description: 'Failed to update user', variant: 'destructive' });
+            toast.error('Failed to update user');
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    const openEditModal = (user: AdminUser) => {
+    const openEdit = (user: AdminUser) => {
         setEditingUser(user);
         setEditRole(user.role);
         setEditPermissions(user.permissions || []);
     };
 
-    // Helper to toggle permission in array
-    const togglePermission = (permId: string, currentList: string[], setter: (val: string[]) => void) => {
-        if (currentList.includes(permId)) {
-            setter(currentList.filter(p => p !== permId));
-        } else {
-            setter([...currentList, permId]);
-        }
-    };
+    const adminsOnPage = users.filter(u => u.role === 'admin').length;
+
+    const filteredUsers = useMemo(() => {
+        const q = search.toLowerCase();
+        return users.filter(u => {
+            if (roleFilter !== 'all' && u.role !== roleFilter) return false;
+            if (!q) return true;
+            return [u.full_name, u.email, u.id].some(v => v?.toLowerCase().includes(q));
+        });
+    }, [users, search, roleFilter]);
+
+    const filteredInvites = useMemo(() => {
+        const q = search.toLowerCase();
+        return invites.filter(i => !q || i.email.toLowerCase().includes(q));
+    }, [invites, search]);
+
+    const roleChanged = editingUser && editRole !== editingUser.role;
+
+    const pager = (
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--admin-line)] px-5 py-3">
+            <p className="admin-muted">Page {page} of {totalPages}</p>
+            <div className="flex items-center gap-2">
+                <ActionButton variant="outline" size="sm" icon={ChevronLeft} aria-label="Previous page" onClick={() => setPage(page - 1)} disabled={page <= 1 || loading} />
+                <ActionButton variant="outline" size="sm" icon={ChevronRight} aria-label="Next page" onClick={() => setPage(page + 1)} disabled={page >= totalPages || loading} />
+            </div>
+        </div>
+    );
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-slate-900">User Management</h1>
-                    <p className="text-muted-foreground mt-1">Manage system users, invites, and access controls.</p>
-                </div>
-                <div className="flex gap-2">
-                    <Dialog open={isInviteOpen} onOpenChange={setIsInviteOpen}>
-                        <DialogTrigger asChild>
-                            <Button>
-                                <Mail className="mr-2 h-4 w-4" />
-                                Invite User
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[500px]">
-                            <DialogHeader>
-                                <DialogTitle>Invite New User</DialogTitle>
-                                <DialogDescription>
-                                    Send an invitation to a new user. They will inherit these permissions upon signing up.
-                                </DialogDescription>
-                            </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="email" className="text-right">Email</Label>
-                                    <Input
-                                        id="email"
-                                        value={inviteEmail}
-                                        onChange={(e) => setInviteEmail(e.target.value)}
-                                        className="col-span-3"
-                                    />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="role" className="text-right">Role</Label>
-                                    <Select value={inviteRole} onValueChange={setInviteRole}>
-                                        <SelectTrigger className="col-span-3">
-                                            <SelectValue placeholder="Select role" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="user">User</SelectItem>
-                                            <SelectItem value="admin">Admin</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="space-y-3 pt-2">
-                                    <Label>Permissions</Label>
-                                    <div className="grid grid-cols-2 gap-2">
-                                        {AVAILABLE_PERMISSIONS.map((perm) => (
-                                            <div key={perm.id} className="flex items-center space-x-2">
-                                                <Checkbox
-                                                    id={`invite-${perm.id}`}
-                                                    checked={invitePermissions.includes(perm.id)}
-                                                    onCheckedChange={() => togglePermission(perm.id, invitePermissions, setInvitePermissions)}
-                                                />
-                                                <label
-                                                    htmlFor={`invite-${perm.id}`}
-                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                >
-                                                    {perm.label}
-                                                </label>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                            <DialogFooter>
-                                <Button variant="outline" onClick={() => setIsInviteOpen(false)}>Cancel</Button>
-                                <Button onClick={handleInviteUser} disabled={isSubmitting}>
-                                    {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                                    Send Invite
-                                </Button>
-                            </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
-                    <Button onClick={() => { loadUsers(); loadInvites(); }} variant="outline" size="sm">
-                        Refresh
-                    </Button>
-                </div>
+            <PageHeader
+                eyebrow="Access"
+                title={<>User <em>management</em></>}
+                description="Manage system users, invites, and access controls."
+                actions={
+                    <>
+                        <ActionButton variant="outline" icon={RefreshCw} onClick={() => { loadUsers(); loadInvites(); }} disabled={loading}>Refresh</ActionButton>
+                        <ActionButton variant="primary" icon={Mail} onClick={() => setIsInviteOpen(true)}>Invite user</ActionButton>
+                    </>
+                }
+            />
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <StatCard label="Registered users" value={totalUsers.toLocaleString('en-IN')} hint="Across all pages" icon={Users} loading={loading} />
+                <StatCard label="Admins on this page" value={adminsOnPage} hint="Full access" icon={ShieldCheck} tone="green" loading={loading} />
+                <StatCard label="Pending invites" value={invites.length} hint="Awaiting sign-up" icon={Clock} tone="amber" loading={invitesLoading} />
             </div>
 
-            <Tabs defaultValue="users" className="w-full">
-                <TabsList>
-                    <TabsTrigger value="users">Active Users</TabsTrigger>
-                    <TabsTrigger value="invites">Pending Invites</TabsTrigger>
-                </TabsList>
+            {view === 'users' ? (
+                <DataTableShell
+                    title="Registered users"
+                    search={search}
+                    onSearchChange={setSearch}
+                    searchPlaceholder="Search name, email, ID"
+                    filters={[
+                        { value: 'all', label: 'All roles', count: users.length },
+                        { value: 'admin', label: 'Admin', count: adminsOnPage },
+                        { value: 'user', label: 'User', count: users.length - adminsOnPage },
+                    ]}
+                    activeFilter={roleFilter}
+                    onFilterChange={setRoleFilter}
+                    actions={<ViewSwitch view={view} onChange={setView} inviteCount={invites.length} />}
+                    loading={loading}
+                    isEmpty={filteredUsers.length === 0}
+                    emptyTitle="No users found"
+                    emptyDescription="Try a different search or role filter."
+                >
+                    <table className="admin-table">
+                        <thead>
+                            <tr>
+                                <th>User ID</th><th>Name</th><th>Role</th><th>Permissions</th><th>Joined</th>
+                                <th className="text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredUsers.map((user) => (
+                                <tr key={user.id}>
+                                    <td>
+                                        <button type="button" title="Copy user ID" onClick={() => copy(user.id, 'User ID')} className="inline-flex items-center gap-1.5 font-mono text-[var(--admin-ink-soft)] hover:text-[var(--admin-accent)]">
+                                            {user.id.substring(0, 8)}…<Copy className="h-3.5 w-3.5" />
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <div className="flex items-center gap-3">
+                                            <span className="admin-avatar">{(user.full_name || user.email || '?').slice(0, 1).toUpperCase()}</span>
+                                            <span className="min-w-0">
+                                                <span className="block font-semibold text-[var(--admin-ink)]">{user.full_name}</span>
+                                                <span className="admin-muted">{user.email}</span>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>{user.role === 'admin' ? <span className="admin-badge admin-badge--bad">Admin</span> : <StatusBadge status="neutral" label={user.role} />}</td>
+                                    <td>
+                                        <div className="flex max-w-[320px] flex-wrap gap-1.5">
+                                            {user.role === 'admin' ? (
+                                                <span className="admin-badge admin-badge--info before:hidden">All permissions</span>
+                                            ) : user.permissions && user.permissions.length > 0 ? (
+                                                user.permissions.map(p => <span key={p} className="admin-badge admin-badge--neutral before:hidden">{permLabel(p)}</span>)
+                                            ) : <span className="admin-muted">-</span>}
+                                        </div>
+                                    </td>
+                                    <td className="admin-muted whitespace-nowrap">{fmtDate(user.created_at)}</td>
+                                    <td className="text-right">
+                                        <ActionButton variant="soft" size="sm" icon={Pencil} onClick={() => openEdit(user)}>Edit access</ActionButton>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    {pager}
+                </DataTableShell>
+            ) : (
+                <DataTableShell
+                    title="Pending invitations"
+                    description="These users are assigned their roles automatically when they register."
+                    search={search}
+                    onSearchChange={setSearch}
+                    searchPlaceholder="Search invite email"
+                    actions={<ViewSwitch view={view} onChange={setView} inviteCount={invites.length} />}
+                    loading={invitesLoading}
+                    isEmpty={filteredInvites.length === 0}
+                    emptyTitle="No pending invites"
+                    emptyDescription="Invite a teammate to give them access."
+                >
+                    <table className="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Email</th><th>Assigned role</th><th>Permissions</th><th>Invited on</th>
+                                <th className="text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredInvites.map((invite) => (
+                                <tr key={invite.email}>
+                                    <td className="font-semibold text-[var(--admin-ink)]">{invite.email}</td>
+                                    <td><StatusBadge status="pending" label={invite.role} /></td>
+                                    <td>
+                                        <div className="flex max-w-[320px] flex-wrap gap-1.5">
+                                            {invite.permissions?.length ? invite.permissions.map(p => (
+                                                <span key={p} className="admin-badge admin-badge--neutral before:hidden">{permLabel(p)}</span>
+                                            )) : <span className="admin-muted">-</span>}
+                                        </div>
+                                    </td>
+                                    <td className="admin-muted whitespace-nowrap">{fmtDate(invite.created_at)}</td>
+                                    <td className="text-right">
+                                        <ActionButton variant="ghost" size="sm" icon={Trash2} className="!text-[var(--admin-bad)]" onClick={() => setRevoking(invite)}>Revoke</ActionButton>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </DataTableShell>
+            )}
 
-                <TabsContent value="users" className="space-y-4">
-                    <Card className="border-none shadow-md">
-                        <CardHeader className="bg-slate-50/50 border-b border-gray-100">
-                            <CardTitle>Registered Users</CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-0">
-                            {loading ? (
-                                <div className="p-12 flex justify-center">
-                                    <LoadingSpinner text="Loading users..." />
-                                </div>
-                            ) : (
-                                <div className="relative w-full overflow-auto">
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead>User ID</TableHead>
-                                                <TableHead>Name</TableHead>
-                                                <TableHead>Role</TableHead>
-                                                <TableHead>Permissions</TableHead>
-                                                <TableHead>Joined</TableHead>
-                                                <TableHead className="text-right">Actions</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {users.length === 0 ? (
-                                                <TableRow>
-                                                    <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
-                                                        No users found.
-                                                    </TableCell>
-                                                </TableRow>
-                                            ) : (
-                                                users.map((user) => (
-                                                    <TableRow key={user.id} className="hover:bg-slate-50/50">
-                                                        <TableCell className="font-mono text-xs text-muted-foreground">
-                                                            {user.id.substring(0, 8)}...
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <div className="flex flex-col">
-                                                                <span className="font-medium text-slate-900">{user.full_name}</span>
-                                                                <span className="text-xs text-muted-foreground">{user.email}</span>
-                                                            </div>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <Badge
-                                                                variant={user.role === 'admin' ? 'destructive' : 'secondary'}
-                                                                className="bg-opacity-10 text-opacity-100"
-                                                            >
-                                                                {user.role}
-                                                            </Badge>
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            <div className="flex flex-wrap gap-1">
-                                                                {user.role === 'admin' ? (
-                                                                    <Badge variant="outline" className="text-xs">All Permissions</Badge>
-                                                                ) : user.permissions && user.permissions.length > 0 ? (
-                                                                    user.permissions.map(p => (
-                                                                        <Badge key={p} variant="outline" className="text-[10px] px-1 py-0 h-5">
-                                                                            {AVAILABLE_PERMISSIONS.find(ap => ap.id === p)?.label || p}
-                                                                        </Badge>
-                                                                    ))
-                                                                ) : (
-                                                                    <span className="text-xs text-muted-foreground">-</span>
-                                                                )}
-                                                            </div>
-                                                        </TableCell>
-                                                        <TableCell className="text-muted-foreground text-sm">
-                                                            {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
-                                                        </TableCell>
-                                                        <TableCell className="text-right">
-                                                            <DropdownMenu>
-                                                                <DropdownMenuTrigger asChild>
-                                                                    <Button variant="ghost" className="h-8 w-8 p-0">
-                                                                        <span className="sr-only">Open menu</span>
-                                                                        <MoreHorizontal className="h-4 w-4" />
-                                                                    </Button>
-                                                                </DropdownMenuTrigger>
-                                                                <DropdownMenuContent align="end">
-                                                                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                                    <DropdownMenuItem
-                                                                        onClick={() => navigator.clipboard.writeText(user.id)}
-                                                                    >
-                                                                        Copy User ID
-                                                                    </DropdownMenuItem>
-                                                                    <DropdownMenuSeparator />
-                                                                    <DropdownMenuItem onClick={() => openEditModal(user)}>
-                                                                        Edit Role & Permissions
-                                                                    </DropdownMenuItem>
-                                                                </DropdownMenuContent>
-                                                            </DropdownMenu>
-                                                        </TableCell>
-                                                    </TableRow>
-                                                ))
-                                            )}
-                                        </TableBody>
-                                    </Table>
-                                </div>
-                            )}
-                        </CardContent>
-                    </Card>
-
-                    {/* Pagination Controls */}
-                    <div className="flex items-center justify-end space-x-2 py-4">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setPage(page - 1)}
-                            disabled={page <= 1 || loading}
-                        >
-                            Previous
-                        </Button>
-                        <span className="text-sm text-muted-foreground">
-                            Page {page} of {totalPages}
-                        </span>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setPage(page + 1)}
-                            disabled={page >= totalPages || loading}
-                        >
-                            Next
-                        </Button>
+            {/* Invite drawer */}
+            <DetailDrawer
+                open={isInviteOpen}
+                onOpenChange={setIsInviteOpen}
+                eyebrow="New access"
+                title="Invite new user"
+                description="They inherit these permissions when they sign up."
+                footer={
+                    <>
+                        <ActionButton variant="ghost" onClick={() => setIsInviteOpen(false)}>Cancel</ActionButton>
+                        <ActionButton variant="primary" icon={Send} onClick={startInvite}>Send invite</ActionButton>
+                    </>
+                }
+            >
+                <div className="space-y-6">
+                    <div>
+                        <label htmlFor="invite-email" className="admin-label">Email</label>
+                        <input id="invite-email" type="email" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} placeholder="name@example.com" className="admin-field" />
                     </div>
-                </TabsContent>
+                    <div>
+                        <label htmlFor="invite-role" className="admin-label">Role</label>
+                        <RoleSelect id="invite-role" value={inviteRole} onChange={setInviteRole} />
+                    </div>
+                    <div>
+                        <p className="admin-label">Permissions</p>
+                        <PermissionPicker idPrefix="invite" value={invitePermissions} onChange={setInvitePermissions} />
+                    </div>
+                </div>
+            </DetailDrawer>
 
-                <TabsContent value="invites">
-                    <Card className="border-none shadow-md">
-                        <CardHeader className="bg-slate-50/50 border-b border-gray-100">
-                            <CardTitle>Pending Invitations</CardTitle>
-                            <CardDescription>
-                                These users will be automatically assigned their roles upon registration.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="p-0">
-                            {invitesLoading ? (
-                                <div className="p-12 flex justify-center">
-                                    <LoadingSpinner text="Loading invites..." />
-                                </div>
-                            ) : (
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHead>Email</TableHead>
-                                            <TableHead>Assigned Role</TableHead>
-                                            <TableHead>Permissions</TableHead>
-                                            <TableHead>Invited On</TableHead>
-                                            <TableHead className="text-right">Actions</TableHead>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        {invites.length === 0 ? (
-                                            <TableRow>
-                                                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
-                                                    No pending invites.
-                                                </TableCell>
-                                            </TableRow>
-                                        ) : (
-                                            invites.map((invite) => (
-                                                <TableRow key={invite.email}>
-                                                    <TableCell className="font-medium">{invite.email}</TableCell>
-                                                    <TableCell>
-                                                        <Badge variant="secondary">{invite.role}</Badge>
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        <div className="flex flex-wrap gap-1">
-                                                            {invite.permissions?.map(p => (
-                                                                <Badge key={p} variant="outline" className="text-[10px]">
-                                                                    {AVAILABLE_PERMISSIONS.find(ap => ap.id === p)?.label || p}
-                                                                </Badge>
-                                                            ))}
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell className="text-muted-foreground">
-                                                        {new Date(invite.created_at).toLocaleDateString()}
-                                                    </TableCell>
-                                                    <TableCell className="text-right">
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="sm"
-                                                            className="text-red-500 hover:text-red-700 hover:bg-red-50"
-                                                            onClick={() => handleDeleteInvite(invite.email)}
-                                                        >
-                                                            <Trash2 className="h-4 w-4" />
-                                                        </Button>
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))
-                                        )}
-                                    </TableBody>
-                                </Table>
-                            )}
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-            </Tabs>
-
-            {/* Edit User Modal */}
-            <Dialog open={Boolean(editingUser)} onOpenChange={(open) => !open && setEditingUser(null)}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Edit User Access</DialogTitle>
-                        <DialogDescription>
-                            Update role and permissions for {editingUser?.full_name || 'user'}.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="edit-role" className="text-right">Role</Label>
-                            <Select value={editRole} onValueChange={setEditRole}>
-                                <SelectTrigger className="col-span-3">
-                                    <SelectValue placeholder="Select role" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="user">User</SelectItem>
-                                    <SelectItem value="admin">Admin</SelectItem>
-                                </SelectContent>
-                            </Select>
+            {/* Edit drawer */}
+            <DetailDrawer
+                open={!!editingUser}
+                onOpenChange={(o) => { if (!o) setEditingUser(null); }}
+                eyebrow="Edit access"
+                title={editingUser?.full_name || 'User'}
+                description={editingUser?.email}
+                footer={
+                    <>
+                        <ActionButton variant="ghost" onClick={() => setEditingUser(null)}>Cancel</ActionButton>
+                        <ActionButton variant="primary" onClick={() => setConfirmEdit(true)}>Save changes</ActionButton>
+                    </>
+                }
+            >
+                {editingUser && (
+                    <div className="space-y-6">
+                        <dl className="admin-kv">
+                            <dt>User ID</dt>
+                            <dd><button type="button" onClick={() => copy(editingUser.id, 'User ID')} className="inline-flex items-center gap-1.5 text-left font-mono hover:text-[var(--admin-accent)]">{editingUser.id}<Copy className="h-3.5 w-3.5 shrink-0" /></button></dd>
+                            <dt>Joined</dt><dd>{fmtDate(editingUser.created_at)}</dd>
+                        </dl>
+                        <div>
+                            <label htmlFor="edit-role" className="admin-label">Role</label>
+                            <RoleSelect id="edit-role" value={editRole} onChange={setEditRole} />
                         </div>
-                        <div className="space-y-3 pt-2">
-                            <Label>Permissions</Label>
-                            <div className="grid grid-cols-2 gap-2">
-                                {AVAILABLE_PERMISSIONS.map((perm) => (
-                                    <div key={perm.id} className="flex items-center space-x-2">
-                                        <Checkbox
-                                            id={`edit-${perm.id}`}
-                                            checked={editPermissions.includes(perm.id)}
-                                            onCheckedChange={() => togglePermission(perm.id, editPermissions, setEditPermissions)}
-                                        />
-                                        <label
-                                            htmlFor={`edit-${perm.id}`}
-                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                        >
-                                            {perm.label}
-                                        </label>
-                                    </div>
-                                ))}
-                            </div>
+                        <div>
+                            <p className="admin-label">Permissions</p>
+                            <PermissionPicker idPrefix="edit" value={editPermissions} onChange={setEditPermissions} />
                         </div>
                     </div>
-                    <DialogFooter>
-                        <Button variant="outline" onClick={() => setEditingUser(null)}>Cancel</Button>
-                        <Button onClick={handleUpdateUser} disabled={isSubmitting}>
-                            {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                            Save Changes
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+                )}
+            </DetailDrawer>
+
+            <ConfirmDialog
+                open={confirmInvite}
+                onOpenChange={(o) => { if (!isSubmitting) setConfirmInvite(o); }}
+                title="Send invitation?"
+                description={`${inviteEmail} will be invited as ${inviteRole} with ${invitePermissions.length} permission${invitePermissions.length === 1 ? '' : 's'}.`}
+                confirmLabel="Send invite"
+                loading={isSubmitting}
+                onConfirm={handleInviteUser}
+            />
+
+            <ConfirmDialog
+                open={confirmEdit}
+                onOpenChange={(o) => { if (!isSubmitting) setConfirmEdit(o); }}
+                title={roleChanged ? 'Change role and access?' : 'Update permissions?'}
+                description={editingUser ? (roleChanged
+                    ? `${editingUser.full_name || editingUser.email} will change from ${editingUser.role} to ${editRole}.`
+                    : `Permissions for ${editingUser.full_name || editingUser.email} will be updated.`) : undefined}
+                confirmLabel="Save changes"
+                tone={roleChanged && editRole === 'admin' ? 'danger' : 'default'}
+                loading={isSubmitting}
+                onConfirm={handleUpdateUser}
+            />
+
+            <ConfirmDialog
+                open={!!revoking}
+                onOpenChange={(o) => { if (!o && !isSubmitting) setRevoking(null); }}
+                title="Revoke invitation?"
+                description={revoking ? `${revoking.email} will no longer be able to claim this invite.` : undefined}
+                confirmLabel="Revoke"
+                tone="danger"
+                loading={isSubmitting}
+                onConfirm={handleDeleteInvite}
+            />
         </div>
     );
 };
 
-export default UserManagement;
+const ViewSwitch = ({ view, onChange, inviteCount }: { view: 'users' | 'invites'; onChange: (v: 'users' | 'invites') => void; inviteCount: number }) => (
+    <div className="flex gap-2" role="tablist">
+        <button type="button" role="tab" className="admin-chip" data-active={view === 'users'} onClick={() => onChange('users')}>Active users</button>
+        <button type="button" role="tab" className="admin-chip" data-active={view === 'invites'} onClick={() => onChange('invites')}>Pending invites<span className="opacity-70">{inviteCount}</span></button>
+    </div>
+);
 
+export default UserManagement;
