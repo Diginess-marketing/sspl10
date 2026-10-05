@@ -338,28 +338,15 @@ export function usePlayerWorkflow() {
   // Move players to trials section
   const moveToTrialsSection = useCallback(async (
     registrationIds: string[],
-    adminId?: string,
+    _adminId?: string,
   ): Promise<BulkOperationResult[]> => {
     try {
       setLoading(true);
       setError(null);
 
-      const { data, error: rpcError } = await supabase.rpc('move_to_trials_section', {
-        p_registration_ids: registrationIds,
-        p_admin_id: adminId,
-      });
-
-      if (rpcError) {
-        console.error('Error moving to trials section:', rpcError);
-        setError(rpcError.message);
-        return registrationIds.map(id => ({
-          registration_id: id,
-          success: false,
-          message: rpcError.message,
-        }));
-      }
-
-      return data || [];
+      // Through the backend: the move_to_trials_section database function fails on the live
+      // database (it writes a column player_workflow does not have). The admin is the signed-in user.
+      return await adminApi.post<BulkOperationResult[]>('/admin/workflow/move-to-trials', { registrationIds });
     } catch (err: any) {
       console.error('Exception moving to trials section:', err);
       setError(err.message);
@@ -498,41 +485,18 @@ export function usePlayerWorkflow() {
   // Send confirmation email manually
   const sendConfirmationEmail = useCallback(async (
     registrationId: string,
-    playerName: string,
-    email: string,
-    amount: number,
-    paymentId: string,
+    _playerName: string,
+    _email: string,
+    _amount: number,
+    _paymentId: string,
   ): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
 
-      const { error: emailError } = await supabase.functions.invoke('send-confirmation-mail', {
-        body: {
-          email,
-          playerName,
-          amount,
-          paymentId,
-          registrationId,
-        },
-      });
-
-      if (emailError) {
-        console.error('Error sending confirmation email:', emailError);
-        setError(emailError.message);
-        return false;
-      }
-
-      // Update workflow to mark email as sent
-      // Using update with eq check instead of upsert to avoid type issues with missing required fields
-      await supabase
-        .from('player_workflow')
-        .update({
-          confirmation_email_sent: true,
-          confirmation_email_sent_at: new Date().toISOString(),
-        })
-        .eq('registration_id', registrationId);
-
+      // Sent by the backend (Microsoft 365), which reads the player from the database and marks
+      // the workflow as emailed. The send-confirmation-mail Edge Function is not deployed (404).
+      await adminApi.post('/admin/workflow/confirmation-email', { registrationId });
       return true;
     } catch (err: any) {
       console.error('Exception sending confirmation email:', err);

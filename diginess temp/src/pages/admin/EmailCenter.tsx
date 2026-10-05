@@ -32,6 +32,7 @@ const AUDIENCES = [
 ];
 
 const templateKey = (level: number, outcome: string) => `trial_l${level}_${outcome}`;
+const CONFIRMATION_KEY = 'registration_confirmation';
 const toDraft = (t: EmailTemplate): Draft => ({
   subject: t.subject, body_html: t.body_html, enabled: t.enabled, attach_certificate: t.attach_certificate,
 });
@@ -85,6 +86,7 @@ const LevelEmails = ({ placeholders, templates, onSaved, loadError }: {
 
   const dirty = Boolean(selected && draft && !sameDraft(toDraft(selected), draft));
   const isAbsent = selectedKey.endsWith('_absent');
+  const isConfirmation = selectedKey === CONFIRMATION_KEY;
 
   const choose = (key: string) => {
     if (key === selectedKey) return;
@@ -148,6 +150,19 @@ const LevelEmails = ({ placeholders, templates, onSaved, loadError }: {
   return (
     <div className="grid gap-4 lg:grid-cols-[280px_minmax(0,1fr)]">
       <nav className="admin-card p-3 space-y-3 self-start" aria-label="Level email templates">
+        <div>
+          <p className="admin-eyebrow px-2 pb-1">Registration</p>
+          <button
+            type="button"
+            onClick={() => choose(CONFIRMATION_KEY)}
+            aria-current={selectedKey === CONFIRMATION_KEY ? 'true' : undefined}
+            className={`flex w-full items-center justify-between gap-2 rounded-xl px-3 py-2 text-left text-sm transition-colors ${
+              selectedKey === CONFIRMATION_KEY ? 'bg-[var(--brand-navy)] text-white' : 'hover:bg-[var(--brand-sky-2)]'
+            }`}
+          >
+            <span style={selectedKey === CONFIRMATION_KEY ? { color: '#fff' } : undefined}>Payment confirmation</span>
+          </button>
+        </div>
         {LEVELS.map((level) => (
           <div key={level}>
             <p className="admin-eyebrow px-2 pb-1">Level {level}</p>
@@ -182,7 +197,9 @@ const LevelEmails = ({ placeholders, templates, onSaved, loadError }: {
             <div>
               <h2 className="admin-h text-lg">{selected.name}</h2>
               <p className="admin-muted text-sm">
-                Sent automatically when a player is marked {selected.key.replace(/^trial_l\d_/, '').replace('_', ' ')} at this level.
+                {isConfirmation
+                  ? 'Sent automatically when a player\'s registration payment succeeds, and by "Send email" in Trials → Registrations.'
+                  : `Sent automatically when a player is marked ${selected.key.replace(/^trial_l\d_/, '').replace('_', ' ')} at this level.`}
                 {dirty && <strong className="ml-2 text-[var(--admin-ink)]">Unsaved changes</strong>}
               </p>
             </div>
@@ -198,7 +215,7 @@ const LevelEmails = ({ placeholders, templates, onSaved, loadError }: {
               <input type="checkbox" className="h-4 w-4 accent-[var(--brand-blue)]" checked={draft.enabled} onChange={(e) => setDraft({ ...draft, enabled: e.target.checked })} />
               <Power className="h-4 w-4" aria-hidden="true" /> Send automatically
             </label>
-            {!isAbsent && (
+            {!isAbsent && !isConfirmation && (
               <label className="flex items-center gap-2 text-sm">
                 <input type="checkbox" className="h-4 w-4 accent-[var(--brand-blue)]" checked={draft.attach_certificate} onChange={(e) => setDraft({ ...draft, attach_certificate: e.target.checked })} />
                 <Paperclip className="h-4 w-4" aria-hidden="true" /> Attach {selectedKey.includes('not_selected') ? 'participation' : 'achievement'} certificate (PDF)

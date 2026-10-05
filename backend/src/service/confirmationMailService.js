@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import { sendRegistrationConfirmation } from './registrationEmailService.js';
 import env from '../config/env.js';
 import * as emailLogModel from '../model/emailLogModel.js';
 import * as registrationModel from '../model/registrationModel.js';
@@ -41,24 +41,10 @@ async function sendOne(registration, payment) {
       return;
     }
 
-    const res = await fetch(`${env.supabase.url}/functions/v1/send-confirmation-mail`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${env.supabase.key}`,
-        apikey: env.supabase.key,
-      },
-      body: JSON.stringify({
-        email: registration.email,
-        playerName: registration.full_name || registration.email.split('@')[0],
-        amount,
-        paymentId: payment.paymentId,
-        registrationId: id,
-      }),
-    });
-    if (!res.ok) {
-      const body = await res.text().catch(() => '');
-      logger.warn(`Confirmation email for ${id} failed (${res.status}): ${body.slice(0, 200)}`);
+    // Sent by the backend (Microsoft 365); the send-confirmation-mail Edge Function is not deployed
+    const result = await sendRegistrationConfirmation(registration, { amount, paymentId: payment.paymentId });
+    if (!result.success) {
+      logger.warn(`Confirmation email for ${id} not sent: ${result.error}`);
     } else {
       logger.info(`Confirmation email sent for registration ${id}`);
     }
