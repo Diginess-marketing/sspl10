@@ -57,3 +57,32 @@ export function parseLogQuery(query = {}) {
   );
   return { page, limit, type: query.type };
 }
+
+const TEMPLATE_KEY = /^[a-z0-9_]{3,64}$/;
+const MAX_HTML_LENGTH = 200_000;
+
+/** Validate a template save. */
+export function validateTemplate(key, body = {}) {
+  if (!TEMPLATE_KEY.test(key || '')) throw ApiError.badRequest('Template key must be 3-64 lowercase letters, digits or _');
+  const { name, subject, body_html: bodyHtml, enabled, attach_certificate: attachCertificate } = body;
+  if (!subject?.trim()) throw ApiError.badRequest('Subject is required');
+  if (!bodyHtml?.trim()) throw ApiError.badRequest('Email body is required');
+  if (bodyHtml.length > MAX_HTML_LENGTH) throw ApiError.badRequest('Email body is too large');
+  return {
+    key,
+    name: (name || key).trim(),
+    subject: subject.trim(),
+    body_html: bodyHtml,
+    enabled: enabled !== false,
+    attach_certificate: Boolean(attachCertificate),
+  };
+}
+
+/** Validate a preview / test-send request (unsaved composer content). */
+export function validateComposerContent(body = {}) {
+  const { subject, body_html: bodyHtml, to } = body;
+  if (!subject?.trim() || !bodyHtml?.trim()) throw ApiError.badRequest('Subject and body are required');
+  if (bodyHtml.length > MAX_HTML_LENGTH) throw ApiError.badRequest('Email body is too large');
+  if (to !== undefined && !isEmail(to)) throw ApiError.badRequest('Test address is not a valid email');
+  return { subject, body_html: bodyHtml, to, attach_certificate: Boolean(body.attach_certificate) };
+}

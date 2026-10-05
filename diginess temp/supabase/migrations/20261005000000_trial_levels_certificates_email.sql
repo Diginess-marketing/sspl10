@@ -1,0 +1,244 @@
+-- Trial levels L1-L5, certificates and per-level player emails.
+-- Safe to re-run: every statement is idempotent.
+
+------------------------------------------------------------------------------
+-- 1. trial_progress: L4/L5 columns (+ marks/remarks for every level)
+------------------------------------------------------------------------------
+alter table public.trial_progress
+  add column if not exists l1_marks numeric,
+  add column if not exists l1_remarks text,
+  add column if not exists l2_marks numeric,
+  add column if not exists l2_remarks text,
+  add column if not exists l3_marks numeric,
+  add column if not exists l3_remarks text,
+  add column if not exists l4_called boolean not null default false,
+  add column if not exists l4_attendance text,
+  add column if not exists l4_marks numeric,
+  add column if not exists l4_result text,
+  add column if not exists l4_remarks text,
+  add column if not exists l5_called boolean not null default false,
+  add column if not exists l5_attendance text,
+  add column if not exists l5_marks numeric,
+  add column if not exists l5_result text,
+  add column if not exists l5_remarks text;
+
+-- Level 4/5 results were imported into metadata (l4_result, l4_score, l4_remarks, ...).
+-- Copy them into the real columns; metadata stays as it was.
+update public.trial_progress p set
+  l4_result     = coalesce(p.l4_result, case upper(p.metadata->>'l4_result')
+                    when 'SELECTED' then 'SELECTED'
+                    when 'NOT_SELECTED' then 'REJECTED'
+                    when 'REJECTED' then 'REJECTED' end),
+  l4_attendance = coalesce(p.l4_attendance, case upper(p.metadata->>'l4_result')
+                    when 'ABSENT' then 'ABSENT'
+                    when 'SELECTED' then 'ATTENDED'
+                    when 'NOT_SELECTED' then 'ATTENDED'
+                    when 'REJECTED' then 'ATTENDED' end),
+  l4_called     = p.l4_called or (p.metadata ? 'l4_result'),
+  l4_marks      = coalesce(p.l4_marks, case when p.metadata->>'l4_score' ~ '^[0-9]+(\.[0-9]+)?$'
+                    then (p.metadata->>'l4_score')::numeric end),
+  l4_remarks    = coalesce(p.l4_remarks, p.metadata->>'l4_remarks'),
+  l5_result     = coalesce(p.l5_result, case upper(p.metadata->>'l5_result')
+                    when 'SELECTED' then 'SELECTED'
+                    when 'NOT_SELECTED' then 'REJECTED'
+                    when 'REJECTED' then 'REJECTED' end),
+  l5_attendance = coalesce(p.l5_attendance, case upper(p.metadata->>'l5_result')
+                    when 'ABSENT' then 'ABSENT'
+                    when 'SELECTED' then 'ATTENDED'
+                    when 'NOT_SELECTED' then 'ATTENDED'
+                    when 'REJECTED' then 'ATTENDED' end),
+  l5_called     = p.l5_called or (p.metadata ? 'l5_result'),
+  l5_marks      = coalesce(p.l5_marks, case when p.metadata->>'l5_score' ~ '^[0-9]+(\.[0-9]+)?$'
+                    then (p.metadata->>'l5_score')::numeric end),
+  l5_remarks    = coalesce(p.l5_remarks, p.metadata->>'l5_remarks'),
+  l2_remarks    = coalesce(p.l2_remarks, p.metadata->>'l2_remarks'),
+  l3_remarks    = coalesce(p.l3_remarks, p.metadata->>'l3_remarks')
+where p.metadata ?| array['l4_result', 'l5_result', 'l2_remarks', 'l3_remarks'];
+
+-- Every candidate gets a progress row (the admin tracker expects one).
+insert into public.trial_progress (candidate_id, current_level)
+select c.id, 1 from public.trial_candidates c
+where not exists (select 1 from public.trial_progress p where p.candidate_id = c.id);
+
+------------------------------------------------------------------------------
+-- 1b. One rule for current_level / final_status (L1 -> L5), applied to all rows.
+--     Walk the levels: SELECTED moves on; the first level that is not SELECTED
+--     is where the player stops. REJECTED there -> REJECTED, ABSENT -> ABSENT,
+--     otherwise IN_PROGRESS. Selected at all five -> SELECTED.
+--     Older imports left these out of step (e.g. absent at L1 but current_level 3).
+------------------------------------------------------------------------------
+do $$
+declare c record;
+begin
+  -- final_status gains 'ABSENT'; drop any old check constraint on it
+  for c in
+    select conname from pg_constraint
+    where conrelid = 'public.trial_progress'::regclass and contype = 'c'
+      and pg_get_constraintdef(oid) ilike '%final_status%'
+  loop
+    execute format('alter table public.trial_progress drop constraint %I', c.conname);
+  end loop;
+end $$;
+
+create or replace function public.trial_stop_level(p public.trial_progress)
+returns smallint language sql immutable as $$
+  select case
+    when upper(coalesce(p.l1_result, '')) <> 'SELECTED' then 1
+    when upper(coalesce(p.l2_result, '')) <> 'SELECTED' then 2
+    when upper(coalesce(p.l3_result, '')) <> 'SELECTED' then 3
+    when upper(coalesce(p.l4_result, '')) <> 'SELECTED' then 4
+    else 5
+  end::smallint
+$$;
+
+update public.trial_progress p set
+  current_level = s.lvl,
+  final_status = case
+    when s.res = 'SELECTED' then 'SELECTED'
+    when s.res = 'REJECTED' then 'REJECTED'
+    when s.att = 'ABSENT' then 'ABSENT'
+    else 'IN_PROGRESS'
+  end
+from (
+  select q.id, l.lvl,
+    upper(coalesce(case l.lvl when 1 then q.l1_result when 2 then q.l2_result when 3 then q.l3_result
+                              when 4 then q.l4_result else q.l5_result end, '')) as res,
+    upper(coalesce(case l.lvl when 1 then q.l1_attendance when 2 then q.l2_attendance when 3 then q.l3_attendance
+                              when 4 then q.l4_attendance else q.l5_attendance end, '')) as att
+  from public.trial_progress q
+  cross join lateral (select public.trial_stop_level(q) as lvl) l
+) s
+where s.id = p.id
+  and (p.current_level is distinct from s.lvl
+       or p.final_status is distinct from case
+            when s.res = 'SELECTED' then 'SELECTED'
+            when s.res = 'REJECTED' then 'REJECTED'
+            when s.att = 'ABSENT' then 'ABSENT'
+            else 'IN_PROGRESS' end);
+
+drop function public.trial_stop_level(public.trial_progress);
+
+alter table public.trial_progress drop constraint if exists trial_progress_final_status_check;
+alter table public.trial_progress add constraint trial_progress_final_status_check
+  check (final_status is null or final_status in ('IN_PROGRESS', 'SELECTED', 'REJECTED', 'ABSENT'));
+
+------------------------------------------------------------------------------
+-- 2. trial_view: expose the new columns without rewriting the existing view.
+--    The original definition is kept as trial_view_base; trial_view adds the
+--    level 1-5 marks/remarks and the L4/L5 columns on top of it.
+------------------------------------------------------------------------------
+do $$
+begin
+  if to_regclass('public.trial_view_base') is null and to_regclass('public.trial_view') is not null then
+    alter view public.trial_view rename to trial_view_base;
+  end if;
+end $$;
+
+create or replace view public.trial_view as
+select
+  b.*,
+  p.l1_marks, p.l1_remarks,
+  p.l2_marks, p.l2_remarks,
+  p.l3_marks, p.l3_remarks,
+  p.l4_called, p.l4_attendance, p.l4_marks, p.l4_result, p.l4_remarks,
+  p.l5_called, p.l5_attendance, p.l5_marks, p.l5_result, p.l5_remarks
+from public.trial_view_base b
+left join public.trial_progress p on p.id = b.progress_id;
+
+-- Same readers as before (the public results page reads this view).
+grant select on public.trial_view to anon, authenticated, service_role;
+
+------------------------------------------------------------------------------
+-- 3. Certificates issued per level (number printed on the PDF, for verification)
+------------------------------------------------------------------------------
+create table if not exists public.trial_certificates (
+  id uuid primary key default gen_random_uuid(),
+  certificate_no text not null unique,
+  candidate_id uuid not null references public.trial_candidates (id) on delete cascade,
+  level smallint not null check (level between 1 and 5),
+  kind text not null check (kind in ('achievement', 'participation')),
+  player_name text not null,
+  issued_at timestamptz not null default now(),
+  unique (candidate_id, level, kind)
+);
+
+alter table public.trial_certificates enable row level security;
+drop policy if exists "trial_certificates_admin_read" on public.trial_certificates;
+create policy "trial_certificates_admin_read" on public.trial_certificates
+  for select to authenticated
+  using (exists (select 1 from public.user_roles where user_id = auth.uid() and role = 'admin'));
+
+------------------------------------------------------------------------------
+-- 4. Email templates (edited in the admin WYSIWYG composer)
+--    key: trial_l{1-5}_{selected|not_selected|absent}, or any custom key
+------------------------------------------------------------------------------
+create table if not exists public.email_templates (
+  key text primary key,
+  name text not null,
+  subject text not null,
+  body_html text not null,
+  enabled boolean not null default true,
+  attach_certificate boolean not null default false,
+  updated_at timestamptz not null default now(),
+  updated_by uuid
+);
+
+alter table public.email_templates enable row level security;
+drop policy if exists "email_templates_admin_all" on public.email_templates;
+create policy "email_templates_admin_all" on public.email_templates
+  for all to authenticated
+  using (exists (select 1 from public.user_roles where user_id = auth.uid() and role = 'admin'))
+  with check (exists (select 1 from public.user_roles where user_id = auth.uid() and role = 'admin'));
+
+-- Default templates; existing ones are never overwritten.
+insert into public.email_templates (key, name, subject, body_html, attach_certificate)
+select
+  format('trial_l%s_%s', lvl, outcome),
+  format('Level %s – %s', lvl, case outcome when 'selected' then 'Selected' when 'not_selected' then 'Not selected' else 'Absent' end),
+  case outcome
+    when 'selected' then format('Congratulations {{name}} – you are selected at SSPL Trials Level %s', lvl)
+    when 'not_selected' then format('Your SSPL Trials Level %s result', lvl)
+    else format('We missed you at SSPL Trials Level %s', lvl)
+  end,
+  case outcome
+    when 'selected' then format(
+      '<p>Dear {{name}},</p><p>Congratulations! You have been <strong>selected at Level %s</strong> of the Southern Street Premier League trials.</p>%s<p>Your Level %s certificate of achievement is attached (certificate no. {{certificate_no}}).</p><p>Keep pushing your limits!</p><p>Team SSPL</p>',
+      lvl,
+      case when lvl < 5 then format('<p>You move on to <strong>Level %s</strong>. Our team will contact you on {{phone}} with the schedule.</p>', lvl + 1)
+           else '<p>You have cleared the final level of the trials. Our team will contact you with the next steps.</p>' end,
+      lvl)
+    when 'not_selected' then format(
+      '<p>Dear {{name}},</p><p>Thank you for taking part in Level %s of the Southern Street Premier League trials. You were not selected at this level, but your effort and spirit on the field were commendable.</p><p>Your certificate of participation is attached (certificate no. {{certificate_no}}).</p><p>We hope to see you again next season.</p><p>Team SSPL</p>',
+      lvl)
+    else format(
+      '<p>Dear {{name}},</p><p>You were marked <strong>absent</strong> for Level %s of the Southern Street Premier League trials.</p><p>If you think this is a mistake, reply to this email or contact us on WhatsApp at +91 88077 75960.</p><p>Team SSPL</p>',
+      lvl)
+  end,
+  outcome in ('selected', 'not_selected')
+from generate_series(1, 5) as lvl
+cross join unnest(array['selected', 'not_selected', 'absent']) as outcome
+on conflict (key) do nothing;
+
+------------------------------------------------------------------------------
+-- 5. One row per level email sent, so the same result is never emailed twice
+------------------------------------------------------------------------------
+create table if not exists public.trial_level_emails (
+  id uuid primary key default gen_random_uuid(),
+  candidate_id uuid not null references public.trial_candidates (id) on delete cascade,
+  level smallint not null check (level between 1 and 5),
+  outcome text not null check (outcome in ('selected', 'not_selected', 'absent')),
+  recipient text,
+  status text not null check (status in ('sent', 'failed', 'skipped')),
+  error text,
+  certificate_no text,
+  sent_at timestamptz not null default now(),
+  unique (candidate_id, level, outcome)
+);
+
+alter table public.trial_level_emails enable row level security;
+drop policy if exists "trial_level_emails_admin_read" on public.trial_level_emails;
+create policy "trial_level_emails_admin_read" on public.trial_level_emails
+  for select to authenticated
+  using (exists (select 1 from public.user_roles where user_id = auth.uid() and role = 'admin'));
+
+notify pgrst, 'reload schema';
