@@ -15,7 +15,7 @@ const STEPS = [
     { value: 'registrations', label: 'Registrations', icon: Users, count: 'total_registrations' as const },
     { value: 'trials-section', label: 'Trials section', icon: UserCheck, count: 'in_trials_section' as const },
     { value: 'allocated', label: 'Allocated', icon: CalendarCheck, count: 'trials_allocated' as const },
-    { value: 'levels', label: 'Levels L1-L3', icon: Layers },
+    { value: 'levels', label: 'Levels L1-L5', icon: Layers },
     { value: 'import', label: 'Import data', icon: UploadCloud },
 ];
 

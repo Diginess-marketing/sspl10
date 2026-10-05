@@ -4,7 +4,8 @@ type Tone = 'ok' | 'warn' | 'bad' | 'info' | 'neutral';
 const MAP: Record<string, { tone: Tone; label?: string }> = {
   captured: { tone: 'ok', label: 'Paid' }, paid: { tone: 'ok', label: 'Paid' }, success: { tone: 'ok', label: 'Paid' },
   completed: { tone: 'ok' }, selected: { tone: 'ok' }, approved: { tone: 'ok' }, attended: { tone: 'ok' }, present: { tone: 'ok' },
-  active: { tone: 'ok' }, confirmed: { tone: 'ok' },
+  active: { tone: 'ok' }, confirmed: { tone: 'ok' }, sent: { tone: 'ok', label: 'Emailed' },
+  skipped: { tone: 'neutral', label: 'Not emailed' }, not_emailed: { tone: 'neutral', label: 'Not emailed' },
   pending: { tone: 'warn' }, waitlisted: { tone: 'warn' }, registration: { tone: 'warn', label: 'Registered' },
   failed: { tone: 'bad' }, rejected: { tone: 'bad' }, not_selected: { tone: 'bad', label: 'Not selected' }, absent: { tone: 'bad' },
   trials_section: { tone: 'info', label: 'Trials section' }, trials_allocated: { tone: 'info', label: 'Allocated' },

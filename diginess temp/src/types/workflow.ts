@@ -231,6 +231,18 @@ export interface PlayerRegistrationWithEmailStatus {
 }
 
 // One candidate row in the L1-L3 trial tracker (trial_candidates + trial_progress)
+export type TrialOutcome = 'selected' | 'not_selected' | 'absent';
+
+/** One trial level's state for a candidate (levels 1-5). */
+export interface TrialLevelState {
+  called: boolean;
+  attendance: string | null;
+  result: string | null;
+  marks: number | null;
+  remarks: string | null;
+}
+
+/** A candidate row from trial_view with all five levels. */
 export interface TrialViewRecord {
   id: string;
   name: string;
@@ -240,16 +252,25 @@ export interface TrialViewRecord {
   state?: string | null;
   proficiency?: string | null;
   current_level: number;
-  remarks?: string | null;
-  metadata?: { excel_remarks?: string } | null;
-  l1_called: boolean;
-  l1_attendance: string | null;
-  l1_result: string | null;
-  l2_called: boolean;
-  l2_attendance: string | null;
-  l2_result: string | null;
-  l3_called: boolean;
-  l3_attendance: string | null;
-  l3_result: string | null;
   final_status: string | null;
+  metadata?: { excel_remarks?: string } | null;
+  levels: Record<number, TrialLevelState>;
+}
+
+/** A row of trial_level_emails: the email sent for a level outcome. */
+export interface TrialLevelEmail {
+  candidate_id: string;
+  level: number;
+  outcome: TrialOutcome;
+  recipient: string | null;
+  status: 'sent' | 'failed' | 'skipped';
+  error: string | null;
+  certificate_no: string | null;
+  sent_at: string;
+}
+
+/** Backend response to a level change. */
+export interface TrialLevelChangeResponse {
+  outcome: TrialOutcome | null;
+  notification: { status: 'sent' | 'failed' | 'skipped'; reason?: string; certificateNo?: string } | null;
 }
