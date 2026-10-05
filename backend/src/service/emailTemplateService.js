@@ -1,4 +1,24 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import env from '../config/env.js';
+
+// The logo travels inside the email as an inline attachment (cid:), so it shows even when
+// the website's copy moves (ssplt10.co.in returned 404 for the hosted logo URL).
+const LOGO_CID = 'sspl-logo';
+const LOGO_BYTES = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '../../assets/sspl-logo.png'));
+
+/** Inline logo attachment that every layout-wrapped email must carry. */
+export const logoAttachment = () => ({
+  name: 'sspl-logo.png',
+  contentType: 'image/png',
+  contentBytes: LOGO_BYTES.toString('base64'),
+  isInline: true,
+  contentId: LOGO_CID,
+});
+
+/** data: URI of the logo, for in-browser previews (cid: only resolves inside an email). */
+export const LOGO_DATA_URI = `data:image/png;base64,${LOGO_BYTES.toString('base64')}`;
 
 // Placeholders the composer offers; values are HTML-escaped before substitution.
 export const PLACEHOLDERS = {
@@ -50,22 +70,33 @@ export function trialPlaceholderValues({ name, phone, email, city, level, certif
   };
 }
 
-/** Sample values used for previews and test sends. */
-export const SAMPLE_VALUES = trialPlaceholderValues({
-  name: 'Ravi Kumar',
-  phone: '98765 43210',
-  email: 'player@example.com',
-  city: 'Chennai',
-  level: 2,
-  certificateNo: 'SSPL-L2-A-SAMPLE',
-});
+/**
+ * Sample values for previews and test sends, matching the template's level and outcome
+ * (trial_l3_not_selected -> level 3, participation certificate number).
+ */
+export function sampleValuesFor(key = '') {
+  const match = /^trial_l([1-5])_(selected|not_selected|absent)$/.exec(key);
+  const level = match ? Number(match[1]) : 2;
+  const outcome = match ? match[2] : 'selected';
+  const kindLetter = outcome === 'not_selected' ? 'P' : 'A';
+  return trialPlaceholderValues({
+    name: 'Ravi Kumar',
+    phone: '98765 43210',
+    email: 'player@example.com',
+    city: 'Chennai',
+    level,
+    certificateNo: outcome === 'absent' ? '' : `SSPL-L${level}-${kindLetter}-SAMPLE`,
+  });
+}
+
+export const SAMPLE_VALUES = sampleValuesFor();
 
 /**
  * Wrap composer HTML in the branded email layout (table-based, inline styles,
  * so it renders in Outlook and Gmail).
  */
-export function wrapInLayout(bodyHtml) {
-  const logo = `${env.siteUrl}/assets/img/sspl-logo-color.png`;
+export function wrapInLayout(bodyHtml, { logoSrc = `cid:${LOGO_CID}` } = {}) {
+  const logo = logoSrc;
   return `<!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#eef2fb;">
@@ -88,9 +119,9 @@ export function wrapInLayout(bodyHtml) {
 }
 
 /** Subject + full HTML for a template and placeholder values. */
-export function renderTemplate(template, values) {
+export function renderTemplate(template, values, layoutOptions) {
   return {
     subject: fillPlaceholders(template.subject, values, { html: false }),
-    html: wrapInLayout(fillPlaceholders(template.body_html, values)),
+    html: wrapInLayout(fillPlaceholders(template.body_html, values), layoutOptions),
   };
 }

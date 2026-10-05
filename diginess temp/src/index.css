@@ -389,6 +389,12 @@ body.admin-mode :is([role="dialog"], [role="alertdialog"], [data-radix-popper-co
   color: revert-layer;
 }
 
+/* The base layer colours every heading white (for the dark site), so reverting a heading
+   lands on white. Headings in admin dialogs take the dialog's dark ink instead. */
+body.admin-mode :is([role="dialog"], [role="alertdialog"]) :is(h1, h2, h3, h4, h5, h6) {
+  color: inherit;
+}
+
 /* Button variants built for the dark site use white text; on light admin surfaces they
    would vanish. `.text-white` only survives when the caller set no colour of its own. */
 :is(.admin-scope, body.admin-mode [role="dialog"], body.admin-mode [role="alertdialog"])

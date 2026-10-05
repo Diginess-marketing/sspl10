@@ -3,7 +3,7 @@ import * as emailTemplateModel from '../model/emailTemplateModel.js';
 import * as emailLogModel from '../model/emailLogModel.js';
 import * as emailService from './emailService.js';
 import { generateCertificatePdf, newCertificateNo } from './certificateService.js';
-import { renderTemplate, trialPlaceholderValues, trialTemplateKey } from './emailTemplateService.js';
+import { logoAttachment, renderTemplate, trialPlaceholderValues, trialTemplateKey } from './emailTemplateService.js';
 import logger from '../utils/logger.js';
 
 const CERTIFICATE_KIND = { selected: 'achievement', not_selected: 'participation' };
@@ -40,7 +40,7 @@ export async function notifyLevelOutcome({ candidateId, level, outcome, force = 
     }
 
     let certificateNo;
-    const attachments = [];
+    const attachments = [logoAttachment()];
     const kind = CERTIFICATE_KIND[outcome];
     if (template.attach_certificate && kind) {
       const certificate = await trialProgressModel.findOrCreateCertificate({
