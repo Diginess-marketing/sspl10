@@ -43,9 +43,9 @@ const PreviewDialog = ({ open, onOpenChange, preview }: {
   open: boolean; onOpenChange: (open: boolean) => void; preview: { subject: string; html: string } | null;
 }) => (
   <Dialog open={open} onOpenChange={onOpenChange}>
-    <DialogContent className="admin-scope bg-white sm:max-w-3xl">
+    <DialogContent className="admin-scope bg-white p-6 sm:max-w-3xl">
       <DialogHeader>
-        <DialogTitle>Preview</DialogTitle>
+        <DialogTitle className="admin-h3 text-lg">Preview</DialogTitle>
       </DialogHeader>
       {preview && (
         <div className="space-y-3">
@@ -114,7 +114,7 @@ const LevelEmails = ({ placeholders, templates, onSaved, loadError }: {
     if (!draft) return;
     setBusy('preview');
     try {
-      setPreview(await adminApi.post('/admin/email/preview', draft));
+      setPreview(await adminApi.post('/admin/email/preview', { ...draft, key: selectedKey }));
     } catch (err: any) {
       toast.error('Preview failed', { description: err.message });
     } finally {

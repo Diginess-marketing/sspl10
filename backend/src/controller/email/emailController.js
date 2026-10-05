@@ -1,5 +1,5 @@
 import * as emailTemplateModel from '../../model/emailTemplateModel.js';
-import { PLACEHOLDERS, SAMPLE_VALUES, renderTemplate, wrapInLayout } from '../../service/emailTemplateService.js';
+import { LOGO_DATA_URI, PLACEHOLDERS, logoAttachment, sampleValuesFor, renderTemplate, wrapInLayout } from '../../service/emailTemplateService.js';
 import { generateCertificatePdf } from '../../service/certificateService.js';
 import ApiError from '../../utils/ApiError.js';
 import logger from '../../utils/logger.js';
@@ -35,6 +35,8 @@ export const sendBulk = async (req, res) => {
     validation.validateBulkEmail(req.body);
   // Composer sends opt into the branded layout; older callers send raw HTML
   const html = req.body.useLayout ? wrapInLayout(body) : body;
+  // The layout shows the logo from an inline attachment
+  if (req.body.useLayout) attachments.push(logoAttachment());
 
   // A test address short-circuits everything else.
   if (testEmail) {
@@ -92,7 +94,7 @@ export const saveTemplate = async (req, res) => {
 /** POST /api/admin/email/preview — render unsaved composer content with sample values. */
 export const previewTemplate = async (req, res) => {
   const content = validation.validateComposerContent(req.body);
-  res.json(renderTemplate(content, SAMPLE_VALUES));
+  res.json(renderTemplate(content, sampleValuesFor(req.body.key), { logoSrc: LOGO_DATA_URI }));
 };
 
 /** POST /api/admin/email/test — send unsaved composer content to one address (default: the admin). */
@@ -101,11 +103,12 @@ export const sendTest = async (req, res) => {
   const to = content.to || req.user.email;
   if (!to) throw ApiError.badRequest('No test address given');
 
-  const { subject, html } = renderTemplate(content, SAMPLE_VALUES);
-  const attachments = [];
+  const sample = sampleValuesFor(req.body.key);
+  const { subject, html } = renderTemplate(content, sample);
+  const attachments = [logoAttachment()];
   if (content.attach_certificate) {
     const kind = /not_selected/.test(req.body.key || '') ? 'participation' : 'achievement';
-    const pdf = await generateCertificatePdf({ kind, playerName: SAMPLE_VALUES.name, level: Number(SAMPLE_VALUES.level), certificateNo: SAMPLE_VALUES.certificate_no });
+    const pdf = await generateCertificatePdf({ kind, playerName: sample.name, level: Number(sample.level), certificateNo: sample.certificate_no || 'SSPL-SAMPLE' });
     attachments.push({ name: 'SSPL-Sample-Certificate.pdf', contentType: 'application/pdf', contentBytes: pdf.toString('base64') });
   }
 
