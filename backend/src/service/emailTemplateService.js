@@ -32,6 +32,9 @@ export const PLACEHOLDERS = {
   certificate_no: 'Certificate number',
   results_url: 'Link to the results page',
   site_url: 'Website address',
+  amount: 'Amount paid (confirmation email)',
+  payment_id: 'Payment ID (confirmation email)',
+  registration_id: 'Registration ID (confirmation email)',
 };
 
 export const TRIAL_OUTCOMES = ['selected', 'not_selected', 'absent'];
@@ -79,14 +82,20 @@ export function sampleValuesFor(key = '') {
   const level = match ? Number(match[1]) : 2;
   const outcome = match ? match[2] : 'selected';
   const kindLetter = outcome === 'not_selected' ? 'P' : 'A';
-  return trialPlaceholderValues({
-    name: 'Ravi Kumar',
-    phone: '98765 43210',
-    email: 'player@example.com',
-    city: 'Chennai',
-    level,
-    certificateNo: outcome === 'absent' ? '' : `SSPL-L${level}-${kindLetter}-SAMPLE`,
-  });
+  return {
+    ...trialPlaceholderValues({
+      name: 'Ravi Kumar',
+      phone: '98765 43210',
+      email: 'player@example.com',
+      city: 'Chennai',
+      level,
+      certificateNo: outcome === 'absent' ? '' : `SSPL-L${level}-${kindLetter}-SAMPLE`,
+    }),
+    // Registration confirmation fields
+    amount: '1,179',
+    payment_id: 'pay_SAMPLE123',
+    registration_id: '00000000-0000-0000-0000-000000000000',
+  };
 }
 
 export const SAMPLE_VALUES = sampleValuesFor();

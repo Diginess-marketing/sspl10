@@ -2,6 +2,7 @@ import * as emailTemplateModel from '../../model/emailTemplateModel.js';
 import { LOGO_DATA_URI, PLACEHOLDERS, logoAttachment, sampleValuesFor, renderTemplate, wrapInLayout } from '../../service/emailTemplateService.js';
 import { generateCertificatePdf } from '../../service/certificateService.js';
 import ApiError from '../../utils/ApiError.js';
+import { CONFIRMATION_KEY, DEFAULT_CONFIRMATION_TEMPLATE } from '../../service/registrationEmailService.js';
 import logger from '../../utils/logger.js';
 
 const BACKGROUND_THRESHOLD = 10;
@@ -82,7 +83,10 @@ export const listLogs = async (req, res) => {
 
 /** GET /api/admin/email/templates */
 export const listTemplates = async (req, res) => {
-  res.json({ templates: await emailTemplateModel.list(), placeholders: PLACEHOLDERS });
+  const templates = await emailTemplateModel.list();
+  // The confirmation email shows (and can be saved) even before it exists in the table
+  if (!templates.some((t) => t.key === CONFIRMATION_KEY)) templates.push({ ...DEFAULT_CONFIRMATION_TEMPLATE, attach_certificate: false });
+  res.json({ templates, placeholders: PLACEHOLDERS });
 };
 
 /** PUT /api/admin/email/templates/:key */

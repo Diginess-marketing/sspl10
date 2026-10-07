@@ -155,3 +155,9 @@
 
 /* Email preview frame */
 .email-preview { width: 100%; height: min(58vh, 620px); border: 1px solid var(--admin-line); border-radius: 14px; background: #eef2fb; }
+
+/* .admin-btn sets display, which outranks Tailwind's lg:hidden; the menu button is
+   only for small screens (the sidebar is shown from 1024px). */
+@media (min-width: 64rem) {
+  .admin-btn.lg\:hidden { display: none; }
+}

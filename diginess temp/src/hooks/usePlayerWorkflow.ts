@@ -16,6 +16,32 @@ import type {
   TrialLevelChangeResponse,
 } from '@/types/workflow';
 
+// Supabase returns at most 1,000 rows per request. These helpers page through so lists
+// show every player (11k+ registrations), not just the first 1,000.
+const PAGE_SIZE = 1000;
+
+async function fetchAll<T = any>(build: () => any): Promise<{ data: T[]; error: any }> {
+  const rows: T[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await build().range(from, from + PAGE_SIZE - 1);
+    if (error) return { data: rows, error };
+    rows.push(...(data || []));
+    if (!data || data.length < PAGE_SIZE) return { data: rows, error: null };
+  }
+}
+
+/** Rows whose `column` is in `ids`, in chunks so the request URL stays short. */
+async function fetchIn<T = any>(table: string, column: string, ids: string[], select = '*'): Promise<T[]> {
+  const rows: T[] = [];
+  const unique = [...new Set(ids.filter(Boolean))];
+  for (let i = 0; i < unique.length; i += 150) {
+    const { data, error } = await (supabase as any).from(table).select(select).in(column, unique.slice(i, i + 150));
+    if (error) throw error;
+    rows.push(...(data || []));
+  }
+  return rows;
+}
+
 // Hook for managing the player workflow system
 export function usePlayerWorkflow() {
   const [loading, setLoading] = useState(false);
@@ -95,19 +121,11 @@ export function usePlayerWorkflow() {
       console.log('🔍 Supabase client:', supabase ? 'initialized' : 'NULL');
 
       // Get all player registrations
-      const { data: registrations, error: regError, status, statusText } = await supabase
+      const { data: registrations, error: regError } = await fetchAll(() => supabase
         .from('player_registrations')
         .select('*')
-        .order('created_at', { ascending: false });
-
-      console.log('🔍 Registrations query result:', {
-        count: registrations?.length,
-        error: regError?.message,
-        errorCode: regError?.code,
-        status,
-        statusText,
-        firstRecord: registrations?.[0],
-      });
+        .order('created_at', { ascending: false })
+        .order('id', { ascending: true }));
 
       if (regError) {
         console.error('❌ Error fetching registrations:', regError);
@@ -123,20 +141,22 @@ export function usePlayerWorkflow() {
       console.log('✅ Found', registrations.length, 'registrations');
 
       // Get workflow records
-      const { data: workflows, error: wfError } = await supabase
+      const { data: workflows, error: wfError } = await fetchAll(() => supabase
         .from('player_workflow')
-        .select('*');
+        .select('*')
+        .order('workflow_id', { ascending: true }));
 
       if (wfError) {
         console.warn('Error fetching workflows:', wfError);
       }
 
       // Get email logs for confirmation emails
-      const { data: emailLogs, error: emailError } = await supabase
+      const { data: emailLogs, error: emailError } = await fetchAll(() => supabase
         .from('email_logs')
         .select('registration_id, status, sent_at')
         .eq('email_type', 'registration_confirmation')
-        .eq('status', 'success');
+        .eq('status', 'success')
+        .order('id', { ascending: true }));
 
       if (emailError) {
         console.warn('Error fetching email logs:', emailError);
@@ -176,10 +196,11 @@ export function usePlayerWorkflow() {
       setError(null);
 
       // Try the view first
-      const { data, error: viewError } = await supabase
+      const { data, error: viewError } = await fetchAll(() => supabase
         .from('v_trials_section_players' as any)
         .select('*')
-        .order('moved_to_trials_at', { ascending: false });
+        .order('moved_to_trials_at', { ascending: false })
+        .order('workflow_id', { ascending: true }));
 
       if (!viewError && data) {
         return data as unknown as TrialsSectionPlayer[];
@@ -188,20 +209,17 @@ export function usePlayerWorkflow() {
       // Fall back to manual join
       console.warn('View not available, using manual query');
 
-      const { data: workflows, error: wfError } = await supabase
+      const { data: workflows, error: wfError } = await fetchAll<any>(() => supabase
         .from('player_workflow')
         .select('*')
-        .eq('workflow_stage', 'trials_section');
+        .eq('workflow_stage', 'trials_section')
+        .order('workflow_id', { ascending: true }));
 
       if (wfError || !workflows?.length) {
         return [];
       }
 
-      const regIds = workflows.map(w => w.registration_id);
-      const { data: regs } = await supabase
-        .from('player_registrations')
-        .select('*')
-        .in('id', regIds);
+      const regs = await fetchIn<any>('player_registrations', 'id', workflows.map(w => w.registration_id));
 
       const regMap = new Map((regs || []).map(r => [r.id, r]));
 
@@ -241,10 +259,11 @@ export function usePlayerWorkflow() {
       setError(null);
 
       // Try the view first
-      const { data, error: viewError } = await supabase
+      const { data, error: viewError } = await fetchAll(() => supabase
         .from('v_trials_allocated_players' as any)
         .select('*')
-        .order('allocated_at', { ascending: false });
+        .order('allocated_at', { ascending: false })
+        .order('workflow_id', { ascending: true }));
 
       if (!viewError && data) {
         return data as unknown as TrialsAllocatedPlayer[];
@@ -253,10 +272,11 @@ export function usePlayerWorkflow() {
       // Fall back to manual join
       console.warn('View not available, using manual query');
 
-      const { data: workflows, error: wfError } = await supabase
+      const { data: workflows, error: wfError } = await fetchAll<any>(() => supabase
         .from('player_workflow')
         .select('*')
-        .eq('workflow_stage', 'trials_allocated');
+        .eq('workflow_stage', 'trials_allocated')
+        .order('workflow_id', { ascending: true }));
 
       if (wfError || !workflows?.length) {
         return [];
@@ -265,23 +285,10 @@ export function usePlayerWorkflow() {
       const wfIds = workflows.map(w => w.workflow_id);
       const regIds = workflows.map(w => w.registration_id);
 
-      // Get allocations
-      const { data: allocations } = await supabase
-        .from('trials_allocations')
-        .select('*')
-        .in('workflow_id', wfIds);
-
-      // Get registrations
-      const { data: regs } = await supabase
-        .from('player_registrations')
-        .select('*')
-        .in('id', regIds);
-
-      // Get results
-      const allocIds = (allocations || []).map(a => a.allocation_id);
-      const { data: results } = allocIds.length > 0
-        ? await supabase.from('trial_results').select('*').in('allocation_id', allocIds)
-        : { data: [] };
+      // Allocations, registrations and results for these players (chunked lookups)
+      const allocations = await fetchIn<any>('trials_allocations', 'workflow_id', wfIds);
+      const regs = await fetchIn<any>('player_registrations', 'id', regIds);
+      const results = await fetchIn<any>('trial_results', 'allocation_id', allocations.map(a => a.allocation_id));
 
       const regMap = new Map((regs || []).map(r => [r.id, r]));
       const allocMap = new Map((allocations || []).map(a => [a.workflow_id || '', a]));
@@ -331,28 +338,15 @@ export function usePlayerWorkflow() {
   // Move players to trials section
   const moveToTrialsSection = useCallback(async (
     registrationIds: string[],
-    adminId?: string,
+    _adminId?: string,
   ): Promise<BulkOperationResult[]> => {
     try {
       setLoading(true);
       setError(null);
 
-      const { data, error: rpcError } = await supabase.rpc('move_to_trials_section', {
-        p_registration_ids: registrationIds,
-        p_admin_id: adminId,
-      });
-
-      if (rpcError) {
-        console.error('Error moving to trials section:', rpcError);
-        setError(rpcError.message);
-        return registrationIds.map(id => ({
-          registration_id: id,
-          success: false,
-          message: rpcError.message,
-        }));
-      }
-
-      return data || [];
+      // Through the backend: the move_to_trials_section database function fails on the live
+      // database (it writes a column player_workflow does not have). The admin is the signed-in user.
+      return await adminApi.post<BulkOperationResult[]>('/admin/workflow/move-to-trials', { registrationIds });
     } catch (err: any) {
       console.error('Exception moving to trials section:', err);
       setError(err.message);
@@ -491,41 +485,18 @@ export function usePlayerWorkflow() {
   // Send confirmation email manually
   const sendConfirmationEmail = useCallback(async (
     registrationId: string,
-    playerName: string,
-    email: string,
-    amount: number,
-    paymentId: string,
+    _playerName: string,
+    _email: string,
+    _amount: number,
+    _paymentId: string,
   ): Promise<boolean> => {
     try {
       setLoading(true);
       setError(null);
 
-      const { error: emailError } = await supabase.functions.invoke('send-confirmation-mail', {
-        body: {
-          email,
-          playerName,
-          amount,
-          paymentId,
-          registrationId,
-        },
-      });
-
-      if (emailError) {
-        console.error('Error sending confirmation email:', emailError);
-        setError(emailError.message);
-        return false;
-      }
-
-      // Update workflow to mark email as sent
-      // Using update with eq check instead of upsert to avoid type issues with missing required fields
-      await supabase
-        .from('player_workflow')
-        .update({
-          confirmation_email_sent: true,
-          confirmation_email_sent_at: new Date().toISOString(),
-        })
-        .eq('registration_id', registrationId);
-
+      // Sent by the backend (Microsoft 365), which reads the player from the database and marks
+      // the workflow as emailed. The send-confirmation-mail Edge Function is not deployed (404).
+      await adminApi.post('/admin/workflow/confirmation-email', { registrationId });
       return true;
     } catch (err: any) {
       console.error('Exception sending confirmation email:', err);
@@ -735,10 +706,11 @@ export function usePlayerWorkflow() {
       const db = supabase as any;
 
       if (['total_registrations', 'net_failed', 'finance'].includes(reportType)) {
-        const { data, error: qErr } = await db
+        const { data, error: qErr } = await fetchAll(() => db
           .from('player_registrations')
           .select('*')
-          .order('created_at', { ascending: false });
+          .order('created_at', { ascending: false })
+          .order('id', { ascending: true }));
         if (qErr) throw qErr;
         let rows: any[] = data || [];
         if (reportType === 'net_failed') rows = rows.filter((r) => !isPaid(r.payment_status));
@@ -758,14 +730,14 @@ export function usePlayerWorkflow() {
         }));
       }
 
-      const { data, error: qErr } = await db.from('trial_view').select('*');
+      const { data, error: qErr } = await fetchAll(() => db.from('trial_view').select('*').order('candidate_id', { ascending: true }));
       if (qErr) throw qErr;
       const rows: any[] = data || [];
 
       if (reportType === 'call_for_trials' || reportType === 'selection_sheet') {
         const level = params.level || 1;
-        const pool = rows.filter((r) => level === 1
-          || (level === 2 ? r.l1_result === 'SELECTED' : r.l2_result === 'SELECTED'));
+        // Level N is everyone selected at level N-1 (all candidates for L1)
+        const pool = rows.filter((r) => level === 1 || r[`l${level - 1}_result`] === 'SELECTED');
         return pool
           .filter((r) => reportType === 'call_for_trials' || r[`l${level}_result`] || r[`l${level}_attendance`])
           .map((r) => ({
@@ -815,7 +787,7 @@ export function usePlayerWorkflow() {
     try {
       setLoading(true);
       setError(null);
-      const { data, error: qErr } = await (supabase as any).from('trial_view').select('*');
+      const { data, error: qErr } = await fetchAll(() => (supabase as any).from('trial_view').select('*').order('candidate_id', { ascending: true }));
       if (qErr) throw qErr;
       const rows: any[] = data || [];
       const n = (fn: (r: any) => boolean) => rows.filter(fn).length;

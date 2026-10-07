@@ -7,16 +7,19 @@ export const TABLE = 'email_logs';
  * @param {{recipientEmail:string, recipientName?:string, type:string,
  *          success:boolean, error?:string}} entry
  */
-export async function insert({ recipientEmail, recipientName, type, success, error: errorMessage }) {
-  const { error } = await supabase.from(TABLE).insert({
+export async function insert({ recipientEmail, recipientName, type, success, error: errorMessage, registrationId, paymentId }) {
+  const { data, error } = await supabase.from(TABLE).insert({
     recipient_email: recipientEmail,
     recipient_name: recipientName || recipientEmail.split('@')[0],
     email_type: type,
     status: success ? 'success' : 'failed',
     error_message: success ? null : errorMessage,
     sent_at: new Date().toISOString(),
-  });
+    ...(registrationId ? { registration_id: registrationId } : {}),
+    ...(paymentId ? { payment_id: paymentId } : {}),
+  }).select('id').single();
   if (error) throw error;
+  return data;
 }
 
 /** One page of send logs, newest first. */

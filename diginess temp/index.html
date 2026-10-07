@@ -99,13 +99,9 @@
       }
     }
 
-    .text-center {
-      text-align: center
-    }
-
-    .hidden {
-      display: none
-    }
+    /* No .hidden / .text-center here: as unlayered CSS they beat Tailwind's responsive
+       variants (hidden lg:flex stayed hidden on desktop, md:text-left never applied).
+       Tailwind's own utilities provide both. */
   </style>
 
   <!-- Load remaining fonts asynchronously (non-critical weights) -->
