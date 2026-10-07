@@ -395,6 +395,16 @@ body.admin-mode :is([role="dialog"], [role="alertdialog"]) :is(h1, h2, h3, h4, h
   color: inherit;
 }
 
+/* Active sidebar item (navy pill): keep its label white and icon lime, including in the
+   mobile menu drawer, which is a dialog and would otherwise get the dark dialog text. */
+body.admin-mode .admin-nav-item[data-active='true'],
+body.admin-mode .admin-nav-item[data-active='true'] span {
+  color: #fff;
+}
+body.admin-mode .admin-nav-item[data-active='true'] svg {
+  color: var(--brand-lime);
+}
+
 /* Button variants built for the dark site use white text; on light admin surfaces they
    would vanish. `.text-white` only survives when the caller set no colour of its own. */
 :is(.admin-scope, body.admin-mode [role="dialog"], body.admin-mode [role="alertdialog"])
