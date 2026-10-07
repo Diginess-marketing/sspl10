@@ -161,3 +161,7 @@
 @media (min-width: 64rem) {
   .admin-btn.lg\:hidden { display: none; }
 }
+
+/* Sign out in the sidebar footer */
+.admin-nav-item--danger { color: var(--admin-bad); background: transparent; border: 0; cursor: pointer; text-align: left; }
+.admin-nav-item--danger:hover { background: var(--admin-bad-bg); color: var(--admin-bad); }

@@ -94,6 +94,20 @@ const SidebarContent = ({ groups, pathname, collapsed = false, onNavigate }: Sid
     </nav>
 );
 
+// Always-visible sign out at the bottom of the sidebar (the avatar menu also has one)
+const SignOutButton = ({ collapsed = false, onSignOut }: { collapsed?: boolean; onSignOut: () => void }) => (
+    <button
+        type="button"
+        onClick={onSignOut}
+        className={`admin-nav-item admin-nav-item--danger w-full ${collapsed ? 'justify-center !px-0' : ''}`}
+        aria-label="Sign out"
+        title="Sign out"
+    >
+        <LogOut className="h-5 w-5 shrink-0" />
+        {!collapsed && <span>Sign out</span>}
+    </button>
+);
+
 const Brand = ({ collapsed = false }: { collapsed?: boolean }) => (
     <Link to="/admin" className="flex h-[72px] items-center gap-3 px-5" aria-label="SSPL Admin home">
         <img src="/assets/img/sspl-logo-color.png" alt="" className="h-10 w-10 shrink-0 object-contain" />
@@ -163,11 +177,12 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
             >
                 <Brand collapsed={collapsed} />
                 <SidebarContent groups={groups} pathname={location.pathname} collapsed={collapsed} />
-                <div className="border-t border-[var(--admin-line)] p-3">
+                <div className="space-y-1 border-t border-[var(--admin-line)] p-3">
                     <a href="/" target="_blank" rel="noreferrer" className={`admin-nav-item ${collapsed ? 'justify-center !px-0' : ''}`}>
                         <ExternalLink className="h-5 w-5 shrink-0" />
                         {!collapsed && <span>View website</span>}
                     </a>
+                    <SignOutButton collapsed={collapsed} onSignOut={handleSignOut} />
                 </div>
             </aside>
 
@@ -177,6 +192,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
                     <SheetTitle className="sr-only">Admin navigation</SheetTitle>
                     <Brand />
                     <SidebarContent groups={groups} pathname={location.pathname} onNavigate={() => setMobileOpen(false)} />
+                    <div className="border-t border-[var(--admin-line)] p-3">
+                        <SignOutButton onSignOut={handleSignOut} />
+                    </div>
                 </SheetContent>
             </Sheet>
 

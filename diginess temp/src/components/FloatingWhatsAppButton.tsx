@@ -2,7 +2,8 @@ import { useLocation } from 'react-router-dom';
 
 const FloatingWhatsAppButton = () => {
   const { pathname } = useLocation();
-  // Admin pages get a small, static icon in the top-right so it doesn't cover the sidebar
+  // Admin pages: a small icon at the top right, just below the header bar so it doesn't
+  // cover the account menu (avatar) or the sidebar
   const isAdmin = pathname.startsWith('/admin');
 
   const handleWhatsApp = () => {
@@ -14,7 +15,7 @@ const FloatingWhatsAppButton = () => {
       onClick={handleWhatsApp}
       className={
         isAdmin
-          ? 'fixed top-3 right-16 lg:top-4 lg:right-6 z-[100002] bg-[#25D366] hover:bg-[#128C7E] text-white rounded-full p-2 shadow-md transition-colors duration-200'
+          ? 'fixed top-[84px] right-4 lg:right-8 z-[100002] bg-[#25D366] hover:bg-[#128C7E] text-white rounded-full p-2 shadow-md transition-colors duration-200'
           : 'fixed bottom-24 md:bottom-6 left-4 md:left-6 z-[100002] bg-[#25D366] hover:bg-[#128C7E] text-white rounded-full p-3 md:p-4 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 animate-bounce-subtle border-2 border-white/20'
       }
       aria-label="Contact us on WhatsApp"
