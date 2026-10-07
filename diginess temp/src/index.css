@@ -4950,3 +4950,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
+
+/* League information/data pages (src/components/league/PageShell.tsx): the global p/span rules
+   above reset font-weight, so the bold utilities are restated here. */
+.league-page :is(p, span, li, a).font-bold { font-weight: 700; }
+.league-page :is(p, span, li, a).font-semibold { font-weight: 600; }
