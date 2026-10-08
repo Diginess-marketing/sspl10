@@ -135,7 +135,14 @@ const CmsCollectionEditor = ({ collection }: { collection: CmsCollectionKey }) =
                     : 'Try a different search or filter.'}
             >
                 {error ? (
+                    /cms_items/.test(errorMessage(error)) && /schema cache|does not exist/.test(errorMessage(error)) ? (
+                    <div className="space-y-1 p-5">
+                        <p className="font-semibold text-[var(--admin-ink)]">Website content is not set up on this database yet.</p>
+                        <p className="admin-muted">Run <code>supabase/RUN_ONCE_IN_SQL_EDITOR.sql</code> once in the Supabase SQL Editor (live project), then refresh this page.</p>
+                    </div>
+                ) : (
                     <p className="admin-muted p-5 !text-[var(--admin-bad)]">Could not load items: {errorMessage(error)}</p>
+                )
                 ) : (
                     <table className="admin-table">
                         <thead>
