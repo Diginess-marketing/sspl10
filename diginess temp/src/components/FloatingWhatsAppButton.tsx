@@ -2,13 +2,14 @@ import { useLocation } from 'react-router-dom';
 
 const FloatingWhatsAppButton = () => {
   const { pathname } = useLocation();
-  // Admin pages: a small icon at the top right, just below the header bar so it doesn't
-  // cover the account menu (avatar) or the sidebar
+  // Admin pages have their own WhatsApp link in the header bar
   const isAdmin = pathname.startsWith('/admin');
 
   const handleWhatsApp = () => {
     window.open('https://wa.me/918807775960', '_blank');
   };
+
+  if (isAdmin) return null;
 
   return (
     <button

@@ -103,7 +103,10 @@ export function usePlayerPipeline() {
         const rows: PipelinePlayer[] = regs.map((r: any) => {
           const wf: any = wfByReg.get(r.id);
           const alloc: any = wf ? allocByWf.get(wf.workflow_id) : null;
-          const t: any = trialByReg.get(r.id) || trialByPhone.get(last10(r.phone)) || null;
+          const paid = PAID.includes(String(r.payment_status || '').toLowerCase());
+          // Phone matching only for paid registrations: an unpaid duplicate (same mobile)
+          // must not inherit the paid registration's trial progress.
+          const t: any = trialByReg.get(r.id) || (paid ? trialByPhone.get(last10(r.phone)) : null) || null;
           const levels: Record<number, LevelState> = {};
           for (let l = 1; l <= 5; l += 1) {
             levels[l] = t ? {
@@ -132,7 +135,7 @@ export function usePlayerPipeline() {
             dob: r.date_of_birth,
             registeredAt: r.created_at,
             paymentStatus: String(r.payment_status || 'pending').toLowerCase(),
-            paid: PAID.includes(String(r.payment_status || '').toLowerCase()),
+            paid,
             amount: r.amount_paid ?? r.payment_amount ?? null,
             paymentId: r.razorpay_payment_id,
             workflowId: wf?.workflow_id ?? null,

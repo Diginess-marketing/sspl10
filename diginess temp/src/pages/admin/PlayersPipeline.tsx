@@ -79,9 +79,12 @@ const PlayersPipeline = () => {
   const toggle = (id: string) => setSelected((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
   const allOnPage = rows.length > 0 && rows.every((r) => selected.has(r.id));
 
+  // Only paid players who have not started trials can be moved
+  const movable = players.filter((p) => selected.has(p.id) && p.paid && p.stage === 'registered').map((p) => p.id);
+
   const moveSelected = async () => {
-    const ids = players.filter((p) => selected.has(p.id) && p.paid && p.stage === 'registered').map((p) => p.id);
-    if (!ids.length) { toast.error('Select paid players who are awaiting trial'); return; }
+    const ids = movable;
+    if (!ids.length) return;
     setMoving(true);
     try {
       const res = await moveToTrialsSection(ids);
@@ -133,7 +136,9 @@ const PlayersPipeline = () => {
         onFilterChange={(v) => pick(v as Filter)}
         selectedCount={selected.size}
         onClearSelection={() => setSelected(new Set())}
-        bulkActions={<ActionButton variant="primary" size="sm" icon={ArrowRightLeft} loading={moving} onClick={moveSelected}>Move to trials</ActionButton>}
+        bulkActions={movable.length > 0
+          ? <ActionButton variant="primary" size="sm" icon={ArrowRightLeft} loading={moving} onClick={moveSelected}>Move {movable.length} to trials</ActionButton>
+          : <span className="text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>None of these can be moved — only paid players awaiting trial</span>}
         loading={loading && players.length === 0}
         isEmpty={!loading && filtered.length === 0}
         emptyTitle="No players match"
