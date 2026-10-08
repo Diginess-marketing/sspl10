@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
+import { adminApi } from '@/lib/adminApi';
 import { RefreshCw, ArrowRightLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { PageHeader, ActionButton, DataTableShell, StatusBadge } from '@/components/admin/ui';
 import { usePlayerPipeline, canMoveToTrials, type PipelinePlayer } from '@/hooks/usePlayerPipeline';
@@ -90,7 +90,7 @@ const PlayersPipeline = () => {
     try {
       const res = await moveToTrialsSection(ids);
       // Put newly moved players on the L1-L5 tracker too (best effort)
-      await (supabase as any).rpc('sync_trial_candidates'); // errors come back in the result, not thrown
+      await adminApi.post('/admin/trials/sync-candidates', {}).catch(() => undefined);
       const ok = res.filter((r) => r.success).length;
       toast.success(`${ok} player(s) moved to trials`, res.length - ok ? { description: `${res.length - ok} could not be moved` } : undefined);
       setSelected(new Set());

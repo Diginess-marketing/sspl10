@@ -645,9 +645,9 @@ export function usePlayerWorkflow() {
   const syncTrialCandidates = useCallback(async (): Promise<number> => {
     try {
       setError(null);
-      const { data, error: rpcErr } = await (supabase as any).rpc('sync_trial_candidates');
-      if (rpcErr) throw rpcErr;
-      return Number(data) || 0;
+      // Through the backend: the live database has no sync_trial_candidates function
+      const { added } = await adminApi.post<{ added: number }>('/admin/trials/sync-candidates', {});
+      return Number(added) || 0;
     } catch (err: any) {
       setError(err.message);
       return 0;

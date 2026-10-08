@@ -2,6 +2,9 @@ import supabase from '../../config/supabase.js';
 import ApiError from '../../utils/ApiError.js';
 import logger from '../../utils/logger.js';
 import { sendRegistrationConfirmation } from '../../service/registrationEmailService.js';
+import * as trialProgressModel from '../../model/trialProgressModel.js';
+import { applyLevelChange, deriveStatus } from '../../service/trialLevelRules.js';
+import { notifyLevelOutcome } from '../../service/trialNotificationService.js';
 
 const PAID = ['captured', 'paid', 'completed', 'success'];
 const MAX_BATCH = 500;
@@ -266,6 +269,49 @@ async function findAllocation(allocationId) {
 }
 
 /**
+ * Copy a Step 4 attendance/decision onto the player's current level in the L1-L5 tracker
+ * (same rules and emails as the Levels screen). Never fails the Step 4 save; returns what happened.
+ */
+/**
+ * The level this workflow's current Step 4 slot was already synced to, if any. Saving the
+ * same slot again (e.g. editing a result) must update that level, not the next one.
+ * A newer allocation or slot change starts a new level.
+ */
+async function levelOfCurrentSlot(workflowId) {
+  const { data, error } = await supabase
+    .from('workflow_history').select('action_type,action_details')
+    .eq('workflow_id', workflowId).order('performed_at', { ascending: false }).limit(50);
+  if (error) return null;
+  for (const row of data || []) {
+    if (['allocated_to_trial', 'slot_changed'].includes(row.action_type)) return null;
+    const level = Number(row.action_details?.tracker_level);
+    if (Number.isInteger(level) && level >= 1 && level <= 5) return level;
+  }
+  return null;
+}
+
+async function mirrorToLevel(workflowId, change) {
+  try {
+    const { data: workflow, error } = await supabase
+      .from('player_workflow').select('registration_id,phone').eq('workflow_id', workflowId).maybeSingle();
+    if (error) throw error;
+    if (!workflow) return { synced: false, reason: 'Workflow not found' };
+    const candidateId = await trialProgressModel.findCandidateIdForRegistration(workflow.registration_id, workflow.phone);
+    if (!candidateId) return { synced: false, reason: 'Player is not on the L1-L5 tracker' };
+
+    const { progress } = await trialProgressModel.findCandidate(candidateId);
+    const level = (await levelOfCurrentSlot(workflowId)) ?? deriveStatus(progress || {}).current_level;
+    const { update, outcome } = applyLevelChange(progress || {}, level, change);
+    await trialProgressModel.saveProgress(candidateId, update);
+    const notification = outcome ? await notifyLevelOutcome({ candidateId, level, outcome }) : null;
+    return { synced: true, candidateId, level, outcome, notification };
+  } catch (err) {
+    logger.warn('Step 4 -> level tracker sync failed:', err.message);
+    return { synced: false, reason: err.message };
+  }
+}
+
+/**
  * POST /api/admin/workflow/attendance  body: { allocationId, status: pending|attended|absent }
  * Replaces the mark_trial_attendance database function, which fails on the live database.
  */
@@ -277,15 +323,16 @@ export const markAttendance = async (req, res) => {
     .update({ attendance_status: status, attended_at: status === 'pending' ? null : new Date().toISOString() })
     .eq('allocation_id', allocationId);
   if (error) throw error;
+  const tracker = await mirrorToLevel(allocation.workflow_id, { attendance: status.toUpperCase() });
   await recordHistory({
     workflow_id: allocation.workflow_id,
     previous_stage: 'trials_allocated',
     new_stage: 'trials_allocated',
     action_type: 'attendance_marked',
-    action_details: { from: allocation.attendance_status, to: status },
+    action_details: { from: allocation.attendance_status, to: status, tracker_level: tracker.level ?? null },
     performed_by: req.user.id,
   });
-  res.json({ success: true });
+  res.json({ success: true, tracker });
 };
 
 /**
@@ -317,13 +364,18 @@ export const saveResults = async (req, res) => {
   };
   const { error } = await supabase.from('trials_allocations').update(fields).eq('allocation_id', b.allocationId);
   if (error) throw error;
+  // Waitlisted has no level result; it only keeps the score and remarks
+  const LEVEL_RESULT = { selected: 'SELECTED', not_selected: 'REJECTED', pending: 'PENDING' };
+  const change = { marks: fields.overall_score, remarks: fields.remarks };
+  if (LEVEL_RESULT[selection]) change.result = LEVEL_RESULT[selection];
+  const tracker = await mirrorToLevel(allocation.workflow_id, change);
   await recordHistory({
     workflow_id: allocation.workflow_id,
     previous_stage: 'trials_allocated',
     new_stage: 'trials_allocated',
     action_type: 'trial_result_saved',
-    action_details: { selection_status: selection, overall_score: fields.overall_score },
+    action_details: { selection_status: selection, overall_score: fields.overall_score, tracker_level: tracker.level ?? null },
     performed_by: req.user.id,
   });
-  res.json({ success: true });
+  res.json({ success: true, tracker });
 };

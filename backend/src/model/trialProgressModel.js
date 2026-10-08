@@ -37,15 +37,42 @@ export async function findCandidate(candidateId) {
   };
 }
 
-/** Write progress columns for a candidate (creates the row if missing). Returns the saved row. */
+/**
+ * Write progress columns for a candidate (creates the row if missing). Returns the saved row.
+ * Columns the table does not have yet (L4/L5, marks, remarks before the pending migration)
+ * are left out rather than failing the whole save.
+ */
 export async function saveProgress(candidateId, update) {
-  const { data, error } = await supabase
-    .from('trial_progress')
-    .upsert({ candidate_id: candidateId, ...update, updated_at: new Date().toISOString() }, { onConflict: 'candidate_id' })
-    .select('*')
-    .single();
+  const row = { candidate_id: candidateId, ...update, updated_at: new Date().toISOString() };
+  for (;;) {
+    const { data, error } = await supabase
+      .from('trial_progress')
+      .upsert(row, { onConflict: 'candidate_id' })
+      .select('*')
+      .single();
+    const missing = error?.code === 'PGRST204' && /the '([^']+)' column/.exec(error.message)?.[1];
+    if (missing && missing in row && missing !== 'candidate_id') {
+      logger.warn(`trial_progress has no ${missing} column yet; run the pending migration`);
+      delete row[missing];
+      continue;
+    }
+    if (error) throw error;
+    return data;
+  }
+}
+
+/** The trial candidate for a registration: by registration id, else by the last 10 digits of the mobile. */
+export async function findCandidateIdForRegistration(registrationId, phone) {
+  const { data: byReg, error } = await supabase
+    .from('trial_candidates').select('id').eq('registration_id', registrationId).limit(1);
   if (error) throw error;
-  return data;
+  if (byReg?.length) return byReg[0].id;
+  const mobile = String(phone || '').replace(/D/g, '').slice(-10);
+  if (mobile.length !== 10) return null;
+  const { data: byPhone, error: pErr } = await supabase
+    .from('trial_candidates').select('id').ilike('mobile', `%${mobile}`).limit(1);
+  if (pErr) throw pErr;
+  return byPhone?.[0]?.id ?? null;
 }
 
 export async function findLevelEmail(candidateId, level, outcome) {

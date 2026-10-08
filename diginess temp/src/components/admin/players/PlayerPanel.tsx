@@ -120,8 +120,7 @@ export const PlayerPanel = ({ player, onClose, onChanged }: { player: PipelinePl
   const addToTrials = () => run('add', async () => {
     const res = await moveToTrialsSection([p.id]);
     if (res[0] && !res[0].success) throw new Error(res[0].message);
-    const { error } = await (supabase as any).rpc('sync_trial_candidates');
-    if (error) throw error;
+    await adminApi.post('/admin/trials/sync-candidates', {});
   }, `${firstName} added to the trials`);
 
   const openSlotPicker = async () => {
