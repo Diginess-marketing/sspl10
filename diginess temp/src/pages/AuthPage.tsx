@@ -30,26 +30,32 @@ const AuthPage = () => {
   const location = useLocation();
   const { toast } = useToast();
 
-  const from = (location.state as { from?: string })?.from || '/';
+  // Page the user was sent here from (set by protected routes); none when they opened /auth directly
+  const from = (location.state as { from?: string })?.from;
+
+  // After sign-in: admins go to the admin panel, players to their dashboard. A protected page they
+  // came from wins, but only one they can use (players are never sent into /admin).
+  const destinationFor = (role: string | null) => {
+    const cameFrom = from && from !== '/' && from !== '/auth' ? from : null;
+    if (role === 'admin') return cameFrom || '/admin';
+    return cameFrom && !cameFrom.startsWith('/admin') ? cameFrom : '/dashboard';
+  };
 
   useEffect(() => {
     if (user && !loading && !roleLoading) {
-      if (userRole === 'admin') {
-        navigate(from || '/admin', { replace: true });
-      } else {
-        navigate('/dashboard', { replace: true });
-      }
+      navigate(destinationFor(userRole), { replace: true });
     }
-  }, [user, userRole, loading, roleLoading, navigate, from]);
+  }, [user, userRole, loading, roleLoading, navigate, from]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Role lookup taking too long: continue as a player rather than leaving the user on this page
   useEffect(() => {
     if (user && !loading && roleLoading) {
       const timeout = setTimeout(() => {
-        navigate(from || '/', { replace: true });
+        navigate(destinationFor(null), { replace: true });
       }, 5000);
       return () => clearTimeout(timeout);
     }
-  }, [user, loading, roleLoading, from, navigate]);
+  }, [user, loading, roleLoading, from, navigate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();

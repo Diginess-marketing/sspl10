@@ -15,6 +15,7 @@ import {
     CircularProgress,
 } from '@mui/material';
 import { Mail, User, MessageSquare, Send } from 'lucide-react';
+import { API_BASE_URL } from '@/config/api';
 
 // --- Validation Schema ---
 const enquirySchema = z.object({
@@ -29,9 +30,13 @@ export type EnquiryFormData = z.infer<typeof enquirySchema>;
 
 interface EnquiryFormProps {
     onSubmitSuccess?: () => void;
+    /** Pre-selected enquiry type (the franchise page opens on "franchise"). */
+    defaultInterest?: EnquiryFormData['interestType'];
 }
 
-export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
+export const EnquiryForm = ({ onSubmitSuccess, defaultInterest = 'sponsor' }: EnquiryFormProps) => {
+    const [errorMessage, setErrorMessage] = useState('');
+    const [honeypot, setHoneypot] = useState('');
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
     const { control, handleSubmit, formState: { errors, isSubmitting }, reset, watch } = useForm<EnquiryFormData>({
@@ -40,7 +45,7 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
             name: '',
             phone: '',
             email: '',
-            interestType: 'sponsor',
+            interestType: defaultInterest,
             message: '',
         },
     });
@@ -50,16 +55,25 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
     const onSubmit = async (data: EnquiryFormData) => {
         try {
             setSubmitStatus('idle');
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            console.log('Form Submitted:', data);
+            setErrorMessage('');
+            // Emails the SSPL mailbox and stores a lead (backend /api/enquiries)
+            const response = await fetch(`${API_BASE_URL}/enquiries`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...data, website: honeypot }),
+            });
+            if (!response.ok) {
+                const body = await response.json().catch(() => ({}));
+                throw new Error(body.error || 'Something went wrong. Please try again later.');
+            }
 
             setSubmitStatus('success');
-            reset();
+            reset({ name: '', phone: '', email: '', interestType: data.interestType, message: '' });
             if (onSubmitSuccess) onSubmitSuccess();
 
         } catch (error) {
             console.error('Submission error:', error);
+            setErrorMessage(error instanceof Error ? error.message : '');
             setSubmitStatus('error');
         }
     };
@@ -78,8 +92,8 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
                 '& .MuiOutlinedInput-notchedOutline': { borderColor: '#d1d5db !important' },
                 '& .MuiInputAdornment-root svg': { color: '#64748b !important' },
                 '& .MuiTypography-root': { color: '#000000 !important' },
-                '& .MuiToggleButton-root': { color: '#4b5563 !important', borderColor: '#d1d5db !important' },
-                '& .MuiToggleButton-root.Mui-selected': { color: '#ffffff !important' },
+                '& .MuiToggleButton-root': { color: '#4b5563 !important', borderColor: '#d1d5db !important', backgroundColor: '#ffffff !important' },
+                '& .MuiToggleButton-root.Mui-selected': { color: '#ffffff !important', backgroundColor: '#0a1240 !important' },
             }}
         >
             {submitStatus === 'success' && (
@@ -90,9 +104,21 @@ export const EnquiryForm = ({ onSubmitSuccess }: EnquiryFormProps) => {
 
             {submitStatus === 'error' && (
                 <Alert severity="error" sx={{ mb: 2 }}>
-                    Something went wrong. Please try again later.
+                    {errorMessage || 'Something went wrong. Please try again later.'} You can also WhatsApp us on +91 88077 75960.
                 </Alert>
             )}
+
+            {/* Spam trap: hidden from people, filled in by bots */}
+            <input
+                type="text"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+            />
 
             {/* Interest Type Toggle */}
             <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>

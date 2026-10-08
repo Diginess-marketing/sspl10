@@ -8,6 +8,8 @@ import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 const BODY_LIMIT = '50mb';
 
 const app = express();
+// Behind Render's proxy: use the visitor's IP (X-Forwarded-For) for req.ip
+app.set('trust proxy', 1);
 
 // Keep the raw bytes around: Razorpay webhook signatures are computed over the
 // exact payload, which re-serializing `req.body` would not reproduce faithfully.

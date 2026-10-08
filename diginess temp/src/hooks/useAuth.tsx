@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, useRef, useCallback } from 'react';
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase, DatabaseUtils } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -60,8 +60,6 @@ interface AuthContextType {
   userRole: string | null;
   userPermissions: string[];
   checkUserRoleInDB: (email: string) => Promise<string | null>;
-  setUserAsAdmin: (email: string) => Promise<boolean>;
-  forceAdminRole: () => Promise<boolean>;
   hasPermission: (permission: string) => boolean;
 }
 
@@ -75,7 +73,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userPermissions, setUserPermissions] = useState<string[]>([]);
   const [roleLoading, setRoleLoading] = useState(true);
   const { toast } = useToast();
-  const adminBootstrapRun = useRef(false);
 
   const fetchUserRole = useCallback(async (userId: string) => {
     try {
@@ -379,64 +376,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Function to manually set user as admin
-  const setUserAsAdmin = async (email: string) => {
-    try {
-      logger.debug('Auth: Setting user as admin', { email });
-
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (!user || user.email !== email) {
-        logger.warn('Auth: User mismatch or not found for admin assignment', { email, userEmail: user?.email });
-        return false;
-      }
-
-      // Use upsert to handle both insert and update in one operation
-      await DatabaseUtils.safeUpsert(
-        'user_roles',
-        { user_id: user.id, role: 'admin' },
-        'setUserAsAdmin',
-        'user_id',
-      );
-
-      logger.info('Auth: User set as admin', { email });
-      setUserRole('admin');
-      return true;
-    } catch (error) {
-      logger.error('Auth: Error setting user as admin', { email, error });
-      return false;
-    }
-  };
-
-
-  // Force update role to admin for current user
-  const forceAdminRole = async () => {
-    try {
-      logger.debug('Auth: Force updating role to admin');
-
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (!user) {
-        logger.warn('Auth: No user found for force admin role');
-        return false;
-      }
-
-      // Use upsert to handle both insert and update in one operation
-      await DatabaseUtils.safeUpsert(
-        'user_roles',
-        { user_id: user.id, role: 'admin' },
-        'forceAdminRole',
-        'user_id',
-      );
-
-      logger.info('Auth: User role force set to admin', { userId: user.id });
-      setUserRole('admin');
-      return true;
-    } catch (error) {
-      logger.error('Auth: Error force updating to admin role', { error });
-      return false;
-    }
-  };
 
 
   const signIn = async (email: string, password: string) => {
@@ -478,7 +417,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       logger.info('Auth: Attempting sign up', { email });
 
-      const redirectUrl = `${window.location.origin}/`;
+      // Back to /auth, which sends players to /dashboard and admins to /admin
+      const redirectUrl = `${window.location.origin}/auth`;
 
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -517,7 +457,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/`,
+          redirectTo: `${window.location.origin}/auth`,
         },
       });
 
@@ -582,102 +522,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Consolidated DEV-only admin setup with proper state management
-  useEffect(() => {
-    let isMounted = true;
-
-    const setupDevAdmin = async () => {
-      if (!import.meta.env.DEV) return;
-      if (adminBootstrapRun.current) return;
-      if (!user) return;
-
-      try {
-        adminBootstrapRun.current = true;
-        logger.debug('Auth: Starting DEV admin setup', { userId: user.id });
-
-        // Check if any admins exist
-        const existingAdmins = await DatabaseUtils.safeSelect(
-          'user_roles',
-          'user_id, role',
-          { role: 'admin' },
-          'checkExistingAdmins',
-        );
-
-        if (!existingAdmins || existingAdmins.length === 0) {
-          logger.info('Auth: No admins found, bootstrapping current user as admin (DEV only)');
-
-          // Use upsert to handle both insert and update
-          await DatabaseUtils.safeUpsert(
-            'user_roles',
-            { user_id: user.id, role: 'admin' },
-            'bootstrapAdminRole',
-            'user_id',
-          );
-
-          if (isMounted) {
-            setUserRole('admin');
-            setRoleLoading(false);
-            setLoading(false);
-          }
-          logger.info('Auth: Admin bootstrap completed - current user set as admin');
-        } else {
-          logger.debug('Auth: Admin already exists - bootstrap not needed');
-        }
-      } catch (err) {
-        logger.error('Auth: Admin bootstrap unexpected error', { error: err });
-        // Fail-open in DEV to unblock UI
-        if (isMounted) {
-          setUserRole('admin');
-          setRoleLoading(false);
-          setLoading(false);
-        }
-      }
-    };
-
-    const forceTargetAdmin = async () => {
-      if (!import.meta.env.DEV) return;
-
-      const targetAdminId = '374cac1d-3028-4c63-8046-f8df9c26b310';
-      if (!user || user.id !== targetAdminId) return;
-
-      try {
-        logger.debug('Auth: Forcing admin role for target user (DEV only)', { targetAdminId });
-
-        // Use upsert to handle both insert and update
-        await DatabaseUtils.safeUpsert(
-          'user_roles',
-          { user_id: targetAdminId, role: 'admin' },
-          'forceTargetAdminRole',
-          'user_id',
-        );
-
-        // Ensure UI proceeds in DEV even if DB encountered warnings
-        if (isMounted) {
-          setUserRole('admin');
-          setRoleLoading(false);
-          setLoading(false);
-        }
-        logger.info('Auth: Target user elevated to admin (DEV only)');
-      } catch (err) {
-        logger.error('Auth: Force admin unexpected error', { error: err });
-        // Fail-open in DEV to unblock UI and initial fetch timing
-        if (isMounted) {
-          setUserRole('admin');
-          setRoleLoading(false);
-          setLoading(false);
-        }
-      }
-    };
-
-    // Run both admin setup functions
-    setupDevAdmin();
-    forceTargetAdmin();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [user?.id]);
-
   const hasPermission = (permission: string) => {
     // Admins have all permissions implicitly
     if (userRole === 'admin') return true;
@@ -697,8 +541,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     userRole,
     userPermissions,
     checkUserRoleInDB,
-    setUserAsAdmin,
-    forceAdminRole,
     hasPermission,
   };
 

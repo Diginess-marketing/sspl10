@@ -27,4 +27,8 @@ export const BUILT_IN_CONTENT: Record<CmsCollectionKey, () => CmsData[]> = {
   featured_players: () => asData(featuredPlayers),
   highlights: () => asData(highlights),
   partners: () => asData(partners),
+  // Admin-entered only: no built-in rows
+  announcements: () => [],
+  auction_players: () => [],
+  tickets: () => [],
 };

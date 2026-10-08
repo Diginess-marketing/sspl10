@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
 import {
-  CalendarCheck, RefreshCw, Calendar, MapPin, Users, CheckCircle, XCircle, Trophy, Edit, AlertCircle, Clock, Save, Wand2,
+  CalendarCheck, RefreshCw, Calendar, MapPin, Users, CheckCircle, XCircle, Trophy, Edit, AlertCircle, Clock, Save, Wand2, CalendarClock,
 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { adminApi } from '@/lib/adminApi';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
 import { useAuth } from '@/hooks/useAuth';
 import { ActionButton, ConfirmDialog, DataTableShell, DetailDrawer, StatCard, StatusBadge } from '@/components/admin/ui';
@@ -21,6 +23,8 @@ const DECISIONS: { value: SelectionStatus; label: string; icon: typeof Trophy; o
 
 const norm = (v: string | null | undefined) => (v || 'pending').toLowerCase();
 
+type Trial = { trial_id: string; trial_name: string; trial_date: string; trial_time: string | null; trial_venue: string | null; trial_batch: string | null };
+
 const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
   const [players, setPlayers] = useState<TrialsAllocatedPlayer[]>([]);
   const [processing, setProcessing] = useState<string | null>(null);
@@ -38,6 +42,11 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
   const [selectionStatus, setSelectionStatus] = useState<SelectionStatus>('pending');
   const [remarks, setRemarks] = useState('');
   const [evaluatorNotes, setEvaluatorNotes] = useState('');
+
+  // Next-level slot for a selected player
+  const [nextSlotFor, setNextSlotFor] = useState<TrialsAllocatedPlayer | null>(null);
+  const [trials, setTrials] = useState<Trial[]>([]);
+  const [trialChoice, setTrialChoice] = useState('');
 
   const { user } = useAuth();
   const { getTrialsAllocatedPlayers, markAttendance, updateTrialResults, error } = usePlayerWorkflow();
@@ -111,8 +120,17 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
     return nums.length ? (nums.reduce((a, b) => a + b, 0) / nums.length).toFixed(1) : '';
   }, [battingScore, bowlingScore, fieldingScore]);
 
+  // Scores are 0-100; the server rejects anything else
+  const scoreError = (v: string) => {
+    if (v.trim() === '') return null;
+    const n = Number(v);
+    return Number.isFinite(n) && n >= 0 && n <= 100 ? null : 'Enter a score from 0 to 100';
+  };
+  const invalidScores = [battingScore, bowlingScore, fieldingScore, overallScore].some((v) => scoreError(v));
+
   const handleSaveResults = async () => {
     if (!selectedPlayer) return;
+    if (invalidScores) { toast.error('Fix the scores first', { description: 'Every score must be from 0 to 100.' }); return; }
     setProcessing(selectedPlayer.allocation_id);
     try {
       const num = (v: string) => (v ? parseFloat(v) : undefined);
@@ -130,6 +148,31 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
       }
     } catch (err: any) {
       toast.error('Failed to save trial results', { description: err.message });
+    } finally {
+      setProcessing(null);
+    }
+  };
+
+  const openNextSlot = async (player: TrialsAllocatedPlayer) => {
+    const { data, error: tErr } = await (supabase as any).from('trials')
+      .select('trial_id,trial_name,trial_date,trial_time,trial_venue,trial_batch').order('trial_date', { ascending: false });
+    if (tErr) { toast.error('Could not load trial events', { description: tErr.message }); return; }
+    setTrials(data || []);
+    setTrialChoice(data?.[0]?.trial_id || '');
+    setNextSlotFor(player);
+  };
+
+  const saveNextSlot = async () => {
+    if (!nextSlotFor || !trialChoice) return;
+    setProcessing(nextSlotFor.allocation_id);
+    try {
+      await adminApi.post('/admin/workflow/slot', { registrationId: nextSlotFor.registration_id, trialId: trialChoice });
+      toast.success('Next level slot saved', { description: `${nextSlotFor.full_name}: attendance and results start fresh for the next level` });
+      setNextSlotFor(null);
+      loadPlayers();
+      onRefresh();
+    } catch (err: any) {
+      toast.error('Could not save the slot', { description: err.message });
     } finally {
       setProcessing(null);
     }
@@ -224,6 +267,9 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
                           {norm(player.selection_status) === 'pending' ? 'Enter results' : 'Edit results'}
                         </ActionButton>
                       )}
+                      {norm(player.selection_status) === 'selected' && (
+                        <ActionButton variant="primary" size="sm" icon={CalendarClock} disabled={busy} onClick={() => openNextSlot(player)}>Next level slot</ActionButton>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -244,6 +290,26 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
         onConfirm={() => absentTarget ? handleMarkAttendance(absentTarget, 'absent') : undefined}
       />
 
+      <ConfirmDialog
+        open={nextSlotFor !== null}
+        onOpenChange={open => { if (!open) setNextSlotFor(null); }}
+        title={`Next level trial for ${nextSlotFor?.full_name ?? 'this player'}`}
+        description={trials.length ? 'Choose the trial event for the next level. Attendance, scores and the decision start fresh.' : 'No trial events exist yet. Create one first.'}
+        confirmLabel="Save slot"
+        loading={processing === nextSlotFor?.allocation_id}
+        onConfirm={() => (trialChoice ? saveNextSlot() : undefined)}
+      >
+        {trials.length > 0 && (
+          <select className="admin-field mt-2" aria-label="Trial event" value={trialChoice} onChange={e => setTrialChoice(e.target.value)}>
+            {trials.map(t => (
+              <option key={t.trial_id} value={t.trial_id}>
+                {t.trial_date ? new Date(t.trial_date).toLocaleDateString() : 'No date'}{t.trial_time ? ` · ${t.trial_time}` : ''} · {t.trial_venue || t.trial_name}{t.trial_batch ? ` · ${t.trial_batch}` : ''}
+              </option>
+            ))}
+          </select>
+        )}
+      </ConfirmDialog>
+
       <DetailDrawer
         open={selectedPlayer !== null}
         onOpenChange={open => { if (!open) setSelectedPlayer(null); }}
@@ -253,7 +319,7 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
         footer={(
           <>
             <ActionButton variant="ghost" onClick={() => setSelectedPlayer(null)} disabled={saving}>Cancel</ActionButton>
-            <ActionButton variant="primary" icon={Save} loading={saving} onClick={handleSaveResults}>Save results</ActionButton>
+            <ActionButton variant="primary" icon={Save} loading={saving} disabled={invalidScores} onClick={handleSaveResults}>Save results</ActionButton>
           </>
         )}
       >
@@ -262,7 +328,10 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
             {scoreFields.map(f => (
               <div key={f.id}>
                 <label htmlFor={f.id} className="admin-label">{f.label}</label>
-                <input id={f.id} type="number" min="0" max="100" step="0.5" placeholder="0-100" value={f.value} onChange={e => f.set(e.target.value)} className="admin-field" />
+                <input id={f.id} type="number" min="0" max="100" step="0.5" placeholder="0-100" value={f.value} onChange={e => f.set(e.target.value)} className="admin-field"
+                  aria-invalid={Boolean(scoreError(f.value))} aria-describedby={scoreError(f.value) ? `${f.id}-error` : undefined}
+                  style={scoreError(f.value) ? { borderColor: 'var(--admin-bad)' } : undefined} />
+                {scoreError(f.value) && <p id={`${f.id}-error`} className="mt-1 text-xs" style={{ color: 'var(--admin-bad)' }}>{scoreError(f.value)}</p>}
               </div>
             ))}
           </div>
@@ -270,11 +339,14 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
           <div>
             <label htmlFor="overall" className="admin-label">Overall score</label>
             <div className="flex gap-2">
-              <input id="overall" type="number" min="0" max="100" step="0.5" placeholder="0-100" value={overallScore} onChange={e => setOverallScore(e.target.value)} className="admin-field" />
+              <input id="overall" type="number" min="0" max="100" step="0.5" placeholder="0-100" value={overallScore} onChange={e => setOverallScore(e.target.value)} className="admin-field"
+                aria-invalid={Boolean(scoreError(overallScore))} aria-describedby={scoreError(overallScore) ? 'overall-error' : undefined}
+                style={scoreError(overallScore) ? { borderColor: 'var(--admin-bad)' } : undefined} />
               <ActionButton variant="soft" icon={Wand2} disabled={!suggestedOverall} onClick={() => setOverallScore(suggestedOverall)} title="Use the average of the three scores">
                 Average
               </ActionButton>
             </div>
+            {scoreError(overallScore) && <p id="overall-error" className="mt-1 text-xs" style={{ color: 'var(--admin-bad)' }}>{scoreError(overallScore)}</p>}
           </div>
 
           <div>

@@ -7,5 +7,9 @@ const router = express.Router();
 
 router.post('/admin/workflow/move-to-trials', requireAdmin, asyncHandler(controller.moveToTrials));
 router.post('/admin/workflow/confirmation-email', requireAdmin, asyncHandler(controller.sendConfirmation));
+router.post('/admin/workflow/slot', requireAdmin, asyncHandler(controller.assignSlot));
+router.post('/admin/workflow/allocate', requireAdmin, asyncHandler(controller.allocateToTrials));
+router.post('/admin/workflow/attendance', requireAdmin, asyncHandler(controller.markAttendance));
+router.post('/admin/workflow/results', requireAdmin, asyncHandler(controller.saveResults));
 
 export default router;

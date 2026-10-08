@@ -320,10 +320,10 @@ export function usePlayerWorkflow() {
           city: reg?.city || null,
           payment_status: reg?.payment_status || '',
           registration_date: reg?.created_at || '',
-          overall_score: result?.overall_score || null,
-          selection_status: result?.selection_status as SelectionStatus | null || null,
-          remarks: result?.remarks || null,
-          evaluated_at: result?.evaluated_at || null,
+          overall_score: result?.overall_score ?? alloc?.overall_score ?? null,
+          selection_status: (result?.selection_status ?? alloc?.selection_status ?? null) as SelectionStatus | null,
+          remarks: result?.remarks ?? alloc?.remarks ?? null,
+          evaluated_at: result?.evaluated_at ?? alloc?.evaluated_at ?? null,
         };
       });
     } catch (err: any) {
@@ -373,26 +373,12 @@ export function usePlayerWorkflow() {
       setLoading(true);
       setError(null);
 
-      const { data, error: rpcError } = await supabase.rpc('allocate_to_trials', {
-        p_workflow_ids: workflowIds,
-        p_allocation_date: allocationDate,
-        p_allocation_time: allocationTime,
-        p_allocation_venue: allocationVenue,
-        p_allocation_batch: allocationBatch,
-        p_admin_id: adminId,
+      // Through the backend: the allocate_to_trials database function fails on the live
+      // database ("column id does not exist").
+      void adminId; // the backend records the signed-in admin
+      return await adminApi.post<BulkOperationResult[]>('/admin/workflow/allocate', {
+        workflowIds, allocationDate, allocationTime, allocationVenue, allocationBatch,
       });
-
-      if (rpcError) {
-        console.error('Error allocating to trials:', rpcError);
-        setError(rpcError.message);
-        return workflowIds.map(id => ({
-          workflow_id: id,
-          success: false,
-          message: rpcError.message,
-        }));
-      }
-
-      return data || [];
     } catch (err: any) {
       console.error('Exception allocating to trials:', err);
       setError(err.message);
@@ -416,19 +402,10 @@ export function usePlayerWorkflow() {
       setLoading(true);
       setError(null);
 
-      const { data, error: rpcError } = await supabase.rpc('mark_trial_attendance', {
-        p_allocation_id: allocationId,
-        p_attendance_status: attendanceStatus,
-        p_admin_id: adminId,
-      });
-
-      if (rpcError) {
-        console.error('Error marking attendance:', rpcError);
-        setError(rpcError.message);
-        return false;
-      }
-
-      return data || false;
+      // Through the backend: the mark_trial_attendance database function fails on the live database.
+      void adminId; // the backend records the signed-in admin
+      await adminApi.post('/admin/workflow/attendance', { allocationId, status: attendanceStatus });
+      return true;
     } catch (err: any) {
       console.error('Exception marking attendance:', err);
       setError(err.message);
@@ -454,25 +431,13 @@ export function usePlayerWorkflow() {
       setLoading(true);
       setError(null);
 
-      const { data, error: rpcError } = await supabase.rpc('update_trial_results', {
-        p_allocation_id: allocationId,
-        p_batting_score: battingScore,
-        p_bowling_score: bowlingScore,
-        p_fielding_score: fieldingScore,
-        p_overall_score: overallScore,
-        p_selection_status: selectionStatus,
-        p_remarks: remarks,
-        p_evaluator_notes: evaluatorNotes,
-        p_admin_id: adminId,
+      // Through the backend: the update_trial_results database function fails on the live database.
+      void adminId; // the backend records the signed-in admin
+      await adminApi.post('/admin/workflow/results', {
+        allocationId, battingScore, bowlingScore, fieldingScore, overallScore,
+        selectionStatus, remarks, evaluatorNotes,
       });
-
-      if (rpcError) {
-        console.error('Error updating trial results:', rpcError);
-        setError(rpcError.message);
-        return false;
-      }
-
-      return data || false;
+      return true;
     } catch (err: any) {
       console.error('Exception updating trial results:', err);
       setError(err.message);
@@ -680,9 +645,9 @@ export function usePlayerWorkflow() {
   const syncTrialCandidates = useCallback(async (): Promise<number> => {
     try {
       setError(null);
-      const { data, error: rpcErr } = await (supabase as any).rpc('sync_trial_candidates');
-      if (rpcErr) throw rpcErr;
-      return Number(data) || 0;
+      // Through the backend: the live database has no sync_trial_candidates function
+      const { added } = await adminApi.post<{ added: number }>('/admin/trials/sync-candidates', {});
+      return Number(added) || 0;
     } catch (err: any) {
       setError(err.message);
       return 0;

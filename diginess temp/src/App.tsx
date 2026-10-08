@@ -33,6 +33,21 @@ const ErrorHandlingTest = lazy(() => import('./components/ErrorHandlingTest'));
 const RegistrationSuccess = lazy(() => import('./pages/RegistrationSuccess'));
 const AboutUs = lazy(() => import('./pages/AboutUs'));
 const ComingSoon = lazy(() => import('./pages/ComingSoon'));
+const InfoPage = lazy(() => import('./pages/league/InfoPage'));
+const TrialsPage = lazy(() => import('./pages/league/TrialsPage'));
+const AuctionResultsPage = lazy(() => import('./pages/league/AuctionResultsPage'));
+const PlayerProfilesPage = lazy(() => import('./pages/league/PlayersPages').then((m) => ({ default: m.PlayerProfilesPage })));
+const SelectedPlayersPage = lazy(() => import('./pages/league/PlayersPages').then((m) => ({ default: m.SelectedPlayersPage })));
+const ResultsPage = lazy(() => import('./pages/league/MatchPages').then((m) => ({ default: m.ResultsPage })));
+const LiveScorePage = lazy(() => import('./pages/league/MatchPages').then((m) => ({ default: m.LiveScorePage })));
+const TicketsPage = lazy(() => import('./pages/league/MatchPages').then((m) => ({ default: m.TicketsPage })));
+const TournamentStagePage = lazy(() => import('./pages/league/MatchPages').then((m) => ({ default: m.TournamentStagePage })));
+const AnnouncementsPage = lazy(() => import('./pages/league/MediaPages').then((m) => ({ default: m.AnnouncementsPage })));
+const GalleryPage = lazy(() => import('./pages/league/MediaPages').then((m) => ({ default: m.GalleryPage })));
+const PartnersPage = lazy(() => import('./pages/league/MediaPages').then((m) => ({ default: m.PartnersPage })));
+const FranchisePage = lazy(() => import('./pages/league/ConnectPages').then((m) => ({ default: m.FranchisePage })));
+const AppDownloadPage = lazy(() => import('./pages/league/ConnectPages').then((m) => ({ default: m.AppDownloadPage })));
+const SocialMediaPage = lazy(() => import('./pages/league/ConnectPages').then((m) => ({ default: m.SocialMediaPage })));
 const HowItWorks = lazy(() => import('./pages/HowItWorks'));
 const Enquiry = lazy(() => import('./pages/Enquiry'));
 const TermsAndConditions = lazy(() => import('./pages/terms-and-conditions'));
@@ -72,6 +87,7 @@ import SSPLChatbot from './components/SSPLChatbot';
 
 import ScrollToTop from './components/ScrollToTop';
 import { COMING_SOON_PAGES } from './config/siteNav';
+import { INFO_PAGES } from './content/infoPages';
 
 // Admin Panel Components (Lazy Loaded)
 const AdminLayout = lazy(() => import('./components/admin/AdminLayout'));
@@ -88,6 +104,7 @@ const AdminSelectionStatus = lazy(() => import('./pages/admin/AdminSelectionStat
 const AdminReports = lazy(() => import('./pages/admin/AdminReports'));
 const AdminWhatsApp = lazy(() => import('./pages/admin/WhatsAppMarketing'));
 const AdminEmailCenter = lazy(() => import('./pages/admin/EmailCenter'));
+const AdminPlayers = lazy(() => import('./pages/admin/PlayersPipeline'));
 const AdminRazorpay = lazy(() => import('./pages/admin/RazorpayDashboard'));
 const AdminRewards = lazy(() => import('./pages/admin/RewardsManager'));
 const AdminRoute = lazy(() => import('./components/admin/AdminRoute'));
@@ -340,6 +357,35 @@ const App = () => {
                                 <Route key={page.to} path={page.to} element={<ComingSoon />} />
                               ))}
 
+                              {/* League pages (sitemap in src/config/siteNav.ts) */}
+                              {INFO_PAGES.map((page) => (
+                                <Route key={page.path} path={page.path} element={<InfoPage />} />
+                              ))}
+                              <Route path="/trials" element={<TrialsPage />} />
+                              <Route path="/trials/schedule" element={<TrialsPage view="schedule" />} />
+                              <Route path="/trials/locations" element={<TrialsPage view="locations" />} />
+                              <Route path="/players/profiles" element={<PlayerProfilesPage />} />
+                              <Route path="/players/selected" element={<SelectedPlayersPage />} />
+                              <Route path="/matches/results" element={<ResultsPage />} />
+                              <Route path="/matches/live" element={<LiveScorePage />} />
+                              <Route path="/matches/tickets" element={<TicketsPage />} />
+                              <Route path="/tournament/schedule" element={<TournamentStagePage stage="schedule" />} />
+                              <Route path="/tournament/league-stage" element={<TournamentStagePage stage="league-stage" />} />
+                              <Route path="/tournament/playoffs" element={<TournamentStagePage stage="playoffs" />} />
+                              <Route path="/tournament/final" element={<TournamentStagePage stage="final" />} />
+                              <Route path="/media/announcements" element={<AnnouncementsPage />} />
+                              <Route path="/media/photos" element={<GalleryPage />} />
+                              <Route path="/media/highlights" element={<VideosPage />} />
+                              <Route path="/partners/sponsors" element={<PartnersPage group="sponsors" />} />
+                              <Route path="/partners/media" element={<PartnersPage group="media" />} />
+                              <Route path="/partners/franchise-partners" element={<PartnersPage group="franchise" />} />
+                              <Route path="/partners/franchise" element={<FranchisePage />} />
+                              <Route path="/auction/results" element={<AuctionResultsPage view="all" />} />
+                              <Route path="/auction/sold" element={<AuctionResultsPage view="sold" />} />
+                              <Route path="/auction/unsold" element={<AuctionResultsPage view="unsold" />} />
+                              <Route path="/app" element={<AppDownloadPage />} />
+                              <Route path="/social" element={<SocialMediaPage />} />
+
                               <Route path="/auction" element={<AuctionPage />} />
                               <Route path="/players/:playerId" element={<PlayerProfile />} />
                               <Route path="/dashboard" element={<UserDashboard />} />
@@ -381,6 +427,7 @@ const App = () => {
                               <Route path="reports" element={<AdminReports />} />
                               <Route path="whatsapp" element={<AdminWhatsApp />} />
                               <Route path="emails" element={<AdminEmailCenter />} />
+                              <Route path="players" element={<AdminPlayers />} />
                               <Route path="razorpay" element={<AdminRazorpay />} />
                               <Route path="certificates" element={<AdminCertificateLookup />} />
                             </Route>

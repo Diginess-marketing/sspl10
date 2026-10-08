@@ -6,6 +6,7 @@ import chatRouters from './chat/chatRouters.js';
 import aiQueryRouters from './aiQuery/aiQueryRouters.js';
 import trialRouters from './trial/trialRouters.js';
 import workflowRouters from './workflow/workflowRouters.js';
+import enquiryRouters from './enquiry/enquiryRouters.js';
 
 /**
  * Every module router, mounted under a single `/api` prefix by app.js.
@@ -19,5 +20,6 @@ router.use(chatRouters);
 router.use(aiQueryRouters);
 router.use(trialRouters);
 router.use(workflowRouters);
+router.use(enquiryRouters);
 
 export default router;
