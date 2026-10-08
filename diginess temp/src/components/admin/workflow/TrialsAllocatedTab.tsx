@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
 import {
-  CalendarCheck, RefreshCw, Calendar, MapPin, Users, CheckCircle, XCircle, Trophy, Edit, AlertCircle, Clock, Save, Wand2,
+  CalendarCheck, RefreshCw, Calendar, MapPin, Users, CheckCircle, XCircle, Trophy, Edit, AlertCircle, Clock, Save, Wand2, CalendarClock,
 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { adminApi } from '@/lib/adminApi';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
 import { useAuth } from '@/hooks/useAuth';
 import { ActionButton, ConfirmDialog, DataTableShell, DetailDrawer, StatCard, StatusBadge } from '@/components/admin/ui';
@@ -21,6 +23,8 @@ const DECISIONS: { value: SelectionStatus; label: string; icon: typeof Trophy; o
 
 const norm = (v: string | null | undefined) => (v || 'pending').toLowerCase();
 
+type Trial = { trial_id: string; trial_name: string; trial_date: string; trial_time: string | null; trial_venue: string | null; trial_batch: string | null };
+
 const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
   const [players, setPlayers] = useState<TrialsAllocatedPlayer[]>([]);
   const [processing, setProcessing] = useState<string | null>(null);
@@ -38,6 +42,11 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
   const [selectionStatus, setSelectionStatus] = useState<SelectionStatus>('pending');
   const [remarks, setRemarks] = useState('');
   const [evaluatorNotes, setEvaluatorNotes] = useState('');
+
+  // Next-level slot for a selected player
+  const [nextSlotFor, setNextSlotFor] = useState<TrialsAllocatedPlayer | null>(null);
+  const [trials, setTrials] = useState<Trial[]>([]);
+  const [trialChoice, setTrialChoice] = useState('');
 
   const { user } = useAuth();
   const { getTrialsAllocatedPlayers, markAttendance, updateTrialResults, error } = usePlayerWorkflow();
@@ -144,6 +153,31 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
     }
   };
 
+  const openNextSlot = async (player: TrialsAllocatedPlayer) => {
+    const { data, error: tErr } = await (supabase as any).from('trials')
+      .select('trial_id,trial_name,trial_date,trial_time,trial_venue,trial_batch').order('trial_date', { ascending: false });
+    if (tErr) { toast.error('Could not load trial events', { description: tErr.message }); return; }
+    setTrials(data || []);
+    setTrialChoice(data?.[0]?.trial_id || '');
+    setNextSlotFor(player);
+  };
+
+  const saveNextSlot = async () => {
+    if (!nextSlotFor || !trialChoice) return;
+    setProcessing(nextSlotFor.allocation_id);
+    try {
+      await adminApi.post('/admin/workflow/slot', { registrationId: nextSlotFor.registration_id, trialId: trialChoice });
+      toast.success('Next level slot saved', { description: `${nextSlotFor.full_name}: attendance and results start fresh for the next level` });
+      setNextSlotFor(null);
+      loadPlayers();
+      onRefresh();
+    } catch (err: any) {
+      toast.error('Could not save the slot', { description: err.message });
+    } finally {
+      setProcessing(null);
+    }
+  };
+
   const saving = processing === selectedPlayer?.allocation_id;
   const scoreFields = [
     { id: 'batting', label: 'Batting', value: battingScore, set: setBattingScore },
@@ -233,6 +267,9 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
                           {norm(player.selection_status) === 'pending' ? 'Enter results' : 'Edit results'}
                         </ActionButton>
                       )}
+                      {norm(player.selection_status) === 'selected' && (
+                        <ActionButton variant="primary" size="sm" icon={CalendarClock} disabled={busy} onClick={() => openNextSlot(player)}>Next level slot</ActionButton>
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -252,6 +289,26 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
         loading={processing === absentTarget?.allocation_id}
         onConfirm={() => absentTarget ? handleMarkAttendance(absentTarget, 'absent') : undefined}
       />
+
+      <ConfirmDialog
+        open={nextSlotFor !== null}
+        onOpenChange={open => { if (!open) setNextSlotFor(null); }}
+        title={`Next level trial for ${nextSlotFor?.full_name ?? 'this player'}`}
+        description={trials.length ? 'Choose the trial event for the next level. Attendance, scores and the decision start fresh.' : 'No trial events exist yet. Create one first.'}
+        confirmLabel="Save slot"
+        loading={processing === nextSlotFor?.allocation_id}
+        onConfirm={() => (trialChoice ? saveNextSlot() : undefined)}
+      >
+        {trials.length > 0 && (
+          <select className="admin-field mt-2" aria-label="Trial event" value={trialChoice} onChange={e => setTrialChoice(e.target.value)}>
+            {trials.map(t => (
+              <option key={t.trial_id} value={t.trial_id}>
+                {t.trial_date ? new Date(t.trial_date).toLocaleDateString() : 'No date'}{t.trial_time ? ` · ${t.trial_time}` : ''} · {t.trial_venue || t.trial_name}{t.trial_batch ? ` · ${t.trial_batch}` : ''}
+              </option>
+            ))}
+          </select>
+        )}
+      </ConfirmDialog>
 
       <DetailDrawer
         open={selectedPlayer !== null}

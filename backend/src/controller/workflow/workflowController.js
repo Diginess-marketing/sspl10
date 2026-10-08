@@ -33,6 +33,26 @@ async function findWorkflows(registrationIds) {
 }
 
 /** Audit trail; never blocks the move. */
+/**
+ * A new slot for a player who was selected at their last trial is the next level's trial,
+ * so attendance, scores and the decision start again. (Rescheduling before a decision keeps them.)
+ */
+const slotUpdate = (existing, slot) => (String(existing?.selection_status || '').toLowerCase() === 'selected'
+  ? {
+    ...slot,
+    attendance_status: 'pending',
+    attended_at: null,
+    batting_score: null,
+    bowling_score: null,
+    fielding_score: null,
+    overall_score: null,
+    selection_status: 'pending',
+    remarks: null,
+    evaluator_notes: null,
+    evaluated_at: null,
+  }
+  : slot);
+
 async function recordHistory(entry) {
   const { error } = await supabase.from('workflow_history').insert({ ...entry, performed_at: new Date().toISOString() });
   if (error) logger.warn('workflow_history insert failed:', error.message);
@@ -170,10 +190,10 @@ export const assignSlot = async (req, res) => {
     allocation_batch: trial.trial_batch,
   };
   const { data: existing, error: aErr } = await supabase
-    .from('trials_allocations').select('allocation_id').eq('workflow_id', workflow.workflow_id).maybeSingle();
+    .from('trials_allocations').select('allocation_id,selection_status').eq('workflow_id', workflow.workflow_id).maybeSingle();
   if (aErr) throw aErr;
   const { data: allocation, error: wErr } = existing
-    ? await supabase.from('trials_allocations').update(slot).eq('allocation_id', existing.allocation_id).select('*').single()
+    ? await supabase.from('trials_allocations').update(slotUpdate(existing, slot)).eq('allocation_id', existing.allocation_id).select('*').single()
     : await supabase.from('trials_allocations').insert({ workflow_id: workflow.workflow_id, attendance_status: 'pending', ...slot }).select('*').single();
   if (wErr) throw wErr;
 
@@ -214,7 +234,7 @@ export const allocateToTrials = async (req, res) => {
   if (wfErr) throw wfErr;
   const byId = new Map((workflows || []).map((w) => [w.workflow_id, w]));
   const { data: existingRows, error: exErr } = await supabase
-    .from('trials_allocations').select('allocation_id,workflow_id').in('workflow_id', ids);
+    .from('trials_allocations').select('allocation_id,workflow_id,selection_status').in('workflow_id', ids);
   if (exErr) throw exErr;
   const existingByWf = new Map((existingRows || []).map((a) => [a.workflow_id, a]));
 
@@ -232,7 +252,7 @@ export const allocateToTrials = async (req, res) => {
     try {
       const existing = existingByWf.get(id);
       const { error: aErr } = existing
-        ? await supabase.from('trials_allocations').update(slot).eq('allocation_id', existing.allocation_id)
+        ? await supabase.from('trials_allocations').update(slotUpdate(existing, slot)).eq('allocation_id', existing.allocation_id)
         : await supabase.from('trials_allocations').insert({ workflow_id: id, attendance_status: 'pending', ...slot });
       if (aErr) throw aErr;
       if (workflow.workflow_stage !== 'trials_allocated') {
