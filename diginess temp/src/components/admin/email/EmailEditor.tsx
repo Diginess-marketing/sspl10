@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
 import { useEditor, EditorContent, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
-import TextStyle from '@tiptap/extension-text-style';
-import Color from '@tiptap/extension-color';
+import { TextStyle, Color } from '@tiptap/extension-text-style';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import {
@@ -68,10 +65,14 @@ function addImage(editor: Editor) {
 /** WYSIWYG editor that produces email-friendly HTML. */
 export const EmailEditor = ({ value, onChange, placeholders = {}, ariaLabel = 'Email body' }: EmailEditorProps) => {
   const editor = useEditor({
+    // Tiptap 3 no longer re-renders on every change; the toolbar's active states need it
+    shouldRerenderOnTransaction: true,
     extensions: [
-      StarterKit.configure({ heading: { levels: [2, 3] } }),
-      Underline,
-      Link.configure({ openOnClick: false, autolink: true, HTMLAttributes: { target: '_blank', rel: 'noopener noreferrer' } }),
+      // Tiptap 3: StarterKit includes Underline and Link
+      StarterKit.configure({
+        heading: { levels: [2, 3] },
+        link: { openOnClick: false, autolink: true, HTMLAttributes: { target: '_blank', rel: 'noopener noreferrer' } },
+      }),
       TextAlign.configure({ types: ['heading', 'paragraph'] }),
       TextStyle,
       Color,
@@ -86,7 +87,7 @@ export const EmailEditor = ({ value, onChange, placeholders = {}, ariaLabel = 'E
   // Load new content when a different template is opened
   useEffect(() => {
     if (editor && value !== editor.getHTML() && !(editor.isEmpty && !value)) {
-      editor.commands.setContent(value || '', false);
+      editor.commands.setContent(value || '', { emitUpdate: false });
     }
   }, [editor, value]);
 
