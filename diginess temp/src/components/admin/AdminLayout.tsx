@@ -25,6 +25,7 @@ const NAV_GROUPS: NavGroup[] = [
         { label: 'Dashboard', path: '/admin', icon: LayoutDashboard },
     ] },
     { title: 'Players & Trials', items: [
+        { label: 'All Players', path: '/admin/players', icon: Users, permission: 'manage_trials' },
         { label: 'Trials', path: '/admin/trials', icon: ClipboardList, permission: 'manage_trials' },
         { label: 'Selection Status', path: '/admin/selection-status', icon: CheckCircle },
         { label: 'Certificates', path: '/admin/certificates', icon: Award },

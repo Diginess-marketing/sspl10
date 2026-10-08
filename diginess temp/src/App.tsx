@@ -104,6 +104,7 @@ const AdminSelectionStatus = lazy(() => import('./pages/admin/AdminSelectionStat
 const AdminReports = lazy(() => import('./pages/admin/AdminReports'));
 const AdminWhatsApp = lazy(() => import('./pages/admin/WhatsAppMarketing'));
 const AdminEmailCenter = lazy(() => import('./pages/admin/EmailCenter'));
+const AdminPlayers = lazy(() => import('./pages/admin/PlayersPipeline'));
 const AdminRazorpay = lazy(() => import('./pages/admin/RazorpayDashboard'));
 const AdminRewards = lazy(() => import('./pages/admin/RewardsManager'));
 const AdminRoute = lazy(() => import('./components/admin/AdminRoute'));
@@ -426,6 +427,7 @@ const App = () => {
                               <Route path="reports" element={<AdminReports />} />
                               <Route path="whatsapp" element={<AdminWhatsApp />} />
                               <Route path="emails" element={<AdminEmailCenter />} />
+                              <Route path="players" element={<AdminPlayers />} />
                               <Route path="razorpay" element={<AdminRazorpay />} />
                               <Route path="certificates" element={<AdminCertificateLookup />} />
                             </Route>
