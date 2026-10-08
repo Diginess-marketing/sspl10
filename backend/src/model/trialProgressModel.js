@@ -1,4 +1,6 @@
+import { createHash } from 'node:crypto';
 import supabase from '../config/supabase.js';
+import logger from '../utils/logger.js';
 
 /**
  * A candidate with their progress row and the contact details from the registration
@@ -63,6 +65,30 @@ export async function recordLevelEmail(entry) {
   if (error) throw error;
 }
 
+// PostgREST "table not in schema cache" / Postgres "relation does not exist"
+const isMissingTable = (error) => error?.code === 'PGRST205' || error?.code === '42P01';
+
+/**
+ * Until the trial_certificates migration has been run there is nowhere to store numbers.
+ * The certificate is then issued unsaved, with a number derived from candidate/level/kind
+ * so repeated downloads show the same number.
+ */
+function unsavedCertificate({ candidateId, level, kind, playerName }) {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const hash = createHash('sha256').update(`${candidateId}:${level}:${kind}`).digest();
+  let suffix = '';
+  for (let i = 0; i < 6; i += 1) suffix += alphabet[hash[i] % alphabet.length];
+  return {
+    certificate_no: `SSPL-L${level}-${kind === 'achievement' ? 'A' : 'P'}-${suffix}`,
+    candidate_id: candidateId,
+    level,
+    kind,
+    player_name: playerName,
+    issued_at: new Date().toISOString(),
+    unsaved: true,
+  };
+}
+
 /** The certificate for a candidate/level/kind, issuing a number the first time. */
 export async function findOrCreateCertificate({ candidateId, level, kind, playerName, newNumber }) {
   const { data: existing, error } = await supabase
@@ -70,6 +96,10 @@ export async function findOrCreateCertificate({ candidateId, level, kind, player
     .select('*')
     .match({ candidate_id: candidateId, level, kind })
     .maybeSingle();
+  if (isMissingTable(error)) {
+    logger.warn('trial_certificates table missing; run the pending migration. Issuing an unsaved certificate.');
+    return unsavedCertificate({ candidateId, level, kind, playerName });
+  }
   if (error) throw error;
   if (existing) return existing;
 
