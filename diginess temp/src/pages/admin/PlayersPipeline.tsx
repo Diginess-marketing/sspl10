@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 import { RefreshCw, ArrowRightLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { PageHeader, ActionButton, DataTableShell, StatusBadge } from '@/components/admin/ui';
-import { usePlayerPipeline, type PipelinePlayer } from '@/hooks/usePlayerPipeline';
+import { usePlayerPipeline, canMoveToTrials, type PipelinePlayer } from '@/hooks/usePlayerPipeline';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
 import { PlayerPanel, STAGE_LABEL } from '@/components/admin/players/PlayerPanel';
 
@@ -79,8 +80,8 @@ const PlayersPipeline = () => {
   const toggle = (id: string) => setSelected((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
   const allOnPage = rows.length > 0 && rows.every((r) => selected.has(r.id));
 
-  // Only paid players who have not started trials can be moved
-  const movable = players.filter((p) => selected.has(p.id) && p.paid && p.stage === 'registered').map((p) => p.id);
+  // Paid players not yet moved to the trials section (same rule as the backend)
+  const movable = players.filter((p) => selected.has(p.id) && canMoveToTrials(p)).map((p) => p.id);
 
   const moveSelected = async () => {
     const ids = movable;
@@ -88,6 +89,8 @@ const PlayersPipeline = () => {
     setMoving(true);
     try {
       const res = await moveToTrialsSection(ids);
+      // Put newly moved players on the L1-L5 tracker too (best effort)
+      await (supabase as any).rpc('sync_trial_candidates'); // errors come back in the result, not thrown
       const ok = res.filter((r) => r.success).length;
       toast.success(`${ok} player(s) moved to trials`, res.length - ok ? { description: `${res.length - ok} could not be moved` } : undefined);
       setSelected(new Set());
@@ -138,7 +141,7 @@ const PlayersPipeline = () => {
         onClearSelection={() => setSelected(new Set())}
         bulkActions={movable.length > 0
           ? <ActionButton variant="primary" size="sm" icon={ArrowRightLeft} loading={moving} onClick={moveSelected}>Move {movable.length} to trials</ActionButton>
-          : <span className="text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>None of these can be moved — only paid players awaiting trial</span>}
+          : <span className="text-sm" style={{ color: 'rgba(255,255,255,0.75)' }}>Already moved to trials, or not paid yet</span>}
         loading={loading && players.length === 0}
         isEmpty={!loading && filtered.length === 0}
         emptyTitle="No players match"

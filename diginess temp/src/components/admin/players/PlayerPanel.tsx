@@ -6,7 +6,7 @@ import { ActionButton, ConfirmDialog, StatusBadge } from '@/components/admin/ui'
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
 import { supabase } from '@/integrations/supabase/client';
 import { adminApi } from '@/lib/adminApi';
-import { fetchPlayerHistory, type PipelinePlayer } from '@/hooks/usePlayerPipeline';
+import { fetchPlayerHistory, canMoveToTrials, type PipelinePlayer } from '@/hooks/usePlayerPipeline';
 
 const STEPS = [
   { key: 'registered', label: 'Registered' },
@@ -164,6 +164,13 @@ export const PlayerPanel = ({ player, onClose, onChanged }: { player: PipelinePl
         {/* Journey + actions */}
         <div className="space-y-4 border-b border-[var(--admin-line)] px-6 py-5">
           <Stepper p={p} />
+
+          {p.stage !== 'registered' && canMoveToTrials(p) && (
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg bg-[var(--admin-bg)] px-3 py-2">
+              <p className="text-sm text-[var(--admin-ink)]">Not yet moved to the trials section.</p>
+              <ActionButton variant="soft" size="sm" icon={ArrowRightLeft} loading={busy === 'add'} onClick={addToTrials}>Move to trials</ActionButton>
+            </div>
+          )}
 
           {p.stage === 'registered' ? (
             <div className="space-y-3">

@@ -69,6 +69,10 @@ function stageOf(p: Pick<PipelinePlayer, 'candidateId' | 'finalStatus' | 'curren
   return 'registered';
 }
 
+/** Same rule as the backend move: paid, and the workflow has not moved past registration. */
+export const canMoveToTrials = (p: Pick<PipelinePlayer, 'paid' | 'workflowStage'>) =>
+  p.paid && (!p.workflowStage || ['registration', 'registration_completed'].includes(p.workflowStage));
+
 export function usePlayerPipeline() {
   const [players, setPlayers] = useState<PipelinePlayer[]>([]);
   const [loading, setLoading] = useState(true);
