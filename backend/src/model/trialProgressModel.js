@@ -62,6 +62,13 @@ export async function saveProgress(candidateId, update) {
       delete row[missing];
       continue;
     }
+    // The live trial_final_status enum has no ABSENT until the pending migration; the level's
+    // attendance column still says ABSENT, so the journey ends the same way.
+    if (error?.code === '22P02' && /trial_final_status/.test(error.message) && row.final_status === 'ABSENT') {
+      logger.warn('trial_final_status has no ABSENT yet; run the pending migration. Saving REJECTED.');
+      row.final_status = 'REJECTED';
+      continue;
+    }
     if (error) throw error;
     return data;
   }
