@@ -253,3 +253,77 @@ export const allocateToTrials = async (req, res) => {
   }
   res.json(results);
 };
+
+const ATTENDANCE = ['pending', 'attended', 'absent'];
+const SELECTION = ['pending', 'selected', 'not_selected', 'waitlisted'];
+
+async function findAllocation(allocationId) {
+  if (!isUuid(allocationId)) throw ApiError.badRequest('allocationId is required');
+  const { data, error } = await supabase.from('trials_allocations').select('*').eq('allocation_id', allocationId).maybeSingle();
+  if (error) throw error;
+  if (!data) throw ApiError.notFound('Allocation not found');
+  return data;
+}
+
+/**
+ * POST /api/admin/workflow/attendance  body: { allocationId, status: pending|attended|absent }
+ * Replaces the mark_trial_attendance database function, which fails on the live database.
+ */
+export const markAttendance = async (req, res) => {
+  const { allocationId, status } = req.body || {};
+  if (!ATTENDANCE.includes(status)) throw ApiError.badRequest(`status must be one of ${ATTENDANCE.join(', ')}`);
+  const allocation = await findAllocation(allocationId);
+  const { error } = await supabase.from('trials_allocations')
+    .update({ attendance_status: status, attended_at: status === 'pending' ? null : new Date().toISOString() })
+    .eq('allocation_id', allocationId);
+  if (error) throw error;
+  await recordHistory({
+    workflow_id: allocation.workflow_id,
+    previous_stage: 'trials_allocated',
+    new_stage: 'trials_allocated',
+    action_type: 'attendance_marked',
+    action_details: { from: allocation.attendance_status, to: status },
+    performed_by: req.user.id,
+  });
+  res.json({ success: true });
+};
+
+/**
+ * POST /api/admin/workflow/results
+ * body: { allocationId, battingScore?, bowlingScore?, fieldingScore?, overallScore?, selectionStatus?, remarks?, evaluatorNotes? }
+ * Saves scores and the selection decision on the allocation. Replaces the update_trial_results
+ * database function, which fails on the live database.
+ */
+export const saveResults = async (req, res) => {
+  const b = req.body || {};
+  const selection = b.selectionStatus || 'pending';
+  if (!SELECTION.includes(selection)) throw ApiError.badRequest(`selectionStatus must be one of ${SELECTION.join(', ')}`);
+  const score = (v) => {
+    if (v === undefined || v === null || v === '') return null;
+    const n = Number(v);
+    if (!Number.isFinite(n) || n < 0 || n > 100) throw ApiError.badRequest('Scores must be numbers from 0 to 100');
+    return n;
+  };
+  const allocation = await findAllocation(b.allocationId);
+  const fields = {
+    batting_score: score(b.battingScore),
+    bowling_score: score(b.bowlingScore),
+    fielding_score: score(b.fieldingScore),
+    overall_score: score(b.overallScore),
+    selection_status: selection,
+    remarks: b.remarks || null,
+    evaluator_notes: b.evaluatorNotes || null,
+    evaluated_at: new Date().toISOString(),
+  };
+  const { error } = await supabase.from('trials_allocations').update(fields).eq('allocation_id', b.allocationId);
+  if (error) throw error;
+  await recordHistory({
+    workflow_id: allocation.workflow_id,
+    previous_stage: 'trials_allocated',
+    new_stage: 'trials_allocated',
+    action_type: 'trial_result_saved',
+    action_details: { selection_status: selection, overall_score: fields.overall_score },
+    performed_by: req.user.id,
+  });
+  res.json({ success: true });
+};
