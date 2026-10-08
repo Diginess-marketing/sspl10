@@ -192,3 +192,64 @@ export const assignSlot = async (req, res) => {
 
   res.json({ allocation });
 };
+
+/**
+ * POST /api/admin/workflow/allocate
+ * body: { workflowIds: string[], allocationDate, allocationTime?, allocationVenue?, allocationBatch? }
+ * Gives players in the Trials Section a trial slot. Replaces the allocate_to_trials database
+ * function, which fails on the live database ("column id does not exist").
+ */
+export const allocateToTrials = async (req, res) => {
+  const { allocationDate, allocationTime, allocationVenue, allocationBatch } = req.body || {};
+  const ids = [...new Set((req.body?.workflowIds || []).filter(isUuid))];
+  if (!ids.length) throw ApiError.badRequest('workflowIds is required');
+  if (ids.length > MAX_BATCH) throw ApiError.badRequest(`At most ${MAX_BATCH} players per allocation`);
+  if (!allocationDate) throw ApiError.badRequest('allocationDate is required');
+
+  const { data: workflows, error: wfErr } = await supabase
+    .from('player_workflow').select('workflow_id,workflow_stage').in('workflow_id', ids);
+  if (wfErr) throw wfErr;
+  const byId = new Map((workflows || []).map((w) => [w.workflow_id, w]));
+  const { data: existingRows, error: exErr } = await supabase
+    .from('trials_allocations').select('allocation_id,workflow_id').in('workflow_id', ids);
+  if (exErr) throw exErr;
+  const existingByWf = new Map((existingRows || []).map((a) => [a.workflow_id, a]));
+
+  const slot = {
+    allocation_date: allocationDate,
+    allocation_time: allocationTime || null,
+    allocation_venue: allocationVenue || null,
+    allocation_batch: allocationBatch || null,
+  };
+  const now = new Date().toISOString();
+  const results = [];
+  for (const id of ids) {
+    const workflow = byId.get(id);
+    if (!workflow) { results.push({ workflow_id: id, success: false, message: 'Player not found in the workflow' }); continue; }
+    try {
+      const existing = existingByWf.get(id);
+      const { error: aErr } = existing
+        ? await supabase.from('trials_allocations').update(slot).eq('allocation_id', existing.allocation_id)
+        : await supabase.from('trials_allocations').insert({ workflow_id: id, attendance_status: 'pending', ...slot });
+      if (aErr) throw aErr;
+      if (workflow.workflow_stage !== 'trials_allocated') {
+        const { error } = await supabase.from('player_workflow')
+          .update({ workflow_stage: 'trials_allocated', allocated_to_trials_at: now, updated_at: now })
+          .eq('workflow_id', id);
+        if (error) throw error;
+      }
+      await recordHistory({
+        workflow_id: id,
+        previous_stage: workflow.workflow_stage,
+        new_stage: 'trials_allocated',
+        action_type: existing ? 'slot_changed' : 'allocated_to_trial',
+        action_details: slot,
+        performed_by: req.user.id,
+      });
+      results.push({ workflow_id: id, success: true, message: existing ? 'Slot updated' : 'Allocated' });
+    } catch (err) {
+      results.push({ workflow_id: id, success: false, message: err.message });
+    }
+  }
+  res.json(results);
+};

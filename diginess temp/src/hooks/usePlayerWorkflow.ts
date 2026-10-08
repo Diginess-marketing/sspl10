@@ -373,26 +373,12 @@ export function usePlayerWorkflow() {
       setLoading(true);
       setError(null);
 
-      const { data, error: rpcError } = await supabase.rpc('allocate_to_trials', {
-        p_workflow_ids: workflowIds,
-        p_allocation_date: allocationDate,
-        p_allocation_time: allocationTime,
-        p_allocation_venue: allocationVenue,
-        p_allocation_batch: allocationBatch,
-        p_admin_id: adminId,
+      // Through the backend: the allocate_to_trials database function fails on the live
+      // database ("column id does not exist").
+      void adminId; // the backend records the signed-in admin
+      return await adminApi.post<BulkOperationResult[]>('/admin/workflow/allocate', {
+        workflowIds, allocationDate, allocationTime, allocationVenue, allocationBatch,
       });
-
-      if (rpcError) {
-        console.error('Error allocating to trials:', rpcError);
-        setError(rpcError.message);
-        return workflowIds.map(id => ({
-          workflow_id: id,
-          success: false,
-          message: rpcError.message,
-        }));
-      }
-
-      return data || [];
     } catch (err: any) {
       console.error('Exception allocating to trials:', err);
       setError(err.message);
