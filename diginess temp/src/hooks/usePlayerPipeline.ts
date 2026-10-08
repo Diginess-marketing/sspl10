@@ -59,8 +59,10 @@ function stageOf(p: Pick<PipelinePlayer, 'candidateId' | 'finalStatus' | 'curren
   if (p.candidateId) {
     const final = up(p.finalStatus);
     if (final === 'SELECTED') return 'selected';
+    // Before the ABSENT enum value exists, an absence is saved as REJECTED with attendance ABSENT
+    const atLevel = p.levels[Math.min(Math.max(p.currentLevel ?? 1, 1), 5)];
+    if (final === 'ABSENT' || (final === 'REJECTED' && up(atLevel?.attendance) === 'ABSENT')) return 'absent';
     if (final === 'REJECTED') return 'not_selected';
-    if (final === 'ABSENT') return 'absent';
     if (up(p.levels[4]?.result) === 'SELECTED' || (p.currentLevel ?? 0) >= 5) return 'l5';
     if (up(p.levels[3]?.result) === 'SELECTED' || (p.currentLevel ?? 0) === 4) return 'l4';
     return 'trial';
