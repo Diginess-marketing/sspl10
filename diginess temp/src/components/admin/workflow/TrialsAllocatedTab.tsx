@@ -111,8 +111,17 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
     return nums.length ? (nums.reduce((a, b) => a + b, 0) / nums.length).toFixed(1) : '';
   }, [battingScore, bowlingScore, fieldingScore]);
 
+  // Scores are 0-100; the server rejects anything else
+  const scoreError = (v: string) => {
+    if (v.trim() === '') return null;
+    const n = Number(v);
+    return Number.isFinite(n) && n >= 0 && n <= 100 ? null : 'Enter a score from 0 to 100';
+  };
+  const invalidScores = [battingScore, bowlingScore, fieldingScore, overallScore].some((v) => scoreError(v));
+
   const handleSaveResults = async () => {
     if (!selectedPlayer) return;
+    if (invalidScores) { toast.error('Fix the scores first', { description: 'Every score must be from 0 to 100.' }); return; }
     setProcessing(selectedPlayer.allocation_id);
     try {
       const num = (v: string) => (v ? parseFloat(v) : undefined);
@@ -253,7 +262,7 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
         footer={(
           <>
             <ActionButton variant="ghost" onClick={() => setSelectedPlayer(null)} disabled={saving}>Cancel</ActionButton>
-            <ActionButton variant="primary" icon={Save} loading={saving} onClick={handleSaveResults}>Save results</ActionButton>
+            <ActionButton variant="primary" icon={Save} loading={saving} disabled={invalidScores} onClick={handleSaveResults}>Save results</ActionButton>
           </>
         )}
       >
@@ -262,7 +271,10 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
             {scoreFields.map(f => (
               <div key={f.id}>
                 <label htmlFor={f.id} className="admin-label">{f.label}</label>
-                <input id={f.id} type="number" min="0" max="100" step="0.5" placeholder="0-100" value={f.value} onChange={e => f.set(e.target.value)} className="admin-field" />
+                <input id={f.id} type="number" min="0" max="100" step="0.5" placeholder="0-100" value={f.value} onChange={e => f.set(e.target.value)} className="admin-field"
+                  aria-invalid={Boolean(scoreError(f.value))} aria-describedby={scoreError(f.value) ? `${f.id}-error` : undefined}
+                  style={scoreError(f.value) ? { borderColor: 'var(--admin-bad)' } : undefined} />
+                {scoreError(f.value) && <p id={`${f.id}-error`} className="mt-1 text-xs" style={{ color: 'var(--admin-bad)' }}>{scoreError(f.value)}</p>}
               </div>
             ))}
           </div>
@@ -270,11 +282,14 @@ const TrialsAllocatedTab = ({ onRefresh }: TrialsAllocatedTabProps) => {
           <div>
             <label htmlFor="overall" className="admin-label">Overall score</label>
             <div className="flex gap-2">
-              <input id="overall" type="number" min="0" max="100" step="0.5" placeholder="0-100" value={overallScore} onChange={e => setOverallScore(e.target.value)} className="admin-field" />
+              <input id="overall" type="number" min="0" max="100" step="0.5" placeholder="0-100" value={overallScore} onChange={e => setOverallScore(e.target.value)} className="admin-field"
+                aria-invalid={Boolean(scoreError(overallScore))} aria-describedby={scoreError(overallScore) ? 'overall-error' : undefined}
+                style={scoreError(overallScore) ? { borderColor: 'var(--admin-bad)' } : undefined} />
               <ActionButton variant="soft" icon={Wand2} disabled={!suggestedOverall} onClick={() => setOverallScore(suggestedOverall)} title="Use the average of the three scores">
                 Average
               </ActionButton>
             </div>
+            {scoreError(overallScore) && <p id="overall-error" className="mt-1 text-xs" style={{ color: 'var(--admin-bad)' }}>{scoreError(overallScore)}</p>}
           </div>
 
           <div>
