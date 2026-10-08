@@ -67,6 +67,60 @@ const Stepper = ({ p }: { p: PipelinePlayer }) => {
   );
 };
 
+type JourneyCard = { key: string; title: string; status: string; label: string; detail: string | null; current: boolean; dot: string; filled: boolean };
+
+const word = (v?: string | null) => (v ? v.charAt(0).toUpperCase() + v.slice(1).toLowerCase() : '—');
+const resultWord = (v?: string | null) => (!v ? '—' : v.toUpperCase() === 'REJECTED' ? 'Not selected' : word(v));
+
+/** One card per journey stage (L1-L3 together, then L4, L5 and the final selection), as on the design. */
+function journeyCards(p: PipelinePlayer): JourneyCard[] {
+  const lvl = Math.min(Math.max(p.currentLevel ?? 1, 1), 5);
+  const ended = p.stage === 'not_selected' || p.stage === 'absent';
+  // The L1-L3 card shows the level the player is on (or reached last) within L1-L3
+  const trialLevel = Math.min(lvl, 3);
+  const stageOf = (level: number) => {
+    const st = p.levels[level];
+    const att = (st?.attendance || '').toUpperCase();
+    const res = (st?.result || '').toUpperCase();
+    const reached = p.candidateId && (level <= 3 ? true : lvl >= level);
+    const isCurrent = Boolean(p.candidateId) && !ended && p.stage !== 'selected' && (level <= 3 ? lvl <= 3 : lvl === level);
+    let status = 'not_reached'; let label = 'Not reached'; let dot = 'var(--admin-line)'; let filled = false;
+    if (reached) {
+      if (res === 'SELECTED') { status = 'selected'; label = 'Selected'; dot = '#1b7f3b'; filled = true; }
+      else if (res === 'REJECTED') { status = 'not_selected'; label = 'Not selected'; dot = 'var(--admin-bad)'; filled = true; }
+      else if (att === 'ABSENT') { status = 'absent'; label = 'Absent'; dot = 'var(--admin-bad)'; filled = true; }
+      else if (att === 'ATTENDED') { status = 'attended'; label = 'Attended'; dot = '#d97706'; }
+      else { status = 'pending'; label = 'Pending'; dot = '#d97706'; }
+    }
+    return { st, status, label, dot, filled, reached, isCurrent };
+  };
+  const trial = stageOf(trialLevel);
+  const cards: JourneyCard[] = [{
+    key: 'trial',
+    title: 'Trial (L1–L3)',
+    status: trial.status, label: trial.label, dot: trial.dot, filled: trial.filled,
+    current: trial.isCurrent,
+    detail: `${p.candidateId ? `Level ${trialLevel} · ` : ''}Attendance: ${word(trial.st?.attendance)} · Result: ${resultWord(trial.st?.result)}`,
+  }];
+  for (const level of [4, 5]) {
+    const c = stageOf(level);
+    cards.push({
+      key: `l${level}`, title: `Level ${level}`, status: c.status, label: c.label, dot: c.dot, filled: c.filled, current: c.isCurrent,
+      detail: `Attendance: ${c.reached ? word(c.st?.attendance) : '—'} · Result: ${c.reached ? resultWord(c.st?.result) : '—'}${c.reached && c.st?.marks !== null && c.st?.marks !== undefined ? ` · Marks: ${c.st.marks}` : ''}`,
+    });
+  }
+  const done = p.stage === 'selected';
+  cards.push({
+    key: 'selected', title: 'Selected',
+    status: done ? 'selected' : ended ? 'not_selected' : 'not_reached',
+    label: done ? 'Selected' : ended ? (p.stage === 'absent' ? 'Ended · absent' : 'Ended · not selected') : 'Not reached',
+    dot: done ? '#1b7f3b' : ended ? 'var(--admin-bad)' : 'var(--admin-line)', filled: done || ended,
+    current: false,
+    detail: done ? 'Cleared all five levels.' : ended ? `Journey ended at Level ${lvl}.` : null,
+  });
+  return cards;
+}
+
 const Field = ({ label, value }: { label: string; value: React.ReactNode }) => (
   <>
     <dt>{label}</dt>
@@ -257,27 +311,26 @@ export const PlayerPanel = ({ player, onClose, onChanged }: { player: PipelinePl
           )}
 
           {tab === 'journey' && (
-            <div className="admin-card overflow-hidden">
-              <table className="admin-table">
-                <thead><tr><th>Level</th><th>Called</th><th>Attendance</th><th>Result</th><th>Marks</th></tr></thead>
-                <tbody>
-                  {[1, 2, 3, 4, 5].map((l) => {
-                    const s = p.levels[l];
-                    return (
-                      <tr key={l}>
-                        <td className="font-semibold">L{l}</td>
-                        <td>{s.called ? 'Yes' : '—'}</td>
-                        <td>{s.attendance ? <StatusBadge status={s.attendance.toLowerCase()} /> : '—'}</td>
-                        <td>{s.result ? <StatusBadge status={s.result.toLowerCase() === 'rejected' ? 'not_selected' : s.result.toLowerCase()} /> : '—'}</td>
-                        <td>{s.marks ?? '—'}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              {!p.candidateId && <p className="admin-muted p-4 text-sm">Not on the L1–L5 tracker yet.</p>}
-              {p.candidateId && <p className="admin-muted p-4 text-sm">To change an earlier level, use Trials → Levels L1–L5.</p>}
-            </div>
+            <>
+              <ol className="space-y-3" aria-label="Journey by stage">
+                {journeyCards(p).map((c) => (
+                  <li key={c.key} className="admin-card flex items-start gap-3 p-4" aria-current={c.current ? 'step' : undefined}
+                    style={c.current ? { borderColor: 'var(--brand-blue)' } : undefined}>
+                    <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border-2"
+                      style={{ borderColor: c.dot, background: c.filled ? c.dot : 'transparent' }} aria-hidden="true" />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-base font-bold uppercase tracking-wide text-[var(--admin-ink)]">{c.title}</span>
+                        <StatusBadge status={c.status} label={c.label} />
+                        {c.current && <span className="admin-eyebrow !mb-0">Current</span>}
+                      </div>
+                      {c.detail !== null && <p className="admin-muted mt-1 text-sm">{c.detail}</p>}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              {!p.candidateId && <p className="admin-muted text-sm">Not on the L1–L5 tracker yet.</p>}
+            </>
           )}
 
           {(tab === 'emails' || tab === 'activity') && (
