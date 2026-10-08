@@ -189,11 +189,16 @@ const WhatsAppMarketing = () => {
         }
     };
 
-    const statusTone = (status: string | null) =>
-        status === 'READY' || status === 'COMPLETED' ? 'ok'
-            : status === 'IN_PROGRESS' ? 'info'
-            : status === 'PAUSED' ? 'warn'
-            : 'neutral';
+    const STATUS: Record<string, { tone: string; label: string }> = {
+        DRAFT: { tone: 'neutral', label: 'Draft' },
+        READY: { tone: 'ok', label: 'Ready' },
+        IN_PROGRESS: { tone: 'info', label: 'Sending' },
+        PAUSED: { tone: 'warn', label: 'Paused' },
+        COMPLETED: { tone: 'ok', label: 'Completed' },
+    };
+    const statusOf = (status: string | null) => STATUS[status || 'DRAFT'] || { tone: 'neutral', label: (status || 'Draft').replace(/_/g, ' ').toLowerCase() };
+    const num = (n: number | null | undefined) => Number(n || 0).toLocaleString('en-IN');
+    const when = (d?: string | null) => (d ? new Date(d).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' }) : null);
 
 
     return (
@@ -270,31 +275,50 @@ const WhatsAppMarketing = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {campaigns.map((c) => (
-                                    <tr key={c.id}>
-                                        <td>
-                                            <div className="font-semibold">{c.name}</div>
-                                            <div className="admin-muted max-w-[220px] truncate">{c.message_template}</div>
-                                        </td>
-                                        <td><span className="admin-badge admin-badge--neutral">{c.recipient_count} total</span></td>
-                                        <td><span className={`admin-badge admin-badge--${statusTone(c.status)}`}>{(c.status || 'DRAFT').replace(/_/g, ' ').toLowerCase()}</span></td>
-                                        <td className="whitespace-nowrap">{new Date(c.created_at).toLocaleDateString('en-IN')}</td>
-                                        <td>
-                                            <div className="flex flex-wrap items-center justify-end gap-2">
-                                                {c.status === 'DRAFT' && (
-                                                    <ActionButton size="sm" variant="soft" icon={CheckCircle2} onClick={() => markAsReady(c.id)}>Ready</ActionButton>
-                                                )}
-                                                {(c.status === 'IN_PROGRESS' || c.status === 'PAUSED') && (
-                                                    <ActionButton size="sm" variant="soft" icon={PlayCircle} onClick={() => markAsReady(c.id)}>Resume</ActionButton>
-                                                )}
-                                                {(c.status === 'READY' || c.status === 'IN_PROGRESS') && (
-                                                    <ActionButton size="sm" variant="outline" icon={PauseCircle} onClick={() => updateCampaignStatus(c.id, 'PAUSED')}>Pause</ActionButton>
-                                                )}
-                                                <ActionButton size="sm" variant="ghost" icon={Trash2} aria-label="Delete campaign" onClick={() => setDeleteId(c.id)} />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
+                                {campaigns.map((c) => {
+                                    const total = c.recipient_count || 0;
+                                    const sent = c.total_sent || 0;
+                                    const failed = c.total_failed || 0;
+                                    const pct = total ? Math.min(100, Math.round(((sent + failed) / total) * 100)) : 0;
+                                    const st = statusOf(c.status);
+                                    const lastSent = when(c.last_sent_at);
+                                    return (
+                                        <tr key={c.id}>
+                                            <td className="min-w-[200px]">
+                                                <div className="font-semibold text-[var(--admin-ink)]">{c.name || 'Untitled campaign'}</div>
+                                                <div className="admin-muted max-w-[260px] truncate" title={c.message_template || ''}>{c.message_template}</div>
+                                            </td>
+                                            <td className="min-w-[160px]">
+                                                <div className="whitespace-nowrap font-semibold text-[var(--admin-ink)]">{num(total)} <span className="admin-muted font-normal">recipients</span></div>
+                                                <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-[var(--admin-line)]" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label="Sending progress">
+                                                    <div className="h-full rounded-full" style={{ width: `${pct}%`, background: 'var(--brand-blue)' }} />
+                                                </div>
+                                                <div className="admin-muted mt-1 whitespace-nowrap text-xs">
+                                                    {num(sent)} sent{failed ? <> · <span style={{ color: 'var(--admin-bad)' }}>{num(failed)} failed</span></> : null} · {pct}%
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <span className={`admin-badge admin-badge--${st.tone} whitespace-nowrap`}>{st.label}</span>
+                                                {lastSent && <div className="admin-muted mt-1 whitespace-nowrap text-xs">Last sent {lastSent}</div>}
+                                            </td>
+                                            <td className="whitespace-nowrap">{new Date(c.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+                                            <td>
+                                                <div className="flex items-center justify-end gap-2 whitespace-nowrap">
+                                                    {c.status === 'DRAFT' && (
+                                                        <ActionButton size="sm" variant="primary" icon={CheckCircle2} onClick={() => markAsReady(c.id)}>Mark ready</ActionButton>
+                                                    )}
+                                                    {(c.status === 'READY' || c.status === 'IN_PROGRESS') && (
+                                                        <ActionButton size="sm" variant="outline" icon={PauseCircle} onClick={() => updateCampaignStatus(c.id, 'PAUSED')}>Pause</ActionButton>
+                                                    )}
+                                                    {c.status === 'PAUSED' && (
+                                                        <ActionButton size="sm" variant="primary" icon={PlayCircle} onClick={() => markAsReady(c.id)}>Resume</ActionButton>
+                                                    )}
+                                                    <ActionButton size="sm" variant="ghost" icon={Trash2} aria-label={`Delete ${c.name || 'campaign'}`} onClick={() => setDeleteId(c.id)} />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                     </DataTableShell>
@@ -313,7 +337,9 @@ const WhatsAppMarketing = () => {
                 open={deleteId !== null}
                 onOpenChange={(o) => { if (!o) setDeleteId(null); }}
                 title="Delete this campaign?"
-                description="The campaign and its recipient list will be removed. This cannot be undone."
+                description={campaigns.find((c) => c.id === deleteId)?.status === 'IN_PROGRESS'
+                    ? 'This campaign is still sending. Deleting it removes the campaign and its recipient list, and sending stops. This cannot be undone.'
+                    : 'The campaign and its recipient list will be removed. This cannot be undone.'}
                 confirmLabel="Delete"
                 tone="danger"
                 loading={deleting}
