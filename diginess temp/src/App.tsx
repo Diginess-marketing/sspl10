@@ -108,6 +108,7 @@ const AdminPlayers = lazy(() => import('./pages/admin/PlayersPipeline'));
 const AdminAuditLog = lazy(() => import('./pages/admin/AuditLog'));
 const AdminCampaigns = lazy(() => import('./pages/admin/CampaignManager'));
 const PartnerStats = lazy(() => import('./pages/PartnerStats'));
+const VerifyCertificate = lazy(() => import('./pages/VerifyCertificate'));
 const AdminRazorpay = lazy(() => import('./pages/admin/RazorpayDashboard'));
 const AdminRewards = lazy(() => import('./pages/admin/RewardsManager'));
 const AdminRoute = lazy(() => import('./components/admin/AdminRoute'));
@@ -384,6 +385,8 @@ const App = () => {
                               <Route path="/app" element={<AppDownloadPage />} />
                               <Route path="/social" element={<SocialMediaPage />} />
                               <Route path="/partner/:code" element={<PartnerStats />} />
+                              <Route path="/verify-certificate" element={<VerifyCertificate />} />
+                              <Route path="/verify-certificate/:number" element={<VerifyCertificate />} />
 
                               <Route path="/auction" element={<AuctionPage />} />
                               <Route path="/players/:playerId" element={<PlayerProfile />} />

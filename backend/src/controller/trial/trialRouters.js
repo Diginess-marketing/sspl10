@@ -10,4 +10,7 @@ router.post('/admin/trials/candidates/:id/levels/:level/notify', requirePermissi
 router.get('/admin/trials/candidates/:id/levels/:level/certificate', requirePermission('manage_trials'), asyncHandler(controller.downloadCertificate));
 router.post('/admin/trials/sync-candidates', requirePermission('manage_trials'), asyncHandler(controller.syncCandidates));
 
+// Public: check a certificate number
+router.get('/certificates/:number', asyncHandler(controller.verifyCertificate));
+
 export default router;
