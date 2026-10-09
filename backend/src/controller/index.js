@@ -12,6 +12,7 @@ import qrRouters from './qr/qrRouters.js';
 import staffRouters from './staff/staffRouters.js';
 import campaignRouters from './campaign/campaignRouters.js';
 import reportRouters from './report/reportRouters.js';
+import playerRouters from './player/playerRouters.js';
 
 /**
  * Every module router, mounted under a single `/api` prefix by app.js.
@@ -31,5 +32,6 @@ router.use(qrRouters);
 router.use(staffRouters);
 router.use(campaignRouters);
 router.use(reportRouters);
+router.use(playerRouters);
 
 export default router;
