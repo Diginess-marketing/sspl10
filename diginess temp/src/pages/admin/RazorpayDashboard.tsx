@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { API_BASE_URL } from '@/config/api';
+import { adminApi } from '@/lib/adminApi';
 import { PageHeader, StatCard, StatusBadge, ActionButton, DataTableShell, DetailDrawer } from '@/components/admin/ui';
 
 interface Txn {
@@ -85,8 +86,10 @@ export default function RazorpayDashboard() {
     if (debouncedSearch) queryParams.append('search', debouncedSearch);
     if (status && status !== 'all') queryParams.append('status', status);
     if (viewMode !== 'all') queryParams.append('view', viewMode);
-    window.open(`${apiBase}/admin/razorpay/transactions/export?${queryParams}`, '_blank');
-    toast.success('Export started');
+    // Fetched with the admin token (a new tab would carry none) and saved as a file
+    adminApi.download(`/admin/razorpay/export?${queryParams}`, `payments-${new Date().toISOString().slice(0, 10)}.csv`)
+      .then(() => toast.success('Export downloaded'))
+      .catch((err: Error) => toast.error('Export failed', { description: err.message }));
   };
 
   const totalPages = Math.ceil(total / LIMIT) || 1;

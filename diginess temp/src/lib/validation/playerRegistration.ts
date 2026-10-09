@@ -5,6 +5,23 @@ const localTodayYMD = () => {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 };
 
+/** Age in whole years on today's date, from a YYYY-MM-DD date of birth (null if unknown). */
+export function ageOn(dob: string | null | undefined, today = localTodayYMD()): number | null {
+  if (!dob || !/^\d{4}-\d{2}-\d{2}/.test(dob)) return null;
+  const [y, m, d] = dob.slice(0, 10).split('-').map(Number);
+  const [ty, tm, td] = today.split('-').map(Number);
+  return ty - y - (tm < m || (tm === m && td < d) ? 1 : 0);
+}
+
+/** Players under 18 need a parent or guardian's consent (PRD feature 14). */
+export const isMinor = (dob: string | null | undefined) => {
+  const age = ageOn(dob);
+  return age !== null && age < 18;
+};
+
+const whenMinor = <T extends yup.Schema>(schema: T) =>
+  schema.when('date_of_birth', { is: (dob: string) => isMinor(dob), then: (s: yup.Schema) => s, otherwise: (s: yup.Schema) => s.notRequired().strip() });
+
 /** Individual / student registration form. Messages are shown under each field. */
 export const individualRegistrationSchema = yup.object({
   full_name: yup
@@ -42,6 +59,13 @@ export const individualRegistrationSchema = yup.object({
     .trim()
     .required('School / college name is required')
     .min(3, 'School / college name must be at least 3 characters'),
+  parent_name: whenMinor(yup.string().trim().required('Parent or guardian name is required for players under 18').min(3, "Enter the parent or guardian's full name")),
+  parent_phone: whenMinor(
+    yup.string()
+      .required('Parent or guardian mobile is required for players under 18')
+      .matches(/^[6-9]\d{9}$/, 'Enter a valid 10-digit Indian mobile number'),
+  ),
+  parent_consent: whenMinor(yup.boolean().oneOf([true], 'A parent or guardian must give consent for players under 18').required('A parent or guardian must give consent for players under 18')),
 });
 
 export type IndividualRegistrationField = keyof yup.InferType<typeof individualRegistrationSchema>;

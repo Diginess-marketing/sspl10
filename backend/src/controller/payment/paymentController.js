@@ -3,9 +3,7 @@ import * as razorpayConfig from '../../config/razorpay.js';
 import * as razorpayService from '../../service/razorpayService.js';
 import * as reconciliationService from '../../service/reconciliationService.js';
 import * as registrationModel from '../../model/registrationModel.js';
-import * as teamModel from '../../model/teamModel.js';
-import { sendConfirmationAsync } from '../../service/confirmationMailService.js';
-import * as trialCandidateModel from '../../model/trialCandidateModel.js';
+import { settleIndividual, settleTeam, settleCapturedPayment } from '../../service/paymentSettlementService.js';
 import * as paymentLedgerModel from '../../model/paymentLedgerModel.js';
 import * as sseManager from '../../utils/sseManager.js';
 import { mapPaymentToLedger } from '../../utils/paymentMapper.js';
@@ -28,62 +26,6 @@ const EXPORT_HEADERS = [
   'Fee',
   'Tax',
 ];
-
-/* ------------------------------------------------------------------ *
- * Settlement — shared by the checkout callback and the webhook.
- * ------------------------------------------------------------------ */
-
-/** Candidate creation is secondary: a failure here must never fail settlement. */
-async function createCandidates(candidates) {
-  try {
-    await trialCandidateModel.upsertMany(candidates);
-  } catch (err) {
-    logger.error('Trial candidate creation failed (settlement kept):', err?.message || err);
-  }
-}
-
-/**
- * Mark every registration in a team as paid and promote them to trial
- * candidates.
- *
- * @param {string} teamId
- * @param {{paymentId:string, orderId:string, amount?:number}} payment
- * @param {{skipIfSettled?:boolean}} [options] When set, do nothing if every
- *        player in the team is already marked paid (webhook replay guard).
- * @returns {Promise<boolean>} Whether anything was written.
- */
-async function settleTeam(teamId, payment, { skipIfSettled = false } = {}) {
-  await teamModel.markPaid(teamId, payment);
-
-  const players = await registrationModel.findByTeamId(teamId);
-  if (players.length === 0) return false;
-
-  if (skipIfSettled && players.every((player) => player.status === 'paid')) {
-    return false;
-  }
-
-  await registrationModel.markTeamPaid(teamId, payment);
-  await createCandidates(
-    players.map((player) => trialCandidateModel.fromRegistration(player, payment.paymentId))
-  );
-
-  // Captain-only confirmation mail; fire-and-forget and idempotent.
-  sendConfirmationAsync({ teamId }, payment);
-
-  return true;
-}
-
-/**
- * Mark a single registration as paid and promote it to a trial candidate.
- *
- * @param {Object} registration
- * @param {{paymentId:string, orderId:string, amount?:number}} payment
- */
-async function settleIndividual(registration, payment) {
-  await registrationModel.markPaid(registration.id, payment);
-  await createCandidates([trialCandidateModel.fromRegistration(registration, payment.paymentId)]);
-  sendConfirmationAsync({ registrationId: registration.id }, payment);
-}
 
 /* ------------------------------------------------------------------ *
  * Public endpoints
@@ -192,35 +134,14 @@ export const handleWebhook = async (req, res) => {
 
   const notes = payment.notes || {};
   const registrationId = notes.registrationId || notes.registration_id;
-  let teamId = notes.team_id || notes.teamId;
 
   // The browser callback is best-effort, so the webhook settles anything it
   // finds outstanding. Failures here must not cause Razorpay to retry the
   // whole webhook, so they are logged and swallowed.
   if (payment.status === 'captured') {
     try {
-      if (!teamId && registrationId) {
-        teamId = await registrationModel.findTeamId(registrationId);
-      }
-
-      const settlement = {
-        paymentId: payment.id,
-        orderId: payment.order_id,
-        amount: payment.amount / 100,
-      };
-
-      if (teamId) {
-        const written = await settleTeam(teamId, settlement, { skipIfSettled: true });
-        if (written) {
-          logger.info(`Webhook fallback: settled team ${teamId}`);
-        }
-      } else if (registrationId) {
-        const registration = await registrationModel.findById(registrationId);
-        if (registration && registration.status !== 'paid') {
-          await settleIndividual(registration, settlement);
-          logger.info(`Webhook fallback: settled registration ${registrationId}`);
-        }
-      }
+      const settled = await settleCapturedPayment(payment);
+      if (settled) logger.info(`Webhook fallback: settled ${settled}`);
     } catch (fallbackErr) {
       logger.error('Webhook fallback error:', fallbackErr);
     }

@@ -2,6 +2,7 @@ import * as razorpayService from './razorpayService.js';
 import * as paymentLedgerModel from '../model/paymentLedgerModel.js';
 import * as registrationModel from '../model/registrationModel.js';
 import { mapPaymentToLedger } from '../utils/paymentMapper.js';
+import { settleCapturedPayment } from './paymentSettlementService.js';
 import logger from '../utils/logger.js';
 
 /** Supabase `in` filters are chunked to keep the query string bounded. */
@@ -23,12 +24,31 @@ const toUnixSeconds = (value) =>
  * @param {string} from ISO date/time, inclusive.
  * @param {string} [to] ISO date/time, inclusive.
  */
+/**
+ * A captured payment the webhook never settled (page closed, webhook missed): complete the
+ * registration from the payment's order notes. Returns whether it was settled now.
+ */
+async function recover(payment, results) {
+  if (payment.status !== 'captured') return false;
+  try {
+    const settled = await settleCapturedPayment(payment);
+    if (!settled) return false;
+    logger.info(`Reconciliation recovered payment ${payment.id}: settled ${settled}`);
+    results.recovered.push({ payment_id: payment.id, amount: payment.amount / 100, settled });
+    return true;
+  } catch (err) {
+    results.errors.push(`Could not settle ${payment.id}: ${err.message}`);
+    return false;
+  }
+}
+
 export async function reconcile(from, to) {
   logger.info(`Reconciling from ${from} to ${to}...`);
 
   const results = {
     missing_in_sspl: [],
     status_mismatch: [],
+    recovered: [],
     processed_count: 0,
     errors: [],
   };
@@ -74,6 +94,7 @@ export async function reconcile(from, to) {
         const registration = byPaymentId.get(payment.id);
 
         if (!registration) {
+          if (await recover(payment, results)) continue;
           if (SETTLED_STATUSES.has(payment.status)) {
             results.missing_in_sspl.push({
               payment_id: payment.id,
@@ -90,6 +111,7 @@ export async function reconcile(from, to) {
           (payment.status === 'captured' && !PAID_SSPL_STATUSES.has(String(ssplStatus || '').toLowerCase())) ||
           (payment.status === 'failed' && ssplStatus !== 'failed');
 
+        if (mismatch && payment.status === 'captured' && (await recover(payment, results))) continue;
         if (mismatch) {
           results.status_mismatch.push({
             payment_id: payment.id,

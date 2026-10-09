@@ -5,11 +5,30 @@ import PlayerRegistrationForm from '@/components/PlayerRegistrationForm';
 import SEO from '@/components/SEO';
 import { googleAnalyticsService } from '@/services/googleAnalyticsService';
 import { useUTMTracking } from '@/hooks/useUTMTracking';
+import { recordQrScan } from '@/services/qrScan';
 
 const Register = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { isTrackingEnabled } = useUTMTracking();
+
+  useEffect(() => {
+    // A QR code or campaign link that opens this page directly: count the scan and credit
+    // the registration to that QR code
+    const params = new URLSearchParams(window.location.search);
+    const utmCampaign = params.get('utm_campaign');
+    if (utmCampaign) {
+      recordQrScan({ utmSource: params.get('utm_source'), utmCampaign, via: 'link' }).then((code) => {
+        if (code) {
+          try {
+            localStorage.setItem('qr_code_id', code);
+          } catch {
+            // Storage blocked: the UTM tags still credit the campaign
+          }
+        }
+      });
+    }
+  }, []);
 
   useEffect(() => {
     // UTM tracking is initialized automatically by useUTMTracking hook

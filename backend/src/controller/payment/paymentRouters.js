@@ -1,6 +1,7 @@
 import express from 'express';
 import asyncHandler from '../../utils/asyncHandler.js';
 import * as controller from './paymentController.js';
+import { requireAdmin } from '../../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -16,11 +17,8 @@ router.post(['/verify-payment', '/razorpay/verify-payment'], asyncHandler(contro
 // --- Razorpay callback ---
 router.post('/webhooks/razorpay', asyncHandler(controller.handleWebhook));
 
-// --- Admin ---
-// NOTE: these are currently unauthenticated, as they were before the
-// restructure. To lock them down, require the middleware here:
-//   import { requireAdmin } from '../../middleware/authMiddleware.js';
-//   router.use('/admin/razorpay', requireAdmin);
+// --- Admin (signed-in admins only: these expose every payment) ---
+router.use('/admin/razorpay', requireAdmin);
 router.get('/admin/razorpay/transactions', asyncHandler(controller.listTransactions));
 router.get('/admin/razorpay/export', asyncHandler(controller.exportTransactions));
 router.get('/admin/razorpay/stats', asyncHandler(controller.getStats));

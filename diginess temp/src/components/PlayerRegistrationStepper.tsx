@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { API_BASE_URL } from '@/config/api';
 import TermsAndConditions from './TermsAndConditions';
 import { razorpayService, type RazorpayPaymentFailedError, type RazorpayPaymentSuccessResponse } from '@/integrations/razorpayService';
 import { useToast } from '@/hooks/use-toast';
@@ -26,6 +27,7 @@ import {
   INDIVIDUAL_REGISTRATION_FIELDS,
   validateIndividualField,
   validateIndividualRegistration,
+  isMinor,
   type IndividualRegistrationField,
 } from '@/lib/validation/playerRegistration';
 import { clearStoredVisitorContact, getUTMData } from '@/utils/utm';
@@ -101,6 +103,10 @@ const PlayerRegistrationStepper = () => {
     position: '',
     pincode: '',
     school_name: '',
+    // Parent or guardian consent, asked only when the player is under 18
+    parent_name: '',
+    parent_phone: '',
+    parent_consent: false,
     utm_campaign: getUTMCampaign(),
   });
 
@@ -375,7 +381,7 @@ const PlayerRegistrationStepper = () => {
     // A field already showing an error is re-checked on every change, so the message
     // updates (or disappears) as the user fixes it.
     if (fieldErrors[name] && registrationType === 'individual') {
-      const nextValue = name === 'phone' ? value.replace(/\D/g, '').slice(0, 10) : value;
+      const nextValue = (name === 'phone' || name === 'parent_phone') ? value.replace(/\D/g, '').slice(0, 10) : value;
       const nextValues = { ...formData, [name]: nextValue, ...(name === 'state' && { cityDistrict: '' }) };
       setFieldErrors(prev => ({ ...prev, [name]: validateIndividualField(name as IndividualRegistrationField, nextValues) }));
     } else if (fieldErrors[name]) {
@@ -402,7 +408,7 @@ const PlayerRegistrationStepper = () => {
 
     // Visitor Lead Capture: sync to DB (not to the browser, see clearStoredVisitorContact)
     if (['full_name', 'email', 'phone'].includes(name)) {
-      const updatedData = { ...formData, [name]: name === 'phone' ? value.replace(/\D/g, '').slice(0, 10) : value };
+      const updatedData = { ...formData, [name]: (name === 'phone' || name === 'parent_phone') ? value.replace(/\D/g, '').slice(0, 10) : value };
 
       // Debounced
       visitorLeadService.syncVisitorLead({
@@ -703,6 +709,11 @@ const PlayerRegistrationStepper = () => {
           pincode: formData.pincode,
           position: formData.position,
           school_name: formData.school_name || null,
+          ...(isMinor(formData.date_of_birth) && {
+            parent_name: formData.parent_name.trim(),
+            parent_phone: formData.parent_phone,
+            parent_consent: formData.parent_consent,
+          }),
           payment_status: 'pending',
           payment_amount: totalAmount, // Required by DB
           registration_type: registrationType, // New field
@@ -718,23 +729,25 @@ const PlayerRegistrationStepper = () => {
 
         console.log('Sending registration payload:', payload);
 
-        const { data: newReg, error: regError } = await supabase
-          .from('player_registrations')
-          .insert(payload)
-          .select()
-          .single();
-
-        if (regError) {
-          console.error('Registration insert detailed error:', regError);
+        // Saved through the backend so the same player is never registered twice: a paid phone
+        // is stopped, and an unpaid registration with the same phone and email is reused.
+        const saveResponse = await fetch(`${API_BASE_URL}/registrations/individual`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const saved = await saveResponse.json().catch(() => ({}));
+        if (!saveResponse.ok) {
+          const message = saved.message || saved.error || 'Failed to save registration details.';
           toast({
-            title: 'Registration Failed',
-            description: `Error: ${regError.message || 'Unknown error'}. ${regError.details || ''} ${regError.hint || ''}`,
+            title: saveResponse.status === 409 ? 'Already registered' : 'Registration Failed',
+            description: message,
             variant: 'destructive',
           });
-          throw new Error(regError.message || 'Failed to save registration details.');
+          throw new Error(message);
         }
 
-        registrationId = newReg.id;
+        registrationId = String(saved.id);
         paymentPayload = payload; // Use individual payload for order creation
 
         // 2. Create Order via Backend (Backend handles Registration update + Order creation)
@@ -1009,6 +1022,67 @@ const PlayerRegistrationStepper = () => {
                         <FieldError id="date_of_birth-error" message={fieldErrors.date_of_birth} />
                       </div>
                     </div>
+                    {isMinor(formData.date_of_birth) && (
+                      <fieldset className="space-y-4 rounded-xl border-2 border-amber-300 bg-amber-50 p-4">
+                        <legend className="px-1 text-sm font-bold !text-black">Parent or guardian consent (player is under 18)</legend>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div>
+                            <label htmlFor="parent_name" className="block text-sm font-bold !text-black mb-2">
+                              Parent / guardian name<span className="text-red-500"> *</span>
+                            </label>
+                            <input
+                              id="parent_name"
+                              type="text"
+                              name="parent_name"
+                              value={formData.parent_name}
+                              onChange={handleInputChange}
+                              onBlur={handleFieldBlur}
+                              autoComplete="off"
+                              className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.parent_name ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
+                              aria-invalid={Boolean(fieldErrors.parent_name) || undefined}
+                              aria-describedby={fieldErrors.parent_name ? 'parent_name-error' : undefined}
+                            />
+                            <FieldError id="parent_name-error" message={fieldErrors.parent_name} />
+                          </div>
+                          <div>
+                            <label htmlFor="parent_phone" className="block text-sm font-bold !text-black mb-2">
+                              Parent / guardian mobile<span className="text-red-500"> *</span>
+                            </label>
+                            <input
+                              id="parent_phone"
+                              type="tel"
+                              inputMode="numeric"
+                              name="parent_phone"
+                              value={formData.parent_phone}
+                              onChange={handleInputChange}
+                              onBlur={handleFieldBlur}
+                              maxLength={10}
+                              className={`w-full px-4 py-3 bg-white border-2 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] transition-all !text-black font-medium ${fieldErrors.parent_phone ? 'border-red-400' : 'border-white/20 focus:border-transparent'}`}
+                              aria-invalid={Boolean(fieldErrors.parent_phone) || undefined}
+                              aria-describedby={fieldErrors.parent_phone ? 'parent_phone-error' : undefined}
+                            />
+                            <FieldError id="parent_phone-error" message={fieldErrors.parent_phone} />
+                          </div>
+                        </div>
+                        <label className="flex items-start gap-3 text-sm !text-black">
+                          <input
+                            type="checkbox"
+                            name="parent_consent"
+                            checked={formData.parent_consent}
+                            onChange={(e) => {
+                              const checked = e.target.checked;
+                              setFormData(prev => ({ ...prev, parent_consent: checked }));
+                              setFieldErrors(prev => ({ ...prev, parent_consent: '' }));
+                            }}
+                            className="mt-0.5 h-5 w-5 shrink-0 accent-[#8B5CF6]"
+                            aria-invalid={Boolean(fieldErrors.parent_consent) || undefined}
+                            aria-describedby={fieldErrors.parent_consent ? 'parent_consent-error' : undefined}
+                          />
+                          <span>I am the parent or legal guardian of this player. I consent to their registration and participation in SSPL trials, and to SSPL contacting me about them.</span>
+                        </label>
+                        <FieldError id="parent_consent-error" message={fieldErrors.parent_consent} />
+                      </fieldset>
+                    )}
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-bold !text-black mb-2">

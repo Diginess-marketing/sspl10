@@ -307,12 +307,7 @@ const App = () => {
                     Skip to main content
                   </a>
 
-                  <BrowserRouter
-                    future={{
-                      v7_startTransition: true,
-                      v7_relativeSplatPath: true,
-                    }}
-                  >
+                  <BrowserRouter>
                     <ScrollToTop />
                     <GAPageTracker />
                     <WebVitalsTracker />
