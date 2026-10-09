@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 import { User, Session } from '@supabase/supabase-js';
 import { supabase, DatabaseUtils } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { roleCan, staffRoleOf, type StaffRole } from '@/lib/staffRoles';
 import { logger, StateManager } from '@/utils/logger';
 
 interface AuthError {
@@ -59,6 +60,7 @@ interface AuthContextType {
   clearAuthState: () => Promise<void>;
   userRole: string | null;
   userPermissions: string[];
+  staffRole: StaffRole;
   checkUserRoleInDB: (email: string) => Promise<string | null>;
   hasPermission: (permission: string) => boolean;
 }
@@ -71,6 +73,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [userPermissions, setUserPermissions] = useState<string[]>([]);
+  // Admin staff role (super_admin when not set): decides which admin areas this admin can use
+  const [staffRole, setStaffRole] = useState<StaffRole>('super_admin');
   const [roleLoading, setRoleLoading] = useState(true);
   const { toast } = useToast();
 
@@ -80,11 +84,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       // Use retry logic for database operations
       const result = await retryWithBackoff(async () => {
-        const { data, error } = await (supabase as any)
+        let { data, error } = await (supabase as any)
           .from('user_roles')
-          .select('role, permissions')
+          .select('role, permissions, staff_role')
           .eq('user_id', userId)
           .single();
+        // staff_role arrives with a migration; before it runs, read the role without it
+        if (error && /staff_role/.test(error.message || '')) {
+          ({ data, error } = await (supabase as any)
+            .from('user_roles')
+            .select('role, permissions')
+            .eq('user_id', userId)
+            .single());
+        }
 
         if (error) {
           throw error;
@@ -96,6 +108,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (result) {
         logger.info('Auth: User role fetched successfully', { userId, role: result.role });
         setUserRole(result.role);
+        setStaffRole(staffRoleOf(result.staff_role));
         // Default to empty array if permissions is null
         setUserPermissions(Array.isArray(result.permissions) ? result.permissions : []);
       }
@@ -523,8 +536,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const hasPermission = (permission: string) => {
-    // Admins have all permissions implicitly
-    if (userRole === 'admin') return true;
+    // Admins have what their staff role allows (a super admin has everything)
+    if (userRole === 'admin') return roleCan(staffRole, permission);
     return userPermissions.includes(permission);
   };
 
@@ -540,6 +553,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     clearAuthState,
     userRole,
     userPermissions,
+    staffRole,
     checkUserRoleInDB,
     hasPermission,
   };

@@ -9,6 +9,7 @@ import workflowRouters from './workflow/workflowRouters.js';
 import enquiryRouters from './enquiry/enquiryRouters.js';
 import registrationRouters from './registration/registrationRouters.js';
 import qrRouters from './qr/qrRouters.js';
+import staffRouters from './staff/staffRouters.js';
 
 /**
  * Every module router, mounted under a single `/api` prefix by app.js.
@@ -25,5 +26,6 @@ router.use(workflowRouters);
 router.use(enquiryRouters);
 router.use(registrationRouters);
 router.use(qrRouters);
+router.use(staffRouters);
 
 export default router;

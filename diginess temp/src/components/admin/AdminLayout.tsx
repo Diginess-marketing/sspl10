@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard, Users, Trophy, ChartBar, Settings, LogOut, Menu, FileText, ClipboardList, Building2, Award,
-    CheckCircle, MessageCircle, Mail, UserCheck, Search, PanelLeftClose, PanelLeftOpen, ExternalLink, ChevronRight, Home,
+    CheckCircle, MessageCircle, Mail, UserCheck, Search, History, ShieldX, PanelLeftClose, PanelLeftOpen, ExternalLink, ChevronRight, Home,
     type LucideIcon,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -27,24 +27,25 @@ const NAV_GROUPS: NavGroup[] = [
     { title: 'Players & Trials', items: [
         { label: 'All Players', path: '/admin/players', icon: Users, permission: 'manage_trials' },
         { label: 'Trials', path: '/admin/trials', icon: ClipboardList, permission: 'manage_trials' },
-        { label: 'Selection Status', path: '/admin/selection-status', icon: CheckCircle },
-        { label: 'Certificates', path: '/admin/certificates', icon: Award },
-        { label: 'Selectors', path: '/admin/selectors', icon: UserCheck, permission: 'manage_users' },
-        { label: 'Organizers', path: '/admin/organizers', icon: Building2, permission: 'manage_users' },
+        { label: 'Selection Status', path: '/admin/selection-status', icon: CheckCircle, permission: 'manage_trials' },
+        { label: 'Certificates', path: '/admin/certificates', icon: Award, permission: 'manage_trials' },
+        { label: 'Selectors', path: '/admin/selectors', icon: UserCheck, permission: 'manage_trials' },
+        { label: 'Organizers', path: '/admin/organizers', icon: Building2, permission: 'manage_trials' },
     ] },
     { title: 'Growth', items: [
-        { label: 'Payments', path: '/admin/razorpay', icon: ChartBar, permission: 'manage_trials' },
-        { label: 'Reports', path: '/admin/reports', icon: FileText, permission: 'manage_trials' },
-        { label: 'WhatsApp', path: '/admin/whatsapp', icon: MessageCircle },
-        { label: 'Emails', path: '/admin/emails', icon: Mail },
+        { label: 'Payments', path: '/admin/razorpay', icon: ChartBar, permission: 'view_payments' },
+        { label: 'Reports', path: '/admin/reports', icon: FileText, permission: 'view_reports' },
+        { label: 'WhatsApp', path: '/admin/whatsapp', icon: MessageCircle, permission: 'manage_campaigns' },
+        { label: 'Emails', path: '/admin/emails', icon: Mail, permission: 'send_messages' },
     ] },
     { title: 'Content', items: [
-        { label: 'Content', path: '/admin/content', icon: FileText },
+        { label: 'Content', path: '/admin/content', icon: FileText, permission: 'manage_content' },
         { label: 'Rewards', path: '/admin/rewards', icon: Trophy, permission: 'manage_rewards' },
     ] },
     { title: 'System', items: [
-        { label: 'Users', path: '/admin/users', icon: Users },
-        { label: 'Settings', path: '/admin/settings', icon: Settings },
+        { label: 'Users', path: '/admin/users', icon: Users, permission: 'manage_staff' },
+        { label: 'Action history', path: '/admin/audit', icon: History, permission: 'manage_staff' },
+        { label: 'Settings', path: '/admin/settings', icon: Settings, permission: 'manage_staff' },
     ] },
 ];
 
@@ -161,6 +162,9 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
     const flatItems = useMemo(() => groups.flatMap((g) => g.items), [groups]);
     const current = flatItems.find((i) => isActivePath(location.pathname, i.path));
     const currentGroup = groups.find((g) => g.items.some((i) => i === current));
+    // A page this staff role may not use: blocked here too, not only hidden from the menu
+    const blockedItem = NAV_GROUPS.flatMap((g) => g.items)
+        .find((i) => i.permission && isActivePath(location.pathname, i.path) && !hasPermission(i.permission));
 
     const handleSignOut = async () => {
         await signOut();
@@ -276,7 +280,13 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
 
                 <main className="admin-scope flex-1 overflow-auto">
                     <div className="mx-auto w-full max-w-[1480px] p-4 sm:p-6 lg:p-8 animate-in fade-in duration-300">
-                        {children ?? <Outlet />}
+                        {blockedItem ? (
+                            <div className="admin-card mx-auto mt-10 max-w-lg p-8 text-center">
+                                <ShieldX className="mx-auto h-10 w-10 text-[var(--admin-bad)]" aria-hidden="true" />
+                                <h1 className="admin-h3 mt-3">No access to {blockedItem.label}</h1>
+                                <p className="admin-muted mt-2">Your staff role cannot use this area. Ask a super admin if you need it.</p>
+                            </div>
+                        ) : (children ?? <Outlet />)}
                     </div>
                 </main>
             </div>
