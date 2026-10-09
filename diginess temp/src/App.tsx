@@ -107,6 +107,7 @@ const AdminEmailCenter = lazy(() => import('./pages/admin/EmailCenter'));
 const AdminPlayers = lazy(() => import('./pages/admin/PlayersPipeline'));
 const AdminAuditLog = lazy(() => import('./pages/admin/AuditLog'));
 const AdminCampaigns = lazy(() => import('./pages/admin/CampaignManager'));
+const AdminDataQuality = lazy(() => import('./pages/admin/DataQuality'));
 const PartnerStats = lazy(() => import('./pages/PartnerStats'));
 const VerifyCertificate = lazy(() => import('./pages/VerifyCertificate'));
 const AdminRazorpay = lazy(() => import('./pages/admin/RazorpayDashboard'));
@@ -432,6 +433,7 @@ const App = () => {
                               <Route path="players" element={<AdminPlayers />} />
                               <Route path="audit" element={<AdminAuditLog />} />
                               <Route path="campaigns" element={<AdminCampaigns />} />
+                              <Route path="data-quality" element={<AdminDataQuality />} />
                               <Route path="razorpay" element={<AdminRazorpay />} />
                               <Route path="certificates" element={<AdminCertificateLookup />} />
                             </Route>

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard, Users, Trophy, ChartBar, Settings, LogOut, Menu, FileText, ClipboardList, Building2, Award,
-    CheckCircle, MessageCircle, Mail, UserCheck, Search, History, ShieldX, QrCode, PanelLeftClose, PanelLeftOpen, ExternalLink, ChevronRight, Home,
+    CheckCircle, MessageCircle, Mail, UserCheck, Search, History, ShieldX, QrCode, Gauge, PanelLeftClose, PanelLeftOpen, ExternalLink, ChevronRight, Home,
     type LucideIcon,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -35,6 +35,7 @@ const NAV_GROUPS: NavGroup[] = [
     { title: 'Growth', items: [
         { label: 'Payments', path: '/admin/razorpay', icon: ChartBar, permission: 'view_payments' },
         { label: 'Reports', path: '/admin/reports', icon: FileText, permission: 'view_reports' },
+        { label: 'Data Quality', path: '/admin/data-quality', icon: Gauge, permission: 'view_reports' },
         { label: 'QR & Campaigns', path: '/admin/campaigns', icon: QrCode, permission: 'manage_campaigns' },
         { label: 'WhatsApp', path: '/admin/whatsapp', icon: MessageCircle, permission: 'manage_campaigns' },
         { label: 'Emails', path: '/admin/emails', icon: Mail, permission: 'send_messages' },

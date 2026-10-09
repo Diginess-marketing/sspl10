@@ -1,10 +1,12 @@
 import * as paymentReminderJob from './paymentReminderJob.js';
 import * as razorpaySyncJob from './razorpaySyncJob.js';
+import * as dailySummaryJob from './dailySummaryJob.js';
 
 /** Start every scheduled job. Called once from server.js at boot. */
 export function startAll() {
   razorpaySyncJob.start();
   paymentReminderJob.start();
+  dailySummaryJob.start();
 }
 
-export { paymentReminderJob, razorpaySyncJob };
+export { paymentReminderJob, razorpaySyncJob, dailySummaryJob };
