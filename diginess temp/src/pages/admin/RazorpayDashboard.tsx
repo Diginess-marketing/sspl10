@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Download, RefreshCw, ExternalLink, Copy, IndianRupee, CheckCircle2, XCircle, Receipt, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Download, RefreshCw, ExternalLink, Undo2, Copy, IndianRupee, CheckCircle2, XCircle, Receipt, ChevronLeft, ChevronRight } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
 import { API_BASE_URL } from '@/config/api';
 import { adminApi } from '@/lib/adminApi';
-import { PageHeader, StatCard, StatusBadge, ActionButton, DataTableShell, DetailDrawer } from '@/components/admin/ui';
+import { PageHeader, StatCard, StatusBadge, ActionButton, DataTableShell, DetailDrawer, ConfirmDialog } from '@/components/admin/ui';
 
 interface Txn {
   payment_id: string;
@@ -45,7 +45,12 @@ export default function RazorpayDashboard() {
   const [status, setStatus] = useState('all');
   const [viewMode] = useState('all'); // all, captured, net_failed
   const [selected, setSelected] = useState<Txn | null>(null);
-  const { session } = useAuth();
+  const { session, hasPermission } = useAuth();
+  const canRefund = hasPermission('manage_payments');
+  const [refundFor, setRefundFor] = useState<Txn | null>(null);
+  const [refundAmount, setRefundAmount] = useState('');
+  const [refundReason, setRefundReason] = useState('');
+  const [refunding, setRefunding] = useState(false);
 
   const apiBase = API_BASE_URL;
 
@@ -90,6 +95,25 @@ export default function RazorpayDashboard() {
     adminApi.download(`/admin/razorpay/export?${queryParams}`, `payments-${new Date().toISOString().slice(0, 10)}.csv`)
       .then(() => toast.success('Export downloaded'))
       .catch((err: Error) => toast.error('Export failed', { description: err.message }));
+  };
+
+  const submitRefund = async () => {
+    if (!refundFor) return;
+    setRefunding(true);
+    try {
+      const res = await adminApi.post<{ amount: number; fullyRefunded: boolean }>(
+        `/admin/razorpay/payments/${refundFor.payment_id}/refund`,
+        { amount: refundAmount === '' ? undefined : Number(refundAmount), reason: refundReason },
+      );
+      toast.success(`Refunded ${inr(res.amount)}`, { description: res.fullyRefunded ? 'Fully refunded; the registration is marked refunded.' : 'Partial refund.' });
+      setRefundFor(null);
+      setSelected(null);
+      fetchTransactions();
+    } catch (err) {
+      toast.error('Refund failed', { description: (err as Error).message });
+    } finally {
+      setRefunding(false);
+    }
   };
 
   const totalPages = Math.ceil(total / LIMIT) || 1;
@@ -205,9 +229,14 @@ export default function RazorpayDashboard() {
         title={selected ? inr(Number(selected.amount || 0)) : ''}
         description={selected ? format(new Date(selected.created_at), 'dd MMM yyyy, hh:mm a') : undefined}
         footer={selected && (
-          <a href={dashUrl(selected)} target="_blank" rel="noopener noreferrer" className="admin-btn admin-btn--primary">
-            Open in Razorpay<ExternalLink className="h-4 w-4" />
-          </a>
+          <>
+            {canRefund && selected.status === 'captured' && (
+              <ActionButton variant="danger" icon={Undo2} onClick={() => { setRefundFor(selected); setRefundAmount(''); setRefundReason(''); }}>Refund</ActionButton>
+            )}
+            <a href={dashUrl(selected)} target="_blank" rel="noopener noreferrer" className="admin-btn admin-btn--primary">
+              Open in Razorpay<ExternalLink className="h-4 w-4" />
+            </a>
+          </>
         )}
       >
         {selected && (
@@ -225,6 +254,30 @@ export default function RazorpayDashboard() {
           </div>
         )}
       </DetailDrawer>
+      <ConfirmDialog
+        open={refundFor !== null}
+        onOpenChange={(o) => { if (!o && !refunding) setRefundFor(null); }}
+        tone="danger"
+        title={refundFor ? `Refund ${inr(Number(refundFor.amount || 0))}?` : 'Refund'}
+        description="The money goes back to the payer through Razorpay. A full refund marks the registration as refunded. This cannot be undone."
+        confirmLabel="Refund"
+        loading={refunding}
+        onConfirm={() => (refundReason.trim().length >= 5 ? submitRefund() : undefined)}
+      >
+        <div className="mt-3 space-y-3">
+          <div>
+            <label htmlFor="refund-amount" className="admin-label">Amount (₹) — leave empty for a full refund</label>
+            <input id="refund-amount" type="number" min="1" step="1" className="admin-field" value={refundAmount}
+              placeholder={refundFor ? String(refundFor.amount) : ''} onChange={(e) => setRefundAmount(e.target.value)} />
+          </div>
+          <div>
+            <label htmlFor="refund-reason" className="admin-label">Reason (required)</label>
+            <textarea id="refund-reason" className="admin-field !h-auto min-h-[80px] py-2" value={refundReason}
+              onChange={(e) => setRefundReason(e.target.value)} placeholder="e.g. Paid twice by mistake" aria-describedby="refund-reason-hint" />
+            <p id="refund-reason-hint" className="admin-muted mt-1 text-xs">Kept in the action history and on the Razorpay refund.</p>
+          </div>
+        </div>
+      </ConfirmDialog>
     </div>
   );
 }

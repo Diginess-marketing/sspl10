@@ -118,6 +118,9 @@ function auditOnFinish(req, res) {
  * Sets req.user and req.staffRole, and records every change in the action history.
  */
 export async function requireAdmin(req, res, next) {
+  // Already checked by an earlier middleware on this request (e.g. a router-wide check)
+  if (req.user && req.staffRole) return next();
+
   const user = await resolveUser(req);
   if (!user) return next(ApiError.unauthorized('Invalid or missing access token'));
 

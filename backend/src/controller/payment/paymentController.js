@@ -238,3 +238,47 @@ export const reconcile = async (req, res) => {
   const { from, to } = validation.validateReconcileQuery(req.query);
   res.json(await reconciliationService.reconcile(from, to));
 };
+
+/**
+ * POST /api/admin/razorpay/payments/:paymentId/refund  body: { amount?: rupees, reason }
+ * Refund from the admin screen (PRD feature 5). The ledger is refreshed from Razorpay, a full
+ * refund marks the registration (or team) refunded, and the reason is kept in the action
+ * history and on the Razorpay refund.
+ */
+export const refund = async (req, res) => {
+  const { paymentId } = req.params;
+  const reason = String(req.body?.reason || '').trim();
+  if (!/^pay_[A-Za-z0-9]+$/.test(paymentId)) throw ApiError.badRequest('Invalid payment id');
+  if (reason.length < 5) throw ApiError.badRequest('Give a reason for the refund (at least 5 characters)');
+  if (!razorpayConfig.isConfigured()) throw ApiError.internal('Razorpay credentials not configured on the server.');
+
+  const payment = await razorpayService.fetchPaymentById(paymentId);
+  if (payment.status !== 'captured' && payment.status !== 'refunded') {
+    throw ApiError.badRequest(`Only captured payments can be refunded (this one is ${payment.status})`);
+  }
+  const refundable = payment.amount - (payment.amount_refunded || 0);
+  if (refundable <= 0) throw ApiError.badRequest('This payment has already been fully refunded');
+  const amount = req.body?.amount === undefined || req.body.amount === '' ? refundable : Math.round(Number(req.body.amount) * 100);
+  if (!Number.isFinite(amount) || amount <= 0) throw ApiError.badRequest('Enter a refund amount above zero');
+  if (amount > refundable) throw ApiError.badRequest(`At most ₹${(refundable / 100).toLocaleString('en-IN')} can still be refunded`);
+
+  const result = await razorpayService.refundPayment(paymentId, {
+    amount,
+    notes: { reason: reason.slice(0, 250), refunded_by: req.user?.email || req.user?.id || 'admin' },
+  });
+
+  // Refresh the ledger with Razorpay's view of the payment after the refund
+  const updated = await razorpayService.fetchPaymentById(paymentId);
+  await paymentLedgerModel.upsertMany([mapPaymentToLedger(updated)]);
+  const fullyRefunded = updated.amount_refunded >= updated.amount;
+  if (fullyRefunded) await registrationModel.markRefunded(paymentId);
+
+  logger.info(`Refund ${result.id}: ₹${amount / 100} of ${paymentId} by ${req.user?.email} (${reason})`);
+  res.json({
+    success: true,
+    refundId: result.id,
+    amount: amount / 100,
+    status: result.status,
+    fullyRefunded,
+  });
+};

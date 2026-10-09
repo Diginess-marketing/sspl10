@@ -94,3 +94,13 @@ export function verifyPaymentSignature(orderId, paymentId, signature, secret) {
   if (!secret || !signature) return false;
   return safeEquals(hmac(secret, `${orderId}|${paymentId}`), signature);
 }
+
+/**
+ * Refund a captured payment, fully or partly.
+ * @param {string} paymentId
+ * @param {{amount:number, notes?:Object}} params amount in paise
+ */
+export async function refundPayment(paymentId, { amount, notes = {} }) {
+  logger.info(`Refunding ${amount} paise of payment ${paymentId}`);
+  return getRazorpay().payments.refund(paymentId, { amount, notes, speed: 'normal' });
+}
