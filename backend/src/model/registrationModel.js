@@ -77,7 +77,7 @@ export async function listEmails() {
 export async function findPendingBetween(startIso, endIso) {
   const { data, error } = await supabase
     .from(TABLE)
-    .select('email, phone, payment_status, created_at')
+    .select('id, full_name, email, phone, payment_status, created_at')
     .eq('payment_status', 'pending')
     .gte('created_at', startIso)
     .lte('created_at', endIso);

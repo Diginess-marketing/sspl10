@@ -5,6 +5,7 @@ import { sendRegistrationConfirmation } from '../../service/registrationEmailSer
 import * as trialProgressModel from '../../model/trialProgressModel.js';
 import { applyLevelChange, deriveStatus } from '../../service/trialLevelRules.js';
 import { notifyLevelOutcome } from '../../service/trialNotificationService.js';
+import { notifyPlayer, notifyPlayerLater, slotValues } from '../../service/playerMessageService.js';
 
 const PAID = ['captured', 'paid', 'completed', 'success'];
 const MAX_BATCH = 500;
@@ -213,6 +214,10 @@ export const assignSlot = async (req, res) => {
     performed_by: req.user.id,
   });
 
+  // Tell the player their date and venue (PRD journey stage 5)
+  notifyPlayerLater('trial_slot_allocated', {
+    name: registration.full_name, email: registration.email, phone: registration.phone, registrationId, values: slotValues(allocation),
+  });
   res.json({ allocation });
 };
 
@@ -230,7 +235,7 @@ export const allocateToTrials = async (req, res) => {
   if (!allocationDate) throw ApiError.badRequest('allocationDate is required');
 
   const { data: workflows, error: wfErr } = await supabase
-    .from('player_workflow').select('workflow_id,workflow_stage').in('workflow_id', ids);
+    .from('player_workflow').select('workflow_id,workflow_stage,registration_id,full_name,email,phone').in('workflow_id', ids);
   if (wfErr) throw wfErr;
   const byId = new Map((workflows || []).map((w) => [w.workflow_id, w]));
   const { data: existingRows, error: exErr } = await supabase
@@ -246,6 +251,7 @@ export const allocateToTrials = async (req, res) => {
   };
   const now = new Date().toISOString();
   const results = [];
+  const toNotify = [];
   for (const id of ids) {
     const workflow = byId.get(id);
     if (!workflow) { results.push({ workflow_id: id, success: false, message: 'Player not found in the workflow' }); continue; }
@@ -270,10 +276,19 @@ export const allocateToTrials = async (req, res) => {
         performed_by: req.user.id,
       });
       results.push({ workflow_id: id, success: true, message: existing ? 'Slot updated' : 'Allocated' });
+      if (req.body?.notify !== false) toNotify.push(workflow);
     } catch (err) {
       results.push({ workflow_id: id, success: false, message: err.message });
     }
   }
+  // Tell each allocated player their date and venue, one after another in the background
+  (async () => {
+    for (const w of toNotify) {
+      await notifyPlayer('trial_slot_allocated', {
+        name: w.full_name, email: w.email, phone: w.phone, registrationId: w.registration_id, values: slotValues(slot),
+      }).catch((err) => logger.warn(`Slot message for ${w.workflow_id} failed: ${err.message}`));
+    }
+  })();
   res.json(results);
 };
 

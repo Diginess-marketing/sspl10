@@ -58,3 +58,35 @@ export async function markAsRead(messageId) {
     logger.error('Error marking WhatsApp message as read:', error.message);
   }
 }
+
+/** True when the Cloud API credentials are set. */
+export const isConfigured = () => Boolean(env.whatsapp.phoneNumberId && env.whatsapp.accessToken);
+
+/**
+ * Send an approved template message (WhatsApp only lets a business start a conversation
+ * with a template). Body parameters fill {{1}}, {{2}}, ... in order.
+ * @param {string} to Recipient phone number, country code included, no '+'.
+ * @param {string} name Template name as approved in WhatsApp Manager.
+ * @param {string[]} params
+ * @param {string} [language]
+ */
+export async function sendTemplate(to, name, params = [], language = process.env.WHATSAPP_TEMPLATE_LANGUAGE || 'en') {
+  assertConfigured();
+  const response = await axios.post(
+    apiUrl(),
+    {
+      messaging_product: 'whatsapp',
+      to,
+      type: 'template',
+      template: {
+        name,
+        language: { code: language },
+        components: params.length
+          ? [{ type: 'body', parameters: params.map((text) => ({ type: 'text', text: String(text ?? '') })) }]
+          : [],
+      },
+    },
+    { headers: headers() }
+  );
+  return response.data;
+}
