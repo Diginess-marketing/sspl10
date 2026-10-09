@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { validateIndividualField, validateIndividualRegistration } from './playerRegistration';
+import { ageOn, isMinor, validateIndividualField, validateIndividualRegistration } from './playerRegistration';
 
 const valid = {
   full_name: 'Ravi Kumar',
@@ -40,5 +40,25 @@ describe('individualRegistrationSchema', () => {
   it('accepts names in Indian scripts', () => {
     expect(validateIndividualField('full_name', { ...valid, full_name: 'ரவி குமார்' })).toBe('');
     expect(validateIndividualField('full_name', { ...valid, full_name: 'रवि कुमार' })).toBe('');
+  });
+});
+
+describe('parent consent for players under 18', () => {
+  it('works out age on a given day', () => {
+    expect(ageOn('2008-10-10', '2026-10-09')).toBe(17);
+    expect(ageOn('2008-10-09', '2026-10-09')).toBe(18);
+    expect(isMinor('1995-01-01')).toBe(false);
+  });
+
+  it('asks for parent details only when the player is a minor', () => {
+    expect(validateIndividualRegistration({ ...valid, date_of_birth: '1995-01-01' })).toEqual({});
+    const errors = validateIndividualRegistration({ ...valid, date_of_birth: '2012-05-05' });
+    expect(Object.keys(errors).sort()).toEqual(['parent_consent', 'parent_name', 'parent_phone']);
+  });
+
+  it('accepts a minor with a parent name, valid mobile and consent', () => {
+    const minor = { ...valid, date_of_birth: '2012-05-05', parent_name: 'Kumar S', parent_phone: '9876500000', parent_consent: true };
+    expect(validateIndividualRegistration(minor)).toEqual({});
+    expect(validateIndividualRegistration({ ...minor, parent_phone: '12345' }).parent_phone).toMatch(/valid/);
   });
 });

@@ -11,6 +11,10 @@
 --        and recomputes each player's current level / final status (L5 = final)
 --   3. 20261006000000_workflow_missing_columns.sql
 --        Columns the Allocate / Mark attendance buttons need
+--   4. 20261009000000_parent_consent.sql
+--        Parent or guardian name, mobile and consent time for players under 18
+--   5. 20261009000100_qr_domain.sql
+--        QR code links: sspl10.com -> ssplt10.co.in (link text only)
 -- ============================================================================
 
 
@@ -357,3 +361,28 @@ alter table public.trials_allocations
 
 notify pgrst, 'reload schema';
 
+-- ===== 20261009000000_parent_consent.sql =====
+-- Parent or guardian consent for players under 18 (PRD feature 14).
+-- The registration form asks for these when the date of birth makes the player a minor;
+-- the backend refuses a minor's registration without them.
+-- Additive only; safe to re-run.
+
+alter table public.player_registrations
+  add column if not exists parent_name text,
+  add column if not exists parent_phone text,
+  add column if not exists parent_consent_at timestamptz;
+
+comment on column public.player_registrations.parent_consent_at is
+  'When a parent or guardian consented (players under 18 only)';
+
+notify pgrst, 'reload schema';
+
+-- ===== 20261009000100_qr_domain.sql =====
+-- QR codes: every link uses the current domain ssplt10.co.in (PRD 7.2).
+-- Older records still point at sspl10.com, which no longer responds. Only the stored
+-- link text changes; QR images already printed are unaffected. Safe to re-run.
+
+update public.sspl_qr_codes
+   set target_url = regexp_replace(target_url, '^https?://(www\.)?sspl10\.com', 'https://ssplt10.co.in'),
+       updated_at = now()
+ where target_url ~ '^https?://(www\.)?sspl10\.com';

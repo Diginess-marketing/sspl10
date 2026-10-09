@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { QrCode, CheckCircle, XCircle, ExternalLink, Eye, Calendar } from 'lucide-react';
 import { QRCodeService } from '@/services/qrCodeService';
-import { QRAnalyticsService, type ScanTrackingData } from '@/services/qrAnalyticsService';
+import { recordQrScan } from '@/services/qrScan';
 
 const QRScan: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -18,7 +18,6 @@ const QRScan: React.FC = () => {
   const [scanTracked, setScanTracked] = useState(false);
 
   const qrCodeParam = searchParams.get('code');
-  const source = searchParams.get('source') || 'direct';
 
   useEffect(() => {
     if (qrCodeParam) {
@@ -48,19 +47,8 @@ const QRScan: React.FC = () => {
       localStorage.setItem('qr_code_id', qrData.code);
       localStorage.setItem('qr_scan_timestamp', new Date().toISOString());
 
-      // Track the scan asynchronously
-      const trackingData: ScanTrackingData = {
-        qrCodeId: qrData.id,
-        timestamp: new Date(),
-        ipAddress: '', // Will be collected by server-side function
-        userAgent: navigator.userAgent,
-        referrer: document.referrer,
-        scanSource: source,
-      };
-
-      // Call tracking service (non-blocking)
-      QRAnalyticsService.trackScan(trackingData).catch((err) => {
-      });
+      // Count the scan on the server (non-blocking)
+      recordQrScan({ code: qrData.code, via: 'qr_page' });
 
       setScanTracked(true);
 
