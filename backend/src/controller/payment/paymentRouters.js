@@ -24,6 +24,7 @@ router.get('/admin/razorpay/export', asyncHandler(controller.exportTransactions)
 router.get('/admin/razorpay/stats', asyncHandler(controller.getStats));
 // Reconcile refreshes the ledger and settles missed payments: finance and super admins only
 router.get('/admin/razorpay/reconcile', requirePermission('manage_payments'), asyncHandler(controller.reconcile));
+router.get('/admin/razorpay/payments/:paymentId/invoice', asyncHandler(controller.invoice));
 router.post('/admin/razorpay/payments/:paymentId/refund', requirePermission('manage_payments'), asyncHandler(controller.refund));
 
 export default router;

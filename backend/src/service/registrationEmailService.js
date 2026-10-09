@@ -3,6 +3,7 @@ import * as emailTemplateModel from '../model/emailTemplateModel.js';
 import * as emailLogModel from '../model/emailLogModel.js';
 import * as emailService from './emailService.js';
 import { fillPlaceholders, logoAttachment, trialPlaceholderValues, wrapInLayout } from './emailTemplateService.js';
+import { generateInvoicePdf } from './invoiceService.js';
 import logger from '../utils/logger.js';
 
 // Registration confirmation (payment received). Sent by the backend through Microsoft 365;
@@ -62,7 +63,21 @@ export async function sendRegistrationConfirmation(registration, { amount, payme
   const values = confirmationValues(registration, { amount, paymentId });
   const subject = fillPlaceholders(template.subject, values, { html: false });
   const html = wrapInLayout(fillPlaceholders(template.body_html, values));
-  const result = await emailService.sendEmail({ to: registration.email, subject, html, attachments: [logoAttachment()] });
+  const attachments = [logoAttachment()];
+  // GST invoice / receipt for the payment (PRD feature 12); the email still goes if it fails
+  if (values.payment_id && Number(amount) > 0) {
+    try {
+      const invoice = await generateInvoicePdf({
+        paymentId: values.payment_id,
+        amount: Number(amount),
+        buyer: { name: registration.full_name, email: registration.email, phone: registration.phone, state: registration.state, city: registration.city },
+      });
+      attachments.push({ name: `${invoice.isTaxInvoice ? 'SSPL-Tax-Invoice' : 'SSPL-Receipt'}-${values.payment_id}.pdf`, contentType: 'application/pdf', contentBytes: invoice.pdf.toString('base64') });
+    } catch (err) {
+      logger.warn('Invoice not attached:', err.message);
+    }
+  }
+  const result = await emailService.sendEmail({ to: registration.email, subject, html, attachments });
 
   let logId = null;
   try {

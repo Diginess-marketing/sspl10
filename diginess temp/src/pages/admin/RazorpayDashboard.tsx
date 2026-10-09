@@ -230,6 +230,9 @@ export default function RazorpayDashboard() {
         description={selected ? format(new Date(selected.created_at), 'dd MMM yyyy, hh:mm a') : undefined}
         footer={selected && (
           <>
+            {(selected.status === 'captured' || selected.status === 'refunded') && (
+              <ActionButton variant="outline" icon={Receipt} onClick={() => adminApi.download(`/admin/razorpay/payments/${selected.payment_id}/invoice`, `invoice-${selected.payment_id}.pdf`).catch((err: Error) => toast.error('Invoice failed', { description: err.message }))}>Invoice</ActionButton>
+            )}
             {canRefund && selected.status === 'captured' && (
               <ActionButton variant="danger" icon={Undo2} onClick={() => { setRefundFor(selected); setRefundAmount(''); setRefundReason(''); }}>Refund</ActionButton>
             )}

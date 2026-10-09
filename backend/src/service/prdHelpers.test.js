@@ -4,6 +4,7 @@ import { slotValues } from './playerMessageService.js';
 import { campaignName } from '../controller/campaign/campaignController.js';
 import { ageOn } from '../controller/registration/registrationController.js';
 import { can, staffRoleOf } from '../config/staffRoles.js';
+import { splitGst, invoiceNumber, financialYear } from './invoiceService.js';
 
 test('trial slot message values read naturally', () => {
   const v = slotValues({ allocation_date: '2026-10-12', allocation_time: '09:00:00', allocation_venue: 'Chennai', allocation_batch: 'Morning' });
@@ -34,4 +35,12 @@ test('staff roles: finance cannot change trial results; no role means super admi
   assert.equal(staffRoleOf({ staff_role: null }), 'super_admin');
   assert.equal(staffRoleOf({ staff_role: 'operations' }), 'operations');
   assert.equal(can(staffRoleOf(null), 'manage_staff'), true);
+});
+
+test('GST split and invoice numbers', () => {
+  assert.deepEqual(splitGst(1179, { gstPercent: 18, sameState: true }), { taxable: 999.15, cgst: 89.93, sgst: 89.92, igst: 0, total: 1179 });
+  assert.equal(splitGst(1179, { gstPercent: 18, sameState: false }).igst, 179.85);
+  assert.equal(financialYear(new Date('2026-03-31')), '2025-26');
+  assert.equal(financialYear(new Date('2026-04-01')), '2026-27');
+  assert.equal(invoiceNumber('pay_Ab12', new Date('2026-10-09')), 'SSPL/2026-27/AB12');
 });

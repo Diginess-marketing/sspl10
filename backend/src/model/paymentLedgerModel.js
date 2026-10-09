@@ -115,7 +115,7 @@ export async function findSuccessfulSince(email, sinceIso) {
 export async function findByPaymentId(paymentId) {
   const { data, error } = await supabase
     .from(TABLE)
-    .select('payment_id, amount')
+    .select('payment_id, amount, email, contact, created_at, captured_at')
     .eq('payment_id', paymentId)
     .maybeSingle();
   if (error) throw error;

@@ -9,6 +9,7 @@ import * as sseManager from '../../utils/sseManager.js';
 import { mapPaymentToLedger } from '../../utils/paymentMapper.js';
 import { toCsv } from '../../utils/csv.js';
 import ApiError from '../../utils/ApiError.js';
+import { generateInvoicePdf } from '../../service/invoiceService.js';
 import logger from '../../utils/logger.js';
 import * as validation from './paymentValidation.js';
 
@@ -281,4 +282,25 @@ export const refund = async (req, res) => {
     status: result.status,
     fullyRefunded,
   });
+};
+
+/**
+ * GET /api/admin/razorpay/payments/:paymentId/invoice — the GST invoice / receipt PDF for a payment.
+ */
+export const invoice = async (req, res) => {
+  const { paymentId } = req.params;
+  if (!/^pay_[A-Za-z0-9]+$/.test(paymentId)) throw ApiError.badRequest('Invalid payment id');
+  const payment = await paymentLedgerModel.findByPaymentId(paymentId);
+  if (!payment) throw ApiError.notFound('Payment not found in the ledger');
+  const [registration] = await registrationModel.findByPaymentIds([paymentId]);
+  const reg = registration ? await registrationModel.findById(registration.id) : null;
+  const { pdf, number } = await generateInvoicePdf({
+    paymentId,
+    paidAt: payment.captured_at || payment.created_at,
+    amount: Number(payment.amount) || 0,
+    buyer: { name: reg?.full_name || payment.email || 'Player', email: reg?.email || payment.email, phone: reg?.phone || payment.contact, state: reg?.state, city: reg?.city },
+  });
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', `attachment; filename="${number.replace(/\//g, '-')}.pdf"`);
+  res.send(pdf);
 };
