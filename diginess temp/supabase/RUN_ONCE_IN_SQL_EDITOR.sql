@@ -20,6 +20,8 @@
 --        and the 30-day bin for deleted items
 --   7. 20261010000000_trial_selectors.sql
 --        Selectors assigned to trial dates (selector phone scoring)
+--   8. 20261010000100_organiser_kit.sql
+--        Organiser kit dispatch tracking and event results
 -- ============================================================================
 
 
@@ -528,5 +530,24 @@ alter table public.trial_selectors enable row level security;
 drop policy if exists "Admins read trial selectors" on public.trial_selectors;
 create policy "Admins read trial selectors" on public.trial_selectors
   for select to authenticated using (public.has_role(auth.uid(), 'admin'));
+
+notify pgrst, 'reload schema';
+
+-- ===== 20261010000100_organiser_kit.sql =====
+-- Tournament organisers: kit dispatch tracking and event results (PRD feature 15).
+-- Additive only; safe to re-run.
+
+alter table public.tournament_organizers
+  add column if not exists kit_status text,
+  add column if not exists kit_tracking text,
+  add column if not exists kit_updated_at timestamptz,
+  add column if not exists event_results text;
+
+do $$ begin
+  if not exists (select 1 from pg_constraint where conname = 'tournament_organizers_kit_status_check') then
+    alter table public.tournament_organizers add constraint tournament_organizers_kit_status_check
+      check (kit_status is null or kit_status in ('approved', 'packed', 'dispatched', 'delivered'));
+  end if;
+end $$;
 
 notify pgrst, 'reload schema';

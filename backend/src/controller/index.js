@@ -15,6 +15,7 @@ import reportRouters from './report/reportRouters.js';
 import playerRouters from './player/playerRouters.js';
 import trialEventRouters from './trialEvent/trialEventRouters.js';
 import privacyRouters from './privacy/privacyRouters.js';
+import organiserRouters from './organiser/organiserRouters.js';
 
 /**
  * Every module router, mounted under a single `/api` prefix by app.js.
@@ -37,5 +38,6 @@ router.use(reportRouters);
 router.use(playerRouters);
 router.use(trialEventRouters);
 router.use(privacyRouters);
+router.use(organiserRouters);
 
 export default router;

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { CheckCircle, XCircle, RefreshCw, Users, Clock, Eye, Building2 } from 'lucide-react';
+import { adminApi } from '@/lib/adminApi';
 import { ActionButton, ConfirmDialog, DataTableShell, DetailDrawer, PageHeader, StatCard, StatusBadge } from '@/components/admin/ui';
 
 interface Organizer {
@@ -15,7 +16,14 @@ interface Organizer {
     expected_teams: string;
     status: string;
     created_at: string;
+    email?: string | null;
+    kit_status?: string | null;
+    kit_tracking?: string | null;
+    kit_updated_at?: string | null;
+    event_results?: string | null;
 }
+
+const KIT_STEPS = ['approved', 'packed', 'dispatched', 'delivered'] as const;
 
 const OrganizerManagement = () => {
     const [organizers, setOrganizers] = useState<Organizer[]>([]);
@@ -51,15 +59,26 @@ const OrganizerManagement = () => {
         }
     };
 
+    const [kitDraft, setKitDraft] = useState({ tracking: '', results: '' });
+    useEffect(() => { setKitDraft({ tracking: detail?.kit_tracking || '', results: detail?.event_results || '' }); }, [detail?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const saveKit = async (changes: Record<string, unknown>, done: string) => {
+        if (!detail) return;
+        try {
+            const saved = await adminApi.patch<Organizer>(`/admin/organizers/${detail.id}`, changes);
+            setOrganizers((prev) => prev.map((o) => (o.id === saved.id ? { ...o, ...saved } : o)));
+            setDetail((d) => (d ? { ...d, ...saved } : d));
+            toast.success(done);
+        } catch (error) {
+            toast.error('Not saved', { description: (error as Error).message });
+        }
+    };
+
     const updateStatus = async (id: string, newStatus: string) => {
         setUpdating(true);
         try {
-            const { error } = await supabase
-                .from('tournament_organizers' as any)
-                .update({ status: newStatus })
-                .eq('id', id);
-
-            if (error) throw error;
+            // Through the backend: approval emails the organiser a welcome message
+            await adminApi.patch(`/admin/organizers/${id}`, { status: newStatus });
 
             setOrganizers((prev) => prev.map(o => o.id === id ? { ...o, status: newStatus } : o));
             setDetail((d) => (d && d.id === id ? { ...d, status: newStatus } : d));
@@ -67,7 +86,7 @@ const OrganizerManagement = () => {
             setPending(null);
         } catch (error) {
             console.error('Error updating status:', error);
-            toast.error('Failed to update status');
+            toast.error('Failed to update status', { description: (error as Error).message });
         } finally {
             setUpdating(false);
         }
@@ -178,6 +197,32 @@ const OrganizerManagement = () => {
                             <dt>Teams</dt><dd>{detail.expected_teams || '-'}</dd>
                             <dt>Applied</dt><dd>{detail.created_at ? new Date(detail.created_at).toLocaleDateString() : '-'}</dd>
                         </dl>
+                        {detail.status === 'approved' && (
+                            <div className="space-y-4 border-t border-[var(--admin-line)] pt-4">
+                                <div>
+                                    <p className="admin-label">Branding kit</p>
+                                    <div className="flex flex-wrap gap-2" role="group" aria-label="Kit status">
+                                        {KIT_STEPS.map((step) => (
+                                            <button key={step} type="button" className="admin-chip capitalize" data-active={detail.kit_status === step} aria-pressed={detail.kit_status === step}
+                                                onClick={() => saveKit({ kit_status: step, kit_tracking: kitDraft.tracking || null }, `Kit marked ${step}; the organiser is emailed`)}>
+                                                {step}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    {detail.kit_updated_at && <p className="admin-muted mt-1 text-xs">Updated {new Date(detail.kit_updated_at).toLocaleString('en-IN')}</p>}
+                                </div>
+                                <div>
+                                    <label htmlFor="kit-tracking" className="admin-label">Courier tracking number</label>
+                                    <input id="kit-tracking" className="admin-field" value={kitDraft.tracking} onChange={(e) => setKitDraft({ ...kitDraft, tracking: e.target.value })}
+                                        onBlur={() => kitDraft.tracking !== (detail.kit_tracking || '') && saveKit({ kit_tracking: kitDraft.tracking }, 'Tracking number saved')} />
+                                </div>
+                                <div>
+                                    <label htmlFor="event-results" className="admin-label">Event results shared by the organiser</label>
+                                    <textarea id="event-results" className="admin-field !h-auto min-h-[90px] py-2" value={kitDraft.results} onChange={(e) => setKitDraft({ ...kitDraft, results: e.target.value })}
+                                        onBlur={() => kitDraft.results !== (detail.event_results || '') && saveKit({ event_results: kitDraft.results }, 'Event results saved')} />
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
             </DetailDrawer>
