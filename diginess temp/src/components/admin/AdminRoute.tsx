@@ -4,6 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import '@/styles/admin.css';
 import { LoadingSpinner } from '@/components/ui/enhanced-loading';
 import { AlertCircle } from 'lucide-react';
+import MfaGate from './MfaGate';
 
 interface AdminRouteProps {
     children: React.ReactNode;
@@ -63,7 +64,8 @@ const AdminRoute = ({ children, requiredPermission }: AdminRouteProps) => {
         );
     }
 
-    return <>{children}</>;
+    // Admins with two-step sign-in are asked for their code before the panel opens
+    return <MfaGate>{children}</MfaGate>;
 };
 
 export default AdminRoute;

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard, Users, Trophy, ChartBar, Settings, LogOut, Menu, FileText, ClipboardList, Building2, Award,
-    CheckCircle, MessageCircle, Mail, UserCheck, Search, History, ShieldX, QrCode, Gauge, CalendarDays, PanelLeftClose, PanelLeftOpen, ExternalLink, ChevronRight, Home,
+    CheckCircle, MessageCircle, Mail, UserCheck, Search, History, ShieldX, QrCode, Gauge, CalendarDays, ShieldCheck, PanelLeftClose, PanelLeftOpen, ExternalLink, ChevronRight, Home,
     type LucideIcon,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -49,6 +49,7 @@ const NAV_GROUPS: NavGroup[] = [
         { label: 'Users', path: '/admin/users', icon: Users, permission: 'manage_staff' },
         { label: 'Action history', path: '/admin/audit', icon: History, permission: 'manage_staff' },
         { label: 'Settings', path: '/admin/settings', icon: Settings, permission: 'manage_staff' },
+        { label: 'My Security', path: '/admin/security', icon: ShieldCheck },
     ] },
 ];
 

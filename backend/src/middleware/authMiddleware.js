@@ -3,6 +3,19 @@ import ApiError from '../utils/ApiError.js';
 import logger from '../utils/logger.js';
 import { STAFF_ROLES, can, staffRoleOf } from '../config/staffRoles.js';
 
+/**
+ * The assurance level (aal1 / aal2) in a Supabase access token. Only read after
+ * supabase.auth.getUser() has verified the same token.
+ */
+function tokenAal(req) {
+  try {
+    const payload = readBearerToken(req)?.split('.')[1];
+    return payload ? JSON.parse(Buffer.from(payload, 'base64url').toString('utf8')).aal : null;
+  } catch {
+    return null;
+  }
+}
+
 /** Pull a bearer token out of the Authorization header. */
 export function readBearerToken(req) {
   const header = req.headers.authorization || '';
@@ -129,6 +142,11 @@ export async function requireAdmin(req, res, next) {
   const isAdmin = metaRole === 'admin' || metaRole === true || Boolean(row);
   if (!isAdmin) {
     return next(ApiError.forbidden('Admin access required'));
+  }
+
+  // REQUIRE_ADMIN_MFA=true: admin requests must come from a session that passed two-step sign-in
+  if (process.env.REQUIRE_ADMIN_MFA === 'true' && tokenAal(req) !== 'aal2') {
+    return next(ApiError.forbidden('Two-step sign-in is required for admin access. Sign in again and enter your code.'));
   }
 
   req.user = user;
