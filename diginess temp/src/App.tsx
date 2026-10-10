@@ -110,6 +110,7 @@ const AdminCampaigns = lazy(() => import('./pages/admin/CampaignManager'));
 const AdminDataQuality = lazy(() => import('./pages/admin/DataQuality'));
 const AdminTrialDates = lazy(() => import('./pages/admin/TrialDates'));
 const AdminSecurity = lazy(() => import('./pages/admin/Security'));
+const AdminFollowUp = lazy(() => import('./pages/admin/FollowUpCalls'));
 const SelectorScoring = lazy(() => import('./pages/SelectorScoring'));
 const PartnerStats = lazy(() => import('./pages/PartnerStats'));
 const VerifyCertificate = lazy(() => import('./pages/VerifyCertificate'));
@@ -440,6 +441,7 @@ const App = () => {
                               <Route path="data-quality" element={<AdminDataQuality />} />
                               <Route path="trial-dates" element={<AdminTrialDates />} />
                               <Route path="security" element={<AdminSecurity />} />
+                              <Route path="follow-up" element={<AdminFollowUp />} />
                               <Route path="razorpay" element={<AdminRazorpay />} />
                               <Route path="certificates" element={<AdminCertificateLookup />} />
                             </Route>

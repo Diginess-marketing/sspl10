@@ -22,6 +22,8 @@
 --        Selectors assigned to trial dates (selector phone scoring)
 --   8. 20261010000100_organiser_kit.sql
 --        Organiser kit dispatch tracking and event results
+--   9. 20261010000200_lead_followup.sql
+--        Visitor follow-up calls: contacted time, by whom, notes
 -- ============================================================================
 
 
@@ -549,5 +551,16 @@ do $$ begin
       check (kit_status is null or kit_status in ('approved', 'packed', 'dispatched', 'delivered'));
   end if;
 end $$;
+
+notify pgrst, 'reload schema';
+
+-- ===== 20261010000200_lead_followup.sql =====
+-- Visitor follow-up call list (PRD 7.9): who was called, when, by whom, and notes.
+-- Additive only; safe to re-run.
+
+alter table public.visitor_leads
+  add column if not exists contacted_at timestamptz,
+  add column if not exists contacted_by text,
+  add column if not exists contact_notes text;
 
 notify pgrst, 'reload schema';
