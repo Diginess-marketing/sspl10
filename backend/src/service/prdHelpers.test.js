@@ -44,3 +44,28 @@ test('GST split and invoice numbers', () => {
   assert.equal(financialYear(new Date('2026-04-01')), '2026-27');
   assert.equal(invoiceNumber('pay_Ab12', new Date('2026-10-09')), 'SSPL/2026-27/AB12');
 });
+
+test('allocation plan: city first, then state, never above capacity, earliest trial first', async () => {
+  const { buildAllocationPlan } = await import('../controller/workflow/workflowController.js');
+  const trials = [
+    { trial_id: 't1', trial_name: 'Chennai trial', trial_date: '2099-01-10', trial_venue: 'YMCA Ground', trial_address: 'Chennai, Tamil Nadu', trial_capacity: 2 },
+    { trial_id: 't2', trial_name: 'Chennai day 2', trial_date: '2099-01-11', trial_venue: 'YMCA Ground', trial_address: 'Chennai, Tamil Nadu', trial_capacity: 1 },
+    { trial_id: 't3', trial_name: 'Bengaluru', trial_date: '2099-01-12', trial_venue: 'KSCA', trial_address: 'Bengaluru, Karnataka', trial_capacity: null },
+  ];
+  const waiting = [
+    { workflow_id: 'a', full_name: 'A', city: 'Chennai', state: 'Tamil Nadu' },
+    { workflow_id: 'b', full_name: 'B', city: 'Chennai', state: 'Tamil Nadu' },
+    { workflow_id: 'c', full_name: 'C', city: 'Chennai', state: 'Tamil Nadu' },
+    { workflow_id: 'd', full_name: 'D', city: 'Madurai', state: 'Tamil Nadu' },
+    { workflow_id: 'e', full_name: 'E', city: 'Mysuru', state: 'Karnataka' },
+    { workflow_id: 'f', full_name: 'F', city: 'Kochi', state: 'Kerala' },
+  ];
+  const allocations = [{ allocation_date: '2099-01-10', allocation_venue: 'YMCA Ground, Chennai, Tamil Nadu' }];
+  const plan = buildAllocationPlan({ trials, waiting, allocations });
+  const by = Object.fromEntries(plan.trials.map((t) => [t.trial.trial_id, t.players.map((p) => p.workflow_id)]));
+  assert.deepEqual(by.t1, ['a']);           // capacity 2, one already booked
+  assert.deepEqual(by.t2, ['b']);           // next Chennai date, capacity 1
+  assert.deepEqual(by.t3, ['e']);           // Mysuru: no city match, state Karnataka matches Bengaluru
+  assert.deepEqual(plan.unassigned.map((p) => p.workflow_id).sort(), ['c', 'd', 'f']); // Chennai full; TN full; Kerala none
+  assert.equal(plan.trials.find((t) => t.trial.trial_id === 't1').remaining, 0);
+});
