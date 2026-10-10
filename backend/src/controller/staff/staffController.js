@@ -50,7 +50,7 @@ export const listAudit = async (req, res) => {
   if (req.query.entity) query = query.eq('entity', String(req.query.entity));
   if (req.query.actor) query = query.ilike('actor_email', `%${String(req.query.actor).replace(/[%_]/g, '\$&')}%`);
   if (req.query.bin === '1') {
-    query = query.eq('action', 'DELETE').is('restored_at', null)
+    query = query.eq('action', 'DELETE').not('details->deleted_row', 'is', null).is('restored_at', null)
       .gte('created_at', new Date(Date.now() - BIN_DAYS * 86400000).toISOString());
   }
   const { data, error, count } = await query;

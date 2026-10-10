@@ -131,7 +131,7 @@ const AuditLog = () => {
                 </td>
                 <td className="admin-muted max-w-[180px] truncate font-mono text-xs" title={e.entity_id || ''}>{e.entity_id || '—'}</td>
                 <td className="text-right" onClick={(ev) => ev.stopPropagation()}>
-                  {e.action === 'DELETE' && e.source === 'db' && (e.restored_at
+                  {e.action === 'DELETE' && Boolean(e.details?.deleted_row) && (e.restored_at
                     ? <StatusBadge status="completed" label="Restored" />
                     : <ActionButton size="sm" variant="soft" icon={RotateCcw} onClick={() => setRestoreTarget(e)}>Restore</ActionButton>)}
                 </td>

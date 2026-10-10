@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
     LayoutDashboard, Users, Trophy, ChartBar, Settings, LogOut, Menu, FileText, ClipboardList, Building2, Award,
-    CheckCircle, MessageCircle, Mail, UserCheck, Search, History, ShieldX, QrCode, Gauge, PanelLeftClose, PanelLeftOpen, ExternalLink, ChevronRight, Home,
+    CheckCircle, MessageCircle, Mail, UserCheck, Search, History, ShieldX, QrCode, Gauge, CalendarDays, PanelLeftClose, PanelLeftOpen, ExternalLink, ChevronRight, Home,
     type LucideIcon,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -27,6 +27,7 @@ const NAV_GROUPS: NavGroup[] = [
     { title: 'Players & Trials', items: [
         { label: 'All Players', path: '/admin/players', icon: Users, permission: 'manage_trials' },
         { label: 'Trials', path: '/admin/trials', icon: ClipboardList, permission: 'manage_trials' },
+        { label: 'Trial Dates', path: '/admin/trial-dates', icon: CalendarDays, permission: 'manage_trials' },
         { label: 'Selection Status', path: '/admin/selection-status', icon: CheckCircle, permission: 'manage_trials' },
         { label: 'Certificates', path: '/admin/certificates', icon: Award, permission: 'manage_trials' },
         { label: 'Selectors', path: '/admin/selectors', icon: UserCheck, permission: 'manage_trials' },

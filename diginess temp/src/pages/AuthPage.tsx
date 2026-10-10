@@ -31,7 +31,11 @@ const AuthPage = () => {
   const { toast } = useToast();
 
   // Page the user was sent here from (set by protected routes); none when they opened /auth directly
-  const from = (location.state as { from?: string })?.from;
+  // Where to return after sign-in: router state, or ?next= (e.g. selectors sent from /selector).
+  // Only same-site paths are accepted, never another site.
+  const nextParam = new URLSearchParams(location.search).get('next');
+  const from = (location.state as { from?: string })?.from
+    || (nextParam && nextParam.startsWith('/') && !nextParam.startsWith('//') ? nextParam : undefined);
 
   // After sign-in: admins go to the admin panel, players to their dashboard. A protected page they
   // came from wins, but only one they can use (players are never sent into /admin).

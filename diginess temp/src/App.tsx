@@ -108,6 +108,8 @@ const AdminPlayers = lazy(() => import('./pages/admin/PlayersPipeline'));
 const AdminAuditLog = lazy(() => import('./pages/admin/AuditLog'));
 const AdminCampaigns = lazy(() => import('./pages/admin/CampaignManager'));
 const AdminDataQuality = lazy(() => import('./pages/admin/DataQuality'));
+const AdminTrialDates = lazy(() => import('./pages/admin/TrialDates'));
+const SelectorScoring = lazy(() => import('./pages/SelectorScoring'));
 const PartnerStats = lazy(() => import('./pages/PartnerStats'));
 const VerifyCertificate = lazy(() => import('./pages/VerifyCertificate'));
 const AdminRazorpay = lazy(() => import('./pages/admin/RazorpayDashboard'));
@@ -387,6 +389,7 @@ const App = () => {
                               <Route path="/social" element={<SocialMediaPage />} />
                               <Route path="/partner/:code" element={<PartnerStats />} />
                               <Route path="/verify-certificate" element={<VerifyCertificate />} />
+                              <Route path="/selector" element={<SelectorScoring />} />
                               <Route path="/verify-certificate/:number" element={<VerifyCertificate />} />
 
                               <Route path="/auction" element={<AuctionPage />} />
@@ -434,6 +437,7 @@ const App = () => {
                               <Route path="audit" element={<AdminAuditLog />} />
                               <Route path="campaigns" element={<AdminCampaigns />} />
                               <Route path="data-quality" element={<AdminDataQuality />} />
+                              <Route path="trial-dates" element={<AdminTrialDates />} />
                               <Route path="razorpay" element={<AdminRazorpay />} />
                               <Route path="certificates" element={<AdminCertificateLookup />} />
                             </Route>
