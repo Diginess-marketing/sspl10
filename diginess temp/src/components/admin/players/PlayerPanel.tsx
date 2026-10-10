@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { UserCheck, UserX, CheckCircle2, XCircle, CalendarClock, Mail, ArrowRightLeft, Loader2 } from 'lucide-react';
+import { UserCheck, UserX, CheckCircle2, XCircle, CalendarClock, Mail, ArrowRightLeft, Loader2, Download, Eraser } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet';
 import { ActionButton, ConfirmDialog, StatusBadge } from '@/components/admin/ui';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
@@ -140,6 +141,11 @@ export const PlayerPanel = ({ player, onClose, onChanged }: { player: PipelinePl
   const [slotPicker, setSlotPicker] = useState<Trial[] | null>(null);
   const [slotChoice, setSlotChoice] = useState('');
   const { markCandidateAttendance, markCandidateResult, moveToTrialsSection, sendConfirmationEmail } = usePlayerWorkflow();
+  // Privacy (PRD section 10): super admins can download or erase a player's data on request
+  const { hasPermission } = useAuth();
+  const [eraseOpen, setEraseOpen] = useState(false);
+  const [eraseConfirm, setEraseConfirm] = useState('');
+  const [eraseReason, setEraseReason] = useState('');
 
   useEffect(() => {
     let active = true;
@@ -307,6 +313,20 @@ export const PlayerPanel = ({ player, onClose, onChanged }: { player: PipelinePl
                   <Field label="Registered" value={p.registeredAt ? fmtDate(p.registeredAt) : null} />
                 </dl>
               </div>
+              {hasPermission('manage_staff') && (
+                <div className="admin-card space-y-3 p-5">
+                  <p className="admin-eyebrow !mb-0">Player data (privacy requests)</p>
+                  <div className="flex flex-wrap gap-2">
+                    <ActionButton size="sm" variant="outline" icon={Download}
+                      onClick={() => adminApi.download(`/admin/privacy/registrations/${p.id}/export`, `sspl-player-data-${p.id}.json`).catch((err: Error) => toast.error('Download failed', { description: err.message }))}>
+                      Download all data
+                    </ActionButton>
+                    <ActionButton size="sm" variant="ghost" icon={Eraser} className="!text-[var(--admin-bad)]" onClick={() => { setEraseOpen(true); setEraseConfirm(''); setEraseReason(''); }}>
+                      Erase personal data
+                    </ActionButton>
+                  </div>
+                </div>
+              )}
             </>
           )}
 
@@ -372,6 +392,30 @@ export const PlayerPanel = ({ player, onClose, onChanged }: { player: PipelinePl
               pending.kind === 'select' ? `${firstName} selected at Level ${level}` : `${firstName} not selected at Level ${level}`);
           }}
         />
+
+        <ConfirmDialog
+          open={eraseOpen}
+          onOpenChange={(o) => { if (!o && busy !== 'erase') setEraseOpen(false); }}
+          tone="danger"
+          title={`Erase ${firstName}'s personal data?`}
+          description="Removes name, contact details, date of birth, school, photo and parent details from this registration and its linked trial records. Payments and results stay, without anything that identifies the person. This cannot be undone."
+          confirmLabel="Erase"
+          loading={busy === 'erase'}
+          onConfirm={() => (eraseConfirm === 'ERASE' && eraseReason.trim().length >= 5
+            ? run('erase', () => adminApi.post(`/admin/privacy/registrations/${p.id}/erase`, { confirm: eraseConfirm, reason: eraseReason }), 'Personal data erased').then(() => setEraseOpen(false))
+            : undefined)}
+        >
+          <div className="mt-3 space-y-3">
+            <div>
+              <label htmlFor="erase-reason" className="admin-label">Reason (kept in the action history)</label>
+              <input id="erase-reason" className="admin-field" value={eraseReason} onChange={(e) => setEraseReason(e.target.value)} placeholder="e.g. Player asked by email on 10 Oct 2026" />
+            </div>
+            <div>
+              <label htmlFor="erase-confirm" className="admin-label">Type ERASE to confirm</label>
+              <input id="erase-confirm" className="admin-field" value={eraseConfirm} onChange={(e) => setEraseConfirm(e.target.value)} />
+            </div>
+          </div>
+        </ConfirmDialog>
 
         <ConfirmDialog
           open={slotPicker !== null}
