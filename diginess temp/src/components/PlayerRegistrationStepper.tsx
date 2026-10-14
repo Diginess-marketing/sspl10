@@ -90,6 +90,9 @@ const PlayerRegistrationStepper = () => {
     cityDistrict: '',
     players: [],
   });
+  // Teams with players under 18: the adult registering confirms their parents' consent
+  const [teamGuardian, setTeamGuardian] = useState({ name: '', phone: '', consent: false });
+  const teamHasMinor = teamDetails.players.some((p) => isMinor(p.date_of_birth));
 
   // const [currentStep, setCurrentStep] = useState(1); // Merged into single page
 
@@ -477,6 +480,10 @@ const PlayerRegistrationStepper = () => {
           isValid = false;
         }
       });
+      if (teamHasMinor && (teamGuardian.name.trim().length < 3 || !/^[6-9]\d{9}$/.test(teamGuardian.phone) || !teamGuardian.consent)) {
+        errors.guardian = "Players under 18: enter the parent or guardian's name and mobile, and tick the consent box";
+        isValid = false;
+      }
       if (!isValid && teamDetails.players.some(p => !p.full_name || !p.email || !p.phone || !p.date_of_birth || !p.position)) {
         toast({ title: 'Incomplete Team', description: 'Please fill all player names, emails, DOBs and details', variant: 'destructive' });
       } else if (!acceptTerms) {
@@ -555,76 +562,40 @@ const PlayerRegistrationStepper = () => {
 
       // Simplified Payload: Validation ensures fields are present.
       if (registrationType === 'team' || registrationType === 'students') {
-        const teamPayload = {
-          team_name: teamDetails.teamName,
-          state: teamDetails.state,
-          city: teamDetails.cityDistrict,
-          primary_contact_name: teamDetails.players[0].full_name,
-          primary_contact_email: teamDetails.players[0].email,
-          primary_contact_phone: teamDetails.players[0].phone,
-          payment_amount: totalAmount,
-          payment_status: 'pending', // Initial status
-        };
-
-        console.log('Inserting Team record...', teamPayload);
-        const { data: newTeam, error: teamError } = await supabase
-          .from('teams' as any)
-          .insert(teamPayload)
-          .select()
-          .single();
-
-        if (teamError) {
-          throw new Error(`Failed to create team record: ${  teamError.message}`);
+        // Saved through the backend: one team, its players, the duplicate check for every player
+        // and the parent consent for players under 18.
+        const saveResponse = await fetch(`${API_BASE_URL}/registrations/team`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            team: { team_name: teamDetails.teamName, state: teamDetails.state, city: teamDetails.cityDistrict },
+            players: teamDetails.players.map((p) => ({
+              full_name: p.full_name, email: p.email, phone: p.phone, date_of_birth: p.date_of_birth, position: p.position, pincode: p.pincode || null,
+            })),
+            registration_type: registrationType,
+            payment_amount: totalAmount,
+            utm_source: utmData?.utm_source || null,
+            utm_medium: utmData?.utm_medium || null,
+            utm_campaign: utmData?.utm_campaign || null,
+            utm_content: (utmData as any)?.utm_content || null,
+            utm_term: (utmData as any)?.utm_term || null,
+            qr_code_id: qrCodeId || null,
+            ...(teamHasMinor && { guardian_name: teamGuardian.name.trim(), guardian_phone: teamGuardian.phone, guardian_consent: teamGuardian.consent }),
+          }),
+        });
+        const savedTeam = await saveResponse.json().catch(() => ({}));
+        if (!saveResponse.ok) {
+          const message = savedTeam.message || savedTeam.error || 'Failed to save the team.';
+          toast({ title: saveResponse.status === 409 ? 'Already registered' : 'Registration Failed', description: message, variant: 'destructive' });
+          throw new Error(message);
         }
-
-        const teamId = (newTeam as any).id;
-        console.log('Team created with ID:', teamId);
-
-        // Prepare player payloads linked to this team
-        const playersPayload = teamDetails.players.map(player => ({
-          full_name: player.full_name,
-          email: player.email,
-          phone: player.phone,
-          date_of_birth: player.date_of_birth,
-          position: player.position,
-          pincode: player.pincode || null,
-          // Map frontend field 'cityDistrict' to DB 'city'
-          city: teamDetails.cityDistrict,
-          state: teamDetails.state,
-          payment_amount: totalAmount / teamDetails.playerCount,
-          payment_status: 'pending',
-          registration_type: registrationType,
-          team_id: teamId,
-          team: teamDetails.teamName, // Explicitly capture team name as requested
-          is_captain: player === teamDetails.players[0], // Assume first is captain/primary
-          utm_source: utmData?.utm_source || null,
-          utm_medium: utmData?.utm_medium || null,
-          utm_campaign: utmData?.utm_campaign || null,
-          utm_content: (utmData as any)?.utm_content || null,
-          utm_term: (utmData as any)?.utm_term || null,
-          qr_code_id: qrCodeId || null,
-        }));
-
-        console.log('Inserting linked players...', playersPayload);
-        const { error: playersError } = await supabase
-          .from('player_registrations')
-          .insert(playersPayload);
-
-        if (playersError) {
-          throw new Error(`Failed to save team players: ${  playersError.message}`);
-        }
-
-        // Let's query the captain's ID we just inserted.
-        const { data: captainReg } = await supabase
-          .from('player_registrations')
-          .select('id')
-          .eq('team_id', teamId)
-          .eq('is_captain', true)
-          .single();
-
-        if (!captainReg) throw new Error('Could not retrieve team captain record.');
-
-        registrationId = captainReg.id;
+        const teamId = String(savedTeam.teamId);
+        registrationId = String(savedTeam.captainId);
+        const captain = teamDetails.players[0];
+        const playersPayload = [{
+          full_name: captain.full_name, email: captain.email, phone: captain.phone, date_of_birth: captain.date_of_birth,
+          state: teamDetails.state, city: teamDetails.cityDistrict, pincode: captain.pincode || null, position: captain.position,
+        }];
 
         // Force recalculation using explicitly selected player count
         const multiplier = (teamDetails.playerCount && teamDetails.playerCount > 0) ? teamDetails.playerCount : 1;
@@ -1428,6 +1399,34 @@ const PlayerRegistrationStepper = () => {
                       ))}
                     </div>
                   </div>
+
+                  {teamHasMinor && (
+                    <fieldset className="space-y-4 rounded-xl border-2 border-amber-300 bg-amber-50 p-4">
+                      <legend className="px-1 text-sm font-bold !text-black">Parent or guardian consent (some players are under 18)</legend>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <label htmlFor="guardian_name" className="block text-sm font-bold !text-black mb-2">Parent / guardian name<span className="text-red-500"> *</span></label>
+                          <input id="guardian_name" type="text" value={teamGuardian.name}
+                            onChange={(e) => { const v = e.target.value; setTeamGuardian((g) => ({ ...g, name: v })); }}
+                            className="w-full px-4 py-3 bg-white border-2 rounded-xl text-sm !text-black font-medium focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]" />
+                        </div>
+                        <div>
+                          <label htmlFor="guardian_phone" className="block text-sm font-bold !text-black mb-2">Parent / guardian mobile<span className="text-red-500"> *</span></label>
+                          <input id="guardian_phone" type="tel" inputMode="numeric" maxLength={10} value={teamGuardian.phone}
+                            onChange={(e) => { const v = e.target.value.replace(/\D/g, '').slice(0, 10); setTeamGuardian((g) => ({ ...g, phone: v })); }}
+                            className="w-full px-4 py-3 bg-white border-2 rounded-xl text-sm !text-black font-medium focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]" />
+                        </div>
+                      </div>
+                      <label className="flex items-start gap-3 text-sm !text-black">
+                        <input type="checkbox" checked={teamGuardian.consent}
+                          onChange={(e) => { const v = e.target.checked; setTeamGuardian((g) => ({ ...g, consent: v })); }}
+                          className="mt-0.5 h-5 w-5 shrink-0 accent-[#8B5CF6]"
+                          aria-describedby={fieldErrors.guardian ? 'guardian-error' : undefined} />
+                        <span>I am the parent or legal guardian of the players under 18 in this list, or I have their parents' consent, to register them for SSPL trials and for SSPL to contact me about them.</span>
+                      </label>
+                      <FieldError id="guardian-error" message={fieldErrors.guardian} />
+                    </fieldset>
+                  )}
 
                   <div className="flex items-center gap-3 p-4 bg-white/5 rounded-xl border border-white/10">
                     <input

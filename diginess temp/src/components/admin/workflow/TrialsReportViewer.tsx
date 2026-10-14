@@ -34,7 +34,7 @@ const renderCell = (key: string, value: unknown): ReactNode => {
 export const TrialsReportViewer = () => {
   const [selectedReport, setSelectedReport] = useState<string>('trial_assessment');
   const [level, setLevel] = useState<string>('1');
-  const [location, setLocation] = useState<string>('Bangalore');
+  const [location, setLocation] = useState<string>(''); // empty = all locations
   const [reportData, setReportData] = useState<any[]>([]);
   const [generated, setGenerated] = useState(false);
   const { getReportData, loading } = usePlayerWorkflow();
@@ -99,7 +99,7 @@ export const TrialsReportViewer = () => {
           <div className="flex flex-wrap items-end gap-3">
             <div>
               <label className="admin-label" htmlFor="report-type">Type</label>
-              <select id="report-type" className="admin-select" value={selectedReport} onChange={(e) => setSelectedReport(e.target.value)}>
+              <select id="report-type" className="admin-select" value={selectedReport} onChange={(e) => { setSelectedReport(e.target.value); setLocation(''); }}>
                 {REPORT_TYPES.map((t) => <option key={t.id} value={t.id}>{t.category} - {t.name}</option>)}
               </select>
             </div>
@@ -125,7 +125,7 @@ export const TrialsReportViewer = () => {
                     className="admin-input !pl-10"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    placeholder="City or state"
+                    placeholder="All locations"
                   />
                 </div>
               </div>

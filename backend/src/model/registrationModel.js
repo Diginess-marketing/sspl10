@@ -77,10 +77,21 @@ export async function listEmails() {
 export async function findPendingBetween(startIso, endIso) {
   const { data, error } = await supabase
     .from(TABLE)
-    .select('email, phone, payment_status, created_at')
+    .select('id, full_name, email, phone, payment_status, created_at')
     .eq('payment_status', 'pending')
     .gte('created_at', startIso)
     .lte('created_at', endIso);
   if (error) throw error;
   return data || [];
+}
+
+/** A fully refunded payment: its registration(s) and team are marked refunded. */
+export async function markRefunded(paymentId) {
+  const now = new Date().toISOString();
+  const { error } = await supabase.from(TABLE)
+    .update({ payment_status: 'refunded', updated_at: now }).eq('razorpay_payment_id', paymentId);
+  if (error) throw error;
+  const { error: teamErr } = await supabase.from('teams')
+    .update({ payment_status: 'refunded', updated_at: now }).eq('razorpay_payment_id', paymentId);
+  if (teamErr) throw teamErr;
 }

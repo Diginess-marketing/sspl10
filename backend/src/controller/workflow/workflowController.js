@@ -5,6 +5,7 @@ import { sendRegistrationConfirmation } from '../../service/registrationEmailSer
 import * as trialProgressModel from '../../model/trialProgressModel.js';
 import { applyLevelChange, deriveStatus } from '../../service/trialLevelRules.js';
 import { notifyLevelOutcome } from '../../service/trialNotificationService.js';
+import { notifyPlayer, notifyPlayerLater, slotValues } from '../../service/playerMessageService.js';
 
 const PAID = ['captured', 'paid', 'completed', 'success'];
 const MAX_BATCH = 500;
@@ -213,6 +214,10 @@ export const assignSlot = async (req, res) => {
     performed_by: req.user.id,
   });
 
+  // Tell the player their date and venue (PRD journey stage 5)
+  notifyPlayerLater('trial_slot_allocated', {
+    name: registration.full_name, email: registration.email, phone: registration.phone, registrationId, values: slotValues(allocation),
+  });
   res.json({ allocation });
 };
 
@@ -230,7 +235,7 @@ export const allocateToTrials = async (req, res) => {
   if (!allocationDate) throw ApiError.badRequest('allocationDate is required');
 
   const { data: workflows, error: wfErr } = await supabase
-    .from('player_workflow').select('workflow_id,workflow_stage').in('workflow_id', ids);
+    .from('player_workflow').select('workflow_id,workflow_stage,registration_id,full_name,email,phone').in('workflow_id', ids);
   if (wfErr) throw wfErr;
   const byId = new Map((workflows || []).map((w) => [w.workflow_id, w]));
   const { data: existingRows, error: exErr } = await supabase
@@ -246,6 +251,7 @@ export const allocateToTrials = async (req, res) => {
   };
   const now = new Date().toISOString();
   const results = [];
+  const toNotify = [];
   for (const id of ids) {
     const workflow = byId.get(id);
     if (!workflow) { results.push({ workflow_id: id, success: false, message: 'Player not found in the workflow' }); continue; }
@@ -270,10 +276,19 @@ export const allocateToTrials = async (req, res) => {
         performed_by: req.user.id,
       });
       results.push({ workflow_id: id, success: true, message: existing ? 'Slot updated' : 'Allocated' });
+      if (req.body?.notify !== false) toNotify.push(workflow);
     } catch (err) {
       results.push({ workflow_id: id, success: false, message: err.message });
     }
   }
+  // Tell each allocated player their date and venue, one after another in the background
+  (async () => {
+    for (const w of toNotify) {
+      await notifyPlayer('trial_slot_allocated', {
+        name: w.full_name, email: w.email, phone: w.phone, registrationId: w.registration_id, values: slotValues(slot),
+      }).catch((err) => logger.warn(`Slot message for ${w.workflow_id} failed: ${err.message}`));
+    }
+  })();
   res.json(results);
 };
 
@@ -398,4 +413,63 @@ export const saveResults = async (req, res) => {
     performed_by: req.user.id,
   });
   res.json({ success: true, tracker });
+};
+
+const norm = (v) => String(v ?? '').trim().toLowerCase();
+const venueText = (t) => [t.trial_venue, t.trial_address].filter(Boolean).join(', ') || t.trial_name;
+
+/**
+ * Pure planner behind allocation-plan (exported for tests): earliest upcoming trial whose
+ * venue mentions the player's city, else their state, never above trial_capacity.
+ */
+export function buildAllocationPlan({ trials, waiting, allocations }) {
+  const plan = (trials || []).map((t) => {
+    const venue = venueText(t);
+    const used = (allocations || []).filter((a) => a.allocation_date === t.trial_date && norm(a.allocation_venue) === norm(venue)).length;
+    return {
+      trial: { trial_id: t.trial_id, name: t.trial_name, date: t.trial_date, time: t.trial_time, venue, batch: t.trial_batch, capacity: t.trial_capacity ?? null },
+      used,
+      haystack: norm(`${t.trial_name} ${t.trial_venue} ${t.trial_address}`),
+      players: [],
+    };
+  });
+  const hasRoom = (p) => p.trial.capacity === null || p.used + p.players.length < p.trial.capacity;
+
+  const unassigned = [];
+  for (const w of waiting || []) {
+    const city = norm(w.city);
+    const state = norm(w.state);
+    const byCity = city ? plan.find((p) => hasRoom(p) && p.haystack.includes(city)) : null;
+    const byState = !byCity && state ? plan.find((p) => hasRoom(p) && p.haystack.includes(state)) : null;
+    const target = byCity || byState;
+    const player = { workflow_id: w.workflow_id, name: w.full_name, city: w.city, state: w.state, match: byCity ? 'city' : byState ? 'state' : null };
+    if (target) target.players.push(player);
+    else unassigned.push({ ...player, reason: plan.length ? 'No upcoming trial in their city or state with room' : 'No upcoming trials' });
+  }
+
+  return {
+    trials: plan.map(({ haystack, ...p }) => ({ ...p, remaining: p.trial.capacity === null ? null : p.trial.capacity - p.used - p.players.length })),
+    unassigned,
+    waiting: (waiting || []).length,
+  };
+}
+
+/**
+ * POST /api/admin/workflow/allocation-plan — proposes a trial for every paid player waiting in
+ * the Trials Section (PRD feature 8). Nothing is saved: the admin reviews and applies it.
+ * A player goes to the earliest upcoming trial whose venue mentions their city (else their
+ * state) and that still has room; trial_capacity is never exceeded.
+ */
+export const allocationPlan = async (req, res) => {
+  const today = new Date().toISOString().slice(0, 10);
+  const [{ data: trials, error: tErr }, { data: waiting, error: wErr }, { data: allocations, error: aErr }] = await Promise.all([
+    supabase.from('trials').select('*').gte('trial_date', today).order('trial_date', { ascending: true }),
+    supabase.from('player_workflow').select('workflow_id,registration_id,full_name,city,state').eq('workflow_stage', 'trials_section'),
+    supabase.from('trials_allocations').select('allocation_date,allocation_venue').gte('allocation_date', today),
+  ]);
+  if (tErr) throw tErr;
+  if (wErr) throw wErr;
+  if (aErr) throw aErr;
+
+  res.json(buildAllocationPlan({ trials, waiting, allocations }));
 };

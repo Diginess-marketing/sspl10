@@ -53,13 +53,15 @@ async function findByPhone(phone) {
  * added by the pending migration). Any other missing column is a real error.
  */
 async function withKnownColumns(values, write) {
-  const row = { ...values };
+  const row = Array.isArray(values) ? values.map((v) => ({ ...v })) : { ...values };
+  const has = (col) => (Array.isArray(row) ? row.some((r) => col in r) : col in row);
+  const drop = (col) => (Array.isArray(row) ? row.forEach((r) => delete r[col]) : delete row[col]);
   for (;;) {
     const { data, error } = await write(row);
     const missing = error?.code === 'PGRST204' && /the '([^']+)' column/.exec(error.message)?.[1];
-    if (missing && ['parent_name', 'parent_phone', 'parent_consent_at'].includes(missing) && missing in row) {
+    if (missing && ['parent_name', 'parent_phone', 'parent_consent_at'].includes(missing) && has(missing)) {
       logger.warn(`player_registrations has no ${missing} column yet; run the pending migration (parent consent not stored)`);
-      delete row[missing];
+      drop(missing);
       continue;
     }
     if (error) throw error;
@@ -116,4 +118,98 @@ export const saveIndividual = async (req, res) => {
   const data = await withKnownColumns({ ...row, payment_status: 'pending' }, (values) =>
     supabase.from('player_registrations').insert(values).select('id').single());
   res.json({ id: data.id, resumed: false });
+};
+
+const TEAM_FIELDS = ['full_name', 'email', 'phone', 'date_of_birth', 'position', 'pincode'];
+const MAX_TEAM_PLAYERS = 30;
+const maskPhone = (p) => `${'•'.repeat(6)}${last10(p).slice(-4)}`;
+
+/**
+ * POST /api/registrations/team
+ * body: { team: { team_name, state, city }, players: [{ full_name, email, phone, date_of_birth, position, pincode }],
+ *         registration_type: 'team'|'students', payment_amount, utm_*, qr_code_id,
+ *         guardian_name?, guardian_phone?, guardian_consent? }
+ * Saves a team and its players in one go (PRD: a captain or parent registers several players
+ * and pays once). A player whose phone has already paid is refused, and players under 18
+ * need the registering adult's consent on behalf of their parents. Returns { teamId, captainId }.
+ */
+export const saveTeam = async (req, res) => {
+  if (rateLimited(req.ip || 'unknown')) throw ApiError.badRequest('Too many attempts. Please try again later.');
+  const body = req.body || {};
+  const team = body.team || {};
+  const players = Array.isArray(body.players) ? body.players : [];
+  if (!String(team.team_name || '').trim()) throw ApiError.badRequest('Team name is required');
+  if (players.length < 1 || players.length > MAX_TEAM_PLAYERS) throw ApiError.badRequest(`Add between 1 and ${MAX_TEAM_PLAYERS} players`);
+
+  const phones = new Set();
+  for (const [i, p] of players.entries()) {
+    if (!p.full_name || !p.email || last10(p.phone).length !== 10) {
+      throw ApiError.badRequest(`Player ${i + 1}: name, email and a 10-digit mobile are required`);
+    }
+    if (phones.has(last10(p.phone))) throw ApiError.badRequest(`Player ${i + 1} has the same mobile as another player in this team`);
+    phones.add(last10(p.phone));
+  }
+
+  // Already registered and paid: stop before creating anything
+  const paidClashes = [];
+  for (const p of players) {
+    const existing = await findByPhone(p.phone);
+    if (existing.some((r) => PAID.includes(String(r.payment_status || '').toLowerCase()))) paidClashes.push(`${p.full_name} (${maskPhone(p.phone)})`);
+  }
+  if (paidClashes.length) {
+    throw new ApiError(409, `Already registered and paid: ${paidClashes.join(', ')}. Remove them from the team, or contact us.`);
+  }
+
+  // Players under 18: the adult registering confirms their parents' consent
+  const minors = players.filter((p) => { const a = ageOn(p.date_of_birth); return a !== null && a < 18; });
+  if (minors.length && (!String(body.guardian_name || '').trim() || last10(body.guardian_phone).length !== 10 || body.guardian_consent !== true)) {
+    throw ApiError.badRequest(`${minors.length} player(s) are under 18: the name and mobile of the parent or guardian giving consent are required, with the consent box ticked.`);
+  }
+
+  const now = new Date().toISOString();
+  const { data: teamRow, error: teamErr } = await supabase.from('teams').insert({
+    team_name: String(team.team_name).trim(),
+    state: team.state || null,
+    city: team.city || null,
+    primary_contact_name: players[0].full_name,
+    primary_contact_email: players[0].email,
+    primary_contact_phone: players[0].phone,
+    payment_amount: body.payment_amount ?? null,
+    payment_status: 'pending',
+  }).select('id').single();
+  if (teamErr) throw teamErr;
+
+  const perPlayer = body.payment_amount ? Number(body.payment_amount) / players.length : null;
+  const rows = players.map((p, i) => {
+    const row = {};
+    for (const f of TEAM_FIELDS) if (p[f] !== undefined) row[f] = p[f] === '' ? null : p[f];
+    const age = ageOn(p.date_of_birth);
+    return {
+      ...row,
+      city: team.city || null,
+      state: team.state || null,
+      payment_amount: perPlayer,
+      payment_status: 'pending',
+      registration_type: body.registration_type === 'students' ? 'students' : 'team',
+      team_id: teamRow.id,
+      team: String(team.team_name).trim(),
+      is_captain: i === 0,
+      utm_source: body.utm_source || null,
+      utm_medium: body.utm_medium || null,
+      utm_campaign: body.utm_campaign || null,
+      utm_content: body.utm_content || null,
+      utm_term: body.utm_term || null,
+      qr_code_id: body.qr_code_id || null,
+      ...(age !== null && age < 18 && {
+        parent_name: String(body.guardian_name).trim(),
+        parent_phone: body.guardian_phone,
+        parent_consent_at: now,
+      }),
+    };
+  });
+
+  const inserted = await withKnownColumns(rows, (values) =>
+    supabase.from('player_registrations').insert(values).select('id,is_captain'));
+  const captain = inserted.find((r) => r.is_captain) || inserted[0];
+  res.json({ teamId: teamRow.id, captainId: captain.id });
 };

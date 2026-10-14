@@ -105,6 +105,15 @@ const AdminReports = lazy(() => import('./pages/admin/AdminReports'));
 const AdminWhatsApp = lazy(() => import('./pages/admin/WhatsAppMarketing'));
 const AdminEmailCenter = lazy(() => import('./pages/admin/EmailCenter'));
 const AdminPlayers = lazy(() => import('./pages/admin/PlayersPipeline'));
+const AdminAuditLog = lazy(() => import('./pages/admin/AuditLog'));
+const AdminCampaigns = lazy(() => import('./pages/admin/CampaignManager'));
+const AdminDataQuality = lazy(() => import('./pages/admin/DataQuality'));
+const AdminTrialDates = lazy(() => import('./pages/admin/TrialDates'));
+const AdminSecurity = lazy(() => import('./pages/admin/Security'));
+const AdminFollowUp = lazy(() => import('./pages/admin/FollowUpCalls'));
+const SelectorScoring = lazy(() => import('./pages/SelectorScoring'));
+const PartnerStats = lazy(() => import('./pages/PartnerStats'));
+const VerifyCertificate = lazy(() => import('./pages/VerifyCertificate'));
 const AdminRazorpay = lazy(() => import('./pages/admin/RazorpayDashboard'));
 const AdminRewards = lazy(() => import('./pages/admin/RewardsManager'));
 const AdminRoute = lazy(() => import('./components/admin/AdminRoute'));
@@ -380,6 +389,10 @@ const App = () => {
                               <Route path="/auction/unsold" element={<AuctionResultsPage view="unsold" />} />
                               <Route path="/app" element={<AppDownloadPage />} />
                               <Route path="/social" element={<SocialMediaPage />} />
+                              <Route path="/partner/:code" element={<PartnerStats />} />
+                              <Route path="/verify-certificate" element={<VerifyCertificate />} />
+                              <Route path="/selector" element={<SelectorScoring />} />
+                              <Route path="/verify-certificate/:number" element={<VerifyCertificate />} />
 
                               <Route path="/auction" element={<AuctionPage />} />
                               <Route path="/players/:playerId" element={<PlayerProfile />} />
@@ -423,6 +436,12 @@ const App = () => {
                               <Route path="whatsapp" element={<AdminWhatsApp />} />
                               <Route path="emails" element={<AdminEmailCenter />} />
                               <Route path="players" element={<AdminPlayers />} />
+                              <Route path="audit" element={<AdminAuditLog />} />
+                              <Route path="campaigns" element={<AdminCampaigns />} />
+                              <Route path="data-quality" element={<AdminDataQuality />} />
+                              <Route path="trial-dates" element={<AdminTrialDates />} />
+                              <Route path="security" element={<AdminSecurity />} />
+                              <Route path="follow-up" element={<AdminFollowUp />} />
                               <Route path="razorpay" element={<AdminRazorpay />} />
                               <Route path="certificates" element={<AdminCertificateLookup />} />
                             </Route>

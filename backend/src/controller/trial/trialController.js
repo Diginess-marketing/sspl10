@@ -156,3 +156,64 @@ export const syncCandidates = async (req, res) => {
   }
   res.json({ added: toAdd.length });
 };
+
+const VERIFY_WINDOW_MS = 60 * 60 * 1000;
+const VERIFY_MAX = 60;
+const verifyHits = new Map(); // ip -> timestamps
+
+/**
+ * GET /api/certificates/:number — public check that a certificate is genuine (PRD feature 9).
+ * Shows the player's name, level, type and date. Looks in trial_certificates first; numbers
+ * issued before that table existed are derived from the candidate, so they are found by
+ * recomputing them for every candidate with a result at that level.
+ */
+export const verifyCertificate = async (req, res) => {
+  const now = Date.now();
+  const hits = (verifyHits.get(req.ip) || []).filter((t) => now - t < VERIFY_WINDOW_MS);
+  hits.push(now);
+  verifyHits.set(req.ip, hits);
+  if (hits.length > VERIFY_MAX) throw ApiError.badRequest('Too many checks. Please try again later.');
+
+  const number = String(req.params.number || '').trim().toUpperCase();
+  const match = /^SSPL-L([1-5])-([AP])-([A-Z0-9]{6})$/.exec(number);
+  if (!match) throw ApiError.badRequest('Certificate numbers look like SSPL-L1-A-ABC123');
+  const level = Number(match[1]);
+  const kind = match[2] === 'A' ? 'achievement' : 'participation';
+
+  let found = null;
+  const { data: stored, error } = await supabase.from('trial_certificates')
+    .select('candidate_id, level, kind, player_name, issued_at').eq('certificate_no', number).maybeSingle();
+  if (error && error.code !== 'PGRST205') throw error;
+  if (stored) found = { candidateId: stored.candidate_id, name: stored.player_name, issuedAt: stored.issued_at };
+
+  if (!found) {
+    const wanted = kind === 'achievement' ? 'SELECTED' : 'REJECTED';
+    const rows = [];
+    for (let from = 0; ; from += 1000) {
+      const { data, error: pErr } = await supabase.from('trial_progress').select('*').order('id').range(from, from + 999);
+      if (pErr) throw pErr;
+      rows.push(...data);
+      if (data.length < 1000) break;
+    }
+    const hit = rows.find((p) => {
+      const result = String(p[`l${level}_result`] ?? p.metadata?.[`l${level}_result`] ?? '').toUpperCase();
+      return result === wanted && trialProgressModel.certificateNoFor(p.candidate_id, level, kind) === number;
+    });
+    if (hit) found = { candidateId: hit.candidate_id, name: null, issuedAt: hit.updated_at };
+  }
+
+  if (!found) return res.json({ valid: false, number });
+  if (!found.name) {
+    const candidate = await trialProgressModel.findCandidate(found.candidateId);
+    found.name = candidate?.contact?.name || null;
+  }
+  res.json({
+    valid: true,
+    number,
+    name: found.name,
+    level,
+    kind,
+    title: kind === 'achievement' ? `Level ${level} Certificate of Achievement` : `Level ${level} Certificate of Participation`,
+    issuedAt: found.issuedAt,
+  });
+};

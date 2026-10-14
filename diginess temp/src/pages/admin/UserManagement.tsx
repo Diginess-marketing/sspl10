@@ -1,6 +1,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import { toast } from 'sonner';
 import { adminService, AdminUser, AdminInvite } from '@/services/adminService';
+import { adminApi } from '@/lib/adminApi';
+import { STAFF_ROLES, staffRoleOf, type StaffRole } from '@/lib/staffRoles';
 import { Mail, Trash2, RefreshCw, Users, ShieldCheck, Clock, Pencil, Copy, ChevronLeft, ChevronRight, Send } from 'lucide-react';
 import { PageHeader, StatCard, StatusBadge, ActionButton, DataTableShell, DetailDrawer, ConfirmDialog } from '@/components/admin/ui';
 
@@ -71,6 +73,7 @@ const UserManagement = () => {
     // Edit drawer
     const [editingUser, setEditingUser] = useState<AdminUser | null>(null);
     const [editRole, setEditRole] = useState('user');
+    const [editStaffRole, setEditStaffRole] = useState<StaffRole>('super_admin');
     const [editPermissions, setEditPermissions] = useState<string[]>([]);
     const [confirmEdit, setConfirmEdit] = useState(false);
 
@@ -150,13 +153,16 @@ const UserManagement = () => {
         if (!editingUser) return;
         try {
             setIsSubmitting(true);
-            await adminService.updateUserRole(editingUser.id, editRole, editPermissions);
+            // Admin or not, and the staff role, go through the backend (super admins only; recorded
+            // in the action history). Permissions for non-admin users are saved as before.
+            await adminApi.put(`/admin/staff/${editingUser.id}/role`, { role: editRole, staffRole: editRole === 'admin' ? editStaffRole : undefined });
+            if (editRole !== 'admin') await adminService.updateUserRole(editingUser.id, editRole, editPermissions);
             toast.success('User updated successfully');
             setConfirmEdit(false);
             setEditingUser(null);
             loadUsers();
         } catch (error) {
-            toast.error('Failed to update user');
+            toast.error('Failed to update user', { description: (error as Error).message });
         } finally {
             setIsSubmitting(false);
         }
@@ -165,6 +171,7 @@ const UserManagement = () => {
     const openEdit = (user: AdminUser) => {
         setEditingUser(user);
         setEditRole(user.role);
+        setEditStaffRole(staffRoleOf(user.staff_role));
         setEditPermissions(user.permissions || []);
     };
 
@@ -185,6 +192,7 @@ const UserManagement = () => {
     }, [invites, search]);
 
     const roleChanged = editingUser && editRole !== editingUser.role;
+    const staffRoleChanged = editingUser && editRole === 'admin' && editStaffRole !== staffRoleOf(editingUser.staff_role);
 
     const pager = (
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--admin-line)] px-5 py-3">
@@ -259,11 +267,11 @@ const UserManagement = () => {
                                             </span>
                                         </div>
                                     </td>
-                                    <td>{user.role === 'admin' ? <span className="admin-badge admin-badge--bad">Admin</span> : <StatusBadge status="neutral" label={user.role} />}</td>
+                                    <td>{user.role === 'admin' ? <span className="admin-badge admin-badge--bad">Admin · {STAFF_ROLES[staffRoleOf(user.staff_role)].label}</span> : <StatusBadge status="neutral" label={user.role} />}</td>
                                     <td>
                                         <div className="flex max-w-[320px] flex-wrap gap-1.5">
                                             {user.role === 'admin' ? (
-                                                <span className="admin-badge admin-badge--info before:hidden">All permissions</span>
+                                                <span className="admin-badge admin-badge--info before:hidden">{STAFF_ROLES[staffRoleOf(user.staff_role)].description}</span>
                                             ) : user.permissions && user.permissions.length > 0 ? (
                                                 user.permissions.map(p => <span key={p} className="admin-badge admin-badge--neutral before:hidden">{permLabel(p)}</span>)
                                             ) : <span className="admin-muted">-</span>}
@@ -377,10 +385,27 @@ const UserManagement = () => {
                             <label htmlFor="edit-role" className="admin-label">Role</label>
                             <RoleSelect id="edit-role" value={editRole} onChange={setEditRole} />
                         </div>
-                        <div>
-                            <p className="admin-label">Permissions</p>
-                            <PermissionPicker idPrefix="edit" value={editPermissions} onChange={setEditPermissions} />
-                        </div>
+                        {editRole === 'admin' ? (
+                            <fieldset>
+                                <legend className="admin-label">Staff role</legend>
+                                <div className="grid gap-2">
+                                    {(Object.keys(STAFF_ROLES) as StaffRole[]).map((r) => (
+                                        <label key={r} htmlFor={`staff-${r}`} className={`flex cursor-pointer items-start gap-3 rounded-2xl border px-4 py-3 transition-colors ${editStaffRole === r ? 'border-[var(--admin-accent)] bg-[var(--admin-accent-soft)]' : 'border-[var(--admin-line)] bg-white hover:border-[var(--admin-accent)]'}`}>
+                                            <input id={`staff-${r}`} type="radio" name="staff-role" checked={editStaffRole === r} onChange={() => setEditStaffRole(r)} className="mt-1 h-4 w-4 accent-[var(--brand-blue)]" />
+                                            <span>
+                                                <span className="block font-semibold text-[var(--admin-ink)]">{STAFF_ROLES[r].label}</span>
+                                                <span className="admin-muted block text-sm">{STAFF_ROLES[r].description}</span>
+                                            </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </fieldset>
+                        ) : (
+                            <div>
+                                <p className="admin-label">Permissions</p>
+                                <PermissionPicker idPrefix="edit" value={editPermissions} onChange={setEditPermissions} />
+                            </div>
+                        )}
                     </div>
                 )}
             </DetailDrawer>
@@ -398,10 +423,12 @@ const UserManagement = () => {
             <ConfirmDialog
                 open={confirmEdit}
                 onOpenChange={(o) => { if (!isSubmitting) setConfirmEdit(o); }}
-                title={roleChanged ? 'Change role and access?' : 'Update permissions?'}
+                title={roleChanged || staffRoleChanged ? 'Change role and access?' : 'Update permissions?'}
                 description={editingUser ? (roleChanged
                     ? `${editingUser.full_name || editingUser.email} will change from ${editingUser.role} to ${editRole}.`
-                    : `Permissions for ${editingUser.full_name || editingUser.email} will be updated.`) : undefined}
+                    : staffRoleChanged
+                        ? `${editingUser.full_name || editingUser.email} will become ${STAFF_ROLES[editStaffRole].label}: ${STAFF_ROLES[editStaffRole].description}.`
+                        : `Permissions for ${editingUser.full_name || editingUser.email} will be updated.`) : undefined}
                 confirmLabel="Save changes"
                 tone={roleChanged && editRole === 'admin' ? 'danger' : 'default'}
                 loading={isSubmitting}

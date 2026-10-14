@@ -9,6 +9,14 @@ import workflowRouters from './workflow/workflowRouters.js';
 import enquiryRouters from './enquiry/enquiryRouters.js';
 import registrationRouters from './registration/registrationRouters.js';
 import qrRouters from './qr/qrRouters.js';
+import staffRouters from './staff/staffRouters.js';
+import campaignRouters from './campaign/campaignRouters.js';
+import reportRouters from './report/reportRouters.js';
+import playerRouters from './player/playerRouters.js';
+import trialEventRouters from './trialEvent/trialEventRouters.js';
+import privacyRouters from './privacy/privacyRouters.js';
+import organiserRouters from './organiser/organiserRouters.js';
+import leadRouters from './lead/leadRouters.js';
 
 /**
  * Every module router, mounted under a single `/api` prefix by app.js.
@@ -25,5 +33,13 @@ router.use(workflowRouters);
 router.use(enquiryRouters);
 router.use(registrationRouters);
 router.use(qrRouters);
+router.use(staffRouters);
+router.use(campaignRouters);
+router.use(reportRouters);
+router.use(playerRouters);
+router.use(trialEventRouters);
+router.use(privacyRouters);
+router.use(organiserRouters);
+router.use(leadRouters);
 
 export default router;

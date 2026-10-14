@@ -28,6 +28,7 @@ export const adminApi = {
   post: <T>(path: string, body?: unknown) => request<T>('POST', path, body ?? {}),
   put: <T>(path: string, body: unknown) => request<T>('PUT', path, body),
   patch: <T>(path: string, body: unknown) => request<T>('PATCH', path, body),
+  delete: <T>(path: string) => request<T>('DELETE', path),
 
   /** Download a binary response (e.g. a certificate PDF) as a file. */
   async download(path: string, filename: string) {

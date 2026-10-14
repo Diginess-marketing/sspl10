@@ -5,6 +5,7 @@ import * as registrationModel from '../model/registrationModel.js';
 import * as emailLogModel from '../model/emailLogModel.js';
 import logger from '../utils/logger.js';
 import * as template from './templates/paymentReminderEmail.js';
+import { notifyPlayer } from '../service/playerMessageService.js';
 
 export const SCHEDULE = '*/30 * * * *'; // every 30 minutes
 const EMAIL_TYPE = 'payment_reminder';
@@ -53,8 +54,8 @@ export async function checkAndSendReminders(customStartTime = null, customEndTim
     }
 
     const combined = [
-      ...ledgerCandidates.map((c) => ({ email: c.email, source: 'razorpay' })),
-      ...pendingRegistrations.map((c) => ({ email: c.email, source: 'registration' })),
+      ...ledgerCandidates.map((c) => ({ email: c.email, phone: c.contact, source: 'razorpay' })),
+      ...pendingRegistrations.map((c) => ({ email: c.email, phone: c.phone, source: 'registration' })),
     ];
 
     logger.info(
@@ -91,6 +92,9 @@ export async function checkAndSendReminders(customStartTime = null, customEndTim
         });
 
         const candidate = combined.find((c) => c.email === email);
+        // Same reminder on WhatsApp when a template is configured (PRD journey stage 3)
+        await notifyPlayer(EMAIL_TYPE, { email, phone: combined.find((c) => c.email === email && c.phone)?.phone, whatsappOnly: true })
+          .catch((err) => logger.warn(`WhatsApp reminder failed: ${err.message}`));
         const sourceLabel =
           candidate?.source === 'registration' ? 'Pending Registration' : 'Failed Payment';
 
@@ -111,8 +115,33 @@ export async function checkAndSendReminders(customStartTime = null, customEndTim
   }
 }
 
+/**
+ * Second reminder the next day (PRD journey stage 3): registrations still unpaid 22-26 hours
+ * after they started, once per person.
+ */
+export async function checkAndSendSecondReminders() {
+  const now = new Date();
+  try {
+    const pending = await registrationModel.findPendingBetween(hoursAgo(now, 26), hoursAgo(now, 22));
+    const seen = new Set();
+    for (const reg of pending) {
+      const email = String(reg.email || '').trim().toLowerCase();
+      if (!email.includes('@') || seen.has(email)) continue;
+      seen.add(email);
+      const weekAgo = hoursAgo(now, 24 * 7);
+      if ((await paymentLedgerModel.findSuccessfulSince(email, weekAgo)).length > 0) continue;
+      if ((await emailLogModel.findSentSince(email, 'payment_reminder_2', weekAgo)).length > 0) continue;
+      const result = await notifyPlayer('payment_reminder_2', { email, phone: reg.phone, name: reg.full_name, registrationId: reg.id });
+      logger.info(`Second payment reminder to ${email}: email ${result.email}, WhatsApp ${result.whatsapp}`);
+    }
+  } catch (err) {
+    logger.error('Error in second payment reminder job:', err);
+  }
+}
+
 /** Register the recurring schedule. */
 export function start() {
   cron.schedule(SCHEDULE, () => checkAndSendReminders());
+  cron.schedule('15 * * * *', () => checkAndSendSecondReminders()); // hourly, next-day reminder
   logger.info('Payment reminder job scheduled (every 30 mins)');
 }

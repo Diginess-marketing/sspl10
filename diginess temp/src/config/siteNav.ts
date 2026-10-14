@@ -49,6 +49,7 @@ export const SITE_NAV: SiteNavSection[] = [
       { group: 'Trials', label: 'Trial Schedule', to: '/trials/schedule' },
       { group: 'Trials', label: 'Trial Locations', to: '/trials/locations' },
       { group: 'Trials', label: 'Selection Results', to: '/trial-results' },
+      { group: 'Trials', label: 'Verify a Certificate', to: '/verify-certificate' },
     ],
   },
   {

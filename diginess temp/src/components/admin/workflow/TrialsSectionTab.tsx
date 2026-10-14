@@ -1,12 +1,24 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
-import { CalendarCheck, ArrowRight, RefreshCw, Calendar, Clock, MapPin, Users, AlertCircle, Trash2 } from 'lucide-react';
+import { CalendarCheck, ArrowRight, RefreshCw, Calendar, Clock, MapPin, Users, AlertCircle, Trash2, Wand2 } from 'lucide-react';
+import { adminApi } from '@/lib/adminApi';
 import { Checkbox } from '@/components/ui/checkbox';
 import { usePlayerWorkflow } from '@/hooks/usePlayerWorkflow';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/hooks/useAuth';
 import { ActionButton, ConfirmDialog, DataTableShell, DetailDrawer } from '@/components/admin/ui';
 import type { TrialsSectionPlayer } from '@/types/workflow';
+
+interface AllocationPlan {
+  waiting: number;
+  trials: {
+    trial: { trial_id: string; name: string; date: string; time: string | null; venue: string; batch: string | null; capacity: number | null };
+    used: number;
+    remaining: number | null;
+    players: { workflow_id: string; name: string; city: string | null; match: string | null }[];
+  }[];
+  unassigned: { workflow_id: string; name: string; city: string | null; reason: string }[];
+}
 
 interface TrialsSectionTabProps {
   onRefresh: () => void;
@@ -35,6 +47,10 @@ const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
   const [removeIds, setRemoveIds] = useState<string[] | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [pastVenues, setPastVenues] = useState<string[]>([]);
+  // Suggested allocation (PRD feature 8): proposed by the server, applied after review
+  const [plan, setPlan] = useState<AllocationPlan | null>(null);
+  const [planning, setPlanning] = useState(false);
+  const [applying, setApplying] = useState(false);
 
   const [allocationDate, setAllocationDate] = useState(new Date().toISOString().split('T')[0]);
   const [allocationTime, setAllocationTime] = useState('09:00');
@@ -116,6 +132,40 @@ const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
     }
   };
 
+  const suggest = async () => {
+    setPlanning(true);
+    try {
+      setPlan(await adminApi.post<AllocationPlan>('/admin/workflow/allocation-plan'));
+    } catch (err: any) {
+      toast.error('Could not suggest an allocation', { description: err.message });
+    } finally {
+      setPlanning(false);
+    }
+  };
+
+  const applyPlan = async () => {
+    if (!plan) return;
+    setApplying(true);
+    let ok = 0;
+    let failed = 0;
+    try {
+      for (const p of plan.trials.filter((t) => t.players.length)) {
+        const results = await allocateToTrials(
+          p.players.map((pl) => pl.workflow_id), p.trial.date, p.trial.time || undefined, p.trial.venue || undefined, p.trial.batch || undefined, user?.id,
+        );
+        ok += results.filter((r) => r.success).length;
+        failed += results.filter((r) => !r.success).length;
+      }
+      if (failed) toast.error(`Allocated ${ok}; ${failed} failed`);
+      else toast.success(`${plural(ok)} allocated`, { description: 'Each player is emailed their date and venue.' });
+      setPlan(null);
+      loadPlayers();
+      onRefresh();
+    } finally {
+      setApplying(false);
+    }
+  };
+
   const handleRemove = async () => {
     if (!removeIds) return;
     setProcessing(true);
@@ -150,7 +200,12 @@ const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
         search={searchTerm}
         onSearchChange={setSearchTerm}
         searchPlaceholder="Search name, email or phone"
-        actions={<ActionButton variant="ghost" size="sm" icon={RefreshCw} onClick={loadPlayers} aria-label="Refresh" />}
+        actions={(
+          <>
+            <ActionButton variant="soft" size="sm" icon={Wand2} loading={planning} onClick={suggest} disabled={players.length === 0}>Suggest allocation</ActionButton>
+            <ActionButton variant="ghost" size="sm" icon={RefreshCw} onClick={loadPlayers} aria-label="Refresh" />
+          </>
+        )}
         selectedCount={selectedIds.size}
         onClearSelection={() => setSelectedIds(new Set())}
         bulkActions={(
@@ -276,6 +331,35 @@ const TrialsSectionTab = ({ onRefresh }: TrialsSectionTabProps) => {
           </div>
         </div>
       </DetailDrawer>
+      <ConfirmDialog
+        open={plan !== null}
+        onOpenChange={(o) => { if (!o && !applying) setPlan(null); }}
+        title="Suggested allocation"
+        description={plan ? `${plan?.trials.reduce((n, t) => n + t.players.length, 0) ?? 0} of ${plan.waiting} waiting players fit into upcoming trials by city or state, without going over any trial's capacity.` : ''}
+        confirmLabel={`Allocate ${plan?.trials.reduce((n, t) => n + t.players.length, 0) ?? 0}`}
+        loading={applying}
+        onConfirm={() => ((plan?.trials.reduce((n, t) => n + t.players.length, 0) ?? 0) > 0 ? applyPlan() : undefined)}
+      >
+        {plan && (
+          <div className="mt-3 max-h-[50vh] space-y-3 overflow-y-auto">
+            {plan.trials.length === 0 && <p className="admin-muted">There are no upcoming trials. Create trial dates first.</p>}
+            {plan.trials.map((t) => (
+              <div key={t.trial.trial_id} className="rounded-xl border border-[var(--admin-line)] p-3">
+                <p className="font-semibold text-[var(--admin-ink)]">{new Date(t.trial.date).toLocaleDateString('en-IN')}{t.trial.time ? ` · ${String(t.trial.time).slice(0, 5)}` : ''} · {t.trial.venue}</p>
+                <p className="admin-muted text-sm">
+                  {t.players.length} proposed · {t.trial.capacity === null ? 'no capacity set' : `${t.used} already booked, ${t.remaining} places left of ${t.trial.capacity}`}
+                </p>
+                {t.players.length > 0 && <p className="admin-muted mt-1 text-sm">{t.players.slice(0, 8).map((p) => p.name).join(', ')}{t.players.length > 8 ? ` and ${t.players.length - 8} more` : ''}</p>}
+              </div>
+            ))}
+            {plan.unassigned.length > 0 && (
+              <p className="rounded-xl bg-amber-50 p-3 text-sm text-[var(--admin-ink)]">
+                {plan.unassigned.length} player(s) have no matching trial: {plan.unassigned.slice(0, 6).map((p) => `${p.name}${p.city ? ` (${p.city})` : ''}`).join(', ')}{plan.unassigned.length > 6 ? '…' : ''}. Add a trial in their area, or allocate them by hand.
+              </p>
+            )}
+          </div>
+        )}
+      </ConfirmDialog>
     </div>
   );
 };

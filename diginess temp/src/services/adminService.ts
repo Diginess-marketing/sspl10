@@ -5,6 +5,8 @@ export interface AdminUser {
     email: string;
     role: string;
     permissions?: string[];
+    /** Admins only: super_admin / operations / finance / marketing / viewer */
+    staff_role?: string | null;
     created_at?: string;
     last_sign_in_at?: string;
     full_name?: string;
@@ -41,26 +43,23 @@ export const adminService = {
             const from = (page - 1) * limit;
             const to = from + limit - 1;
 
-            const query = (supabase as any)
+            // staff_role and email arrive with a migration; before it runs, read the users without them
+            const run = (columns: string) => (supabase as any)
                 .from('user_roles')
                 .select(`
           user_id,
           role,
           permissions,
-          created_at,
+          created_at,${columns}
           user_profiles:user_id (
             full_name,
             avatar_url
           )
-        `, { count: 'exact' });
-
-            // Add search if implemented with a materialized view or specific text search column in db
-            // if (search) { query = query.textSearch('email', search); }
-
-            const { data, error, count } = await query
+        `, { count: 'exact' })
                 .range(from, to)
                 .order('created_at', { ascending: false });
-
+            let { data, error, count } = await run(' email, staff_role,');
+            if (error && /staff_role|email/.test(error.message || '')) ({ data, error, count } = await run(''));
             if (error) throw error;
 
             // Transform data to flat structure
@@ -68,11 +67,12 @@ export const adminService = {
                 id: item.user_id,
                 role: item.role,
                 permissions: item.permissions || [],
+                staff_role: item.staff_role ?? null,
                 created_at: item.created_at,
                 full_name: item.user_profiles?.[0]?.full_name || 'N/A',
                 // Email would typically come from auth.users which isn't directly queryable here 
                 // without an edge function secure wrapper. We'll use ID or profile data for now.
-                email: 'Hidden (Requires Admin API)',
+                email: item.email || 'Hidden (Requires Admin API)',
             }));
 
             return { data: formattedData, count: count || 0 };

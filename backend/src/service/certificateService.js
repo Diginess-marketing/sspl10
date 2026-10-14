@@ -70,7 +70,7 @@ export async function generateCertificatePdf({ kind, playerName, level, certific
   drawCentered(page, levelText, { font: bodyFont, size: 12, y: PAGE_HEIGHT * 0.503, color: GOLD });
 
   // Certificate number and date, small, along the bottom edge
-  const footer = `Certificate No. ${certificateNo}   ·   Issued ${issuedAt.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
+  const footer = `Certificate No. ${certificateNo}   ·   Issued ${issuedAt.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}   ·   Verify at ssplt10.co.in/verify-certificate`;
   drawCentered(page, footer, { font: smallFont, size: 8, y: PAGE_HEIGHT * 0.047, color: GREY });
 
   return Buffer.from(await pdf.save());

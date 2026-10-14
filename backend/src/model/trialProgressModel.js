@@ -120,13 +120,17 @@ export async function recordLevelEmail(entry) {
  * The certificate is then issued unsaved, with a number derived from candidate/level/kind
  * so repeated downloads show the same number.
  */
-function unsavedCertificate({ candidateId, level, kind, playerName }) {
+export function certificateNoFor(candidateId, level, kind) {
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   const hash = createHash('sha256').update(`${candidateId}:${level}:${kind}`).digest();
   let suffix = '';
   for (let i = 0; i < 6; i += 1) suffix += alphabet[hash[i] % alphabet.length];
+  return `SSPL-L${level}-${kind === 'achievement' ? 'A' : 'P'}-${suffix}`;
+}
+
+function unsavedCertificate({ candidateId, level, kind, playerName }) {
   return {
-    certificate_no: `SSPL-L${level}-${kind === 'achievement' ? 'A' : 'P'}-${suffix}`,
+    certificate_no: certificateNoFor(candidateId, level, kind),
     candidate_id: candidateId,
     level,
     kind,
@@ -152,9 +156,18 @@ export async function findOrCreateCertificate({ candidateId, level, kind, player
 
   const { data, error: insErr } = await supabase
     .from('trial_certificates')
-    .insert({ certificate_no: newNumber(), candidate_id: candidateId, level, kind, player_name: playerName })
+    // Same number the certificate had before the table existed, so printed numbers stay valid
+    .insert({ certificate_no: certificateNoFor(candidateId, level, kind), candidate_id: candidateId, level, kind, player_name: playerName })
     .select('*')
     .single();
+  if (insErr?.code === '23505') {
+    // Extremely unlikely clash with another certificate's number: issue a random one
+    const retry = await supabase.from('trial_certificates')
+      .insert({ certificate_no: newNumber(), candidate_id: candidateId, level, kind, player_name: playerName })
+      .select('*').single();
+    if (retry.error) throw retry.error;
+    return retry.data;
+  }
   if (insErr) throw insErr;
   return data;
 }
